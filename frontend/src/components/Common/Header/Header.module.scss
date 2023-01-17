@@ -1,0 +1,27 @@
+.header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 25px 20px;
+  width: 100%;
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+.top {
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: flex-end;
+  color: gray;
+  height: 15px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .logo {
+    width: 200px;
+    height: 60px;
+  }
+}
