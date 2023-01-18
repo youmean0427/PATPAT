@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Footer from './components/common/Footer/Footer';
-import Header from './components/common/Header/Header';
+import Header from './components/Common/Header/Header';
 import { Reset } from 'styled-reset';
 const App = () => {
   return (
@@ -8,7 +7,6 @@ const App = () => {
       <Reset />
       <Header />
       <Outlet />
-      <Footer />
     </>
   );
 };
