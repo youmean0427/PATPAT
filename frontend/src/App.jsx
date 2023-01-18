@@ -1,13 +1,17 @@
+import Footer from 'components/Common/Footer/Footer';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Common/Header/Header';
-import { Reset } from 'styled-reset';
+import styles from 'assets/styles/App.module.scss';
+
 const App = () => {
   return (
-    <>
-      <Reset />
+    <div className={styles.app}>
       <Header />
-      <Outlet />
-    </>
+      <main className={styles['app-main']}>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
 };
 
