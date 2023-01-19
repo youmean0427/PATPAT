@@ -1,39 +1,48 @@
 @import 'assets/styles/variable.scss';
 .header {
-  position: fixed;
-  left: 0;
+  position: sticky;
   top: 0;
   width: 100%;
-  padding: 20px 100px;
-  border-bottom: 1px solid lightgray;
-  box-sizing: border-box;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: $white-color;
 }
 
-.left {
-  .logo {
-    width: 150px;
-    cursor: pointer;
-  }
+.nav {
+  position: relative;
+  width: 100%;
 }
 
-.right {
-  .auth-menus {
-    text-align: right;
-    font-size: 0.9rem;
-    color: gray;
-    margin-bottom: 10px;
-    margin-right: 19px;
-    cursor: pointer;
-    &:hover {
-      color: black;
-    }
+.container {
+  width: 120rem;
+  margin: 0 auto;
+  padding: 0 2rem;
 
-    .auth-menu {
-      font-family: $main-font;
+  &-inner {
+    position: relative;
+    height: $header-height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > .left {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      align-items: center;
+
+      & > .logo-link {
+        flex-shrink: 0;
+
+        & img {
+          width: 120px;
+        }
+      }
+
+      & > .menu-box {
+        & > .menu {
+          display: flex;
+          align-items: center;
+        }
+      }
     }
   }
 }
