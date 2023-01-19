@@ -1,0 +1,31 @@
+@import 'assets/styles/variable.scss';
+
+.link {
+  width: 60px;
+  height: 50px;
+  background-color: $main-color;
+  color: $main-font-color;
+  text-align: center;
+  font-size: 0.6rem;
+  font-family: $main-font;
+  position: relative;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span {
+    margin-top: 8px;
+  }
+}
+
+.link::before {
+  border-bottom: 20px solid $main-color;
+  border-left: 30px solid transparent;
+  border-right: 31px solid transparent;
+  content: '';
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: -20px;
+  width: 0;
+}
