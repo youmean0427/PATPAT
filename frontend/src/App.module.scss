@@ -1,3 +1,4 @@
+@import 'assets/styles/variable.scss';
 @import 'assets/styles/font.scss';
 
 .app {
@@ -10,5 +11,5 @@
 
 .app-main {
   flex: 1;
-  background-color: lightblue;
+  background-color: $black-color;
 }

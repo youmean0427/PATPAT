@@ -19,7 +19,7 @@ export default function Header() {
               <div className={styles['menu-box']}>
                 <ul className={styles.menu}>
                   <li className={styles['menu-item']}>
-                    소개
+                    <div>소개</div>
                     <ul className={styles.submenu}>
                       <li className={styles['submenu-item']}>
                         <NavLink>인사말</NavLink>
@@ -36,7 +36,7 @@ export default function Header() {
                     </ul>
                   </li>
                   <li className={styles['menu-item']}>
-                    보호소
+                    <div>보호소</div>
                     <ul className={styles.submenu}>
                       <li className={styles['submenu-item']}>
                         <NavLink>보호소 찾기</NavLink>
@@ -44,7 +44,7 @@ export default function Header() {
                     </ul>
                   </li>
                   <li className={styles['menu-item']}>
-                    신고
+                    <div>신고</div>
                     <ul className={styles.submenu}>
                       <li className={styles['submenu-item']}>
                         <NavLink>실종 신고</NavLink>
@@ -55,7 +55,7 @@ export default function Header() {
                     </ul>
                   </li>
                   <li className={styles['menu-item']}>
-                    봉사
+                    <div>봉사</div>
                     <ul className={styles.submenu}>
                       <li className={styles['submenu-item']}>
                         <NavLink>봉사 신청</NavLink>
@@ -63,7 +63,7 @@ export default function Header() {
                     </ul>
                   </li>
                   <li className={styles['menu-item']}>
-                    커뮤니티
+                    <div>커뮤니티</div>
                     <ul className={styles.submenu}>
                       <li className={styles['submenu-item']}>
                         <NavLink>입양 후기</NavLink>
@@ -83,7 +83,7 @@ export default function Header() {
               </div>
             </div>
             <div className={styles.right}>
-              <DarkModeOutlined />
+              <DarkModeOutlined sx={{ fontSize: 20 }} />
               <button className={styles.login}>로그인</button>
             </div>
           </div>

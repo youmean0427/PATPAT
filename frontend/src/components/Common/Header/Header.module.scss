@@ -12,7 +12,7 @@
 }
 
 .container {
-  width: 120rem;
+  max-width: 120rem;
   margin: 0 auto;
   padding: 0 2rem;
 
@@ -25,6 +25,7 @@
 
     & > .left {
       display: flex;
+      height: 100%;
       flex: 1;
       justify-content: space-between;
       align-items: center;
@@ -38,11 +39,41 @@
       }
 
       & > .menu-box {
+        font-size: 2rem;
         & > .menu {
           display: flex;
           align-items: center;
+
+          & > .menu-item {
+            position: relative;
+            padding: 2rem;
+            & > div {
+              cursor: pointer;
+            }
+            & > .submenu {
+              width: 100%;
+              position: absolute;
+              top: 100%;
+              left: 0;
+              font-size: 1.3rem;
+              background-color: $white-color;
+              border-radius: 0.4rem;
+              box-shadow: 10px 12px 5px -6px rgba(128, 123, 123, 0.51);
+              & > .submenu-item {
+                text-align: center;
+                padding: $spacing-sm 0;
+              }
+            }
+          }
         }
       }
+    }
+
+    & > .right {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      font-size: 2rem;
     }
   }
 }
