@@ -22,6 +22,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 1.7rem;
 
     & > .left {
       display: flex;
@@ -39,19 +40,27 @@
       }
 
       & > .menu-box {
-        font-size: 2rem;
+        @include breakpoint(sm) {
+          display: none;
+        }
         & > .menu {
           display: flex;
           align-items: center;
 
           & > .menu-item {
             position: relative;
-            padding: 2rem;
+            padding: 2rem $spacing-lg;
+            transition-duration: 500ms;
+            @include breakpoint(md) {
+              padding: 2rem $spacing-md;
+            }
             & > div {
               cursor: pointer;
             }
             & > .submenu {
               width: 100%;
+              display: none;
+
               position: absolute;
               top: 100%;
               left: 0;
@@ -59,6 +68,9 @@
               background-color: $white-color;
               border-radius: 0.4rem;
               box-shadow: 10px 12px 5px -6px rgba(128, 123, 123, 0.51);
+              @include breakpoint(md) {
+                font-size: 1.2rem;
+              }
               & > .submenu-item {
                 text-align: center;
                 padding: $spacing-sm 0;
@@ -73,7 +85,6 @@
       display: flex;
       align-items: center;
       height: 100%;
-      font-size: 2rem;
     }
   }
 }
