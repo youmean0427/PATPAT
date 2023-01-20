@@ -1,0 +1,30 @@
+@import 'assets/styles/variable.scss';
+.left {
+  display: flex;
+  height: 100%;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+
+  & > .logo-link {
+    flex-shrink: 0;
+
+    & img {
+      width: 120px;
+    }
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.login {
+  background-color: $blue-color;
+  color: $white-color;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  margin-left: 1rem;
+}

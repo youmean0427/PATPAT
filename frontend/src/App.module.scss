@@ -10,6 +10,13 @@
 }
 
 .app-main {
+  width: 100%;
+  position: relative;
   flex: 1;
-  background-color: $black-color;
+}
+
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 2rem;
 }

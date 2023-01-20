@@ -1,0 +1,13 @@
+@import 'assets/styles/variable.scss';
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+  @include breakpoint(md) {
+    padding: 0 $spacing-md;
+  }
+
+  @include breakpoint(sm) {
+    padding: 0 $spacing-sm;
+  }
+}
