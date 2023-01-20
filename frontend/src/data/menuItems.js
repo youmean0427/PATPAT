@@ -1,7 +1,7 @@
 export const menuItems = [
   {
     title: '소개',
-    submenu: [
+    submenus: [
       {
         title: '인사말',
         url: '/intro',
@@ -22,7 +22,7 @@ export const menuItems = [
   },
   {
     title: '신고',
-    submenu: [
+    submenus: [
       {
         title: '실종 신고',
         url: '/report/miss',
@@ -39,7 +39,7 @@ export const menuItems = [
   },
   {
     title: '커뮤니티',
-    submenu: [
+    submenus: [
       {
         title: '입양 후기',
         url: '/adoption-reviews',

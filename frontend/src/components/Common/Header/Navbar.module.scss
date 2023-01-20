@@ -1,12 +1,5 @@
-.menus {
-  display: flex;
-}
+@import 'assets/styles/variable.scss';
 
-.menu-item {
-  font-size: 1.5rem;
-  padding-left: 100px;
-  a {
-    text-decoration: none;
-    color: black;
-  }
+.nav-wrap {
+  display: flex;
 }
