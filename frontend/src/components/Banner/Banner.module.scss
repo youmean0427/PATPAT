@@ -1,0 +1,42 @@
+@import '../../assets/styles/variable.scss';
+
+.banner {
+    display: flex;
+    width: 100%;
+    height: 400px;
+    background-color: $blue-color;
+    margin-top:72px;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.item {
+    &_1 {
+    flex: 1 1 0;
+    align-self: center;
+    }
+    &_2{
+    flex: 1 1 0;
+    align-self: flex-end;
+    }
+}
+
+.title{
+    font: {
+       family: $spoqa-font;
+       weight: 700;
+       weight: 700;
+       size: 50px;
+    }
+    text-align: center;
+    color: $white-color;
+}
+
+.pat {
+    display: flex;
+    justify-content: flex-end;
+}
