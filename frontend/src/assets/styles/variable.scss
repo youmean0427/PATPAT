@@ -1,5 +1,36 @@
 // color 관련
-$main-color: #5d6dbe;
-$main-font-color: #f5f6fa;
+$blue-color: #5d6dbe;
+$white-color: #ffffff;
+$black-color: #222f3e;
+
+// size 관련
+$spacing-sm: 1rem;
+$spacing-md: 2rem;
+$spacing-lg: 4rem;
+
+$header-height: 7.2rem;
+$footer-height: 7.2rem;
+
 // font 관련
-$main-font: GownDodum;
+$gowndodum-font: GownDodum;
+$nanum-gothic-font: Nanum_Gothic;
+$spoqa-font: Spoqa;
+
+// media break point size
+$sm: 640px;
+$md: 1024px;
+
+@mixin breakpoint($point) {
+  // 0px ~ 600px
+  @if $point == sm {
+    @media (max-width: $sm) {
+      @content;
+    }
+  }
+  // 640px ~ 1024px
+  @if $point == md {
+    @media (max-width: $md) {
+      @content;
+    }
+  }
+}

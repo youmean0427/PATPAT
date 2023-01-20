@@ -1,8 +1,15 @@
+@import 'assets/styles/variable.scss';
 @import 'assets/styles/font.scss';
 
+.app {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
 .app-main {
-  padding: 0 100px;
-  padding-top: 95px;
-  min-height: calc(100vh - 60px);
-  background-color: lightblue;
+  flex: 1;
+  background-color: $black-color;
 }
