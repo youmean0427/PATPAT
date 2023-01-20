@@ -21,7 +21,7 @@ $sm: 640px;
 $md: 1024px;
 
 @mixin breakpoint($point) {
-  // 0px ~ 600px
+  // 0px ~ 640px
   @if $point == sm {
     @media (max-width: $sm) {
       @content;
