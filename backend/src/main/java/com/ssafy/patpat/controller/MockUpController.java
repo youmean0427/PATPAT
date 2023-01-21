@@ -15,10 +15,6 @@ public class MockUpController {
     public String selectMainProtectList(){
         return "메인에서 안락사 기준 정렬 강아지 리스트";
     }
-    @GetMapping("/favorite")
-    public String selectFavoriteProtectListByUser(){
-        return "즐겨찾기를 누른 강아지 리스트";
-    }
     @GetMapping("/{shelterId}")
     public String selectProtectListByShelter(){
         return "해당 보호소가 가진 강아지 리스트";
@@ -218,6 +214,14 @@ public class MockUpController {
     @GetMapping("/")
     public String selectMypage(){
         return "내 정보 리턴";
+    }
+    @GetMapping("/favorite")
+    public String selectFavoriteProtectListByUser(){
+        return "즐겨찾기를 누른 강아지 리스트";
+    }
+    @PutMapping("/favorite/{protectId}")
+    public String updateFavorite(){
+        return "관심동물 등록,해제";
     }
     @PutMapping("/")
     public String updateMypage(){
