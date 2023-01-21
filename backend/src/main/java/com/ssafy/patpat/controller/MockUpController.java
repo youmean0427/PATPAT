@@ -9,8 +9,60 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class MockUpController {
     /** 동물 관련 기능
-     * root -> "/dog"
+     * root -> "/protect"
      * */
+    @GetMapping("/main")
+    public String selectMainProtectList(){
+        return "메인에서 안락사 기준 정렬 강아지 리스트";
+    }
+    @GetMapping("/favorite")
+    public String selectFavoriteProtectListByUser(){
+        return "즐겨찾기를 누른 강아지 리스트";
+    }
+    @GetMapping("/{shelterId}")
+    public String selectProtectListByShelter(){
+        return "해당 보호소가 가진 강아지 리스트";
+    }
+    @PostMapping("/")
+    public String insertProtect(){
+        return "보호소에서 강아지 등록"+
+                "일괄등록 or 전체 등록";
+    }
+    @PostMapping("/{protectId}")
+    public String updateProtect(){
+        return "보호소에서 강아지 수정";
+    }
+    @DeleteMapping("/{protectId}")
+    public String deleteProtect(){
+        return "보호소에서 강아지 삭제";
+    }
+    /** 신고 관련 기능
+     * root -> "/report"
+     * */
+    @GetMapping("/")
+    public String selectReportList(){
+        return "전체 신고 리스트(임보, 실종)"+"성별,견종 필터기능 | 임보,실종 필터 혹은 전체 보여주기";
+    }
+    @GetMapping("/user")
+    public String selectReportListByUser(){
+        return "해당 유저의 신고 리스트(임보, 실종)";
+    }
+    @GetMapping("/recommend/{reportId}")
+    public String selectReportListByMissing(){
+        return "실종 지역 근방 유사견종 개체수 + 유사견종 리스트";
+    }
+    @GetMapping("/{reportId}")
+    public String detailReport(){
+        return "실종,임보 상세";
+    }
+    @PostMapping("/")
+    public String insertReport(){
+        return "신고 등록(임보, 실종)";
+    }
+    @PostMapping("/{reportId}")
+    public String updateReport(){
+        return "신고 수정(임보, 실종)";
+    }
 
     /**
      * 봉사 관련 기능
@@ -20,20 +72,19 @@ public class MockUpController {
 //봉사 공고 관련
     @GetMapping("/notice")
     public String selectNoticeListByUser(){
-        return "신청 가능한 봉사공고 리스트 받아오기";
+        return "신청 가능한 봉사공고 리스트 받아오기(게시판)";
     }
-    @GetMapping("/notice/all")
+    @GetMapping("/notice/{shelterId}")
     public String selectNoticeListByShelter(){
-        return "특정 보호소에서 올린 모든 봉사공고 리스트 받아오기";
+        return "특정 보호소에서 올린 신청 가능한 봉사공고 리스트 받아오기" +
+                "만약 바디에 shelterId 값의 여부를 확인한 뒤 있다면 보호소 입장에서 해당 년 월에 내가 올린 모든 공고 리스트 불러오기";
     }
-    @GetMapping("/notice/shelter")
-    public String selectWaitNoticeListByShelter(){
-        return "특정 보호소에서 대기중인 상태 봉사공고 리스트 받아오기";
-    }
+
     @GetMapping("/notice/{noticeId}")
     public String selectNotice(){
         return "봉사공고 상세 받아오기";
     }
+
     @PostMapping("/notice")
     public String insertNotice(){
         return "봉사공고 등록하기";
@@ -47,29 +98,25 @@ public class MockUpController {
         return "봉사공고 삭제하기";
     }
     // 봉사 신청
-    @GetMapping("/application")
-    public String selectapplicationList(){
+    @GetMapping("/reservation")
+    public String selectReservationList(){
         return "나의 봉사 신청 내역 리스트(대기,완료,방문확인)";
     }
-    @GetMapping("/application/{noticeId}")
-    public String selectapplicationListByNotice(){
+    @GetMapping("/reservation/{noticeId}")
+    public String selectReservationListByNotice(){
         return "봉사공고 기반 지원자들의 지원서 받아오기";
     }
-    @PostMapping("/application")
-    public String insertApplication(){
+    @PostMapping("/reservation")
+    public String insertReservation(){
         return "봉사 지원서 등록하기";
     }
-    @PutMapping("/application/{applicationId}")
-    public String updateApplication(){
-        return "봉사 지원서 수정하기 수락,거절,방문,노쇼 상태 수정";
-    }
-    @DeleteMapping("/application/{applicationId}")
-    public String deleteApplication(){
-        return "봉사 예약 취소(개인이)";
+    @PutMapping("/reservation/{reservationId}")
+    public String updateReservation(){
+        return "봉사 지원서 수정하기 수락,거절,방문,노쇼, 취소 상태 수정";
     }
     /**
      * 게시판 관련 기능
-     *
+     * root - board
      * */
     @GetMapping("/")
     public String selectBoardListByUser(){
@@ -87,44 +134,13 @@ public class MockUpController {
     public String insertBoard(){
         return "게시글 등록";
     }
-    @PutMapping("/{boardId}")
+    @PostMapping("/{boardId}")
     public String updateBoard(){
         return "게시글 수정";
     }
     @DeleteMapping("/{boardId}")
     public String deleteBoard(){
         return "게시글 삭제";
-    }
-    //댓글
-    @GetMapping("/reply/{boardId}")
-    public String selectReplyList(){
-        return "댓글 리스트 가져오기";
-    }
-    @PostMapping("/reply/{boardId}")
-    public String insertReply(){
-        return "댓글 등록하기";
-    }
-    @PostMapping("/reply/{boardId}")
-    public String updateReply(){
-        return "댓글 수정하기";
-    }
-    @DeleteMapping("/reply/{boardId}")
-    public String deleteReply(){
-        return "댓글 삭제하기";
-    }
-
-    //대댓글
-    @PostMapping("/rereply/{replyId}")
-    public String insertRereply(){
-        return "대댓글 등록하기";
-    }
-    @PutMapping("/rereply/{replyId}")
-    public String updateRereply(){
-        return "대댓글 수정하기";
-    }
-    @DeleteMapping("/rereply/{replyId}")
-    public String deleteRereply(){
-        return "대댓글 삭제하기";
     }
 
     /**
@@ -145,11 +161,11 @@ public class MockUpController {
     public String insertConsulting(){
         return "상담 등록하기";
     }
-    @PutMapping("/")
+    @PutMapping("/{consultingId}")
     public String updateConsulting(){
         return "상담 수정하기(상태)";
     }
-    @DeleteMapping("/")
+    @DeleteMapping("/{consultingId}")
     public String deleteConsulting(){
         return "상담 삭제하기";
     }
@@ -165,7 +181,7 @@ public class MockUpController {
     }
     @GetMapping("/")
     public String selectDogTypeList(){
-        return "시도, 구군 별 존재하는 모든 견종 리스트";
+        return "시도, 구군, 보호소별 존재하는 모든 견종 리스트";
     }
     @GetMapping("/{shelterId}")
     public String selectShelter(){
@@ -211,6 +227,7 @@ public class MockUpController {
     public String deleteMypage(){
         return "회원탈퇴";
     }
+    //관심동물 선택,해제 uri 만들기
 
     /**
     * 알람 관련 기능
