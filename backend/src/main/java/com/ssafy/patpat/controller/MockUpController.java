@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@Controller
 public class MockUpController {
     /** 동물 관련 기능
      * root -> "/protect"
