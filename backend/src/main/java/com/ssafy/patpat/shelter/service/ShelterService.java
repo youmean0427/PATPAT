@@ -11,4 +11,5 @@ public interface ShelterService {
     List<Sido> sidoList();
     List<Gugun> gugunList(String sidoCode);
     List<Shelter> shelterList(RequestParamMbtiDto dto);
+    List<Shelter> shelterListInVolunteer(String sidoCode, String gugunCode);
 }

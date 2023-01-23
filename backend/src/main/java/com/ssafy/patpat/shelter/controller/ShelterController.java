@@ -24,11 +24,18 @@ public class ShelterController {
     public List<Gugun> selectGugunList(@RequestParam String sidoCode){
         return service.gugunList(sidoCode);
     }
+
     @GetMapping("/breed")
-    public List<Shelter> selectShelterList(RequestParamMbtiDto dto){
-        //"보호소 검색하기 (시도, 구군, 견종, 이름 필터 선택 후 카운팅 값 까지 포함한 결과) || 시도, 구군 봉사 공고 기반 보호소 검색";
+    public List<Shelter> selectBreedShelterList(RequestParamMbtiDto dto){
+        //견종 기반 검색 Dto sido기반시 구군 빈문자열 들어옴;
         return service.shelterList(dto);
     }
+    @GetMapping("/volunteer")
+    public List<Shelter> selectVolunteerShelterList(@RequestParam String sidoCode , @RequestParam String gugunCode){
+        //견종 기반 검색 Dto sido기반시 구군 빈문자열 들어옴;
+        return service.shelterListInVolunteer(sidoCode, gugunCode);
+    }
+
 //    @GetMapping("/breed")
 //    public String selectDogTypeList(){
 //        return "시도, 구군, 보호소별 존재하는 모든 견종 리스트";

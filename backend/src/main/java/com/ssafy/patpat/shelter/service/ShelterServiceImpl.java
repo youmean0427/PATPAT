@@ -65,4 +65,9 @@ public class ShelterServiceImpl implements ShelterService{
         }
     }
 
+    @Override
+    public List<Shelter> shelterListInVolunteer(String sidoCode, String gugunCode) {
+        return shelterRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode);
+    }
+
 }
