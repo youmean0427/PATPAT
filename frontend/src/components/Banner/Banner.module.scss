@@ -14,7 +14,6 @@
   width: 120rem;
   justify-content: center;
   align-items: center;
-  
 }
 
 .item {
@@ -44,23 +43,23 @@
 }
 
 @include breakpoint(md) {
-    .pat {
+  .pat {
     width: 250px;
+  }
+  .title {
+    font: {
+      size: 45px;
     }
-    .title {
-        font: {
-            size: 45px
-        }
-    }
+  }
 }
 
 @include breakpoint(sm) {
-    .pat {
+  .pat {
     width: 200px;
+  }
+  .title {
+    font: {
+      size: 40px;
     }
-    .title {
-        font: {
-            size: 40px
-        }
-    }
+  }
 }
