@@ -44,12 +44,25 @@ public class ShelterServiceImpl implements ShelterService{
 		int breedId = breed.ordinal();
         String sidoCode = dto.getSidoCode();
         String gugunCode = dto.getGugunCode();
-        List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCodeAndGugunCode(breedId,sidoCode,gugunCode);
-        HashSet<Integer> set = new HashSet<>();
-        for(ShelterDog s : list){
-            set.add(s.getShelterId());
+
+        //시도코드, 견종 코드만 받아왔을 경우
+        if(gugunCode.equals("")){
+            List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCode(breedId,sidoCode);
+            HashSet<Integer> set = new HashSet<>();
+            for(ShelterDog s : list){
+                set.add(s.getShelterId());
+            }
+            return shelterRepository.findByShelterIdIn(set);
         }
-        return shelterRepository.findByShelterIdIn(set);
+        //시도코드, 구군코드, 견종 모두 받아왔을 경우
+        else{
+            List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCodeAndGugunCode(breedId,sidoCode,gugunCode);
+            HashSet<Integer> set = new HashSet<>();
+            for(ShelterDog s : list){
+                set.add(s.getShelterId());
+            }
+            return shelterRepository.findByShelterIdIn(set);
+        }
     }
 
 }

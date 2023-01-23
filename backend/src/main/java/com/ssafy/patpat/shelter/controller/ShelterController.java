@@ -24,7 +24,7 @@ public class ShelterController {
     public List<Gugun> selectGugunList(@RequestParam String sidoCode){
         return service.gugunList(sidoCode);
     }
-    @GetMapping("/searchAll")
+    @GetMapping("/breed")
     public List<Shelter> selectShelterList(RequestParamMbtiDto dto){
         //"보호소 검색하기 (시도, 구군, 견종, 이름 필터 선택 후 카운팅 값 까지 포함한 결과) || 시도, 구군 봉사 공고 기반 보호소 검색";
         return service.shelterList(dto);
