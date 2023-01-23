@@ -87,5 +87,20 @@ class PatpatApplicationTests {
 //		RequestParamMbtiDto dto = new RequestParamMbtiDto("믹스견","47","47113");
 //		Breed breed = Breed.valueOf(dto.getBreedName());
 //		System.out.println(breed.ordinal());
+		//시도별 견종 리스트 받아오기
+//		List<ShelterDog> list = shelterDogRepository.findBySidoCode("47");
+//		HashSet<Integer> set = new HashSet<>();
+//		for(ShelterDog s : list){
+//			set.add(s.getBreedId());
+//		}
+//		for(Integer i : set){
+//			System.out.println(i);
+//		}
+		//int to Enum
+//		List<Breed> breedList = new ArrayList<>();
+//		for(Integer i : set){
+//			breedList.add(Breed.values()[i]);
+//		}
+
 	}
 }

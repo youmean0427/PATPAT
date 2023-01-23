@@ -10,5 +10,6 @@ import java.util.List;
 public interface ShelterDogRepository extends JpaRepository<ShelterDog,Integer>{
     List<ShelterDog> findByBreedIdAndSidoCodeAndGugunCode(int breedId,String sidoCode, String gugunCode);
     List<ShelterDog> findByBreedIdAndSidoCode(int breedId,String sidoCode);
-
+    List<ShelterDog> findBySidoCodeAndGugunCode(String sidoCode, String gugunCode);
+    List<ShelterDog> findBySidoCode(String sidoCode);
 }

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.shelter.controller;
 
+import com.ssafy.patpat.shelter.Breed;
 import com.ssafy.patpat.shelter.dto.RequestParamMbtiDto;
 import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -23,6 +24,14 @@ public class ShelterController {
     @GetMapping("/gugun")
     public List<Gugun> selectGugunList(@RequestParam String sidoCode){
         return service.gugunList(sidoCode);
+    }
+    @GetMapping("/breed/sido")
+    public List<Breed> selectBreedListBasedSidoCode(@RequestParam String sidoCode){
+        return service.breedListBasedSidoCode(sidoCode);
+    }
+    @GetMapping("/breed/all")
+    public List<Breed> selectBreedListBasedSidoCodeAndGugunCode(@RequestParam String sidoCode, @RequestParam String gugunCode){
+        return service.breedListBasedSidoCodeAndGugunCode(sidoCode,gugunCode);
     }
 
     @GetMapping("/breed")

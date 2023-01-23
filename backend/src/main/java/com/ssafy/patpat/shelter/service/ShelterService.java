@@ -1,5 +1,6 @@
 package com.ssafy.patpat.shelter.service;
 
+import com.ssafy.patpat.shelter.Breed;
 import com.ssafy.patpat.shelter.dto.RequestParamMbtiDto;
 import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -12,4 +13,6 @@ public interface ShelterService {
     List<Gugun> gugunList(String sidoCode);
     List<Shelter> shelterList(RequestParamMbtiDto dto);
     List<Shelter> shelterListInVolunteer(String sidoCode, String gugunCode);
+    List<Breed> breedListBasedSidoCode(String sidoCode);
+    List<Breed> breedListBasedSidoCodeAndGugunCode(String sidoCode, String gugunCode);
 }

@@ -13,6 +13,7 @@ import com.ssafy.patpat.shelter.repository.SidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -36,6 +37,32 @@ public class ShelterServiceImpl implements ShelterService{
     @Override
     public List<Gugun> gugunList(String sidoCode) {
         return gugunRepository.findBySidoCode(sidoCode);
+    }
+    @Override
+    public List<Breed> breedListBasedSidoCode(String sidoCode){
+        List<ShelterDog> list = shelterDogRepository.findBySidoCode(sidoCode);
+        HashSet<Integer> set = new HashSet<>();
+        for(ShelterDog s : list){
+            set.add(s.getBreedId());
+        }
+        List<Breed> breedList = new ArrayList<>();
+        for(Integer i : set){
+            breedList.add(Breed.values()[i]);
+        }
+        return breedList;
+    }
+    @Override
+    public List<Breed> breedListBasedSidoCodeAndGugunCode(String sidoCode, String gugunCode){
+        List<ShelterDog> list = shelterDogRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode);
+        HashSet<Integer> set = new HashSet<>();
+        for(ShelterDog s : list){
+            set.add(s.getBreedId());
+        }
+        List<Breed> breedList = new ArrayList<>();
+        for(Integer i : set){
+            breedList.add(Breed.values()[i]);
+        }
+        return breedList;
     }
 
     @Override
