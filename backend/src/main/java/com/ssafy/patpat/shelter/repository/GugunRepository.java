@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface GugunRepository extends JpaRepository<Gugun,String> {
     List<Gugun> findBySidoCode(String sidoCode);
+    Gugun findBySidoCodeAndName(String sidoCode, String name);
 }

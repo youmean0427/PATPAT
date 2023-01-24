@@ -9,4 +9,5 @@ import java.util.List;
 public interface SidoRepository  extends JpaRepository<Sido,String> {
     @Override
     List<Sido> findAll();
+    Sido findByName(String name);
 }
