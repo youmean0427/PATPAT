@@ -3,17 +3,17 @@ package com.ssafy.patpat.shelter.controller;
 import com.ssafy.patpat.shelter.Breed;
 import com.ssafy.patpat.shelter.dto.RequestParamMbtiDto;
 import com.ssafy.patpat.shelter.dto.RequestParamShelterInsertDto;
-import com.ssafy.patpat.shelter.dto.ResultDto;
+import com.ssafy.patpat.shelter.dto.ResultDetailShelterDto;
+import com.ssafy.patpat.shelter.dto.ResultInsertShelterDto;
 import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.entity.Sido;
 import com.ssafy.patpat.shelter.service.ShelterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/shelter")
@@ -49,13 +49,21 @@ public class ShelterController {
         //견종 기반 검색 Dto sido기반시 구군 빈문자열 들어옴;
         return service.shelterListInVolunteer(sidoCode, gugunCode);
     }
-
-//    @GetMapping("/{shelterId}")
-//    public String selectShelter(){
-//        return "보호소 정보 보기(마이페이지 초기 데이터)";
-//    }
+    @GetMapping("/{shelterId}")
+    public ResultDetailShelterDto detailShelter(@PathVariable int shelterId){
+        Optional<Shelter> shelter = service.detailShelter(shelterId);
+        ResultDetailShelterDto dto = new ResultDetailShelterDto();
+        if(shelter.isPresent()){
+            dto.setResult(1);
+            dto.setShelter(shelter.get());
+        }
+        else{
+            dto.setResult(0);
+        }
+        return dto;
+    }
     @PostMapping
-    public ResultDto insertShelter(@RequestBody RequestParamShelterInsertDto requestParamShelterInsertDto) {
+    public ResultInsertShelterDto insertShelter(@RequestBody RequestParamShelterInsertDto requestParamShelterInsertDto) {
         /**
          * 등록에 성공하면 암호화 등록코드기반 암호화 한 것을 내려준다.
          * 사용자는 /auth url에 해당 코드를 가지고 요청을 보내면

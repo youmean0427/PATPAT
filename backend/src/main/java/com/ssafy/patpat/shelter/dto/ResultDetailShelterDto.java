@@ -1,13 +1,14 @@
 package com.ssafy.patpat.shelter.dto;
 
+import com.ssafy.patpat.shelter.entity.Shelter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ResultDto {
+@NoArgsConstructor
+public class ResultDetailShelterDto {
+    private Shelter shelter;
     private int result;
-    private String authCode;
 }

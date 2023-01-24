@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.patpat.shelter.Breed;
 import com.ssafy.patpat.shelter.dto.RequestParamMbtiDto;
 import com.ssafy.patpat.shelter.dto.RequestParamShelterInsertDto;
-import com.ssafy.patpat.shelter.dto.ResultDto;
+import com.ssafy.patpat.shelter.dto.ResultInsertShelterDto;
 import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.entity.ShelterDog;
@@ -19,9 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -114,10 +112,10 @@ public class ShelterServiceImpl implements ShelterService{
      *보호소 등록, 수정, 상세
      */
     @Override
-    public ResultDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto){
+    public ResultInsertShelterDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto){
         String shelterNm = requestParamShelterInsertDto.getShelterName();
         String shelterCode = requestParamShelterInsertDto.getShelterCode();
-        ResultDto dto = new ResultDto();
+        ResultInsertShelterDto dto = new ResultInsertShelterDto();
         try{
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo");
             urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=4YzbaAQ76Mr8ENklHJNGymdysODMSkne%2Bmi9616VcdzI4KuXMA7ugRh5rvN7HLAgjV1qetFWKEHGzR7XhH4mEA%3D%3D");
@@ -180,6 +178,11 @@ public class ShelterServiceImpl implements ShelterService{
             dto.setResult(0);
         }
         return dto;
+    }
+
+    @Override
+    public Optional<Shelter> detailShelter(int shelterId) {
+        return shelterRepository.findById(shelterId);
     }
 
 
