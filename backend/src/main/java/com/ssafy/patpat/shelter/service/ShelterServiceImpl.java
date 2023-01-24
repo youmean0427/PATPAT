@@ -42,6 +42,13 @@ public class ShelterServiceImpl implements ShelterService{
      * 각종 조건들에 의한 보호소 리스트 조회
      */
     @Override
+    public Breed randomBreed() {
+        Breed[] arr = Breed.values();
+        Random random = new Random();
+        Breed breed = Breed.values()[random.nextInt(arr.length)];
+        return breed;
+    }
+    @Override
     public List<Sido> sidoList() {
         return sidoRepository.findAll();
     }

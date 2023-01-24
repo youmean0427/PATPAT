@@ -1,5 +1,6 @@
 package com.ssafy.patpat;
 
+import com.ssafy.patpat.shelter.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.GugunRepository;
 import com.ssafy.patpat.shelter.repository.ShelterDogRepository;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 @SpringBootTest
@@ -159,7 +161,13 @@ class PatpatApplicationTests {
 //		}catch (Exception e){
 //			dto.setResult(0);
 //		}
-		Optional<Shelter> s= shelterRepository.findById(1);
-		System.out.println(s);
+
+		//랜덤뽑기
+		Breed[] arr = Breed.values();
+		System.out.println(Arrays.toString(arr));
+		Random random = new Random();
+		int n = random.nextInt(arr.length);
+		Breed breed = Breed.values()[n];
+		System.out.println(breed);
 	}
 }

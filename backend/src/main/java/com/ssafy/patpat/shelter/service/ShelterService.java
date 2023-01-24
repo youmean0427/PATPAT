@@ -21,4 +21,5 @@ public interface ShelterService {
     ResultInsertShelterDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto);
 
     Optional<Shelter> detailShelter(int shelterId);
+    Breed randomBreed();
 }

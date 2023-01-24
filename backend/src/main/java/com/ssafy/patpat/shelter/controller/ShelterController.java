@@ -26,6 +26,8 @@ public class ShelterController {
     public List<Sido> selectSidoList(){
         return service.sidoList();
     }
+    @GetMapping("/mbti")
+    public String selectRandomBreed() {return service.randomBreed().toString();}
     @GetMapping("/gugun")
     public List<Gugun> selectGugunList(@RequestParam String sidoCode){
         return service.gugunList(sidoCode);
