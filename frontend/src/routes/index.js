@@ -25,13 +25,20 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: '/', element: <Home /> },
       { path: 'home', element: <Home /> },
-      { path: 'login', element: <Login /> },
-      { path: 'kakao', element: <KakaoLogin /> },
-      { path: 'naver', element: <NaverLogin /> },
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
       { path: 'story', element: <Story /> },
+    ],
+  },
+  {
+    path: '/login',
+    element: <ConsultingLayout />,
+    errorElement: <giNotFound />,
+    children: [
+      { index: true, element: <Login /> },
+      { path: 'kakao', element: <KakaoLogin /> },
+      { path: 'naver', element: <NaverLogin /> },
     ],
   },
   {
