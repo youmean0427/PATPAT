@@ -14,7 +14,7 @@ import Statistics from 'pages/Intro/Statistics';
 import Story from 'pages/Intro/Story';
 import Vision from 'pages/Intro/Statistics';
 import PlainLayout from 'layouts/PlainLayout';
-import Meeting from 'pages/Consulting/Meeting/Meeting';
+import VideoRoomComponent from 'pages/Consulting/Meeting/components/VideoRoomComponent';
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 
 const router = createBrowserRouter([
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
     element: <PlainLayout />,
     errorElement: <NotFound />,
     children: [
-      { path: 'meeting', element: <Meeting /> },
+      { path: 'meeting', element: <VideoRoomComponent /> },
       { path: 'waiting', element: <Waiting /> },
     ],
   },
