@@ -11,6 +11,9 @@ import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
 import Story from 'pages/Intro/Story';
 import Vision from 'pages/Intro/Statistics';
+import ConsultingLayout from 'layouts/ConsultingLayout';
+import Meeting from 'pages/Consulting/Meeting/Meeting';
+import Waiting from 'pages/Consulting/Waiting/Waiting';
 
 const router = createBrowserRouter([
   {
@@ -38,13 +41,12 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/mbti',
-    element: <MbtiLayout />,
+    path: '/consulting',
+    element: <ConsultingLayout />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <Start /> },
-      { path: 'test', element: <Test /> },
-      { path: 'result', element: <Result /> },
+      { path: 'meeting', element: <Meeting /> },
+      { path: 'waiting', element: <Waiting /> },
     ],
   },
 ]);
