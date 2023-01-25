@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
 import Login from 'pages/Login/Login';
+import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
+import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 import NotFound from 'pages/NotFound/NotFound';
 import MbtiLayout from 'layouts/MbtiLayout';
 import Result from 'pages/Mbti/Result';
@@ -24,6 +26,8 @@ const router = createBrowserRouter([
       { index: true, path: '/', element: <Home /> },
       { path: 'home', element: <Home /> },
       { path: 'login', element: <Login /> },
+      { path: 'kakao', element: <KakaoLogin /> },
+      { path: 'naver', element: <NaverLogin /> },
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
