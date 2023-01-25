@@ -1,5 +1,12 @@
 import React from 'react';
-import './MenuItem.module.scss';
-export default function MenuItem() {
-  return <div>MenuItem</div>;
+
+import styles from './MenuItem.module.scss';
+import SubMenuList from './SubMenuList';
+export default function MenuItem({ value, submenu }) {
+  return (
+    <li className={styles['menu-item']}>
+      <div>{value}</div>
+      <SubMenuList submenu={submenu} />
+    </li>
+  );
 }

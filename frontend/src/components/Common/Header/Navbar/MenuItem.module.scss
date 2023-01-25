@@ -1,0 +1,22 @@
+@import 'assets/styles/variable.scss';
+
+.menu-item {
+  position: relative;
+  padding: 2rem $spacing-lg;
+  transition-duration: 500ms;
+  & > div {
+    cursor: pointer;
+  }
+}
+
+@include breakpoint(md) {
+  .menu-item {
+    padding: 2rem $spacing-md;
+  }
+}
+
+@include breakpoint(sm) {
+  .menu-item {
+    padding: 2rem $spacing-sm;
+  }
+}
