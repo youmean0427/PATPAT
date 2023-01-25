@@ -1,0 +1,17 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  height: 2000px;
+}
+
+.title {
+  font-size: 2rem;
+  & > span {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: $blue-color;
+  }
+}

@@ -9,7 +9,6 @@ import Start from 'pages/Mbti/Start';
 import Test from 'pages/Mbti/Test';
 import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
-import Story from 'pages/Intro/Story';
 import Vision from 'pages/Intro/Statistics';
 import ConsultingLayout from 'layouts/ConsultingLayout';
 import Meeting from 'pages/Consulting/Meeting/Meeting';
@@ -27,17 +26,6 @@ const router = createBrowserRouter([
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
-      { path: 'story', element: <Story /> },
-    ],
-  },
-  {
-    path: '/mbti',
-    element: <MbtiLayout />,
-    errorElement: <NotFound />,
-    children: [
-      { index: true, element: <Start /> },
-      { path: 'test', element: <Test /> },
-      { path: 'result', element: <Result /> },
     ],
   },
   {
