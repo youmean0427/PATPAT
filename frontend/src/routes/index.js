@@ -10,6 +10,7 @@ import Test from 'pages/Mbti/Test';
 import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
 import Story from 'pages/Intro/Story';
+import Vision from 'pages/Intro/Statistics';
 
 const router = createBrowserRouter([
   {
