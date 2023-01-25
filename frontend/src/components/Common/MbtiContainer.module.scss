@@ -1,0 +1,16 @@
+@import 'assets/styles/variable.scss';
+
+.wrapper {
+  width: 60%;
+  height: auto;
+  @include breakpoint(sm) {
+    width: 100%;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
