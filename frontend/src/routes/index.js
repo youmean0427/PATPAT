@@ -13,7 +13,7 @@ import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
 import Story from 'pages/Intro/Story';
 import Vision from 'pages/Intro/Statistics';
-import ConsultingLayout from 'layouts/ConsultingLayout';
+import PlainLayout from 'layouts/PlainLayout';
 import Meeting from 'pages/Consulting/Meeting/Meeting';
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <ConsultingLayout />,
+    element: <PlainLayout />,
     errorElement: <giNotFound />,
     children: [
       { index: true, element: <Login /> },
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/consulting',
-    element: <ConsultingLayout />,
+    element: <PlainLayout />,
     errorElement: <NotFound />,
     children: [
       { path: 'meeting', element: <Meeting /> },
