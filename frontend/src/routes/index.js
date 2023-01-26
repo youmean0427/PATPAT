@@ -61,6 +61,12 @@ const router = createBrowserRouter([
       { path: 'waiting', element: <Waiting /> },
     ],
   },
+  {
+    path: '/volunteer',
+    element: <MainLayout />,
+    errorElement: <NotFound />,
+    children: [{ path: 'address', element: <Address /> }],
+  },
 ]);
 
 export default router;
