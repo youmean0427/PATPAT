@@ -11,10 +11,12 @@ import Start from 'pages/Mbti/Start';
 import Test from 'pages/Mbti/Test';
 import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
-import Vision from 'pages/Intro/Statistics';
+import Vision from 'pages/Intro/Vision';
 import PlainLayout from 'layouts/PlainLayout';
 import Meeting from 'pages/Consulting/Meeting/Meeting';
 import Waiting from 'pages/Consulting/Waiting/Waiting';
+import Volunteer from 'pages/Volunteer/Volunteer';
+import Address from 'pages/Volunteer/Address';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,7 @@ const router = createBrowserRouter([
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
+      { path: 'volunteer', element: <Volunteer /> },
     ],
   },
   {
