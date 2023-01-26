@@ -1,7 +1,6 @@
 package com.ssafy.patpat;
 
-import com.ssafy.patpat.shelter.Breed;
-import com.ssafy.patpat.shelter.entity.Shelter;
+import com.ssafy.patpat.common.code.Breed;
 import com.ssafy.patpat.shelter.repository.GugunRepository;
 import com.ssafy.patpat.shelter.repository.ShelterDogRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 @SpringBootTest

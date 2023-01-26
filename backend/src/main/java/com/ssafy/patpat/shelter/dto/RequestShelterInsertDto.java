@@ -1,13 +1,13 @@
 package com.ssafy.patpat.shelter.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResultInsertShelterDto {
-    private int result;
-    private String authCode;
+@Getter
+public class RequestShelterInsertDto {
+    String name;
+    String code;
 }

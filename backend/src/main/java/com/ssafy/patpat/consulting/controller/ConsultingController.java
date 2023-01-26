@@ -1,7 +1,6 @@
 package com.ssafy.patpat.consulting.controller;
 
-import com.ssafy.patpat.board.dto.BoardDto;
-import com.ssafy.patpat.board.dto.ResponseMessage;
+import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
 import com.ssafy.patpat.consulting.dto.RequestConsultingDto;
 import org.springframework.http.HttpStatus;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 public class ConsultingController {
     /**
      * 내가 예약한 상담을 조회하는 메서드
-     * @param dto
+     * @param
      * @return
      */
     @GetMapping()
-    public ResponseEntity<Object> selectConsultingList(RequestConsultingDto dto){
+    public ResponseEntity<Object> selectConsultingList(RequestConsultingDto requestConsultingDto){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -31,11 +30,11 @@ public class ConsultingController {
     }
     /**
      * 보호소 입장에서 예약된 상담 리스트
-     * @param dto
+     * @param
      * @return
      */
     @GetMapping("/shelter")
-    public ResponseEntity<Object> selectConsultingListByShelter(RequestConsultingDto dto){
+    public ResponseEntity<Object> selectConsultingListByShelter(RequestConsultingDto requestConsultingDto){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -51,7 +50,7 @@ public class ConsultingController {
      * @return
      */
     @PostMapping()
-    public ResponseEntity<Object> insertConsulting(RequestConsultingDto dto){
+    public ResponseEntity<Object> insertConsulting(RequestConsultingDto requestConsultingDto){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)

@@ -1,4 +1,4 @@
-package com.ssafy.patpat.board.dto;
+package com.ssafy.patpat.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

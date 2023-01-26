@@ -1,4 +1,4 @@
-package com.ssafy.patpat.shelter;
+package com.ssafy.patpat.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

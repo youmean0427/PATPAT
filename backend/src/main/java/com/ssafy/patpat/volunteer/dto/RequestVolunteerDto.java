@@ -1,4 +1,4 @@
-package com.ssafy.patpat.report.dto;
+package com.ssafy.patpat.volunteer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestReportDto {
-    private int code;
+public class RequestVolunteerDto {
+    private int shelterId;
     private int offset;
     private int limit;
-    private String breedId;
-    private int gender;
-    private int missingId;
+    private String keyword;
 }
