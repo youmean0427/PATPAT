@@ -47,7 +47,7 @@ export default function Test() {
   if (!tests[q]) return handleMoveToResult();
   return (
     <MbtiContainer>
-      <img src={logo} alt="logo" />
+      <img className={styles.logo} src={logo} alt="logo" />
       <div className={styles.statusArea}>
         <span>Question {q + 1}/12</span>
         <div className={styles.statusBar}>
