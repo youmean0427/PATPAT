@@ -21,7 +21,7 @@ import QuestionAnswer from '@mui/icons-material/QuestionAnswer';
 
 import IconButton from '@mui/material/IconButton';
 
-const logo = require('../../assets/images/openvidu_logo.png');
+const logo = require('assets/images/logo.png');
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -71,31 +71,25 @@ export default class ToolbarComponent extends Component {
   }
 
   render() {
-    const mySessionId = this.props.sessionId;
+    // const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
           <div id="navSessionInfo">
-            <img id="header_img" alt="OpenVidu Logo" src={logo} />
-
-            {this.props.sessionId && (
-              <div id="titleContent">
-                <span id="session-title">{mySessionId}</span>
-              </div>
-            )}
+            <img id="header_img" alt="PATPAT Logo" src={logo} />
           </div>
 
           <div className="buttonsContent">
-            <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
+            <IconButton color="primary" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
               {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
             </IconButton>
 
-            <IconButton color="inherit" className="navButton" id="navCamButton" onClick={this.camStatusChanged}>
+            <IconButton color="primary" className="navButton" id="navCamButton" onClick={this.camStatusChanged}>
               {localUser !== undefined && localUser.isVideoActive() ? <Videocam /> : <VideocamOff color="secondary" />}
             </IconButton>
 
-            <IconButton color="inherit" className="navButton" onClick={this.screenShare}>
+            <IconButton color="primary" className="navButton" onClick={this.screenShare}>
               {localUser !== undefined && localUser.isScreenShareActive() ? <PictureInPicture /> : <ScreenShare />}
             </IconButton>
 
@@ -105,16 +99,16 @@ export default class ToolbarComponent extends Component {
               </IconButton>
             )}
 
-            <IconButton color="inherit" className="navButton" onClick={this.switchCamera}>
+            <IconButton color="primary" className="navButton" onClick={this.switchCamera}>
               <SwitchVideoIcon />
             </IconButton>
-            <IconButton color="inherit" className="navButton" onClick={this.toggleFullscreen}>
+            <IconButton color="primary" className="navButton" onClick={this.toggleFullscreen}>
               {localUser !== undefined && this.state.fullscreen ? <FullscreenExit /> : <Fullscreen />}
             </IconButton>
-            <IconButton color="secondary" className="navButton" onClick={this.leaveSession} id="navLeaveButton">
+            <IconButton color="warning" className="navButton" onClick={this.leaveSession} id="navLeaveButton">
               <PowerSettingsNew />
             </IconButton>
-            <IconButton color="inherit" onClick={this.toggleChat} id="navChatButton">
+            <IconButton color="primary" onClick={this.toggleChat} id="navChatButton">
               {this.props.showNotification && <div id="point" className="" />}
               <Tooltip title="Chat">
                 <QuestionAnswer />

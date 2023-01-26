@@ -82,7 +82,7 @@ export default class StreamComponent extends Component {
           ) : (
             <div onClick={this.toggleNicknameForm}>
               <span id="nickname">{this.props.user.getNickname()}</span>
-              {this.props.user.isLocal() && <span id=""> (edit)</span>}
+              {this.props.user.isLocal() && <span id=""> (호스트)</span>}
             </div>
           )}
         </div>
@@ -90,19 +90,7 @@ export default class StreamComponent extends Component {
         {this.props.user !== undefined && this.props.user.getStreamManager() !== undefined ? (
           <div className="streamComponent">
             <OvVideoComponent user={this.props.user} mutedSound={this.state.mutedSound} />
-            <div id="statusIcons">
-              {!this.props.user.isVideoActive() ? (
-                <div id="camIcon">
-                  <VideocamOff id="statusCam" />
-                </div>
-              ) : null}
 
-              {!this.props.user.isAudioActive() ? (
-                <div id="micIcon">
-                  <MicOff id="statusMic" />
-                </div>
-              ) : null}
-            </div>
             <div>
               {!this.props.user.isLocal() && (
                 <IconButton id="volumeButton" onClick={this.toggleSound}>

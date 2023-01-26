@@ -1,8 +1,8 @@
 #header {
   color: #ffffff;
-  height: 40px;
-  background-color: #333333;
-  padding: 0 14px 0 0;
+  height: 60px;
+  background-color: #ffffff;
+  padding: 10px 0 0 0 !important;
   position: absolute;
   top: 0;
   left: 0;
@@ -31,9 +31,8 @@
 #navChatButton {
   position: absolute;
   right: 10px;
-  top: 0;
+  top: 5px;
 }
-
 #titleContent {
   max-width: 100px;
   background-color: #494949;
@@ -54,7 +53,8 @@
 #header_img {
   max-width: 135px;
   margin-right: 10px;
-  margin-top: 10px;
+  margin-top: 7px;
+  margin-left: 20px;
 }
 
 #session-title {
