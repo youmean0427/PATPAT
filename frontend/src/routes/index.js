@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
 import Login from 'pages/Login/Login';
+import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
+import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 import NotFound from 'pages/NotFound/NotFound';
 import MbtiLayout from 'layouts/MbtiLayout';
 import Result from 'pages/Mbti/Result';
@@ -10,7 +12,7 @@ import Test from 'pages/Mbti/Test';
 import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
 import Vision from 'pages/Intro/Vision';
-import ConsultingLayout from 'layouts/ConsultingLayout';
+import PlainLayout from 'layouts/PlainLayout';
 import Meeting from 'pages/Consulting/Meeting/Meeting';
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
@@ -24,11 +26,20 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: '/', element: <Home /> },
       { path: 'home', element: <Home /> },
-      { path: 'login', element: <Login /> },
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
+    ],
+  },
+  {
+    path: '/login',
+    element: <PlainLayout />,
+    errorElement: <giNotFound />,
+    children: [
+      { index: true, element: <Login /> },
+      { path: 'kakao', element: <KakaoLogin /> },
+      { path: 'naver', element: <NaverLogin /> },
     ],
   },
   {
@@ -43,18 +54,12 @@ const router = createBrowserRouter([
   },
   {
     path: '/consulting',
-    element: <ConsultingLayout />,
+    element: <PlainLayout />,
     errorElement: <NotFound />,
     children: [
       { path: 'meeting', element: <Meeting /> },
       { path: 'waiting', element: <Waiting /> },
     ],
-  },
-  {
-    path: '/volunteer',
-    element: <MainLayout />,
-    errorElement: <NotFound />,
-    children: [{ path: 'address', element: <Address /> }],
   },
 ]);
 
