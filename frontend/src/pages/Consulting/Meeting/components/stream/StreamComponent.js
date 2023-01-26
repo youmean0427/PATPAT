@@ -20,19 +20,12 @@ export default class StreamComponent extends Component {
     this.state = { nickname: this.props.user.getNickname(), showForm: false, mutedSound: false, isFormValid: true };
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
-    this.toggleNicknameForm = this.toggleNicknameForm.bind(this);
     this.toggleSound = this.toggleSound.bind(this);
   }
 
   handleChange(event) {
     this.setState({ nickname: event.target.value });
     event.preventDefault();
-  }
-
-  toggleNicknameForm() {
-    if (this.props.user.isLocal()) {
-      this.setState({ showForm: !this.state.showForm });
-    }
   }
 
   toggleSound() {
@@ -80,7 +73,7 @@ export default class StreamComponent extends Component {
               )}
             </FormControl>
           ) : (
-            <div onClick={this.toggleNicknameForm}>
+            <div>
               <span id="nickname">{this.props.user.getNickname()}</span>
               {this.props.user.isLocal() && <span id=""> (호스트)</span>}
             </div>

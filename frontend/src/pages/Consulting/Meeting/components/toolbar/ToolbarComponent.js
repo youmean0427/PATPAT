@@ -63,6 +63,7 @@ export default class ToolbarComponent extends Component {
   }
 
   leaveSession() {
+    alert('상담 룸에서 나가시겠습니까?');
     this.props.leaveSession();
   }
 
@@ -81,7 +82,13 @@ export default class ToolbarComponent extends Component {
           </div>
 
           <div className="buttonsContent">
-            <IconButton color="primary" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
+            <IconButton
+              color="primary"
+              className="navButton"
+              id="navMicButton"
+              title="음소거"
+              onClick={this.micStatusChanged}
+            >
               {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
             </IconButton>
 
