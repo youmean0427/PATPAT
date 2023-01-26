@@ -6,8 +6,8 @@
 }
 
 #chatToolbar {
-  height: 30px;
-  background-color: #3d3d3d;
+  height: 25px;
+  background-color: #5d6dbe;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 14px;
@@ -25,7 +25,7 @@
 }
 
 #chatComponent {
-  background-color: #b8b8b8;
+  background-color: #ffffff;
   position: absolute;
   z-index: 99999;
   top: 0;
@@ -40,7 +40,7 @@
 
 .message-wrap {
   padding: 0 15px;
-  height: calc(100% - 80px);
+  height: calc(100% - 54px);
   overflow: auto;
 }
 
@@ -57,12 +57,12 @@
 }
 
 .msg-detail {
-  width: calc(100% - 65px);
+  width: calc(100% - 70px);
   display: inline-block;
 }
 
 .msg-detail p {
-  margin: 0;
+  margin: 10px;
   font-size: 15px;
 }
 
@@ -132,16 +132,15 @@ span.triangle {
   text-align: right;
 }
 .message.right .user-img {
-  right: -5px;
-  border: 1px solid #c8ffe8ab;
+  right: 3px;
 }
 
 .message.right .msg-detail .msg-content {
-  background-color: #c8ffe8;
+  background-color: #b3bdf0;
   float: right;
 }
 .message.right .msg-detail .msg-content span.triangle {
-  background-color: #c8ffe8;
+  background-color: #b3bdf0;
   border-bottom-width: 0;
   border-left-width: 0;
   right: -5px;
@@ -155,10 +154,11 @@ span.triangle {
   width: 100%;
   background-color: #ffffff;
   text-align: center;
-  padding: 10px 0px;
-  height: 30px;
+  padding: 0px 0px;
+  height: 50px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
+  box-shadow: 0 -4px 15px -3px rgb(140, 140, 140);
 }
 #messageInput input {
   width: 90%;
@@ -171,13 +171,13 @@ span.triangle {
 }
 
 #sendButton {
-  background-color: #81e9b0;
+  background-color: #5d6dbe;
   position: absolute;
   right: 10px;
   top: 0;
   bottom: 0;
-  margin: auto;
-  border: 1px solid #7ae2a9;
+  margin-top: 5px;
+  border: 1px solid #5d6dbe;
   box-shadow: none !important;
 }
 #sendButton {

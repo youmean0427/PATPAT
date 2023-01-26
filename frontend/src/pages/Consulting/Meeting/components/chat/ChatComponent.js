@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
@@ -51,7 +52,7 @@ export default class ChatComponent extends Component {
   }
 
   sendMessage() {
-    console.log(this.state.message);
+    // console.log(this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, '');
       if (message !== '' && message !== ' ') {
@@ -87,9 +88,8 @@ export default class ChatComponent extends Component {
       <div id="chatContainer">
         <div id="chatComponent" style={styleChat}>
           <div id="chatToolbar">
-            <span>{this.props.user.getStreamManager().stream.session.sessionId} - CHAT</span>
             <IconButton id="closeButton" onClick={this.close}>
-              <HighlightOff color="secondary" />
+              <HighlightOff color="warning" />
             </IconButton>
           </div>
           <div className="message-wrap" ref={this.chatScroll}>
@@ -115,13 +115,14 @@ export default class ChatComponent extends Component {
 
           <div id="messageInput">
             <input
-              placeholder="Send a messge"
+              placeholder="여기에 메세지 입력..."
               id="chatInput"
+              // eslint-disable-next-line react/destructuring-assignment
               value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
             />
-            <Tooltip title="Send message">
+            <Tooltip title="메세지 전송">
               <Fab size="small" id="sendButton" onClick={this.sendMessage}>
                 <Send />
               </Fab>
