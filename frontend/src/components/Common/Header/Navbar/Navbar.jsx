@@ -17,7 +17,6 @@ export default function Navbar() {
         <MenuList />
       </div>
       <div className={styles.right}>
-        <DarkModeOutlined sx={{ fontSize: 20 }} />
         <Link to="/login" className={styles.login}>
           로그인
         </Link>

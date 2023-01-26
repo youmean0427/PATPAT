@@ -11,11 +11,8 @@
 @include breakpoint(md) {
   .menu-item {
     padding: 2rem $spacing-md;
-  }
-}
-
-@include breakpoint(sm) {
-  .menu-item {
-    padding: 2rem $spacing-sm;
+    & div:first-child {
+      font-size: 1.6rem;
+    }
   }
 }
