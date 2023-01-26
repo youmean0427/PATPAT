@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
 import Login from 'pages/Login/Login';
+import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
+import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 import NotFound from 'pages/NotFound/NotFound';
 import MbtiLayout from 'layouts/MbtiLayout';
 import Result from 'pages/Mbti/Result';
@@ -11,6 +13,9 @@ import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
 import Story from 'pages/Intro/Story';
 import Vision from 'pages/Intro/Statistics';
+import PlainLayout from 'layouts/PlainLayout';
+import VideoRoomComponent from 'pages/Consulting/Meeting/components/VideoRoomComponent';
+import Waiting from 'pages/Consulting/Waiting/Waiting';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +25,6 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: '/', element: <Home /> },
       { path: 'home', element: <Home /> },
-      { path: 'login', element: <Login /> },
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
@@ -28,13 +32,13 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/mbti',
-    element: <MbtiLayout />,
-    errorElement: <NotFound />,
+    path: '/login',
+    element: <PlainLayout />,
+    errorElement: <giNotFound />,
     children: [
-      { index: true, element: <Start /> },
-      { path: 'test', element: <Test /> },
-      { path: 'result', element: <Result /> },
+      { index: true, element: <Login /> },
+      { path: 'kakao', element: <KakaoLogin /> },
+      { path: 'naver', element: <NaverLogin /> },
     ],
   },
   {
@@ -45,6 +49,15 @@ const router = createBrowserRouter([
       { index: true, element: <Start /> },
       { path: 'test', element: <Test /> },
       { path: 'result', element: <Result /> },
+    ],
+  },
+  {
+    path: '/consulting',
+    element: <PlainLayout />,
+    errorElement: <NotFound />,
+    children: [
+      { path: 'meeting', element: <VideoRoomComponent /> },
+      { path: 'waiting', element: <Waiting /> },
     ],
   },
 ]);
