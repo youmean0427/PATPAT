@@ -5,22 +5,7 @@
   align-items: center;
 }
 
-// responsive css
-// 640 ~ 1024
-@include breakpoint(md) {
-  .menu-item {
-    padding: 2rem $spacing-md;
-  }
-
-  .submenu {
-    font-size: 1.2rem;
-  }
-}
-
 @include breakpoint(sm) {
-  .menu-item {
-    padding: 2rem $spacing-sm;
-  }
   .menu-box {
     display: none;
   }
