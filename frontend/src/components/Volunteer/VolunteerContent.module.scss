@@ -1,0 +1,41 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  display: flex;
+  // width: 120rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.volunteer {
+  &-button {
+    width: 100px;
+    background-color: $blue-color;
+    color: $white-color;
+    padding: 1rem;
+
+    border-radius: 0.4rem;
+    text-align: center;
+
+    font-style: $spoqa-font;
+    font-size: 20px;
+  }
+}
+
+div {
+  font-style: $spoqa-font;
+  font-size: 20px;
+}
+
+@include breakpoint(md) {
+  .img {
+    width: 80vw;
+  }
+}
+
+@include breakpoint(sm) {
+  .img {
+    width: 80vw;
+  }
+}

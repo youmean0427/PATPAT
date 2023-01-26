@@ -1,12 +1,12 @@
 import Banner from 'components/Banner/Banner';
-import VolunteerContent from 'components/Volunteer/VolunteerContent';
+import AddressContent from 'components/Volunteer/Address/AddressContent';
 import React from 'react';
 
-export default function Volunteer() {
+export default function Address() {
   return (
     <div>
       <Banner title="봉사자 모집" />
-      <VolunteerContent />
+      <AddressContent />
     </div>
   );
 }
