@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -27,6 +28,7 @@ export default class DialogExtensionComponent extends Component {
 
   onNoClick() {
     // this.cancel.emit();
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.cancelClicked();
   }
 

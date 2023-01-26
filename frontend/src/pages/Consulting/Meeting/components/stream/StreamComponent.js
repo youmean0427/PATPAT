@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import './StreamComponent.css';
 import OvVideoComponent from './OvVideo';
@@ -16,12 +17,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 export default class StreamComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      nickname: this.props.user.getNickname(),
-      showForm: false,
-      mutedSound: false,
-      isFormValid: true,
-    };
+    this.state = { nickname: this.props.user.getNickname(), showForm: false, mutedSound: false, isFormValid: true };
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.toggleNicknameForm = this.toggleNicknameForm.bind(this);
@@ -45,7 +41,7 @@ export default class StreamComponent extends Component {
 
   handlePressKey(event) {
     if (event.key === 'Enter') {
-      console.log(this.state.nickname);
+      // console.log(this.state.nickname);
       if (this.state.nickname.length >= 3 && this.state.nickname.length <= 20) {
         this.props.handleNickname(this.state.nickname);
         this.toggleNicknameForm();

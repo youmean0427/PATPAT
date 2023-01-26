@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component } from 'react';
@@ -10,7 +11,7 @@ import OpenViduLayout from '../layout/openvidu-layout';
 import UserModel from '../models/user-model';
 import ToolbarComponent from './toolbar/ToolbarComponent';
 
-let localUser = new UserModel();
+const localUser = new UserModel();
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
 
 class VideoRoomComponent extends Component {
@@ -22,6 +23,7 @@ class VideoRoomComponent extends Component {
     let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
     this.remotes = [];
     this.localUserAccessAllowed = false;
+    this.createRoom = false;
     this.state = {
       mySessionId: sessionName,
       myUserName: userName,
@@ -97,12 +99,12 @@ class VideoRoomComponent extends Component {
 
   async connectToSession() {
     if (this.props.token !== undefined) {
-      console.log('token received: ', this.props.token);
+      // console.log('token received: ', this.props.token);
       this.connect(this.props.token);
     } else {
       try {
-        let token = await this.getToken();
-        console.log(token);
+        const token = await this.getToken();
+        // console.log(token);
         this.connect(token);
       } catch (error) {
         console.error('There was an error getting the token:', error.code, error.message);
@@ -135,7 +137,7 @@ class VideoRoomComponent extends Component {
           });
         }
         alert('There was an error connecting to the session:', error.message);
-        console.log('There was an error connecting to the session:', error.code, error.message);
+        // console.log('There was an error connecting to the session:', error.code, error.message);
       });
   }
 
@@ -144,8 +146,8 @@ class VideoRoomComponent extends Component {
       audioSource: undefined,
       videoSource: undefined,
     });
-    let devices = await this.OV.getDevices();
-    let videoDevices = devices.filter(device => device.kind === 'videoinput');
+    const devices = await this.OV.getDevices();
+    const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
@@ -187,7 +189,7 @@ class VideoRoomComponent extends Component {
   }
 
   updateSubscribers() {
-    let subscribers = this.remotes;
+    const subscribers = this.remotes;
     this.setState(
       {
         subscribers: subscribers,
@@ -264,7 +266,7 @@ class VideoRoomComponent extends Component {
   subscribeToStreamCreated() {
     this.state.session.on('streamCreated', event => {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
-      // var subscribers = this.state.subscribers;
+      // const subscribers = this.state.subscribers;
       subscriber.on('streamPlaying', e => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove('custom-class');
@@ -275,9 +277,12 @@ class VideoRoomComponent extends Component {
       newUser.setType('remote');
       const nickname = event.stream.connection.data.split('%')[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
-      this.remotes.push(newUser);
-      if (this.localUserAccessAllowed) {
-        this.updateSubscribers();
+      // 신원불명 User80 제거
+      if (newUser.connectionId !== 'con_FgCs26LhQr') {
+        this.remotes.push(newUser);
+        if (this.localUserAccessAllowed) {
+          this.updateSubscribers();
+        }
       }
     });
   }
@@ -301,7 +306,7 @@ class VideoRoomComponent extends Component {
       remoteUsers.forEach(user => {
         if (user.getConnectionId() === event.from.connectionId) {
           const data = JSON.parse(event.data);
-          console.log('EVENTO REMOTE: ', event.data);
+          // console.log('EVENTO REMOTE: ', event.data);
           if (data.isAudioActive !== undefined) {
             user.setAudioActive(data.isAudioActive);
           }
@@ -373,15 +378,17 @@ class VideoRoomComponent extends Component {
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      let videoDevices = devices.filter(device => device.kind === 'videoinput');
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
 
       if (videoDevices && videoDevices.length > 1) {
-        let newVideoDevice = videoDevices.filter(device => device.deviceId !== this.state.currentVideoDevice.deviceId);
+        const newVideoDevice = videoDevices.filter(
+          device => device.deviceId !== this.state.currentVideoDevice.deviceId
+        );
 
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          let newPublisher = this.OV.initPublisher(undefined, {
+          const newPublisher = this.OV.initPublisher(undefined, {
             audioSource: undefined,
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: localUser.isAudioActive(),
@@ -483,7 +490,7 @@ class VideoRoomComponent extends Component {
     if (display === 'block') {
       this.setState({ chatDisplay: display, messageReceived: false });
     } else {
-      console.log('chat', display);
+      // console.log('chat', display);
       this.setState({ chatDisplay: display });
     }
     this.updateLayout();
@@ -507,7 +514,7 @@ class VideoRoomComponent extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    let chatDisplay = { display: this.state.chatDisplay };
+    const chatDisplay = { display: this.state.chatDisplay };
 
     return (
       <div className="container" id="container">

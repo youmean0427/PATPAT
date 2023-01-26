@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Fab from '@mui/material/Fab';
@@ -51,7 +52,7 @@ export default class ChatComponent extends Component {
   }
 
   sendMessage() {
-    console.log(this.state.message);
+    // console.log(this.state.message);
     if (this.props.user && this.state.message) {
       let message = this.state.message.replace(/ +(?= )/g, '');
       if (message !== '' && message !== ' ') {
@@ -117,6 +118,7 @@ export default class ChatComponent extends Component {
             <input
               placeholder="Send a messge"
               id="chatInput"
+              // eslint-disable-next-line react/destructuring-assignment
               value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
