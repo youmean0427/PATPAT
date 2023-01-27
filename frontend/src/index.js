@@ -4,7 +4,6 @@ import { RouterProvider } from 'react-router-dom';
 import router from './routes';
 import 'assets/styles/index.scss';
 import { CircularProgress } from '@mui/material';
-import registerServiceWorker from './registerServiceWorker';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { worker } from 'mocks/worker';
 if (process.env.NODE_ENV === 'development') {
@@ -19,4 +18,3 @@ root.render(
     <RouterProvider router={router} fallbackElement={<CircularProgress />} />
   </QueryClientProvider>
 );
-registerServiceWorker();
