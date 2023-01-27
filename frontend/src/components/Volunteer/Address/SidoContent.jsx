@@ -36,7 +36,7 @@ export default function SidoContent({ getSidoFunc }) {
               color: activeTab === item.sidoCode ? '#ffffff' : null,
             }}
           >
-            <button onClick={onclick} value={item.sidoCode}>
+            <button onClick={onclick} value={item.sidoCode} className={styles.buttonMargin}>
               {item.sidoName}
             </button>
           </li>

@@ -30,24 +30,26 @@ export default function GugunContent({ sidoCode, getGugunFunc }) {
   // console.log(activeTab);
 
   return (
-    <div className={styles.address}>
-      <ul>
-        {sidoCode === '1234'
-          ? result.map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  backgroundColor: activeTab === item.gugunCode ? '#5d6dbe' : null,
-                  color: activeTab === item.gugunCode ? '#ffffff' : null,
-                }}
-              >
-                <button onClick={onclick} value={item.gugunCode}>
-                  {item.gugunName}
-                </button>
-              </li>
-            ))
-          : null}
-      </ul>
+    <div>
+      <div className={styles.address}>
+        <ul>
+          {sidoCode === '1234'
+            ? result.map((item, index) => (
+                <li
+                  key={index}
+                  style={{
+                    backgroundColor: activeTab === item.gugunCode ? '#5d6dbe' : null,
+                    color: activeTab === item.gugunCode ? '#ffffff' : null,
+                  }}
+                >
+                  <button onClick={onclick} value={item.gugunCode} className={styles.buttonMargin}>
+                    {item.gugunName}
+                  </button>
+                </li>
+              ))
+            : null}
+        </ul>
+      </div>
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function ShelterContent({ gugunCode }) {
                   color: activeTab === item.shelterId ? '#ffffff' : null,
                 }}
               >
-                <button onClick={onclick} value={item.shelterId}>
+                <button onClick={onclick} value={item.shelterId} className={styles.buttonMargin}>
                   {item.shelterId}
                 </button>
               </li>

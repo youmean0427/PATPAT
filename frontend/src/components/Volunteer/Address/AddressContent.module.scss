@@ -1,7 +1,41 @@
-.container {
-  display: flex;
+@import '../../../assets/styles/variable.scss';
 
-  > div {
-    flex: 1 1 0;
+.container {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  &-inner {
+    display: flex;
+
+    > div {
+      flex: 1 1 0;
+    }
+  }
+}
+
+.title {
+  font-weight: 700;
+  color: $blue-color;
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.background {
+  &-1 {
+    height: 500px;
+    background: repeating-linear-gradient(0deg, #ffffff, #ffffff 50%, #f2f2f2 50%, #f2f2f2);
+    background-size: 100% 100px;
+  }
+
+  &-2 {
+    height: 500px;
+    background: repeating-linear-gradient(0deg, #e7e7e7, #e7e7e7 50%, #d9d9d9 50%, #d9d9d9);
+    background-size: 100% 100px;
+  }
+
+  &-3 {
+    height: 500px;
+    background: repeating-linear-gradient(0deg, #d1d1d1, #d1d1d1 50%, #cbcbcb 50%, #cbcbcb);
+    background-size: 100% 100px;
   }
 }
