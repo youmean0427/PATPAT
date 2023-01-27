@@ -13,7 +13,7 @@ import Intro from 'pages/Intro/Intro';
 import Statistics from 'pages/Intro/Statistics';
 import Vision from 'pages/Intro/Vision';
 import PlainLayout from 'layouts/PlainLayout';
-import Meeting from 'pages/Consulting/Meeting/Meeting';
+import VideoRoomComponent from 'pages/Consulting/Meeting/components/VideoRoomComponent';
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
 import Address from 'pages/Volunteer/Address';
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
     element: <PlainLayout />,
     errorElement: <NotFound />,
     children: [
-      { path: 'meeting', element: <Meeting /> },
+      { path: 'meeting', element: <VideoRoomComponent /> },
       { path: 'waiting', element: <Waiting /> },
     ],
   },

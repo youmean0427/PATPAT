@@ -4,6 +4,7 @@
   margin: 0 auto;
   padding: 0 $spacing-lg;
   position: relative;
+  overflow: hidden;
   @include breakpoint(md) {
     padding: 0 $spacing-md;
   }
