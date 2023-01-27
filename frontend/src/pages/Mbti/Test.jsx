@@ -39,7 +39,7 @@ export default function Test() {
     );
     setTimeout(() => {
       // 계산하는 것처럼 보이게 하기 위해 넣은 timeout
-      navigate(`/mbti/result/${result}`);
+      navigate(`/mbti/result`, { state: { mbti: result } });
     }, Math.floor(Math.random() * 1000 + 2000));
     return <Loading />;
   };
