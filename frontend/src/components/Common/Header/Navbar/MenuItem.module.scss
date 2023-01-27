@@ -1,0 +1,18 @@
+@import 'assets/styles/variable.scss';
+
+.menu-item {
+  position: relative;
+  padding: 2rem $spacing-lg;
+  & > div {
+    cursor: pointer;
+  }
+}
+
+@include breakpoint(md) {
+  .menu-item {
+    padding: 2rem $spacing-md;
+    & div:first-child {
+      font-size: 1.6rem;
+    }
+  }
+}

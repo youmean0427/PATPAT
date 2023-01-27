@@ -28,3 +28,9 @@
   border-radius: 0.4rem;
   margin-left: 1rem;
 }
+
+@include breakpoint(md) {
+  .login {
+    font-size: 1.6rem;
+  }
+}

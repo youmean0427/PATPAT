@@ -1,54 +1,11 @@
 @import 'assets/styles/variable.scss';
 
-.menu-box {
-}
 .menu {
   display: flex;
   align-items: center;
 }
 
-.menu-item {
-  position: relative;
-  padding: 2rem $spacing-lg;
-  transition-duration: 500ms;
-  & > div {
-    cursor: pointer;
-  }
-}
-
-.submenu {
-  width: 100%;
-
-  position: absolute;
-  top: 100%;
-  left: 0;
-  font-size: 1.3rem;
-  background-color: $white-color;
-  border-radius: 0.4rem;
-  box-shadow: 10px 12px 5px -6px rgba(128, 123, 123, 0.51);
-
-  & > .submenu-item {
-    text-align: center;
-    padding: $spacing-sm 0;
-  }
-}
-
-// responsive css
-// 640 ~ 1024
-@include breakpoint(md) {
-  .menu-item {
-    padding: 2rem $spacing-md;
-  }
-
-  .submenu {
-    font-size: 1.2rem;
-  }
-}
-
 @include breakpoint(sm) {
-  .menu-item {
-    padding: 2rem $spacing-sm;
-  }
   .menu-box {
     display: none;
   }
