@@ -32,7 +32,7 @@ public class BoardController {
      */
     @GetMapping()
     @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트를 조회한다.")
-    public ResponseEntity<List<BoardDto>> selectUserBoardList(RequestBoardDto requestBoardDto){
+    public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
         List<BoardDto> boardDtoList = service.selectUserBoardList(requestBoardDto);
 
@@ -41,7 +41,7 @@ public class BoardController {
                     .body(boardDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null);
+                    .body(new ResponseMessage("FAIL"));
         }
     }
 
@@ -51,7 +51,7 @@ public class BoardController {
      */
     @GetMapping("/all")
     @ApiOperation(value = "게시판 리스트", notes = "전체 게시판 리스트를 조회한다.")
-    public ResponseEntity<List<BoardDto>> selectBoardList(RequestBoardDto requestBoardDto){
+    public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
         //service 호출
         List<BoardDto> boardDtoList = service.selectBoardList(requestBoardDto);
 
@@ -60,7 +60,7 @@ public class BoardController {
                     .body(boardDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ArrayList<BoardDto>());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -69,7 +69,7 @@ public class BoardController {
      */
     @GetMapping("/{boardId}")
     @ApiOperation(value = "게시판 상세", notes = "게시판 상세를 조회한다.")
-    public ResponseEntity<BoardDto> detailBoard(@PathVariable int boardId){
+    public ResponseEntity<Object> detailBoard(@PathVariable int boardId){
         //service 호출
         BoardDto boardDto = service.deatilBoard(boardId);
         if(boardDto!=null){
@@ -77,7 +77,7 @@ public class BoardController {
                     .body(boardDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new BoardDto());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -215,7 +215,7 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> updateReply(@PathVariable int replyId,@RequestBody ReplyDto replyDto){
         //service 호출
         ResponseMessage responseMessage = service.updateReply(replyId,replyDto);
-        
+
         if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
@@ -233,12 +233,12 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> deleteReply(@PathVariable int replyId){
         //service 호출
         ResponseMessage responseMessage = service.deleteReply(replyId);
-        if(true){
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
 }

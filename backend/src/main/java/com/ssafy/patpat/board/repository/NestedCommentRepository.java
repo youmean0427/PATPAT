@@ -12,5 +12,6 @@ public interface NestedCommentRepository extends JpaRepository<NestedComment,Str
     List<NestedComment> findByCommentId(int commentId);
     void deleteByCommentIdIn(List<Integer> list);
     void deleteByCommentId(int commentId);
+    void deleteByNestedCommentId(int nestedCommentId);
     NestedComment findByNestedCommentId(int nestedCommentId);
 }
