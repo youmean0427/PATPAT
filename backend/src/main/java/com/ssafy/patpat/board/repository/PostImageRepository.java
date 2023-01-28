@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface PostImageRepository extends JpaRepository<PostImage,String>  {
     List<PostImage> findByBoardId(int boardId);
+
+    void deleteByBoardId(int boardId);
 }

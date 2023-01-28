@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -221,8 +222,70 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
-    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, List<MultipartFile> uploadFile) {
-        return null;
+    @Transactional
+    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile) {
+        ResponseMessage responseMessage = new ResponseMessage();
+        /**
+         * 유저 정보 들어오는거 생기면 다시하기
+         */
+        try{
+            Board board = boardRepository.findByBoardId(boardId);
+            board.update(boardDto.getTitle(),boardDto.getContent());
+
+
+            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
+            if(!uploadDir.exists()) uploadDir.mkdir();
+
+            List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
+            List<Integer> list = new ArrayList<>();
+            for(PostImage i : postImageList){
+                list.add(i.getImageId());
+            }
+            List<Image> imageList = imageRepository.findByImageIdIn(list);
+            for(Image i : imageList){
+                File file = new File(uploadPath+File.separator+i.getFilePath());
+                if(file.exists()) file.delete();
+            }
+
+            imageRepository.deleteByImageIdIn(list);
+            postImageRepository.deleteByBoardId(boardId);
+
+            for(MultipartFile partFile : uploadFile){
+                String fileName = partFile.getOriginalFilename();
+
+                UUID uuid = UUID.randomUUID();
+
+                String extension = FilenameUtils.getExtension(fileName);
+
+                String savingFileName = uuid+"."+extension;
+
+                File destFile = new File(uploadPath+File.separator+uploadFolder+File.separator+savingFileName);
+
+                partFile.transferTo(destFile);
+
+                Image image = Image.builder()
+                        .origFilename(fileName)
+                        .fileSize((int) partFile.getSize())
+                        .filename(fileName)
+                        .filePath(uploadFolder+"/"+savingFileName)
+                        .build();
+
+                imageRepository.save(image);
+
+                PostImage postImage = PostImage.builder()
+                        .imageId(image.getImageId())
+                        .boardId(board.getBoardId())
+                        .build();
+
+                postImageRepository.save(postImage);
+
+            }
+            responseMessage.setMessage("SUCCESS");
+        }catch (Exception e){
+            e.printStackTrace();
+            responseMessage.setMessage("FAIL");
+        }
+        return responseMessage;
     }
 
     /**

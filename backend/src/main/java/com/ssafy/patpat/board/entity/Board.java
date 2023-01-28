@@ -26,4 +26,9 @@ public class Board {
     private LocalDateTime dateTime;
     private int count;
     private int postCode;
+
+    public void update(String title,String content){
+        this.title = title;
+        this.content = content;
+    }
 }

@@ -104,7 +104,7 @@ public class BoardController {
      */
     @PostMapping("/{boardId}")
     @ApiOperation(value = "게시판 수정", notes = "게시판 수정한다.")
-    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
         //service 호출
         ResponseMessage responseMessage = service.updateBoard(boardId,boardDto,uploadFile);
         if(true){
