@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 
 // Serve application
-server.listen(5000, () => {
+server.listen(5442, () => {
   console.log("Application started");
 });
 
