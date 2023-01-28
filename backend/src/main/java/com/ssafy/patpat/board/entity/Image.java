@@ -19,7 +19,8 @@ public class Image {
     @Id
     @GeneratedValue()
     private int imageId;
-    private String imagePath;
-    private String fileName;
+    private String origFilename;
+    private String filename;
+    private String filePath;
     private int fileSize;
 }

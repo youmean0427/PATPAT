@@ -6,15 +6,22 @@ import com.ssafy.patpat.board.dto.ReplyDto;
 import com.ssafy.patpat.board.dto.RequestBoardDto;
 import com.ssafy.patpat.board.entity.*;
 import com.ssafy.patpat.board.repository.*;
+import com.ssafy.patpat.common.code.BoardCode;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -28,6 +35,12 @@ public class BoardServiceImpl implements BoardService{
     NestedCommentRepository nestedCommentRepository;
     @Autowired
     PostImageRepository postImageRepository;
+
+    @Value("${app.fileupload.uploadPath}")
+    String uploadPath;
+
+    @Value("${app.fileupload.uploadDir}")
+    String uploadFolder;
 
     /**
      * 내가 쓴 게시판 리스트를 리턴한다.
@@ -120,7 +133,7 @@ public class BoardServiceImpl implements BoardService{
         for(Image entity : imageList){
             fileDtoList.add(
                     FileDto.builder()
-                            .filePath(entity.getImagePath())
+                            .filePath(entity.getOrigFilename())
                             .build()
             );
         }
@@ -143,8 +156,64 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
-    public ResponseMessage insertBoard(BoardDto boardDto, MultipartFile[] uploadFile) {
-        return null;
+    @Transactional
+    public ResponseMessage insertBoard(BoardDto boardDto, List<MultipartFile> uploadFile) {
+        ResponseMessage responseMessage = new ResponseMessage();
+        /**
+         * 유저 정보 들어오는거 생기면 다시하기
+         */
+        try{
+            Board board = Board.builder()
+                    .title(boardDto.getTitle())
+                    .content(boardDto.getContent())
+                    .postCode(boardDto.getTypeCode())
+                    .userId(0)
+                    .nickName("dd")
+                    .dateTime(LocalDateTime.now())
+                    .build();
+            boardRepository.save(board);
+
+            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
+            if(!uploadDir.exists()) uploadDir.mkdir();
+            System.out.println(uploadFile.size());
+
+            for(MultipartFile partFile : uploadFile){
+                int boardId = board.getBoardId();
+                String fileName = partFile.getOriginalFilename();
+
+                UUID uuid = UUID.randomUUID();
+
+                String extension = FilenameUtils.getExtension(fileName);
+
+                String savingFileName = uuid+"."+extension;
+
+                File destFile = new File(uploadPath+File.separator+uploadFolder+File.separator+savingFileName);
+
+                partFile.transferTo(destFile);
+
+                Image image = Image.builder()
+                        .origFilename(fileName)
+                        .fileSize((int) partFile.getSize())
+                        .filename(fileName)
+                        .filePath(uploadFolder+"/"+savingFileName)
+                        .build();
+
+                imageRepository.save(image);
+
+                PostImage postImage = PostImage.builder()
+                        .imageId(image.getImageId())
+                        .boardId(board.getBoardId())
+                        .build();
+
+                postImageRepository.save(postImage);
+
+            }
+            responseMessage.setMessage("SUCCESS");
+        }catch (Exception e){
+            e.printStackTrace();
+            responseMessage.setMessage("FAIL");
+        }
+        return responseMessage;
     }
 
     /**
@@ -152,7 +221,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
-    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, MultipartFile[] uploadFile) {
+    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, List<MultipartFile> uploadFile) {
         return null;
     }
 

@@ -2,22 +2,17 @@ package com.ssafy.patpat.board.controller;
 
 import com.ssafy.patpat.board.dto.*;
 import com.ssafy.patpat.board.service.BoardService;
-import com.ssafy.patpat.common.code.Board;
-import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,8 +86,9 @@ public class BoardController {
      */
     @PostMapping()
     @ApiOperation(value = "게시판 등록", notes = "게시판 등록.")
-    public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, MultipartFile[] uploadFile){
+    public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
         //service 호출
+        System.out.println(uploadFile.size());
         ResponseMessage responseMessage = service.insertBoard(boardDto,uploadFile);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -108,7 +104,7 @@ public class BoardController {
      */
     @PostMapping("/{boardId}")
     @ApiOperation(value = "게시판 수정", notes = "게시판 수정한다.")
-    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, MultipartFile[] uploadFile){
+    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, List<MultipartFile> uploadFile){
         //service 호출
         ResponseMessage responseMessage = service.updateBoard(boardId,boardDto,uploadFile);
         if(true){

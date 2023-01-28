@@ -17,9 +17,9 @@ public interface BoardService {
 
     BoardDto deatilBoard(int boardId);
 
-    ResponseMessage insertBoard(BoardDto boardDto, MultipartFile[] uploadFile);
+    ResponseMessage insertBoard(BoardDto boardDto, List<MultipartFile> uploadFile);
 
-    ResponseMessage updateBoard(int boardId, BoardDto boardDto, MultipartFile[] uploadFile);
+    ResponseMessage updateBoard(int boardId, BoardDto boardDto, List<MultipartFile> uploadFile);
 
     ResponseMessage deleteBoard(int boardId);
 
