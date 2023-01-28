@@ -378,8 +378,17 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage deleteComment(int commentId) {
-        return null;
+        ResponseMessage responseMessage = new ResponseMessage();
+        try{
+            nestedCommentRepository.deleteByCommentId(commentId);
+            commentRepository.deleteByCommentId(commentId);
+            responseMessage.setMessage("SUCCESS");
+        }catch (Exception e ){
+            responseMessage.setMessage("FAIL");
+        }
+        return responseMessage;
     }
 
     /**
