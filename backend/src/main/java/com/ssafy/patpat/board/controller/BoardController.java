@@ -1,8 +1,13 @@
 package com.ssafy.patpat.board.controller;
 
 import com.ssafy.patpat.board.dto.*;
+import com.ssafy.patpat.common.code.Board;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +19,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/board")
+@Api(tags = {"01. Board"},description = "게시판 관련 서비스")
+@ApiResponses({
+        @ApiResponse(code=200, message = "성공"),
+        @ApiResponse(code=400, message = "에러")
+})
 public class BoardController {
 
     /**
@@ -21,7 +31,8 @@ public class BoardController {
      * @return
      */
     @GetMapping()
-    public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
+    @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트를 조회한다.")
+    public ResponseEntity<List<BoardDto>> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
         //dummy data
         List<BoardDto> boardDtoList = new ArrayList<>();
@@ -45,13 +56,18 @@ public class BoardController {
                 .registDate(LocalDate.now())
                 .count(12).build());
 
-        if(true){
+        if(true) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(boardDtoList);
+                    .body(new ArrayList<BoardDto>());
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(null);
         }
+//        }else{
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(new ResponseMessage("FAIL"));
+//        }
+
     }
 
     /**
@@ -59,7 +75,8 @@ public class BoardController {
      * @return
      */
     @GetMapping("/all")
-    public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
+    @ApiOperation(value = "게시판 리스트", notes = "전체 게시판 리스트를 조회한다.")
+    public ResponseEntity<List<BoardDto>> selectBoardList(RequestBoardDto requestBoardDto){
         //service 호출
         //dummy data
         List<BoardDto> boardDtoList = new ArrayList<>();
@@ -88,7 +105,8 @@ public class BoardController {
                     .body(boardDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(new ArrayList<BoardDto>() {
+                    });
         }
     }
     /**
@@ -96,7 +114,8 @@ public class BoardController {
      * @return
      */
     @GetMapping("/{boardId}")
-    public ResponseEntity<Object> detailBoard(@PathVariable int boardId){
+    @ApiOperation(value = "게시판 상세", notes = "게시판 상세를 조회한다.")
+    public ResponseEntity<BoardDto> detailBoard(@PathVariable int boardId){
         //현재 userId
         //service 호출
         FileDto fileDto = new FileDto(1L,"asd","파일","sd/sd/sd.png");
@@ -132,14 +151,14 @@ public class BoardController {
                 .author("정경훈")
                 .registDate(LocalDate.now())
                 .count(1102)
-                .comment(comment)
-                .reply(reply).build();
+                .commentList(comment)
+                .replyList(reply).build();
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(boardDto);
+                    .body(new BoardDto());
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(new BoardDto());
         }
     }
     /**
@@ -147,7 +166,8 @@ public class BoardController {
      * @return
      */
     @PostMapping()
-    public ResponseEntity<Object> insertBoard(BoardDto boardDto, MultipartFile[] uploadFile){
+    @ApiOperation(value = "게시판 등록", notes = "게시판 등록.")
+    public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, MultipartFile[] uploadFile){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -161,8 +181,9 @@ public class BoardController {
      * 게시판 수정하기
      * @return
      */
-    @PutMapping("/{boardId}")
-    public ResponseEntity<Object> updateBoard(BoardDto boardDto, MultipartFile[] uploadFile){
+    @PostMapping("/{boardId}")
+    @ApiOperation(value = "게시판 수정", notes = "게시판 수정한다.")
+    public ResponseEntity<ResponseMessage> updateBoard(BoardDto boardDto, MultipartFile[] uploadFile){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -177,7 +198,8 @@ public class BoardController {
      * @return
      */
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<Object> deleteBoard(@PathVariable int boardId){
+    @ApiOperation(value = "게시판 삭제", notes = "게시판 삭제한다.")
+    public ResponseEntity<ResponseMessage> deleteBoard(@PathVariable int boardId){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -192,7 +214,8 @@ public class BoardController {
      * @return
      */
     @PostMapping("/comment")
-    public ResponseEntity<Object> insertComment(CommentDto commentDto){
+    @ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
+    public ResponseEntity<ResponseMessage> insertComment(@RequestBody CommentDto commentDto){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -207,7 +230,8 @@ public class BoardController {
      * @return
      */
     @PutMapping("/comment/{commentId}")
-    public ResponseEntity<Object> updateComment(@PathVariable int commentId){
+    @ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
+    public ResponseEntity<ResponseMessage> updateComment(@PathVariable int commentId, @RequestBody CommentDto commentDto){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -222,7 +246,8 @@ public class BoardController {
      * @return
      */
     @DeleteMapping("/comment/{commentId}")
-    public ResponseEntity<Object> deleteComment(@PathVariable int commentId){
+    @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
+    public ResponseEntity<ResponseMessage> deleteComment(@PathVariable int commentId){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -237,7 +262,8 @@ public class BoardController {
      * @return
      */
     @PostMapping("/reply")
-    public ResponseEntity<Object> insertReply(ReplyDto replyDto){
+    @ApiOperation(value = "대댓글 등록", notes = "대댓글을 등록한다.")
+    public ResponseEntity<ResponseMessage> insertReply(@RequestBody ReplyDto replyDto){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -252,7 +278,8 @@ public class BoardController {
      * @return
      */
     @PutMapping("/reply/{replyId}")
-    public ResponseEntity<Object> updateReply(@PathVariable int replyId){
+    @ApiOperation(value = "대댓글 수정", notes = "대댓글을 수정한다.")
+    public ResponseEntity<ResponseMessage> updateReply(@PathVariable int replyId,@RequestBody ReplyDto replyDto){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -267,7 +294,8 @@ public class BoardController {
      * @return
      */
     @DeleteMapping("/reply/{replyId}")
-    public ResponseEntity<Object> deleteReply(@PathVariable int replyId){
+    @ApiOperation(value = "대댓글 삭제", notes = "대댓글을 삭제한다.")
+    public ResponseEntity<ResponseMessage> deleteReply(@PathVariable int replyId){
         //service 호출
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
