@@ -1,34 +1,32 @@
 package com.ssafy.patpat.board.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class Board {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int commentId;
+    private String content;
+    private LocalDateTime regTime;
     private int boardId;
     private int userId;
     private String nickName;
-    private String title;
-    private String content;
-    private LocalDateTime dateTime;
-    private int count;
-    private int postCode;
 
-    public void update(String title,String content){
-        this.title = title;
+    public void updateComment(String content){
         this.content = content;
     }
 }

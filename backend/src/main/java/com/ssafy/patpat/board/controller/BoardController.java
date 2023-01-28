@@ -1,19 +1,18 @@
 package com.ssafy.patpat.board.controller;
 
 import com.ssafy.patpat.board.dto.*;
-import com.ssafy.patpat.common.code.Board;
-import com.ssafy.patpat.common.dto.FileDto;
+import com.ssafy.patpat.board.service.BoardService;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,49 +24,25 @@ import java.util.List;
         @ApiResponse(code=400, message = "에러")
 })
 public class BoardController {
-
+    @Autowired
+    BoardService service;
     /**
      * 내가 쓴 게시판 리스트를 리턴한다.
      * @return
      */
     @GetMapping()
     @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트를 조회한다.")
-    public ResponseEntity<List<BoardDto>> selectUserBoardList(RequestBoardDto requestBoardDto){
+    public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
-        //dummy data
-        List<BoardDto> boardDtoList = new ArrayList<>();
-        FileDto fileDto = new FileDto(1L,"asd","파일","sd/sd/sd.png");
-        List<FileDto> fileUrlList = new ArrayList<>();
-        fileUrlList.add(fileDto);
+        List<BoardDto> boardDtoList = service.selectUserBoardList(requestBoardDto);
 
-        boardDtoList.add(BoardDto.builder()
-                .fileUrlList(fileUrlList)
-                .boardId(0)
-                .title("제목")
-                .author("정경훈")
-                .registDate(LocalDate.now())
-                .count(1102).build());
-
-        boardDtoList.add(BoardDto.builder()
-                .fileUrlList(fileUrlList)
-                .boardId(1)
-                .title("제목2")
-                .author("이재혁")
-                .registDate(LocalDate.now())
-                .count(12).build());
-
-        if(true) {
+        if(boardDtoList!=null) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ArrayList<BoardDto>());
+                    .body(boardDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null);
+                    .body(new ResponseMessage("FAIL"));
         }
-//        }else{
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                    .body(new ResponseMessage("FAIL"));
-//        }
-
     }
 
     /**
@@ -76,37 +51,16 @@ public class BoardController {
      */
     @GetMapping("/all")
     @ApiOperation(value = "게시판 리스트", notes = "전체 게시판 리스트를 조회한다.")
-    public ResponseEntity<List<BoardDto>> selectBoardList(RequestBoardDto requestBoardDto){
+    public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
         //service 호출
-        //dummy data
-        List<BoardDto> boardDtoList = new ArrayList<>();
-        FileDto fileDto = new FileDto(1L,"asd","파일","sd/sd/sd.png");
-        List<FileDto> fileUrlList = new ArrayList<>();
-        fileUrlList.add(fileDto);
+        List<BoardDto> boardDtoList = service.selectBoardList(requestBoardDto);
 
-        boardDtoList.add(BoardDto.builder()
-                .fileUrlList(fileUrlList)
-                .boardId(0)
-                .title("제목")
-                .author("정경훈")
-                .registDate(LocalDate.now())
-                .count(1102).build());
-
-        boardDtoList.add(BoardDto.builder()
-                .fileUrlList(fileUrlList)
-                .boardId(1)
-                .title("제목2")
-                .author("이재혁")
-                .registDate(LocalDate.now())
-                .count(12).build());
-
-        if(true){
+        if(boardDtoList!=null){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(boardDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ArrayList<BoardDto>() {
-                    });
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -115,50 +69,15 @@ public class BoardController {
      */
     @GetMapping("/{boardId}")
     @ApiOperation(value = "게시판 상세", notes = "게시판 상세를 조회한다.")
-    public ResponseEntity<BoardDto> detailBoard(@PathVariable int boardId){
-        //현재 userId
+    public ResponseEntity<Object> detailBoard(@PathVariable int boardId){
         //service 호출
-        FileDto fileDto = new FileDto(1L,"asd","파일","sd/sd/sd.png");
-        FileDto fileDto1 = new FileDto(2L,"asdf","파일2","sd/sd/sssd.png");
-
-        List<FileDto> fileUrlList = new ArrayList<>();
-        fileUrlList.add(fileDto);
-        fileUrlList.add(fileDto1);
-
-        List<CommentDto> comment = new ArrayList<>();
-        CommentDto commentDto = CommentDto.builder()
-                .commentId(1)
-                .author("문석환")
-                .content("좋은 정보 감사요").build();
-        comment.add(commentDto);
-
-        List<ReplyDto> reply = new ArrayList<>();
-        ReplyDto replyDto = ReplyDto.builder()
-                .commentId(1)
-                .author("정경훈")
-                .content("감사합니다").build();
-        ReplyDto replyDto1 = ReplyDto.builder()
-                .commentId(1)
-                .author("문석환")
-                .content("아닙니다").build();
-        reply.add(replyDto);
-        reply.add(replyDto1);
-
-        BoardDto boardDto = BoardDto.builder()
-                .fileUrlList(fileUrlList)
-                .boardId(0)
-                .title("제목")
-                .author("정경훈")
-                .registDate(LocalDate.now())
-                .count(1102)
-                .commentList(comment)
-                .replyList(reply).build();
-        if(true){
+        BoardDto boardDto = service.deatilBoard(boardId);
+        if(boardDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new BoardDto());
+                    .body(boardDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new BoardDto());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -167,11 +86,13 @@ public class BoardController {
      */
     @PostMapping()
     @ApiOperation(value = "게시판 등록", notes = "게시판 등록.")
-    public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, MultipartFile[] uploadFile){
+    public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.insertBoard(boardDto,uploadFile);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
@@ -183,14 +104,16 @@ public class BoardController {
      */
     @PostMapping("/{boardId}")
     @ApiOperation(value = "게시판 수정", notes = "게시판 수정한다.")
-    public ResponseEntity<ResponseMessage> updateBoard(BoardDto boardDto, MultipartFile[] uploadFile){
+    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.updateBoard(boardId,boardDto,uploadFile);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
@@ -201,12 +124,14 @@ public class BoardController {
     @ApiOperation(value = "게시판 삭제", notes = "게시판 삭제한다.")
     public ResponseEntity<ResponseMessage> deleteBoard(@PathVariable int boardId){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.deleteBoard(boardId);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
@@ -217,12 +142,14 @@ public class BoardController {
     @ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
     public ResponseEntity<ResponseMessage> insertComment(@RequestBody CommentDto commentDto){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.insertComment(commentDto);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
@@ -233,12 +160,14 @@ public class BoardController {
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
     public ResponseEntity<ResponseMessage> updateComment(@PathVariable int commentId, @RequestBody CommentDto commentDto){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.updateComment(commentId,commentDto);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
@@ -249,7 +178,9 @@ public class BoardController {
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
     public ResponseEntity<ResponseMessage> deleteComment(@PathVariable int commentId){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.deleteComment(commentId);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
@@ -265,12 +196,14 @@ public class BoardController {
     @ApiOperation(value = "대댓글 등록", notes = "대댓글을 등록한다.")
     public ResponseEntity<ResponseMessage> insertReply(@RequestBody ReplyDto replyDto){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.insertReply(replyDto);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
@@ -281,12 +214,14 @@ public class BoardController {
     @ApiOperation(value = "대댓글 수정", notes = "대댓글을 수정한다.")
     public ResponseEntity<ResponseMessage> updateReply(@PathVariable int replyId,@RequestBody ReplyDto replyDto){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.updateReply(replyId,replyDto);
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
@@ -297,12 +232,13 @@ public class BoardController {
     @ApiOperation(value = "대댓글 삭제", notes = "대댓글을 삭제한다.")
     public ResponseEntity<ResponseMessage> deleteReply(@PathVariable int replyId){
         //service 호출
-        if(true){
+        ResponseMessage responseMessage = service.deleteReply(replyId);
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
 }
