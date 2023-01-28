@@ -36,7 +36,7 @@ public class BoardController {
         //service 호출
         List<BoardDto> boardDtoList = service.selectUserBoardList(requestBoardDto);
 
-        if(true) {
+        if(boardDtoList!=null) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(boardDtoList);
         }else{
@@ -55,7 +55,7 @@ public class BoardController {
         //service 호출
         List<BoardDto> boardDtoList = service.selectBoardList(requestBoardDto);
 
-        if(true){
+        if(boardDtoList!=null){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(boardDtoList);
         }else{
@@ -72,7 +72,7 @@ public class BoardController {
     public ResponseEntity<BoardDto> detailBoard(@PathVariable int boardId){
         //service 호출
         BoardDto boardDto = service.deatilBoard(boardId);
-        if(true){
+        if(boardDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(boardDto);
         }else{
@@ -89,6 +89,7 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
         //service 호출
         ResponseMessage responseMessage = service.insertBoard(boardDto,uploadFile);
+
         if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
@@ -106,6 +107,7 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
         //service 호출
         ResponseMessage responseMessage = service.updateBoard(boardId,boardDto,uploadFile);
+
         if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
@@ -141,6 +143,7 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> insertComment(@RequestBody CommentDto commentDto){
         //service 호출
         ResponseMessage responseMessage = service.insertComment(commentDto);
+
         if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
@@ -158,6 +161,7 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> updateComment(@PathVariable int commentId, @RequestBody CommentDto commentDto){
         //service 호출
         ResponseMessage responseMessage = service.updateComment(commentId,commentDto);
+
         if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
@@ -175,7 +179,8 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> deleteComment(@PathVariable int commentId){
         //service 호출
         ResponseMessage responseMessage = service.deleteComment(commentId);
-        if(true){
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
@@ -192,12 +197,13 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> insertReply(@RequestBody ReplyDto replyDto){
         //service 호출
         ResponseMessage responseMessage = service.insertReply(replyDto);
-        if(true){
+
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**

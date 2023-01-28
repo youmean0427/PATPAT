@@ -397,7 +397,22 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     public ResponseMessage insertReply(ReplyDto replyDto) {
-        return null;
+        ResponseMessage responseMessage = new ResponseMessage();
+        NestedComment nestedComment = NestedComment.builder()
+                .content(replyDto.getContent())
+                .regTime(replyDto.getRegDt())
+                .commentId(replyDto.getCommentId())
+                .userId(0)
+                .nickName("aa")
+                .build();
+        NestedComment save = nestedCommentRepository.save(nestedComment);
+        if(save==null){
+            responseMessage.setMessage("FAIL");
+        }
+        else{
+            responseMessage.setMessage("SUCCESS");
+        }
+        return responseMessage;
     }
 
     /**
