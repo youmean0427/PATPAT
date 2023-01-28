@@ -2,6 +2,7 @@ package com.ssafy.patpat.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ssafy.patpat.common.dto.FileDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.List;
 public class FavoriteDto {
     private int protectId;
     private int userId;
+    @Schema(example = "FileUrl:.png")
     private List<FileDto> fileUrlList;
-    private int name;
+    private String name;
     private String state;
 }
