@@ -25,4 +25,8 @@ public class NestedComment {
     private LocalDateTime regTime;
     private int commentId;
     private int userId;
+
+    public void updateNestedComment(String content){
+        this.content = content;
+    }
 }

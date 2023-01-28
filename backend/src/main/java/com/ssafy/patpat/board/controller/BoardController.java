@@ -215,12 +215,13 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> updateReply(@PathVariable int replyId,@RequestBody ReplyDto replyDto){
         //service 호출
         ResponseMessage responseMessage = service.updateReply(replyId,replyDto);
-        if(true){
+        
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
