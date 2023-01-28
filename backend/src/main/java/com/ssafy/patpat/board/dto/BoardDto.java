@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "보드 객체")
 public class BoardDto {
     @Schema(example = "게시판Id")
@@ -36,12 +36,6 @@ public class BoardDto {
             "    댓글 작성자 = author" +
             "    내용 = content)")
     private List<CommentDto> commentList;
-    @Schema(example = "대댓글 리스트("+
-            "    댓글 id = commentId" +
-            "    대댓글 id = replyId" +
-            "    대댓글 작성자 = author" +
-            "    대댓글 내용 = content)")
-    private List<ReplyDto> replyList;
     @Schema(example = "파일 url 리스트("+
             "    파일 url = filePath)")
     private List<FileDto> fileUrlList;
