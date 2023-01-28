@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface NestedCommentRepository extends JpaRepository<NestedComment,String> {
     List<NestedComment> findByCommentId(int commentId);
+    void deleteByCommentIdIn(List<Integer> list);
 }

@@ -14,4 +14,6 @@ public interface BoardRepository extends JpaRepository<Board,String>  {
     List<Board> findByUserId(int userId, PageRequest pageRequest);
     List<Board> findByUserIdAndPostCode(int userId, int postCode, PageRequest pageRequest);
     List<Board> findByPostCode(int postCode, PageRequest pageRequest);
+
+    void deleteByBoardId(int boardId);
 }

@@ -6,7 +6,6 @@ import com.ssafy.patpat.board.dto.ReplyDto;
 import com.ssafy.patpat.board.dto.RequestBoardDto;
 import com.ssafy.patpat.board.entity.*;
 import com.ssafy.patpat.board.repository.*;
-import com.ssafy.patpat.common.code.BoardCode;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import org.apache.commons.io.FilenameUtils;
@@ -293,8 +292,38 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage deleteBoard(int boardId) {
-        return null;
+        ResponseMessage responseMessage = new ResponseMessage();
+        try{
+            boardRepository.deleteByBoardId(boardId);
+            List<Comment> commentList = commentRepository.findByboardId(boardId);
+            List<Integer> integerList = new ArrayList<>();
+            for(Comment c : commentList){
+                integerList.add(c.getCommentId());
+            }
+            nestedCommentRepository.deleteByCommentIdIn(integerList);
+            commentRepository.deleteByBoardId(boardId);
+
+            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
+            if(!uploadDir.exists()) uploadDir.mkdir();
+
+            List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
+            List<Integer> list = new ArrayList<>();
+            for(PostImage i : postImageList){
+                list.add(i.getImageId());
+            }
+            List<Image> imageList = imageRepository.findByImageIdIn(list);
+            for(Image i : imageList){
+                File file = new File(uploadPath+File.separator+i.getFilePath());
+                if(file.exists()) file.delete();
+            }
+            responseMessage.setMessage("SUCCESS");
+        }catch(Exception e){
+            e.printStackTrace();
+            responseMessage.setMessage("FAIL");
+        }
+        return responseMessage;
     }
 
     /**
@@ -303,7 +332,21 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     public ResponseMessage insertComment(CommentDto commentDto) {
-        return null;
+        ResponseMessage responseMessage = new ResponseMessage();
+        Comment comment = Comment.builder()
+                .content(commentDto.getContent())
+                .regTime(commentDto.getRegDt())
+                .boardId(commentDto.getBoardId())
+                .userId(0)
+                .nickName("aa")
+                .build();
+        Comment save = commentRepository.save(comment);
+        if(save==null){
+            responseMessage.setMessage("FAIL");
+        }
+        else{
+            responseMessage.setMessage("SUCCESS");
+        }
     }
 
     /**
