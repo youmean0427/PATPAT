@@ -347,6 +347,7 @@ public class BoardServiceImpl implements BoardService{
         else{
             responseMessage.setMessage("SUCCESS");
         }
+        return responseMessage;
     }
 
     /**
@@ -354,8 +355,22 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage updateComment(int commentId, CommentDto commentDto) {
-        return null;
+        ResponseMessage responseMessage = new ResponseMessage();
+
+        Comment comment = commentRepository.findByCommentId(commentId);
+        comment.updateComment(commentDto.getContent());
+
+        Comment save = commentRepository.save(comment);
+
+        if(save==null){
+            responseMessage.setMessage("FAIL");
+        }
+        else{
+            responseMessage.setMessage("SUCCESS");
+        }
+        return responseMessage;
     }
 
     /**

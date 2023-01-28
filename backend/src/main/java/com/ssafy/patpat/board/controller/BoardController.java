@@ -143,10 +143,10 @@ public class BoardController {
         ResponseMessage responseMessage = service.insertComment(commentDto);
         if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**
@@ -158,12 +158,12 @@ public class BoardController {
     public ResponseEntity<ResponseMessage> updateComment(@PathVariable int commentId, @RequestBody CommentDto commentDto){
         //service 호출
         ResponseMessage responseMessage = service.updateComment(commentId,commentDto);
-        if(true){
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
+                    .body(responseMessage);
         }
     }
     /**

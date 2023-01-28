@@ -25,4 +25,8 @@ public class Comment {
     private int boardId;
     private int userId;
     private String nickName;
+
+    public void updateComment(String content){
+        this.content = content;
+    }
 }
