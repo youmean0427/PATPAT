@@ -40,4 +40,9 @@ public class ShelterProtectedDog {
     private int age;
     private String sidoCode;
     private String gugunCode;
+
+    public void updateShelterProtectedDog(double weight,String feature){
+        this.weight = weight;
+        this.feature =feature;
+    }
 }

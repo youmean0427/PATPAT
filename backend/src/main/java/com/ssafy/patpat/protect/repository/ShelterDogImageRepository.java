@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ShelterDogImageRepository extends JpaRepository<ShelterDogImage,String> {
    List<ShelterDogImage> findByspDogId(int spDogId);
-
+   void deleteBySpDogId(int spDogId);
 }

@@ -99,9 +99,9 @@ public class ProtectController {
      */
     @PostMapping("/{protectId}")
     @ApiOperation(value = "보호동물 수정", notes = "보호동물 수정")
-    public ResponseEntity<ResponseMessage> updateProtect(@PathVariable int protectId, List<MultipartFile> uploadFile, ProtectDto protectDto){
+    public ResponseEntity<ResponseMessage> updateProtect(@PathVariable int protectId, @RequestPart List<MultipartFile> uploadFile, ProtectDto protectDto){
         //서비스 호출 코드
-        ResponseMessage responseMessage = service.updateProtect(protectId,uploadFile);
+        ResponseMessage responseMessage = service.updateProtect(protectId,uploadFile,protectDto);
 
         if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)

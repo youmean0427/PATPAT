@@ -224,7 +224,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile) {
+    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         /**
          * 유저 정보 들어오는거 생기면 다시하기
@@ -342,6 +342,7 @@ public class BoardServiceImpl implements BoardService{
                     .boardId(commentDto.getBoardId())
                     .userId(0)
                     .nickName("aa")
+                    .userId(commentDto.getUserId())
                     .build();
             Comment save = commentRepository.save(comment);
             if(save==null){

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.protect.service;
 
+import com.ssafy.patpat.board.entity.PostImage;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
@@ -259,8 +260,63 @@ public class ProtectServiceImpl implements ProtectService{
     }
 
     @Override
-    public ResponseMessage updateProtect(int protectId, List<MultipartFile> uploadFile) {
-        return null;
+    @Transactional
+    public ResponseMessage updateProtect(int protectId, List<MultipartFile> uploadFile,ProtectDto protectDto) {
+        ResponseMessage responseMessage = new ResponseMessage();
+        try{
+            ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(protectId);
+            shelterProtectedDog.updateShelterProtectedDog(protectDto.getWeight(), protectDto.getInfoContent());
+
+            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
+            if(!uploadDir.exists()) uploadDir.mkdir();
+
+            List<ShelterDogImage> shelterDogImageList = shelterDogImageRepository.findByspDogId(protectId);
+            List<Integer> list = new ArrayList<>();
+            for(ShelterDogImage i : shelterDogImageList){
+                list.add(i.getImageId());
+            }
+            List<Image> imageList = imageRepository.findByImageIdIn(list);
+            for(Image i : imageList){
+                File file = new File(uploadPath+File.separator+i.getFilePath());
+                if(file.exists()) file.delete();
+            }
+
+            imageRepository.deleteByImageIdIn(list);
+            shelterDogImageRepository.deleteBySpDogId(protectId);
+            for (MultipartFile partFile : uploadFile) {
+                int spDogId = shelterProtectedDog.getSpDogId();
+                String fileName = partFile.getOriginalFilename();
+
+                UUID uuid = UUID.randomUUID();
+
+                String extension = FilenameUtils.getExtension(fileName);
+
+                String savingFileName = uuid + "." + extension;
+
+                File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+
+                partFile.transferTo(destFile);
+
+                Image image = Image.builder()
+                        .origFilename(fileName)
+                        .fileSize((int) partFile.getSize())
+                        .filename(fileName)
+                        .filePath(uploadFolder + "/" + savingFileName)
+                        .build();
+
+                imageRepository.save(image);
+                ShelterDogImage shelterDogImage = ShelterDogImage.builder()
+                        .imageId(image.getImageId())
+                        .spDogId(shelterProtectedDog.getSpDogId())
+                        .build();
+                shelterDogImageRepository.save(shelterDogImage);
+            }
+            responseMessage.setMessage("SUCCESS");
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseMessage.setMessage("FAIL");
+        }
+        return responseMessage;
     }
 
 }
