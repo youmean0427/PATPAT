@@ -1,19 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMbtiResultAPI } from 'apis/MbtiApi';
+import MbtiContainer from 'components/Common/MbtiContainer';
+import logo from 'assets/images/mbti-logo.png';
+import styles from './Result.module.scss';
 import React from 'react';
-import { useLocation, useParams } from 'react-router';
+import { useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
+import { getMbtiResult } from 'apis/api/mbti';
 
 export default function Result() {
   const { state } = useLocation();
-  console.log(state);
-  const { data, isLoading } = useQuery(['mbti-result'], () => getMbtiResultAPI(state.mbti));
+  const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiResult(state.mbti));
   if (isLoading) return;
-  console.log(data);
-  const { id, mbti, kind, imgUrl } = data;
+  const { id, mbti, breed, feature, desc, imgUrl } = data;
   return (
-    <div>
-      <img src={imgUrl} alt="img" />
-      {mbti},{kind}
-    </div>
+    <MbtiContainer>
+      <img className={styles.logo} src={logo} alt="mbti" />
+      <span className={styles.title}>나는 어떤 강아지 일까?</span>
+      <span className={styles.feature}>{feature}</span>
+      <div className={styles.result}>
+        <span>{mbti}</span>
+        <span>{breed}</span>
+      </div>
+      <div className={styles['img-box']}>
+        <img src={imgUrl} alt="img" />
+      </div>
+      <div className={styles['btn-box']}>
+        <Link to="#">나의 가족 만나러가기</Link>
+      </div>
+      <div className={styles['desc-box']}>{desc}</div>
+    </MbtiContainer>
   );
 }
