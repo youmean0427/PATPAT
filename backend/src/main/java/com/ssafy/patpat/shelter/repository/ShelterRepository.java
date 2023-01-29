@@ -13,5 +13,6 @@ import java.util.Set;
 public interface ShelterRepository extends JpaRepository<Shelter,Integer> {
     List<Shelter> findBySidoCodeAndGugunCode(String sidoCode,String gugunCode);
     List<Shelter> findByShelterIdIn(Set<Integer> list);
+    Shelter findByShelterId(int shelterId);
 
 }

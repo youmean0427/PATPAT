@@ -1,17 +1,20 @@
 package com.ssafy.patpat;
 
-import com.ssafy.patpat.common.code.Breed;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.repository.GugunRepository;
-import com.ssafy.patpat.shelter.repository.ShelterDogRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.shelter.repository.SidoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class PatpatApplicationTests {
@@ -23,7 +26,7 @@ class PatpatApplicationTests {
 	@Autowired
 	GugunRepository gugunRepository;
 	@Autowired
-	ShelterDogRepository shelterDogRepository;
+	ShelterProtectedDogRepository repository;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -161,11 +164,22 @@ class PatpatApplicationTests {
 //		}
 
 		//랜덤뽑기
-		Breed[] arr = Breed.values();
-		System.out.println(Arrays.toString(arr));
-		Random random = new Random();
-		int n = random.nextInt(arr.length);
-		Breed breed = Breed.values()[n];
-		System.out.println(breed);
+//		Breed[] arr = Breed.values();
+//		System.out.println(Arrays.toString(arr));
+//		Random random = new Random();
+//		int n = random.nextInt(arr.length);
+//		Breed breed = Breed.values()[n];
+//		System.out.println(breed);
+		List<Integer> list = new ArrayList<>();
+		list.add(4);
+		list.add(5);
+		list.add(6);
+
+		//List<ShelterProtectedDog> test = repository.findByStateCodeNotIn(list, PageRequest.of(0, 1));
+		//System.out.println("test = " + test);
+		List<ShelterProtectedDog> test = repository.findByShelterIdAndStateCodeNotIn(1,list, PageRequest.of(0, 1));
+		System.out.println("test = " + test);
 	}
+
+
 }
