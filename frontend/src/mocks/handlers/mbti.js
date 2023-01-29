@@ -1,12 +1,10 @@
 import { rest } from 'msw';
-import { resultList } from 'mocks/data/mbti';
+import { mbtiResultList } from 'mocks/data/mbti';
 
 export const mbti = [
-  rest.get(`${process.env.REACT_APP_SERVER_URL}/mbti/:result`, (req, res, ctx) => {
+  rest.get(`${process.env.REACT_APP_API_URL}/mbti/:result`, (req, res, ctx) => {
     const { result } = req.params;
-    console.log(result);
-    const resultItem = resultList.find(item => item.mbti === result);
-    console.log(resultItem);
+    const resultItem = mbtiResultList.find(item => item.mbti === result);
     return res(ctx.status(200), ctx.json(resultItem));
   }),
 ];
