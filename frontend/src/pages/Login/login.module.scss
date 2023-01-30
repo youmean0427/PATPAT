@@ -1,40 +1,42 @@
 @import 'assets/styles/variable.scss';
 
 .main-container {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.header {
-  margin-bottom: 50px;
+  padding: 4rem;
 }
 .main-h1 {
   color: $blue-color;
-  font-size: 50px;
+  font-size: 4rem;
   font-weight: bolder;
 }
 .header p {
-  margin-top: 20px;
-  font-size: 20px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+.hr {
+  opacity: 60%;
 }
 .sub-container {
-  margin-top: 50px;
+  margin-top: 5rem;
 }
 .sub-h1 {
   color: $blue-color;
-  font-size: 30px;
+  font-size: 3rem;
   font-weight: bolder;
 }
 .functions {
-  margin-top: 30px;
+  margin-top: 3rem;
 }
 .functions * {
-  margin-left: 30px;
+  margin-left: 2rem;
+}
+.functions a img {
+  width: 20%;
 }
 .pat-logo {
   position: absolute;
   bottom: 0%;
   right: 0%;
   transform: translateX(-30%);
+  width: 25%;
 }

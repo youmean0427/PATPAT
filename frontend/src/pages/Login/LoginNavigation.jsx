@@ -11,7 +11,7 @@ export default function LoginHeader() {
 
   return (
     <div className={styles.navigation}>
-      <img src={Logo} alt="" onClick={moveToMain} />
+      <img src={Logo} alt="" onClick={moveToMain} title="메인 페이지로 이동" />
     </div>
   );
 }
