@@ -1,11 +1,16 @@
 package com.ssafy.patpat.user.service;
 
+import com.ssafy.patpat.common.jwt.TokenProvider;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,20 +23,35 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final TokenProvider tokenProvider;
+
+    @Transactional
+    public String login(UserDto userDto){
+        if(userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) == null) {
+            signup(userDto);
+        }
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getMethod());
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = tokenProvider.createToken(authentication);
+
+        return jwt;
+    }
 
     @Transactional
     public User signup(UserDto userDto){
-        if (userRepository.findOneWithAuthoritiesByNickname(userDto.getNickname()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
-        }
 
         Authority authority = Authority.builder()
-                .authorityName("user")
+                .authorityName("ROLE_USER")
                 .build();
 
         User user = User.builder()
-                .nickname(userDto.getNickname())
-                .email(passwordEncoder.encode(userDto.getEmail()))
+                .email(userDto.getEmail())
+                .method(passwordEncoder.encode(userDto.getMethod()))
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
@@ -40,12 +60,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities(String nickname) {
-        return userRepository.findOneWithAuthoritiesByNickname(nickname);
+    public Optional<User> getUserWithAuthorities(String email) {
+        return userRepository.findOneWithAuthoritiesByEmail(email);
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getMyUserWithAuthorities(){
-        return SecurityUtil.getCurrentNickname().flatMap(userRepository::findOneWithAuthoritiesByNickname);
+        return SecurityUtil.getCurrentNickname().flatMap(userRepository::findOneWithAuthoritiesByEmail);
     }
 }

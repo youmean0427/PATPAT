@@ -25,7 +25,6 @@ public class User {
     private String ageRange;
 
     @Column(name = "nickname")
-    @NotNull
     private String nickname;
 
     @Column(name = "exp")
@@ -35,6 +34,10 @@ public class User {
     @Column(name = "email")
     @NotNull
     private String email;
+
+    @Column(name = "method")
+    @NotNull
+    private String method;
 
     @Column(name = "profile_image")
     private String profileImage;

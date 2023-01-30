@@ -14,7 +14,7 @@ public class UserDto {
 
     @NotNull
     @Size(min=1, max=50)
-    private String nickname;
+    private String method;
 
     @NotNull
     @Size(min=3, max=100)

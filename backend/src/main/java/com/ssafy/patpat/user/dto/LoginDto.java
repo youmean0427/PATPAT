@@ -14,10 +14,10 @@ public class LoginDto {
 
     @NotNull
     @Size(min=1, max=50)
-    private String nickname;
+    private String email;
 
     @NotNull
     @Size(min=3, max=100)
-    private String email;
+    private String method;
 
 }
