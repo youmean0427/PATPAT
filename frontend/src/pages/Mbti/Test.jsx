@@ -56,12 +56,14 @@ export default function Test() {
       </div>
       <div className={styles.testParagraphArea}>
         <p>{tests[q].question}</p>
-        <button onClick={handleClick} value={tests[q].selection[0].value}>
-          {tests[q].selection[0].answer}
-        </button>
-        <button onClick={handleClick} value={tests[q].selection[1].value}>
-          {tests[q].selection[1].answer}
-        </button>
+        <div>
+          <button onClick={handleClick} value={tests[q].selection[0].value}>
+            {tests[q].selection[0].answer}
+          </button>
+          <button onClick={handleClick} value={tests[q].selection[1].value}>
+            {tests[q].selection[1].answer}
+          </button>
+        </div>
       </div>
     </MbtiContainer>
   );

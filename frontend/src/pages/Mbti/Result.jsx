@@ -5,11 +5,11 @@ import styles from './Result.module.scss';
 import React from 'react';
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
-import { getMbtiResult } from 'apis/api/mbti';
+import { getMbtiBreedInfo } from 'apis/api/shelter';
 
 export default function Result() {
   const { state } = useLocation();
-  const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiResult(state.mbti));
+  const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiBreedInfo(state.mbti));
   if (isLoading) return;
   const { id, mbti, breed, feature, desc, imgUrl } = data;
   return (

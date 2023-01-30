@@ -4,16 +4,11 @@
   width: 40rem;
 }
 
-.title {
-  font-size: 3rem;
-  font-family: $sunflower-font;
-  color: $white-color;
-}
-
 .bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 3rem;
 }
 
 .desc {
@@ -31,17 +26,14 @@
 }
 
 .start-btn {
-  color: $white-color;
-  background-color: $blue-color;
+  color: $mbti-bg-color;
+  background-color: $mbti-btn-color;
   font-family: $sunflower-font;
   font-size: 3rem;
   border-radius: 4rem;
   padding: 2rem 5.5rem;
   margin: 3rem 0;
   transition-duration: 500ms;
-  &:hover {
-    background-color: $violet-color;
-  }
 }
 
 .total-desc {
@@ -52,31 +44,5 @@
     font-family: $sunflower-font;
     color: $white-color;
     font-size: 3rem;
-  }
-}
-
-@include breakpoint(sm) {
-  .title {
-    font-size: 1.9rem;
-  }
-  .logo {
-    width: 25rem;
-  }
-  .desc {
-    width: 23rem;
-    font-size: 1.6rem;
-    & > span {
-      font-size: 2rem;
-    }
-  }
-  .start-btn {
-    font-size: 2rem;
-    padding: 1.6rem 3rem;
-  }
-  .total-desc {
-    font-size: 1.6rem;
-    & > span {
-      font-size: 2rem;
-    }
   }
 }

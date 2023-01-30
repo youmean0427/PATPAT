@@ -1,16 +1,54 @@
 @import 'assets/styles/variable.scss';
 
-.wrapper {
-  width: 60%;
-  height: auto;
-  @include breakpoint(sm) {
-    width: 100%;
-  }
+.container {
+  position: relative;
+  flex: 1;
 }
 
-.container {
+.inner {
+  width: 100%;
+  margin-top: 0px;
+  padding-bottom: 34px;
+  overflow: auto;
+  min-height: 100vh;
+  background-color: $mbti-bg-color;
+}
+.header {
+  width: 500px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: $sunflower-font;
+  font-weight: 900;
+  font-size: 2.6rem;
+  background-color: $white-color;
+  border-left: 1px solid $mbti-border-color;
+  border-right: 1px solid $mbti-border-color;
+}
+.main {
+  padding-top: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
+
+.footer {
+  font-family: $sunflower-font;
+  font-weight: 900;
+  font-size: 1.6rem;
+  width: 100%;
+  max-width: 500px;
+  height: 34px;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  color: $white-color;
+  line-height: 34px;
+  background-color: $mbti-btn-color;
+  padding-left: 1.6rem;
 }
