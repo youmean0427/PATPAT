@@ -1,7 +1,9 @@
 @import 'assets/styles/variable.scss';
 
 .container {
-  margin-top: 5rem;
+  // margin-top: 5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .title {
@@ -17,6 +19,6 @@
 .list {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: wrap;
   justify-content: space-between;
 }

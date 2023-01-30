@@ -14,6 +14,7 @@ export default function MissingDogItem({ item }) {
           <div className={styles.content}>{content}</div>
         </div>
       </Card>
+      <br />
     </div>
   );
 }
