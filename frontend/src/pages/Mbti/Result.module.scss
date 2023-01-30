@@ -1,3 +1,144 @@
-.logo {
-  width: 40rem;
+@import 'assets/styles/variable.scss';
+
+.main-result {
+  width: 80%;
+  background-color: $white-color;
+  border-radius: 0.8rem;
+  box-shadow: 0px 0px 15px 0px rgba(143, 143, 143, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.feature {
+  width: 100%;
+  height: 52px;
+  text-align: center;
+  line-height: 52px;
+  color: $white-color;
+  background-color: $mbti-btn-color;
+  user-select: none;
+
+  & > span {
+    font-family: $hyemin-font;
+    font-weight: 900;
+    background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+  }
+}
+.result {
+  width: 100%;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  & > span {
+    font-family: $hyemin-font;
+    font-weight: 900;
+    user-select: none;
+  }
+  & > span:first-child {
+    margin-right: 0.4rem;
+  }
+}
+
+.img-box {
+  & > img {
+    width: 100%;
+  }
+}
+
+.desc-box {
+  width: 80%;
+  background-color: $white-color;
+  border-radius: 0.8rem;
+  font-size: 1.7rem;
+  box-shadow: 0px 0px 15px 0px rgba(143, 143, 143, 0.7);
+  padding: 3rem;
+  margin-top: 2rem;
+  & > span {
+    font-family: $hyemin-font;
+    line-height: 1.5;
+  }
+}
+
+.btn-box {
+  margin-top: 0.4rem;
+  & > a {
+    font-family: $hyemin-font;
+    font-size: 1.4rem;
+  }
+}
+
+.highlight {
+  font-family: $hyemin-font;
+  font-size: 1.8rem;
+  color: $mbti-btn-color;
+  font-weight: 900;
+  display: inline-table;
+  position: relative;
+  overflow: hidden;
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 200, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: -100%;
+    transition: all 0.35s;
+  }
+}
+
+.link:hover .highlight::before {
+  left: 0;
+}
+
+.retry {
+  width: 80%;
+  background-color: $mbti-btn-color;
+  border-radius: 0.8rem;
+  padding: 1.4rem;
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 2rem;
+  font-family: $hyemin-font;
+  color: $white-color;
+}
+
+.share-desc {
+  width: 80%;
+  margin-top: 2rem;
+  line-height: 1.5;
+  font-size: 1.8rem;
+  font-family: $hyemin-font;
+  & > span {
+    font-size: 1.8rem;
+    font-family: $hyemin-font;
+    font-weight: 900;
+  }
+}
+
+.share-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+  & > span {
+    font-size: 2.4rem;
+    font-family: $hyemin-font;
+  }
+}
+
+.share-list {
+  margin-top: 1rem;
+  & > img {
+    width: 5rem;
+    cursor: pointer;
+  }
+  & > img:nth-child(2) {
+    margin: 0 1rem;
+  }
 }

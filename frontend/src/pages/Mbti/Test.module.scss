@@ -5,11 +5,12 @@
 .statusArea {
   width: 80%;
   max-width: 60rem;
-  margin: 2rem 0;
+  margin: 4rem 0 2rem 0;
+  user-select: none;
   & > span {
-    font-family: $sunflower-font;
+    font-family: $hyemin-font;
     font-size: 2rem;
-    color: $black-color;
+    color: $mbti-btn-color;
   }
 }
 .statusBar {
@@ -23,7 +24,7 @@
 .status {
   height: 100%;
   border-radius: 2rem;
-  background-color: $black-color;
+  background-color: $mbti-btn-color;
   transition: width 0.5s;
 }
 
@@ -38,8 +39,9 @@
   align-items: center;
   border-radius: 0.8rem;
   padding: 2rem;
+  user-select: none;
   & > p {
-    font-family: $sunflower-font;
+    font-family: $hyemin-font;
     font-weight: 900;
     font-size: 2rem;
     text-align: center;
@@ -60,8 +62,9 @@
     border-radius: 0.6rem;
     color: $white-color;
     font-size: 2rem;
-    font-family: $sunflower-font;
+    font-family: $hyemin-font;
     margin-top: 2rem;
+    user-select: none;
     @include breakpoint(sm) {
       font-size: 1.6rem;
     }
