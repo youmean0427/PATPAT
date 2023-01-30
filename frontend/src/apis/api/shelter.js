@@ -50,8 +50,8 @@ export const getGugunList = async sidoCode => {
  * @param {string} mbtiId ex) infp,isfp ...
  * @returns 견종 결과 테이터 -> breedName,files,desc,title,mbti
  */
-export const getBreedInfo = async mbtiId => {
-  const { data } = await defaultInstance(`/shelters/mbti/${mbtiId}`);
+export const getMbtiBreedInfo = async mbtiId => {
+  const { data } = await defaultInstance(`/shelters/mbtis/${mbtiId}`);
   return data;
 };
 

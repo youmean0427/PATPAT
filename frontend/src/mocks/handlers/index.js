@@ -1,5 +1,5 @@
 import { protect } from './protect';
-import { mbti } from './mbti';
 import { board } from './board';
+import { shelter } from './shelter';
 
-export const handlers = [...mbti, ...protect, ...board];
+export const handlers = [...shelter, ...protect, ...board];
