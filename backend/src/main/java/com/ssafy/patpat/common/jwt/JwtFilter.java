@@ -21,7 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class JwtFilter extends GenericFilterBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtFilter.class);
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String ACCESSTOKEN_HEADER = "AccessToken";
+    public static final String REFRESHTOKEN_HEADER = "RefreshToken";
 
     private final TokenProvider tokenProvider;
 
@@ -43,7 +44,7 @@ public class JwtFilter extends GenericFilterBean {
 
     /**토큰 정보 추출 */
     private String resolveToken(HttpServletRequest request){
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String bearerToken = request.getHeader(ACCESSTOKEN_HEADER);
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7);
         }

@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import com.ssafy.patpat.common.util.SecurityUtil;
+import com.ssafy.patpat.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -30,20 +32,24 @@ import io.jsonwebtoken.security.Keys;
 public class TokenProvider implements InitializingBean {
     private final Logger LOGGER = LoggerFactory.getLogger(TokenProvider.class);
 
-    private static final String AUTHORITIES_KEY = "NeighborAPI";
+    private static final String AUTHORITIES_KEY = "PatPatAPI";
 
     private final String secret;
     private final long tokenAccessValidityInMilliseconds;
+
+    private final UserRepository userRepository;
 
     private final long tokenRefreshValidityInMilliseconds;
     private Key key;
 
     public TokenProvider(@Value("${jwt.secret}") String secret,
                          @Value("${jwt.access-token-validity-in-seconds}") long tokenAccessValidityInMilliseconds,
-                         @Value("${jwt.refresh-token-validity-in-seconds}") long tokenRefreshValidityInMilliseconds){
+                         @Value("${jwt.refresh-token-validity-in-seconds}") long tokenRefreshValidityInMilliseconds,
+                         UserRepository userRepository){
         this.secret = secret;
         this.tokenAccessValidityInMilliseconds = tokenAccessValidityInMilliseconds;
         this.tokenRefreshValidityInMilliseconds = tokenRefreshValidityInMilliseconds;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -71,16 +77,45 @@ public class TokenProvider implements InitializingBean {
 
     /**Refresh token 생성 algorithm */
     public String createRefreshToken(){
+        String email = SecurityUtil.getCurrentEmail().get();
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenRefreshValidityInMilliseconds);
 
         return Jwts.builder()
+                .setId(email)
                 .setIssuedAt(new Date())
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
     }
 
+    /** access token 재발급 체크 */
+    public boolean checkRefreshToken(String refreshToken){
+
+        com.ssafy.patpat.user.entity.User user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
+        if(user.getRefreshToken() == null){
+            LOGGER.info("refreshToken이 존재하지 않습니다.");
+            return false;
+        }
+        String userRefreshToken = user.getRefreshToken();
+
+        if(!userRefreshToken.equals(refreshToken)){
+            LOGGER.info("refreshToken이 맞지 않습니다.");
+            return false;
+        }
+
+        try{
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(userRefreshToken.substring(7));
+            LOGGER.info("refreshToken이 만료되지 않았습니다.");
+            return true;
+        }catch (ExpiredJwtException e) {
+            LOGGER.info("refreshToken이 만료되었습니다. 다시 로그인 해주세요.");
+            return false;
+        }catch (Exception e){
+            LOGGER.error("refreshToken 재발급중 에러각 발생했습니다.: {}", e.getMessage());
+            return false;
+        }
+    }
 
     /**인증 정보 조회 */
     public Authentication getAuthentication(String token) {

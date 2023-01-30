@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 
@@ -91,17 +92,20 @@ public class UserController {
         TokenDto tokenDto = userService.login(userDto);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getAccessToken());
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getRefreshToken());
+        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
+        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
 
         return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<User> signup(
-            @Valid @RequestBody UserDto userDto
-    ) {
-        return ResponseEntity.ok(userService.signup(userDto));
+    @GetMapping("/refresh")
+    public ResponseEntity<TokenDto> refresh(HttpServletRequest request) {
+        String bearerToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = userService.refresh(bearerToken);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
+        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
+        return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/info")
@@ -110,9 +114,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
     }
 
-    @GetMapping("/info/{nickname}")
+    @GetMapping("/info/{email}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<User> getUserInfo(@PathVariable String nickname){
-        return ResponseEntity.ok(userService.getUserWithAuthorities(nickname).get());
+    public ResponseEntity<User> getUserInfo(@PathVariable String email){
+        return ResponseEntity.ok(userService.getUserWithAuthorities(email).get());
     }
 }

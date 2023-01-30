@@ -8,7 +8,10 @@ import com.ssafy.patpat.user.dto.UserResponseDto;
 import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -17,12 +20,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -34,6 +40,7 @@ public class UserService {
         User user;
         if(userOptional.orElse(null) == null) {
             user = signup(userDto);
+
         }else{
             user = userOptional.get();
         }
@@ -52,9 +59,7 @@ public class UserService {
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
 
-        user.builder()
-                .refreshToken(refreshToken)
-                .build();
+        user.setRefreshToken(refreshToken);
 
         userRepository.save(user);
 
@@ -68,17 +73,38 @@ public class UserService {
                 .authorityName("ROLE_USER")
                 .build();
 
+        List<Authority> list = new ArrayList<>();
+        list.add(authority);
+
         User user = User.builder()
                 .email(userDto.getEmail())
                 .method(userDto.getMethod())
-                .authorities(Collections.singleton(authority))
+                .authorities(list)
                 .activated(true)
                 .build();
 
-        user.setPassword(passwordEncoder.encode(user.getMethod() + user.getUserid()));
+        userRepository.save(user);
 
-        System.out.println(user.getMethod());
+        String password = user.getMethod() + user.getUserid();
+        user.setPassword(passwordEncoder.encode(password));
+
+
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public TokenDto refresh(String refreshToken){
+        TokenDto token = new TokenDto();
+
+        if(tokenProvider.checkRefreshToken(refreshToken)){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String accessToken = tokenProvider.createAccessToken(authentication);
+
+            token.setAccessToken(accessToken);
+            token.setRefreshToken(refreshToken);
+        }
+        
+        return token;
     }
 
     @Transactional(readOnly = true)
@@ -88,6 +114,6 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getMyUserWithAuthorities(){
-        return SecurityUtil.getCurrentNickname().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        return SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
     }
 }

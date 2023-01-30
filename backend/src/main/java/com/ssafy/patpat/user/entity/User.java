@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -57,9 +58,12 @@ public class User {
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-    private Set<Authority> authorities;
+    private List<Authority> authorities;
 
     public void setPassword(String password){
         this.password = password;
+    }
+    public void setRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
     }
 }

@@ -58,6 +58,7 @@ public class SecurityJavaConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/login").permitAll()
+                .antMatchers("/user/refresh").permitAll()
                 .anyRequest().authenticated()
 
                 /**JwtSecurityConfig 적용 */
