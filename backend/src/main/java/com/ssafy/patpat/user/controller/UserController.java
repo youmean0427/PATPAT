@@ -1,19 +1,40 @@
 package com.ssafy.patpat.user.controller;
 
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.jwt.JwtFilter;
+import com.ssafy.patpat.common.jwt.TokenProvider;
 import com.ssafy.patpat.user.dto.FavoriteDto;
+import com.ssafy.patpat.user.dto.LoginDto;
+import com.ssafy.patpat.user.dto.TokenDto;
+import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
 @Api(tags = {"06. User"},description = "유저 관련 서비스")
 public class UserController {
+
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserService userService;
 
     /**
      * 찜 동물 리스트
@@ -62,5 +83,35 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenDto> login(@Valid @RequestBody UserDto userDto) {
+
+        String jwt = userService.login(userDto);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<User> signup(
+            @Valid @RequestBody UserDto userDto
+    ) {
+        return ResponseEntity.ok(userService.signup(userDto));
+    }
+
+    @GetMapping("/info")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<User> getMyUserInfo(){
+        return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
+    }
+
+    @GetMapping("/info/{nickname}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<User> getUserInfo(@PathVariable String nickname){
+        return ResponseEntity.ok(userService.getUserWithAuthorities(nickname).get());
     }
 }
