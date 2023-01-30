@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("consulting")
+@RequestMapping("consultations")
 @Api(tags = {"02. Consulting"},description = "상담 관련 서비스")
 public class ConsultingController {
     /**
@@ -38,7 +38,7 @@ public class ConsultingController {
      * @param
      * @return
      */
-    @GetMapping("/shelter")
+    @GetMapping("/shelters")
     @ApiOperation(value = "상담 조회", notes = "해당 보호소에서 예약된 상담을 조회한다.")
     public ResponseEntity<ArrayList<ConsultingDto>> selectConsultingListByShelter(RequestConsultingDto requestConsultingDto){
         //service 호출

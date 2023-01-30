@@ -24,5 +24,5 @@ public class ReservationDto {
     private LocalDateTime endTime;
     private int capacity;
     @Schema(example = "대기중,수락,거절,미완료,불참,완료")
-    private String stateCode;
+    private int stateCode;
 }

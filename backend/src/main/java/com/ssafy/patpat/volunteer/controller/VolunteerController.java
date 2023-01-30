@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/volunteer")
+@RequestMapping("/volunteers")
 @Api(tags = {"07. Volunteer"},description = "봉사 관련 서비스")
 public class VolunteerController {
     /**
      * 봉사 공고 조회(전체)
      * @return
      */
-    @GetMapping("/notice")
+    @GetMapping("/notices")
     @ApiOperation(value = "봉사 공고 조회", notes = "전체 봉사 공고를 조회")
-    public ResponseEntity<Object> selectNoticeList(RequestVolunteerDto dto){
+    public ResponseEntity<Object> selectNoticeList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -33,11 +33,27 @@ public class VolunteerController {
         }
     }
     /**
-     * 봉사 공고 조회(특정 보호소 내부의 봉사 리스트)
+     * 봉사 공고 조회(일반 유저가 보호소에 들어간 경우 (카드형식))
      * @return
      */
-    @GetMapping("/notice/{shelterId}")
-    @ApiOperation(value = "봉사 공고 조회", notes = "특정 보호소 내부의 봉사 리스트 조회")
+    @GetMapping("/notices/user")
+    @ApiOperation(value = "봉사 공고 조회", notes = "일반 유저가 보호소에 들어간 경우 (카드형식)")
+    public ResponseEntity<Object> selectNoticeListBySUser(@PathVariable int shelterId){
+        //서비스 호출 코드
+        if(true){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ArrayList<NoticeDto>());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+    /**
+     * 봉사 공고 조회(보호소가 자기 봉사 공고 볼 경우)
+     * @return
+     */
+    @GetMapping("/months")
+    @ApiOperation(value = "봉사 공고 조회", notes = "보호소가 자기 봉사 공고 볼 경우")
     public ResponseEntity<Object> selectNoticeListByShelter(@PathVariable int shelterId){
         //서비스 호출 코드
         if(true){
@@ -52,7 +68,7 @@ public class VolunteerController {
      * 봉사 공고 상세 조회
      * @return
      */
-    @GetMapping("/notice/detail/{noticeId}")
+    @GetMapping("/notices/detail/{noticeId}")
     @ApiOperation(value = "봉사 공고 상세 조회", notes = "봉사 공고 상세 조회")
     public ResponseEntity<Object> detailNotice(@PathVariable int noticeId){
         //서비스 호출 코드
@@ -68,9 +84,9 @@ public class VolunteerController {
      * 봉사 공고 등록
      * @return
      */
-    @PostMapping("/notice")
+    @PostMapping("/notices")
     @ApiOperation(value = "봉사 공고 등록", notes = "봉사 공고 등록")
-    public ResponseEntity<Object> insertNotice(@RequestBody NoticeDto dto){
+    public ResponseEntity<Object> insertNotice(@RequestBody NoticeDto noticeDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -84,9 +100,9 @@ public class VolunteerController {
      * 봉사 공고 수정
      * @return
      */
-    @PutMapping("/notice")
+    @PutMapping("/notices")
     @ApiOperation(value = "봉사 공고 수정", notes = "봉사 공고 수정")
-    public ResponseEntity<Object> updateNotice(@RequestBody NoticeDto dto){
+    public ResponseEntity<Object> updateNotice(@RequestBody NoticeDto noticeDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -100,9 +116,9 @@ public class VolunteerController {
      * 봉사 지원서 조회(개인)
      * @return
      */
-    @GetMapping("/reservation")
+    @GetMapping("/reservations/user")
     @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회")
-    public ResponseEntity<Object> selectReservationList(RequestVolunteerDto dto){
+    public ResponseEntity<Object> selectReservationList(@RequestParam int userId){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -116,9 +132,9 @@ public class VolunteerController {
      * 봉사 지원서 조회(보호소)
      * @return
      */
-    @GetMapping("/reservation/shelter")
+    @GetMapping("/reservations")
     @ApiOperation(value = "봉사 지원서 조회", notes = "특정 보호소에 지원된 봉사 지원서 조회")
-    public ResponseEntity<Object> selectReservationListByShelter(RequestVolunteerDto dto){
+    public ResponseEntity<Object> selectReservationListByShelter(@RequestParam int shelterId){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -132,9 +148,9 @@ public class VolunteerController {
      * 봉사 지원서 등록
      * @return
      */
-    @PostMapping("/reservation")
+    @PostMapping("/reservations")
     @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록")
-    public ResponseEntity<Object> insertReservation(RequestVolunteerDto dto){
+    public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -148,9 +164,9 @@ public class VolunteerController {
      * 봉사 지원서 수정
      * @return
      */
-    @PutMapping("/reservation")
+    @PutMapping("/reservations")
     @ApiOperation(value = "봉사 지원서 수정", notes = "봉사 지원서 수정")
-    public ResponseEntity<Object> updateReservation(RequestVolunteerDto dto){
+    public ResponseEntity<Object> updateReservation(@RequestBody ReservationDto reservationDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)

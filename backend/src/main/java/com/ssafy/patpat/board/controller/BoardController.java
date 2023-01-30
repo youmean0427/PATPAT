@@ -49,7 +49,7 @@ public class BoardController {
      * 전체 게시판 리스트를 리턴한다.(카테고리별)
      * @return
      */
-    @GetMapping("/all")
+    @GetMapping("/me")
     @ApiOperation(value = "게시판 리스트", notes = "전체 게시판 리스트를 조회한다.")
     public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
         //service 호출
