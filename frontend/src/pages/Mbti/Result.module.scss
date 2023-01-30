@@ -21,7 +21,6 @@
   user-select: none;
 
   & > span {
-    font-family: $hyemin-font;
     font-weight: 900;
     background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
     -webkit-text-fill-color: transparent;
@@ -34,7 +33,6 @@
   text-align: center;
   line-height: 40px;
   & > span {
-    font-family: $hyemin-font;
     font-weight: 900;
     user-select: none;
   }
@@ -58,7 +56,6 @@
   padding: 3rem;
   margin-top: 2rem;
   & > span {
-    font-family: $hyemin-font;
     line-height: 1.5;
   }
 }
@@ -66,13 +63,11 @@
 .btn-box {
   margin-top: 0.4rem;
   & > a {
-    font-family: $hyemin-font;
     font-size: 1.4rem;
   }
 }
 
 .highlight {
-  font-family: $hyemin-font;
   font-size: 1.8rem;
   color: $mbti-btn-color;
   font-weight: 900;
@@ -104,8 +99,11 @@
   text-align: center;
   margin-top: 2rem;
   font-size: 2rem;
-  font-family: $hyemin-font;
   color: $white-color;
+  transition: all 0.3s;
+  &:hover {
+    background-color: #694e4edc;
+  }
 }
 
 .share-desc {
@@ -113,10 +111,8 @@
   margin-top: 2rem;
   line-height: 1.5;
   font-size: 1.8rem;
-  font-family: $hyemin-font;
   & > span {
     font-size: 1.8rem;
-    font-family: $hyemin-font;
     font-weight: 900;
   }
 }
@@ -128,7 +124,6 @@
   margin-top: 4rem;
   & > span {
     font-size: 2.4rem;
-    font-family: $hyemin-font;
   }
 }
 

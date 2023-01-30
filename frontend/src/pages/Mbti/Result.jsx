@@ -5,12 +5,13 @@ import copyLink from 'assets/images/link.png';
 import facebook from 'assets/images/facebook.png';
 import styles from './Result.module.scss';
 import React from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { getMbtiBreedInfo } from 'apis/api/shelter';
 
 export default function Result() {
   const { state } = useLocation();
+  const navigator = useNavigate();
   const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiBreedInfo(state.mbti));
   if (isLoading) return;
   const { mbti, breed, feature, desc, imgUrl } = data;
@@ -36,10 +37,17 @@ export default function Result() {
           </Link>
         </div>
       </div>
-      <button className={styles.retry}>테스트 다시하기</button>
+      <button
+        onClick={() => {
+          navigator('/mbti/test');
+        }}
+        className={styles.retry}
+      >
+        테스트 다시하기
+      </button>
       <p className={styles['share-desc']}>
         오늘 테스트 결과를 재밌게 읽으셨나요? 유기견 그리고 <span>PATPAT</span>에 대해 더 많은 분이 아실 수 있도록, 이
-        <span>MBTI 테스트를 주변 친구들에게 공유</span>해주세요~
+        <span> MBTI 테스트를 주변 친구들에게 공유</span>해주세요~
       </p>
       <div className={styles['share-box']}>
         <span>공유하기</span>

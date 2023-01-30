@@ -8,7 +8,6 @@
   margin: 4rem 0 2rem 0;
   user-select: none;
   & > span {
-    font-family: $hyemin-font;
     font-size: 2rem;
     color: $mbti-btn-color;
   }
@@ -41,7 +40,6 @@
   padding: 2rem;
   user-select: none;
   & > p {
-    font-family: $hyemin-font;
     font-weight: 900;
     font-size: 2rem;
     text-align: center;
@@ -62,7 +60,6 @@
     border-radius: 0.6rem;
     color: $white-color;
     font-size: 2rem;
-    font-family: $hyemin-font;
     margin-top: 2rem;
     user-select: none;
     @include breakpoint(sm) {
