@@ -1,7 +1,6 @@
-package com.ssafy.patpat.board.repository;
+package com.ssafy.patpat.common.repository;
 
-import com.ssafy.patpat.board.entity.Board;
-import com.ssafy.patpat.board.entity.Image;
+import com.ssafy.patpat.common.entity.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

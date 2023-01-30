@@ -8,6 +8,8 @@ import com.ssafy.patpat.board.entity.*;
 import com.ssafy.patpat.board.repository.*;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.repository.ImageRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -222,7 +224,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile) {
+    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         /**
          * 유저 정보 들어오는거 생기면 다시하기
@@ -333,19 +335,24 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public ResponseMessage insertComment(CommentDto commentDto) {
         ResponseMessage responseMessage = new ResponseMessage();
-        Comment comment = Comment.builder()
-                .content(commentDto.getContent())
-                .regTime(commentDto.getRegDt())
-                .boardId(commentDto.getBoardId())
-                .userId(0)
-                .nickName("aa")
-                .build();
-        Comment save = commentRepository.save(comment);
-        if(save==null){
+        try{
+            Comment comment = Comment.builder()
+                    .content(commentDto.getContent())
+                    .regTime(commentDto.getRegDt())
+                    .boardId(commentDto.getBoardId())
+                    .userId(0)
+                    .nickName("aa")
+                    .userId(commentDto.getUserId())
+                    .build();
+            Comment save = commentRepository.save(comment);
+            if(save==null){
+                responseMessage.setMessage("FAIL");
+            }
+            else{
+                responseMessage.setMessage("SUCCESS");
+            }
+        }catch (Exception e ){
             responseMessage.setMessage("FAIL");
-        }
-        else{
-            responseMessage.setMessage("SUCCESS");
         }
         return responseMessage;
     }
@@ -358,17 +365,20 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public ResponseMessage updateComment(int commentId, CommentDto commentDto) {
         ResponseMessage responseMessage = new ResponseMessage();
+        try {
+            Comment comment = commentRepository.findByCommentId(commentId);
+            comment.updateComment(commentDto.getContent());
 
-        Comment comment = commentRepository.findByCommentId(commentId);
-        comment.updateComment(commentDto.getContent());
+            Comment save = commentRepository.save(comment);
 
-        Comment save = commentRepository.save(comment);
-
-        if(save==null){
+            if(save==null){
+                responseMessage.setMessage("FAIL");
+            }
+            else{
+                responseMessage.setMessage("SUCCESS");
+            }
+        }catch (Exception e ){
             responseMessage.setMessage("FAIL");
-        }
-        else{
-            responseMessage.setMessage("SUCCESS");
         }
         return responseMessage;
     }

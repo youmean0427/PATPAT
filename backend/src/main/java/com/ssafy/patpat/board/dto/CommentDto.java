@@ -28,4 +28,6 @@ public class CommentDto {
     private LocalDateTime regDt;
     @Schema(example = "대댓글 리스트")
     private List<ReplyDto> replyList;
+    @Schema(example = "유저id")
+    private int userId;
 }

@@ -25,4 +25,6 @@ public class ReplyDto {
     private String author;
     @Schema(example = "본문")
     private String content;
+    @Schema(example = "유저id")
+    private int userId;
 }
