@@ -1,0 +1,66 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  position: relative;
+  width: 70%;
+  margin: auto;
+  margin-top: 8%;
+}
+.content {
+  position: absolute;
+  float: left;
+  width: 100%;
+  margin-bottom: 80px;
+  z-index: 9999;
+}
+.content p {
+  float: left;
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+.forpaw-info {
+  margin-left: 5px;
+  margin-top: 2px;
+  float: left;
+  width: 20px;
+  cursor: pointer;
+}
+.content-text {
+  position: relative;
+  padding: 5px;
+  float: left;
+  width: 220px;
+  height: 40px;
+  font-size: 1rem;
+  background-color: $lighter-blue-color;
+  text-align: center;
+  margin-left: 8px;
+}
+.dog-gif {
+  position: relative;
+  width: 13%;
+  margin-bottom: -10px;
+  z-index: 1;
+}
+.user-profile {
+  position: absolute;
+  width: 13%;
+  right: 0;
+  border-radius: 50%;
+  bottom: 20px;
+}
+.road {
+  position: relative;
+  width: 100%;
+  height: 15px;
+  background-color: $light-blue-color;
+  border-radius: 30px;
+  z-index: 9999;
+}
+.modify-profile {
+  position: relative;
+  float: right;
+  width: 5%;
+  bottom: 10px;
+  cursor: pointer;
+}
