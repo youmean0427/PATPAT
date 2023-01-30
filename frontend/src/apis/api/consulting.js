@@ -62,4 +62,5 @@ export const updateConsultant = async (consultingId, data) => {
   const res = await authInstance.put(`/consultations/${consultingId}`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
+  return res;
 };
