@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
+import LoginLayout from 'layouts/LoginLayout';
 import Login from 'pages/Login/Login';
 import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
 import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <PlainLayout />,
+    element: <LoginLayout />,
     errorElement: <giNotFound />,
     children: [
       { index: true, element: <Login /> },
