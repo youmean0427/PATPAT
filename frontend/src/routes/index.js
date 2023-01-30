@@ -18,6 +18,7 @@ import VideoRoomComponent from 'pages/Consulting/Meeting/components/VideoRoomCom
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
 import Address from 'pages/Volunteer/Address';
+import MyPage from 'pages/MyPage/MyPage';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
+      { path: 'mypage', element: <MyPage /> },
     ],
   },
   {

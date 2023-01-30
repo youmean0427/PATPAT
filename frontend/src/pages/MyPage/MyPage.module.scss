@@ -1,0 +1,14 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+}
+.line {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  opacity: 50%;
+}
+.contents {
+  text-align: center;
+}
