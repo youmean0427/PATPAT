@@ -15,12 +15,11 @@
   width: 30rem;
   font-weight: 500;
   font-size: 2rem;
-  font-family: $hyemin-font;
   text-align: center;
+  line-height: 1.5;
   & > span {
-    font-weight: 500;
+    font-weight: 900;
     font-size: 2.2rem;
-    font-family: $hyemin-font;
     color: $white-color;
   }
 }
@@ -28,7 +27,6 @@
 .start-btn {
   color: $mbti-bg-color;
   background-color: $mbti-btn-color;
-  font-family: $hyemin-font;
   font-size: 3rem;
   border-radius: 4rem;
   padding: 2rem 5.5rem;
@@ -37,11 +35,9 @@
 }
 
 .total-desc {
-  font-family: $hyemin-font;
   font-size: 1.8rem;
   text-align: center;
   & > span {
-    font-family: $hyemin-font;
     color: $white-color;
     font-size: 3rem;
   }
