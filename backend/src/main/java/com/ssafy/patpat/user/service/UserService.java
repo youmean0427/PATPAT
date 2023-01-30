@@ -2,7 +2,9 @@ package com.ssafy.patpat.user.service;
 
 import com.ssafy.patpat.common.jwt.TokenProvider;
 import com.ssafy.patpat.common.util.SecurityUtil;
+import com.ssafy.patpat.user.dto.TokenDto;
 import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.dto.UserResponseDto;
 import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
@@ -27,19 +29,36 @@ public class UserService {
     private final TokenProvider tokenProvider;
 
     @Transactional
-    public String login(UserDto userDto){
-        if(userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail()).orElse(null) == null) {
-            signup(userDto);
+    public TokenDto login(UserDto userDto){
+        Optional<User> userOptional = userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail());
+        User user;
+        if(userOptional.orElse(null) == null) {
+            user = signup(userDto);
+        }else{
+            user = userOptional.get();
         }
+
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getMethod());
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getMethod() + user.getUserid());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = tokenProvider.createToken(authentication);
+        TokenDto token = new TokenDto();
 
-        return jwt;
+        String accessToken = tokenProvider.createAccessToken(authentication);
+        String refreshToken = tokenProvider.createRefreshToken();
+
+        token.setAccessToken(accessToken);
+        token.setRefreshToken(refreshToken);
+
+        user.builder()
+                .refreshToken(refreshToken)
+                .build();
+
+        userRepository.save(user);
+
+        return token;
     }
 
     @Transactional
@@ -51,11 +70,14 @@ public class UserService {
 
         User user = User.builder()
                 .email(userDto.getEmail())
-                .method(passwordEncoder.encode(userDto.getMethod()))
+                .method(userDto.getMethod())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
 
+        user.setPassword(passwordEncoder.encode(user.getMethod() + user.getUserid()));
+
+        System.out.println(user.getMethod());
         return userRepository.save(user);
     }
 

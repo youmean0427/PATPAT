@@ -49,6 +49,9 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
+    @Column(name = "password")
+    private String password;
+
     @ManyToMany
     @JoinTable(
             name = "user_authority",
@@ -56,4 +59,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
+    public void setPassword(String password){
+        this.password = password;
+    }
 }

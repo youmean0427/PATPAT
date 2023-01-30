@@ -88,12 +88,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@Valid @RequestBody UserDto userDto) {
 
-        String jwt = userService.login(userDto);
+        TokenDto tokenDto = userService.login(userDto);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getAccessToken());
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenDto.getRefreshToken());
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/signup")

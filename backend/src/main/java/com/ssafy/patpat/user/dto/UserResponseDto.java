@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponseDto {
-    private String token;
+    private TokenDto tokenDto;
     private UserDto userDto;
 }

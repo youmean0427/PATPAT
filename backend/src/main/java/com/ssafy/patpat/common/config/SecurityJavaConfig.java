@@ -55,10 +55,10 @@ public class SecurityJavaConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 /** HttpServletRequest를 사용하는 요청들에 대한 접근 제한 설정*/
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/*").permitAll()
-//                .anyRequest().authenticated()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/user/login").permitAll()
+                .anyRequest().authenticated()
 
                 /**JwtSecurityConfig 적용 */
                 .and()

@@ -33,13 +33,17 @@ public class TokenProvider implements InitializingBean {
     private static final String AUTHORITIES_KEY = "NeighborAPI";
 
     private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final long tokenAccessValidityInMilliseconds;
+
+    private final long tokenRefreshValidityInMilliseconds;
     private Key key;
 
     public TokenProvider(@Value("${jwt.secret}") String secret,
-                         @Value("${jwt.token-validity-in-seconds}") long tokenValidityInMilliseconds){
+                         @Value("${jwt.access-token-validity-in-seconds}") long tokenAccessValidityInMilliseconds,
+                         @Value("${jwt.refresh-token-validity-in-seconds}") long tokenRefreshValidityInMilliseconds){
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
+        this.tokenAccessValidityInMilliseconds = tokenAccessValidityInMilliseconds;
+        this.tokenRefreshValidityInMilliseconds = tokenRefreshValidityInMilliseconds;
     }
 
     @Override
@@ -48,21 +52,35 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    /**token 생성 algorithm */
-    public String createToken(Authentication authentication){
+    /**Access token 생성 algorithm */
+    public String createAccessToken(Authentication authentication){
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        Date validity = new Date(now + this.tokenAccessValidityInMilliseconds);
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
+                .setIssuedAt(new Date())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
     }
+
+    /**Refresh token 생성 algorithm */
+    public String createRefreshToken(){
+        long now = (new Date()).getTime();
+        Date validity = new Date(now + this.tokenRefreshValidityInMilliseconds);
+
+        return Jwts.builder()
+                .setIssuedAt(new Date())
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
+    }
+
 
     /**인증 정보 조회 */
     public Authentication getAuthentication(String token) {
