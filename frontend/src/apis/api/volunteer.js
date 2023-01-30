@@ -32,7 +32,9 @@ export const getVolNoticeDetail = async noticeId => {
  * @returns
  */
 export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
-  const { data } = await authInstance.get(`volunteers/notices?shelterId=${shelterId}&limit=${limit}&offset=${offset}`);
+  const { data } = await authInstance.get(
+    `volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offset=${offset}`
+  );
   return data;
 };
 
@@ -71,12 +73,12 @@ export const getVolReservationOfShelter = async shelterId => {
 
 /**
  * POST : 보호소에서 봉사활동 신청 공고 등록
- * @param {FormData} formData
+ * @param {json} data
  * @returns
  */
-export const createVolNotice = async formData => {
-  const res = await authInstance.post(`volunteers/notices`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
+export const createVolNotice = async data => {
+  const res = await authInstance.post(`volunteers/notices`, data, {
+    headers: { 'Content-Type': 'application/json' },
   });
   return res;
 };
@@ -96,12 +98,12 @@ export const applyVolReservation = async (volunteerId, capacity) => {
 /**
  * PUT : 보호소 봉사활동 공고 정보 수정
  * @param {int} volunteerId
- * @param {FormData} formData
+ * @param {json} data
  * @returns
  */
-export const updateVolNotice = async (volunteerId, formData) => {
-  const res = await authInstance.put(`volunteers/notices/${volunteerId}`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
+export const updateVolNotice = async (volunteerId, data) => {
+  const res = await authInstance.put(`volunteers/notices/${volunteerId}`, data, {
+    headers: { 'Content-Type': 'application/json' },
   });
   return res;
 };

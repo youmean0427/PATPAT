@@ -85,7 +85,7 @@ export const getSimilarDogList = async (missingId, limit, offset) => {
  * @returns
  */
 export const getTotalSimiralCount = async breedId => {
-  const { data } = await defaultInstance.get(`/reports/recomments/count?breedId=${breedId}`);
+  const { data } = await defaultInstance.get(`/reports/recommends/count?breedId=${breedId}`);
   return data;
 };
 
@@ -100,6 +100,7 @@ export const createReport = async (reportType, formData) => {
   const res = await authInstance.post(`/reports?reportType=${reportType}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
+  return res;
 };
 
 /**
@@ -111,4 +112,5 @@ export const updateReport = async (reportType, formData) => {
   const res = await authInstance.post(`/reports/updates?reportType=${reportType}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
+  return res;
 };
