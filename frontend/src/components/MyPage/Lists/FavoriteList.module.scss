@@ -1,1 +1,10 @@
 @import 'assets/styles/variable.scss';
+
+.container {
+  width: 80%;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 50px;
+}
