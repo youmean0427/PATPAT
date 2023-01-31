@@ -1,37 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { getMissingDogList } from 'apis/api/report';
-import React from 'react';
 import MissingDogItem from './MissingDogItem';
 import styles from './MissingDogList.module.scss';
+import React, { useState } from 'react';
 export default function MissingDogList() {
+  const [genderIndex, setGenderIndex] = useState(null);
+
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogList'],
-    queryFn: () => getMissingDogList(0, 6, 0),
+    queryFn: () => getMissingDogList(null, genderIndex, 1, 0),
   });
-  const [num, setnum] = React.useState([]);
-  const [search, setSearch] = React.useState('');
-
-  function filtered(e) {
-    setSearch(e.target.value);
-    setnum(
-      data.filter(itemList => {
-        return itemList.title.includes(search);
-      })
-    );
-  }
-  console.log(num, search);
   if (isLoading) return;
 
   return (
     <div>
-      <div>
-        <input type="text" value={search} onChange={filtered} />
-      </div>
+      <select>
+        <option>웰시</option>
+        <option>푸들</option>
+        <option>불독</option>
+      </select>
+      <select onChange={e => setGenderIndex(e.target.value)}>
+        <option value={0}>수컷</option>
+        <option value={1}>암컷</option>
+      </select>
+
       <div className={styles.container}>
         <div className={styles.list}>
-          {search === ''
-            ? data.map(item => <MissingDogItem key={item.missingId} item={item} />)
-            : num.map(item => <MissingDogItem key={item.missingId} item={item} />)}
+          {data.map(item => (
+            <MissingDogItem key={item.missingId} item={item} />
+          ))}
         </div>
       </div>
     </div>
