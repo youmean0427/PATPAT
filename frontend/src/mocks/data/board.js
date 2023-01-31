@@ -25,3 +25,30 @@ export const boardReviewList = [
     thumbnail: 'https://www.ekara.org/file/getBlob/30799',
   },
 ];
+
+export const myBoardList = [
+  {
+    boardId: 1,
+    title: '입양후기',
+    author: '작성자',
+    registDate: [2023, 1, 28],
+    count: 0,
+    typeCode: 0,
+  },
+  {
+    boardId: 2,
+    title: '무료나눔',
+    author: '작성자',
+    registDate: [2023, 1, 29],
+    count: 0,
+    typeCode: 1,
+  },
+  {
+    boardId: 3,
+    title: '정보공유',
+    author: '작성자',
+    registDate: [2023, 1, 29],
+    count: 0,
+    typeCode: 2,
+  },
+];

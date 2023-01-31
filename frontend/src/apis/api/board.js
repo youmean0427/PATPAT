@@ -16,7 +16,7 @@ export const getBoardList = async (typeCode, limit, offset) => {
 
 /**
  * GET : 내가 작성한 게시판 리스트 데이터를 가져온다.
- * @param {int} typeCode 0 : 입양후기, 1 : 무료 용품 나눔 , 2 : 정보 공유
+ * @param {int} typeCode null : 전체, 0 : 입양후기, 1 : 무료 용품 나눔 , 2 : 정보 공유
  * @param {int} limit 리스트로 가져올 item 개수
  * @param {int} offset skip할 개수
  * @returns [] : typeCode에 따른 Item을 가진 배열
