@@ -4,11 +4,10 @@ import { authInstance } from 'apis/utils';
 
 /**
  * GET : 유저의 꾹 리스트
- * @param {int} userId
  * @returns
  */
 export const getFavListListOfUser = async userId => {
-  const { data } = await authInstance.get(`/user/favorite/${userId}`);
+  const { data } = await authInstance.get(`/user/favorite`);
   return data;
 };
 
