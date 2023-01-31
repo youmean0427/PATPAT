@@ -24,6 +24,19 @@ export const getProtectDetail = async protectId => {
   return data;
 };
 
+/**
+ * GET : 특정 보호소의 보호 동물 리스트
+ * @param {int} shelterId
+ * @param {int} limit
+ * @param {int} offset
+ * @returns
+ */
+export const getProtectListOfShelter = async (shelterId, limit, offset) => {
+  const { data } = await defaultInstance.get(
+    `/protects/shelters?shelterId=${shelterId}&limit=${limit}&offset=${offset}`
+  );
+  return data;
+};
 // POST
 
 /**

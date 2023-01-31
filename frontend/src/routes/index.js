@@ -19,6 +19,7 @@ import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
 import Address from 'pages/Volunteer/Address';
 import MyPage from 'pages/MyPage/MyPage';
+import Report from 'pages/Report/Report';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,8 @@ const router = createBrowserRouter([
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'mypage', element: <MyPage /> },
+      { path: 'volunteer/address', element: <Address /> },
+      { path: 'report', element: <Report /> },
     ],
   },
   {

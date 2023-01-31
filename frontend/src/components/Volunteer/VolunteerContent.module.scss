@@ -23,11 +23,6 @@
   }
 }
 
-div {
-  font-style: $spoqa-font;
-  font-size: 20px;
-}
-
 @include breakpoint(md) {
   .img {
     width: 80vw;

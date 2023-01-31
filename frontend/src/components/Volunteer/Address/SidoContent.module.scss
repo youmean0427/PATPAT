@@ -1,0 +1,22 @@
+@import '../../../assets/styles/variable.scss';
+
+.address {
+  font-size: 20px;
+
+  > ul {
+    > li {
+      // margin: 5px;
+      display: flex;
+      // border-style: solid;
+      // border-width: 2px;
+      // border-color: $blue-color;
+      height: 50px;
+    }
+  }
+}
+
+.buttonMargin {
+  margin-left: 20px;
+  position: relative;
+  width: 100%;
+}
