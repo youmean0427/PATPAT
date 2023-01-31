@@ -7,7 +7,7 @@ import Table from 'components/Common/Table';
 export default function BoardsList() {
   const { data, isLoading } = useQuery({
     queryKey: ['myBoardListAll'],
-    queryFn: () => getBoardListByMe(typeCode, 3, 0),
+    queryFn: () => getBoardListByMe(typeCode, 20, 0),
   });
 
   const [category, setCategory] = useState([true, false, false, false]);

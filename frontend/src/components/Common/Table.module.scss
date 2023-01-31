@@ -4,6 +4,7 @@
 .table table {
   border-spacing: 10px;
   border-collapse: separate;
+  table-layout: fixed;
 }
 .table table thead tr th {
   font-size: 1vw;

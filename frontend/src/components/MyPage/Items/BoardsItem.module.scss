@@ -6,6 +6,14 @@
   font-weight: bolder;
 }
 .title {
-  text-align: left;
+  float: left;
   text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 30vw;
+}
+.type,
+.author,
+.count,
+.registDate {
+  width: 10%;
 }

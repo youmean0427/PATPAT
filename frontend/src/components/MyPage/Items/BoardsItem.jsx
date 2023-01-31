@@ -10,9 +10,9 @@ export default function ReviewItem({ item }) {
         {item.typeCode === 0 ? '[입양후기]' : item.typeCode === 1 ? '[무료나눔]' : '[정보공유]'}
       </td>
       <td className={styles.title}>{item.title}</td>
-      <td>{item.author}</td>
-      <td>{item.count}</td>
-      <td>
+      <td className={styles.author}>{item.author}</td>
+      <td className={styles.count}>{item.count}</td>
+      <td className={styles.registDate}>
         {item.registDate[0]}.{item.registDate[1]}.{item.registDate[2]}
       </td>
     </tr>
