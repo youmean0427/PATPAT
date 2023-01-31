@@ -1,35 +1,108 @@
 @import 'assets/styles/variable.scss';
 
-.container {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  margin: auto;
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+  .container {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+  }
+  .btn {
+    display: inline-block;
+    font-size: 1vw;
+    background-color: $white-color;
+    color: $blue-color;
+    padding: 7px;
+    margin: 5px;
+    border: 3px solid $blue-color;
+  }
+  .btn:hover {
+    background-color: $blue-color;
+    color: $white-color;
+  }
+  .btn-click {
+    display: inline-block;
+    font-size: 1vw;
+    background-color: $blue-color;
+    color: $white-color;
+    padding: 7px;
+    margin: 5px;
+    border: 3px solid $blue-color;
+  }
+  .contents {
+    width: 100%;
+    margin: auto;
+    margin-top: 5%;
+  }
 }
-.btn {
-  display: inline-block;
-  font-size: 1vw;
-  background-color: $white-color;
-  color: $blue-color;
-  padding: 7px;
-  margin: 5px;
-  border: 3px solid $blue-color;
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+  .container {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+  }
+  .btn {
+    display: inline-block;
+    font-size: 1vw;
+    background-color: $white-color;
+    color: $blue-color;
+    padding: 7px;
+    margin: 5px;
+    border: 3px solid $blue-color;
+  }
+  .btn:hover {
+    background-color: $blue-color;
+    color: $white-color;
+  }
+  .btn-click {
+    display: inline-block;
+    font-size: 1vw;
+    background-color: $blue-color;
+    color: $white-color;
+    padding: 7px;
+    margin: 5px;
+    border: 3px solid $blue-color;
+  }
+  .contents {
+    width: 100%;
+    margin: auto;
+    margin-top: 5%;
+  }
 }
-.btn:hover {
-  background-color: $blue-color;
-  color: $white-color;
-}
-.btn-click {
-  display: inline-block;
-  font-size: 1vw;
-  background-color: $blue-color;
-  color: $white-color;
-  padding: 7px;
-  margin: 5px;
-  border: 3px solid $blue-color;
-}
-.contents {
-  width: 100%;
-  margin: auto;
-  margin-top: 5%;
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .container {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+  }
+  .btn {
+    display: inline-block;
+    font-size: 1vw;
+    background-color: $white-color;
+    color: $blue-color;
+    padding: 2px;
+    margin: 3px;
+    border: 2px solid $blue-color;
+  }
+  .btn-click {
+    display: inline-block;
+    font-size: 1vw;
+    background-color: $blue-color;
+    color: $white-color;
+    padding: 2px;
+    margin: 3px;
+    border: 2px solid $blue-color;
+  }
+  .contents {
+    width: 100%;
+    margin: auto;
+    margin-top: 5%;
+  }
 }
