@@ -2,16 +2,16 @@ export const mbtiResultList = [
   {
     id: 1,
     mbti: 'istj',
-    breed: '골든 리트리버',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '골든 리트리버',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhyP0crzIUTFvlURz5vyg4svDEhoBKYftxiw&usqp=CAU',
   },
   {
     id: 2,
     mbti: 'istp',
-    breed: '말티즈',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '말티즈',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://images.mypetlife.co.kr/content/uploads/2022/05/20101703/2020-11-18-00-02-39-301-1024x1024-1-768x768.jpg',
@@ -19,24 +19,24 @@ export const mbtiResultList = [
   {
     id: 3,
     mbti: 'infj',
-    breed: '포메라니안',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '포메라니안',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl: 'https://images.mypetlife.co.kr/content/uploads/2022/05/20104848/image-1024x640-1-edited.png',
   },
   {
     id: 4,
     mbti: 'intj',
-    breed: '푸들',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '푸들',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgURl: 'https://images.mypetlife.co.kr/content/uploads/2022/05/20110540/IMG_7697-1-1536x1536.jpg',
   },
   {
     id: 5,
     mbti: 'isfj',
-    breed: '웰시코기',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '웰시코기',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://images.mypetlife.co.kr/content/uploads/2022/05/20132050/iOS-%EC%9D%B4%EB%AF%B8%EC%A7%80-5-1-edited-scaled.jpg',
@@ -44,8 +44,8 @@ export const mbtiResultList = [
   {
     id: 6,
     mbti: 'isfp',
-    breed: '진돗개',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '진돗개',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://images.mypetlife.co.kr/content/uploads/2022/05/20110849/republic-of-korea-1877033_1280-768x512-1-edited.jpg',
@@ -53,16 +53,16 @@ export const mbtiResultList = [
   {
     id: 7,
     mbti: 'infp',
-    breed: '사모예드',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '사모예드',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl: 'https://images.mypetlife.co.kr/content/uploads/2022/05/20112353/samoyed-dog.gif',
   },
   {
     id: 8,
     mbti: 'intp',
-    breed: '셰퍼드',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '셰퍼드',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://images.mypetlife.co.kr/content/uploads/2022/05/20113505/christoph-schmid-PXAP4PGBj6E-unsplash-1024x683-1-edited.jpg',
@@ -70,8 +70,8 @@ export const mbtiResultList = [
   {
     id: 9,
     mbti: 'estj',
-    breed: '로트와일러',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '로트와일러',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://images.mypetlife.co.kr/content/uploads/2022/05/20131005/michael-starkie-pgZ84X4Z4yM-unsplash-edited-scaled.jpg',
@@ -79,16 +79,16 @@ export const mbtiResultList = [
   {
     id: 10,
     mbti: 'esfp',
-    breed: '믹스견',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '믹스견',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl: 'https://image-notepet.akamaized.net/resize/620x-/seimage/20181203%2F801200f5e53db5b0f6deafb589aba36c.jpg',
   },
   {
     id: 11,
     mbti: 'enfp',
-    breed: '비글',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '비글',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://images.mypetlife.co.kr/content/uploads/2022/05/20110926/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-edited.jpg',
@@ -96,24 +96,24 @@ export const mbtiResultList = [
   {
     id: 12,
     mbti: 'entp',
-    breed: '미니핀',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '미니핀',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl: 'https://mblogthumb-phinf.pstatic.net/data18/2006/10/15/65/mini-recker.jpg?type=w210',
   },
   {
     id: 13,
     mbti: 'esfj',
-    breed: '시츄',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '시츄',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl: 'https://blog.kakaocdn.net/dn/8gKun/btrrObAvPfY/1jG7vTox70KJr7GxCcM5zK/img.jpg',
   },
   {
     id: 14,
     mbti: 'estp',
-    breed: '퍼그',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '퍼그',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://ichef.bbci.co.uk/news/640/cpsprodpb/8BEB/production/_124891853_886a2932-475d-4d9c-8c71-b6d4481c3f5a.jpg',
@@ -121,8 +121,8 @@ export const mbtiResultList = [
   {
     id: 15,
     mbti: 'enfj',
-    breed: '닥스훈트',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '닥스훈트',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl:
       'https://images.mypetlife.co.kr/content/uploads/2022/05/25100917/izumi-Ck3gP1Ee_Ec-unsplash-edited-scaled.jpg',
@@ -130,9 +130,32 @@ export const mbtiResultList = [
   {
     id: 16,
     mbti: 'entj',
-    breed: '비숑',
-    feature: 'PATPAT 수석졸업 엄친개',
+    name: '비숑',
+    title: 'PATPAT 수석졸업 엄친개',
     desc: '당신은 이구역 최고의 똥꼬발랄견입니다. 만나는 모든 강아지들을 사로잡는 마성의 매력을 가졌죠. 언제나 사랑받는 당신이지만 친구들 엉덩이 냄새 맡고 다니다가 뒷발로 차이지 않게 조심하세요.',
     imgUrl: 'https://blog.kakaocdn.net/dn/bbUho7/btq5tb40ezv/wANaDPSXR5B7wk17xRaUsK/img.jpg',
   },
 ];
+
+export const searchBreedCountPerRegion = {
+  totalCnt: 80,
+  list: [
+    { code: 11, name: '서울특별시', count: 11 },
+    { code: 26, name: '부산광역시', count: 22 },
+    { code: 27, name: '대구광역시', count: 11 },
+    { code: 28, name: '인천광역시', count: 53 },
+    { code: 29, name: '광주광역시', count: 14 },
+    { code: 30, name: '대전광역시', count: 15 },
+    { code: 31, name: '울산광역시', count: 151 },
+    { code: 36, name: '세종특별자치시', count: 82 },
+    { code: 41, name: '경기도', count: 33 },
+    { code: 42, name: '강원도', count: 45 },
+    { code: 43, name: '충청북도', count: 55 },
+    { code: 44, name: '충청남도', count: 11 },
+    { code: 45, name: '전라북도', count: 22 },
+    { code: 46, name: '전라남도', count: 8 },
+    { code: 47, name: '경상북도', count: 12 },
+    { code: 48, name: '경상남도', count: 23 },
+    { code: 50, name: '제주특별자치도', count: 22 },
+  ],
+};
