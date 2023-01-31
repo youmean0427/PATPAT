@@ -11,7 +11,8 @@ export default function ReviewItem({ item }) {
       <td className={styles.author}>{author}</td>
       <td className={styles.count}>{count}</td>
       <td className={styles.registDate}>
-        {registDate[0]}.{registDate[1]}.{registDate[2]}
+        {registDate[0]}.{registDate[1] <= 9 ? '0' + registDate[1] : registDate[1]}.
+        {registDate[2] <= 9 ? '0' + registDate[2] : registDate[2]}
       </td>
     </tr>
   );
