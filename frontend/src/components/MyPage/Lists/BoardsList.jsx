@@ -7,8 +7,8 @@ import styles from './BoardsList.module.scss';
 export default function BoardsList() {
   const [category, setCategory] = useState([true, false, false, false]);
   const { data, isLoading } = useQuery({
-    queryKey: ['boardsAll'],
-    queryFn: () => getBoardListByMe(null, 4, 0),
+    queryKey: ['myBoardListAll'],
+    queryFn: () => getBoardListByMe(0, 3, 0),
   });
   if (isLoading) return;
 

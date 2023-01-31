@@ -25,8 +25,8 @@ export const boardReviewList = [
     thumbnail: 'https://www.ekara.org/file/getBlob/30799',
   },
 ];
-
-export const myBoardList = [
+// 마이페이지(개인) 게시글 전체
+export const myBoardListAll = [
   {
     boardId: 1,
     title: '입양후기',
