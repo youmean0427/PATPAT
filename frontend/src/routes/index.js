@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'volunteer/address', element: <Address /> },
-      { path: 'report', element: <Report /> }
+      { path: 'report', element: <Report /> },
     ],
   },
   {
