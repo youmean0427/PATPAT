@@ -65,6 +65,11 @@ public class SecurityJavaConfig {
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
 
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+
                 .and().build();
     }
 }

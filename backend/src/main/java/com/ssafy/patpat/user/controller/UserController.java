@@ -86,6 +86,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/login/kakao")
+    public ResponseEntity<TokenDto> kakaoLogin(@RequestParam("code")String code){
+
+    }
+
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@Valid @RequestBody UserDto userDto) {
 

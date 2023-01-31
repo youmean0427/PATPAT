@@ -36,9 +36,9 @@ public class User {
     @NotNull
     private String email;
 
-    @Column(name = "method")
+    @Column(name = "provider")
     @NotNull
-    private String method;
+    private String provider;
 
     @Column(name = "profile_image")
     private String profileImage;

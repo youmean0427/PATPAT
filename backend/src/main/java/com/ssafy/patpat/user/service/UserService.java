@@ -46,7 +46,7 @@ public class UserService {
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getMethod() + user.getUserid());
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getProvider() + user.getUserid());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -78,14 +78,14 @@ public class UserService {
 
         User user = User.builder()
                 .email(userDto.getEmail())
-                .method(userDto.getMethod())
+                .provider(userDto.getProvider())
                 .authorities(list)
                 .activated(true)
                 .build();
 
         userRepository.save(user);
 
-        String password = user.getMethod() + user.getUserid();
+        String password = user.getProvider() + user.getUserid();
         user.setPassword(passwordEncoder.encode(password));
 
         return userRepository.save(user);
@@ -98,7 +98,7 @@ public class UserService {
         User user = tokenProvider.checkRefreshToken(refreshToken);
         if(user != null){
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getMethod() + user.getUserid());
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getProvider() + user.getUserid());
 
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);

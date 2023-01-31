@@ -14,7 +14,7 @@ public class UserDto {
 
     @NotNull
     @Size(min=1, max=50)
-    private String method;
+    private String provider;
 
     @NotNull
     @Size(min=3, max=100)
