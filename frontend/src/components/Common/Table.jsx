@@ -6,11 +6,11 @@ export default function Table({ children }) {
       <table>
         <thead>
           <tr>
-            <th>분류</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>조회수</th>
-            <th>등록일</th>
+            <th className={styles.cat01}>분류</th>
+            <th className={styles.cat02}>제목</th>
+            <th className={styles.cat03}>작성자</th>
+            <th className={styles.cat04}>조회수</th>
+            <th className={styles.cat05}>등록일</th>
           </tr>
         </thead>
         <tbody>{children}</tbody>
