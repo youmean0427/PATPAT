@@ -5,4 +5,15 @@ import { personal } from './personal';
 import { shelter } from './shelter';
 import { volunteer } from './volunteer';
 import { consulting } from './consulting';
-export const handlers = [...shelter, ...protect, ...board, ...missing, ...personal, ...volunteer, ...consulting];
+import { user } from './user';
+
+export const handlers = [
+  ...shelter,
+  ...protect,
+  ...board,
+  ...missing,
+  ...personal,
+  ...volunteer,
+  ...consulting,
+  ...user,
+];

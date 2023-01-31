@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Contents.module.scss';
 import BoardsList from './Lists/BoardsList';
+import FavoriteList from './Lists/FavoriteList';
 import VolunteerList from './Lists/VolunteerList';
 import ConsultingList from './Lists/ConsultingList';
 
@@ -41,6 +42,7 @@ export default function Contents() {
         </button>
       </div>
       <div className={styles.contents}>
+        {click[1] ? <FavoriteList /> : null}
         {click[2] ? <BoardsList /> : null}
         {click[3] ? <VolunteerList /> : null}
         {click[4] ? <ConsultingList /> : null}
