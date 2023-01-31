@@ -100,8 +100,9 @@ public class UserController {
 
     @GetMapping("/refresh")
     public ResponseEntity<TokenDto> refresh(HttpServletRequest request) {
-        String bearerToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
-        TokenDto tokenDto = userService.refresh(bearerToken);
+
+        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = userService.refresh(refreshToken);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
         httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());

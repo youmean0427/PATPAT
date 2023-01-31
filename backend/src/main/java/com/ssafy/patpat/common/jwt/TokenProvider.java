@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import com.ssafy.patpat.common.code.error.ErrorCode;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.repository.UserRepository;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class TokenProvider implements InitializingBean {
@@ -81,39 +85,42 @@ public class TokenProvider implements InitializingBean {
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenRefreshValidityInMilliseconds);
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setId(email)
                 .setIssuedAt(new Date())
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
+        LOGGER.info("accessToken이 생성되었습니다.");
+        return token;
     }
 
     /** access token 재발급 체크 */
-    public boolean checkRefreshToken(String refreshToken){
+    public com.ssafy.patpat.user.entity.User checkRefreshToken(String refreshToken){
+        com.ssafy.patpat.user.entity.User user = userRepository.findOneWithAuthoritiesByEmail(getTokenEmail(refreshToken.substring(7))).get();
 
-        com.ssafy.patpat.user.entity.User user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail).get();
         if(user.getRefreshToken() == null){
             LOGGER.info("refreshToken이 존재하지 않습니다.");
-            return false;
+            return null;
         }
         String userRefreshToken = user.getRefreshToken();
 
-        if(!userRefreshToken.equals(refreshToken)){
+        System.out.println(userRefreshToken);
+        if(!userRefreshToken.equals(refreshToken.substring(7))){
             LOGGER.info("refreshToken이 맞지 않습니다.");
-            return false;
+            return null;
         }
 
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(userRefreshToken.substring(7));
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(userRefreshToken);
             LOGGER.info("refreshToken이 만료되지 않았습니다.");
-            return true;
+            return user;
         }catch (ExpiredJwtException e) {
             LOGGER.info("refreshToken이 만료되었습니다. 다시 로그인 해주세요.");
-            return false;
+            return null;
         }catch (Exception e){
             LOGGER.error("refreshToken 재발급중 에러각 발생했습니다.: {}", e.getMessage());
-            return false;
+            return null;
         }
     }
 
@@ -132,20 +139,21 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
+    /**리프레쉬 정보 조회 */
+    public String getTokenEmail(String token) {
+        String email = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getId();
+
+        return email;
+    }
+
     /**token 유효성 검증 */
-    public boolean validateToken(String token){
-        try{
+    public boolean validateToken(String token) throws Exception{
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        }catch(io.jsonwebtoken.security.SecurityException | MalformedJwtException e){
-            LOGGER.info("잘못된 JWT 서명입니다.");
-        }catch(ExpiredJwtException e){
-            LOGGER.info("만료된 JWT 토큰입니다.");
-        }catch(UnsupportedJwtException e){
-            LOGGER.info("지원하지 않는 JWT 토큰입니다.");
-        }catch(IllegalArgumentException e){
-            LOGGER.info("JWT 토큰이 잘못되었습니다.");
-        }
-        return false;
     }
 }

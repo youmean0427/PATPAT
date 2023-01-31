@@ -88,7 +88,6 @@ public class UserService {
         String password = user.getMethod() + user.getUserid();
         user.setPassword(passwordEncoder.encode(password));
 
-
         return userRepository.save(user);
     }
 
@@ -96,12 +95,18 @@ public class UserService {
     public TokenDto refresh(String refreshToken){
         TokenDto token = new TokenDto();
 
-        if(tokenProvider.checkRefreshToken(refreshToken)){
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = tokenProvider.checkRefreshToken(refreshToken);
+        if(user != null){
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getMethod() + user.getUserid());
+
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             String accessToken = tokenProvider.createAccessToken(authentication);
 
             token.setAccessToken(accessToken);
-            token.setRefreshToken(refreshToken);
+            token.setRefreshToken(refreshToken.substring(7));
         }
         
         return token;
