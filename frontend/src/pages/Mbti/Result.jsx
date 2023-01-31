@@ -6,7 +6,6 @@ import facebook from 'assets/images/facebook.png';
 import styles from './Result.module.scss';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import { getMbtiBreedInfo } from 'apis/api/shelter';
 
 export default function Result() {
@@ -14,27 +13,33 @@ export default function Result() {
   const navigator = useNavigate();
   const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiBreedInfo(state.mbti));
   if (isLoading) return;
-  const { mbti, breed, feature, desc, imgUrl } = data;
+  const { id, mbti, name, title, desc, imgUrl } = data;
   return (
     <MbtiContainer>
       <div className={styles['main-result']}>
-        <div className={styles.feature}>
-          🐶 <span>{feature}</span> 🐶
+        <div className={styles.title}>
+          🐶 <span>{title}</span> 🐶
         </div>
         <div className={styles['img-box']}>
           <img src={imgUrl} alt="img" />
         </div>
         <div className={styles.result}>
           <span>{mbti}</span>
-          <span>{breed}</span>
+          <span>{name}</span>
         </div>
       </div>
       <div className={styles['desc-box']}>
         <span>{desc}</span>
         <div className={styles['btn-box']}>
-          <Link className={styles.link} to="#">
+          <button
+            onClick={() => {
+              window.scrollTo(0, 0);
+              navigator('/mbti/result/map', { state: { breedId: id, breedName: name } });
+            }}
+            className={styles.link}
+          >
             <span className={styles.highlight}>PATPAT</span>에서 나의 가족 찾아보기
-          </Link>
+          </button>
         </div>
       </div>
       <button

@@ -51,7 +51,17 @@ export const getGugunList = async sidoCode => {
  * @returns 견종 결과 테이터 -> breedName,files,desc,title,mbti
  */
 export const getMbtiBreedInfo = async mbtiId => {
-  const { data } = await defaultInstance(`/shelters/mbtis/${mbtiId}`);
+  const { data } = await defaultInstance(`/shelters/mbti/${mbtiId}`);
+  return data;
+};
+
+/**
+ * GET : MBTI 결과로 얻은 견종을 가진 보호소의 개수를 리턴 (전국 개수,시도별 개수)
+ * @param {int} breedId
+ * @returns
+ */
+export const getCountShelterByBreed = async breedId => {
+  const { data } = await defaultInstance(`/shelters/mbti/count/${breedId}`);
   return data;
 };
 
