@@ -14,8 +14,6 @@ import lombok.*;
 public class ShelterDto {
     private int shelterId;
     private String name;
-    private String latitude;
-    private String longitude;
     private String address;
     @Schema(example = "fileUrl:.png")
     private FileDto fileDto;
