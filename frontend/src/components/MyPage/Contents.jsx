@@ -42,6 +42,7 @@ export default function Contents() {
         </button>
       </div>
       <div className={styles.contents}>
+        {click[0] ? <FavoriteList /> : null}
         {click[1] ? <FavoriteList /> : null}
         {click[2] ? <BoardsList /> : null}
         {click[3] ? <VolunteerList /> : null}
