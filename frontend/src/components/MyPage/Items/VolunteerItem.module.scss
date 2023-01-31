@@ -113,6 +113,10 @@
     height: 25px;
     font-size: 1rem;
   }
+  .cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 10px 20px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
+  }
   .state0,
   .state1,
   .state2 {
