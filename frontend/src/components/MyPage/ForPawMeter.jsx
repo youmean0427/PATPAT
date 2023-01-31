@@ -14,6 +14,11 @@ export default function ForPawMeter() {
   return (
     <div className={styles.ForPaw}>
       <div className={styles.container}>
+        {click ? (
+          <div className={styles['content-text']}>
+            For Paw Meter는 봉사시간, 후기, 정보공유 등을 종합해서 만든 관심 지표입니다.
+          </div>
+        ) : null}
         <div className={styles.content}>
           <p>ForPawMeter</p>
           <img
@@ -23,13 +28,7 @@ export default function ForPawMeter() {
             className={styles['forpaw-info']}
             onClick={() => setClick(cur => !cur)}
           />
-          {click ? (
-            <div className={styles['content-text']}>
-              For Paw Meter는 봉사시간, 후기, 정보공유 등을 종합해서 만든 관심 지표입니다.
-            </div>
-          ) : null}
         </div>
-
         <br />
         <img src={ForPawDog} alt="" className={styles['dog-gif']} style={{ marginLeft: `${distance}` }} />
         <img src={profile_url} alt="" className={styles['user-profile']} />

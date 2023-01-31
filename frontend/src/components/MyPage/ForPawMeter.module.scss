@@ -7,10 +7,10 @@
   margin-top: 8%;
 }
 .content {
-  position: absolute;
+  position: relative;
   float: left;
   width: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 1rem;
   z-index: 9999;
 }
 .content p {
@@ -28,7 +28,6 @@
 .content-text {
   position: relative;
   padding: 5px;
-  float: left;
   width: 220px;
   height: 40px;
   font-size: 1rem;
