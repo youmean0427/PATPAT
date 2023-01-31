@@ -4,5 +4,5 @@ import { missing } from './missing';
 import { personal } from './personal';
 import { shelter } from './shelter';
 import { volunteer } from './volunteer';
-
-export const handlers = [...shelter, ...protect, ...board, ...missing, ...personal, ...volunteer];
+import { consulting } from './consulting';
+export const handlers = [...shelter, ...protect, ...board, ...missing, ...personal, ...volunteer, ...consulting];
