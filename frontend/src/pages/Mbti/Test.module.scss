@@ -5,10 +5,11 @@
 .statusArea {
   width: 80%;
   max-width: 60rem;
+  margin: 4rem 0 2rem 0;
+  user-select: none;
   & > span {
-    font-family: $sunflower-font;
     font-size: 2rem;
-    color: #30336b;
+    color: $mbti-btn-color;
   }
 }
 .statusBar {
@@ -22,13 +23,14 @@
 .status {
   height: 100%;
   border-radius: 2rem;
-  background-color: #30336b;
+  background-color: $mbti-btn-color;
   transition: width 0.5s;
 }
 
 .testParagraphArea {
   width: 80%;
   max-width: 60rem;
+  height: 330px;
   margin-top: 2rem;
   background-color: $white-color;
   display: flex;
@@ -36,8 +38,8 @@
   align-items: center;
   border-radius: 0.8rem;
   padding: 2rem;
+  user-select: none;
   & > p {
-    font-family: $sunflower-font;
     font-weight: 900;
     font-size: 2rem;
     text-align: center;
@@ -46,16 +48,20 @@
       font-size: 1.6rem;
     }
   }
-  & > button {
+
+  & > div {
     width: 80%;
     max-width: 40rem;
+  }
+  & > div > button {
+    width: 100%;
     padding: 2rem;
-    background-color: #30336b;
+    background-color: $mbti-btn-color;
     border-radius: 0.6rem;
     color: $white-color;
     font-size: 2rem;
-    font-family: $sunflower-font;
     margin-top: 2rem;
+    user-select: none;
     @include breakpoint(sm) {
       font-size: 1.6rem;
     }

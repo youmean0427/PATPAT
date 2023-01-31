@@ -129,9 +129,10 @@ export const UpdateComment = async (commentId, data) => {
 }
  */
 export const UpdateReply = async (replyId, data) => {
-  const res = await authInstance.put(`/boards/comments/replies${replyId}`, data, {
+  const res = await authInstance.put(`/boards/comments/replies/${replyId}`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
+  return res;
 };
 
 // DELETE APIs

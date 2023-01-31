@@ -50,15 +50,15 @@ export const getGugunList = async sidoCode => {
  * @param {string} mbtiId ex) infp,isfp ...
  * @returns 견종 결과 테이터 -> breedName,files,desc,title,mbti
  */
-export const getBreedInfo = async mbtiId => {
-  const { data } = await defaultInstance(`/shelters/mbti/${mbtiId}`);
+export const getMbtiBreedInfo = async mbtiId => {
+  const { data } = await defaultInstance(`/shelters/mbtis/${mbtiId}`);
   return data;
 };
 
 // POST
 
 /**
- * 보호소 인증 후 등록
+ * POST : 보호소 인증 후 등록
  * @param {string} code
  * @param {string} name
  * @returns
@@ -68,8 +68,15 @@ export const createShelter = async (code, name) => {
   return res;
 };
 
+/**
+ * POST : 보호소 정보 업데이트
+ * @param {FormData} formdata
+ * @param {int} shelterId
+ * @returns
+ */
 export const updateShelter = async (formdata, shelterId) => {
   const res = await authInstance(`/shelters/${shelterId}`, formdata, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
+  return res;
 };

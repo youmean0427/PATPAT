@@ -30,6 +30,9 @@ const router = createBrowserRouter([
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
+      { path: 'volunteer', element: <Volunteer /> },
+      { path: 'volunteer/address', element: <Address /> },
+      { path: 'report', element: <Report /> }
     ],
   },
   {
@@ -60,21 +63,6 @@ const router = createBrowserRouter([
       { path: 'meeting', element: <VideoRoomComponent /> },
       { path: 'waiting', element: <Waiting /> },
     ],
-  },
-  {
-    path: '/volunteer',
-    element: <MainLayout />,
-    errorElement: <NotFound />,
-    children: [
-      { index: true, element: <Volunteer /> },
-      { path: 'address', element: <Address /> },
-    ],
-  },
-  {
-    path: '/report',
-    element: <MainLayout />,
-    errorElement: <NotFound />,
-    children: [{ index: true, element: <Report /> }],
   },
 ]);
 

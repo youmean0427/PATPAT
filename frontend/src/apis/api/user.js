@@ -11,6 +11,16 @@ export const getFavListListOfUser = async () => {
   return data;
 };
 
+/**
+ * GET : 유저 프로필 정보 데이터
+ * @param {int} userId
+ * @returns
+ */
+export const getUserInfo = async userId => {
+  const { data } = await authInstance.get(`/user/${userId}`);
+  return data;
+};
+
 // POST
 
 /**
