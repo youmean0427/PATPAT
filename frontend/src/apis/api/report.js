@@ -1,6 +1,6 @@
-// GET
-
 import { authInstance, defaultInstance } from 'apis/utils';
+
+// GET
 
 // /report/missing -> 전체 조회
 // /report/missing/:userId -> 해당 유저의 실종 리스트

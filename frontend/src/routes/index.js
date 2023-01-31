@@ -16,6 +16,8 @@ import PlainLayout from 'layouts/PlainLayout';
 import VideoRoomComponent from 'pages/Consulting/Meeting/components/VideoRoomComponent';
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
+import Address from 'pages/Volunteer/Address';
+import Report from 'pages/Report/Report';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,8 @@ const router = createBrowserRouter([
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
+      { path: 'volunteer/address', element: <Address /> },
+      { path: 'report', element: <Report /> }
     ],
   },
   {
