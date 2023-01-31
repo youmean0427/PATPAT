@@ -22,6 +22,7 @@
   position: fixed;
   top: 0;
   left: 50%;
+  z-index: 99;
   transform: translateX(-50%);
   font-size: 2.6rem;
   background-color: $white-color;

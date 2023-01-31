@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Navbar.module.scss';
 import { Link } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
-import { DarkModeOutlined } from '@mui/icons-material';
 import MenuList from './MenuList';
 
 export default function Navbar() {
