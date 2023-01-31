@@ -1,4 +1,4 @@
-import { boardReviewList, myBoardListAll } from 'mocks/data/board';
+import { boardReviewList, myBoardList } from 'mocks/data/board';
 import { rest } from 'msw';
 
 export const board = [
@@ -6,6 +6,6 @@ export const board = [
     return res(ctx.status(200), ctx.json(boardReviewList));
   }),
   rest.get(`${process.env.REACT_APP_API_URL}/boards/me`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(myBoardListAll));
+    return res(ctx.status(200), ctx.json(myBoardList));
   }),
 ];

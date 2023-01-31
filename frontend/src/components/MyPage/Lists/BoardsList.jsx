@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { getBoardListByMe } from 'apis/api/board';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BoardsItem from '../Items/BoardsItem';
 import styles from './BoardsList.module.scss';
 import Table from 'components/Common/Table';
 export default function BoardsList() {
   const { data, isLoading } = useQuery({
-    queryKey: ['myBoardListAll'],
+    queryKey: ['myBoardList'],
     queryFn: () => getBoardListByMe(typeCode, 20, 0),
   });
 
