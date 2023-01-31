@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './Contents.module.scss';
 import BoardsList from './Lists/BoardsList';
 import VolunteerList from './Lists/VolunteerList';
+import ConsultingList from './Lists/ConsultingList';
 
 export default function Contents() {
   const [click, setClick] = useState([true, false, false, false, false]);
@@ -42,6 +43,7 @@ export default function Contents() {
       <div className={styles.contents}>
         {click[2] ? <BoardsList /> : null}
         {click[3] ? <VolunteerList /> : null}
+        {click[4] ? <ConsultingList /> : null}
       </div>
     </div>
   );

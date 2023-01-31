@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { getVolReservationOfUser } from 'apis/api/volunteer';
+import { getMyConsultations } from 'apis/api/consulting';
 import React from 'react';
 import styles from './ReservationList.module.scss';
-import VolunteerItem from '../Items/VolunteerItem';
+import ConsultingItem from '../Items/ConsultingItem';
 
-export default function VolunteerList() {
+export default function ConsultingList() {
   const userId = 1;
 
   const { data, isLoading } = useQuery({
-    queryKey: ['myVolunteerList'],
-    queryFn: () => getVolReservationOfUser(userId),
+    queryKey: ['myConsultingList'],
+    queryFn: () => getMyConsultations(userId, 0),
   });
 
   if (isLoading) return;
@@ -17,7 +17,7 @@ export default function VolunteerList() {
   return (
     <div className={styles.container}>
       {data.map(item => (
-        <VolunteerItem key={item.reservationId} item={item} />
+        <ConsultingItem key={item.consultingId} item={item} />
       ))}
     </div>
   );
