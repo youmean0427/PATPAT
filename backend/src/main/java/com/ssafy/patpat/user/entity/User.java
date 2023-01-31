@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,8 +38,10 @@ public class User {
     private String email;
 
     @Column(name = "provider")
-    @NotNull
     private String provider;
+
+    @Column(name = "provider_id")
+    private String providerId;
 
     @Column(name = "profile_image")
     private String profileImage;

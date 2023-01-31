@@ -1,5 +1,6 @@
 package com.ssafy.patpat.common.details;
 
+import com.ssafy.patpat.user.dto.Oauth2UserInfo;
 import com.ssafy.patpat.user.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,17 +8,35 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
 @ToString
-@RequiredArgsConstructor
-public class CustomDetails implements UserDetails {
+public class CustomDetails implements UserDetails, OAuth2User {
 
-    private final User user;
+    private User user;
+//    private Map<String, Object> attributes;
+
+    private Oauth2UserInfo oauth2UserInfo;
+
+    public CustomDetails(User user){
+        this.user = user;
+    }
+
+    public CustomDetails(User user, Oauth2UserInfo oauth2UserInfo){
+        this.user = user;
+        this.oauth2UserInfo = oauth2UserInfo;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return oauth2UserInfo.getAttributes();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -79,5 +98,10 @@ public class CustomDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return oauth2UserInfo.getProviderId();
     }
 }

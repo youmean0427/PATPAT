@@ -33,7 +33,7 @@ public class KakaoUserDto implements Oauth2UserInfo{
     }
 
     @Override
-    public String getNickname() {
+    public String getName() {
         return attributesProfile.get("nickname").toString();
     }
 }

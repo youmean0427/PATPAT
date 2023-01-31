@@ -20,10 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -76,17 +73,18 @@ public class UserService {
         List<Authority> list = new ArrayList<>();
         list.add(authority);
 
+        String uuid = UUID.randomUUID().toString().substring(0, 6);
+        String password = passwordEncoder.encode("패스워드"+uuid);
+
         User user = User.builder()
                 .email(userDto.getEmail())
                 .provider(userDto.getProvider())
+                .providerId(userDto.getProviderId())
+                .password(password)
+                .nickname(userDto.getUsername())
                 .authorities(list)
                 .activated(true)
                 .build();
-
-        userRepository.save(user);
-
-        String password = user.getProvider() + user.getUserid();
-        user.setPassword(passwordEncoder.encode(password));
 
         return userRepository.save(user);
     }
