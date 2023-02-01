@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 public class RequestProtectDto {
     private int code;
-    private int shelterId;
     private int offSet;
     private int limit;
 }

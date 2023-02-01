@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -25,10 +26,14 @@ public class ConsultingDto {
     private String userName;
     @Schema(example = "주소")
     private String address;
-    @Schema(example = "시작 시간")
+    @Schema(example = "시간코드")
+    private int timeCode;
+    @Schema(example = "시작시간")
     private LocalDateTime startTime;
-    @Schema(example = "종료 시간")
+    @Schema(example = "종료시간")
     private LocalDateTime endTime;
-    @Schema(example = "대기,승인,거절,완료")
-    private String state;
+    @Schema(example = "날짜")
+    private LocalDate registDate;
+    @Schema(example = "대기중,수락,거절")
+    private int stateCode;
 }

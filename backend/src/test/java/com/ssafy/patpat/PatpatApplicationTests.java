@@ -2,19 +2,20 @@ package com.ssafy.patpat;
 
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.GugunRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.shelter.repository.SidoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @SpringBootTest
 class PatpatApplicationTests {
@@ -22,14 +23,13 @@ class PatpatApplicationTests {
 	ShelterRepository shelterRepository;
 	@Autowired
 	SidoRepository sidoRepository;
-
 	@Autowired
 	GugunRepository gugunRepository;
 	@Autowired
-	ShelterProtectedDogRepository repository;
-
+	ShelterProtectedDogRepository shelterProtectedDogRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
 	@Test
 	void contextLoads() {
 	}
@@ -170,16 +170,71 @@ class PatpatApplicationTests {
 //		int n = random.nextInt(arr.length);
 //		Breed breed = Breed.values()[n];
 //		System.out.println(breed);
-		List<Integer> list = new ArrayList<>();
-		list.add(4);
-		list.add(5);
-		list.add(6);
+//		List<Integer> list = new ArrayList<>();
+//		list.add(4);
+//		list.add(5);
+//		list.add(6);
+//
+//		//List<ShelterProtectedDog> test = repository.findByStateCodeNotIn(list, PageRequest.of(0, 1));
+//		//System.out.println("test = " + test);
+//		List<ShelterProtectedDog> test = repository.findByShelterIdAndStateCodeNotIn(1,list, PageRequest.of(0, 1));
+//		System.out.println("test = " + test);
 
-		//List<ShelterProtectedDog> test = repository.findByStateCodeNotIn(list, PageRequest.of(0, 1));
-		//System.out.println("test = " + test);
-		List<ShelterProtectedDog> test = repository.findByShelterIdAndStateCodeNotIn(1,list, PageRequest.of(0, 1));
-		System.out.println("test = " + test);
 	}
+	@Test
+	void dummy(){
+		//보호소 집어넣기
+//		int sido = 50;
+//		String str = "제추특별자치도";
+//		for(int i=1; i<12; i++){
+//			shelterRepository.save(
+//					Shelter.builder()
+//							.name("테스트보호소"+i)
+//							.address(str)
+//							.sidoCode(String.valueOf(sido))
+//							.gugunCode(sido+"120")
+//							.latitude("33.222323")
+//							.longitude("34.23232")
+//							.regNumber("22-2222323")
+//							.phoneNum("000-0000")
+//							.build()
+//			);
+//		}
+		//강아지 집어넣기
+		//견종 하나씩 집어넣자 각 보호소 마다
+//		Random random = new Random();
+//			for(int i=1; i<316; i++){
+//				Shelter s = shelterRepository.findByShelterId(i);
+//				for(int j=1; j<17; j++) {
+//					shelterProtectedDogRepository.save(
+//									ShelterProtectedDog.builder()
+//											.name("견훈"+(i*j))
+//											.latitude(s.getLatitude())
+//											.longitude(s.getLongitude())
+//											.age(2)
+//											.breedId(j)
+//											.shelterId(i)
+//											.weight(1.2)
+//											.sidoCode(s.getSidoCode())
+//											.gugunCode(s.getGugunCode())
+//											.gender(random.nextInt(1))
+//											.neutered(random.nextInt(1))
+//											.registDate(LocalDate.now())
+//											.feature("테스트 강아지 입니당")
+//											.stateCode(0)
+//											.categoryEar(0)
+//											.categoryCloth(0)
+//											.categoryClothColor(0)
+//											.categoryTail(0)
+//											.categoryColor(0)
+//											.categoryPattern(0)
+//											.findingDate(LocalDate.now())
+//											.build()
+//
+//					);
+//				}
+//			}
 
+		}
 
 }
