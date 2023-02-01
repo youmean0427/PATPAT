@@ -4,7 +4,10 @@ import com.ssafy.patpat.common.jwt.JwtAccessDeniedHandler;
 import com.ssafy.patpat.common.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.patpat.common.jwt.JwtSecurityConfig;
 import com.ssafy.patpat.common.jwt.TokenProvider;
+import com.ssafy.patpat.common.oauth.OAuth2SuccessHandler;
+import com.ssafy.patpat.user.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,6 +27,8 @@ public class SecurityJavaConfig {
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,7 +42,7 @@ public class SecurityJavaConfig {
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .cors().disable()
                 .csrf().disable()
                 .formLogin().disable()
@@ -55,15 +60,25 @@ public class SecurityJavaConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 /** HttpServletRequest를 사용하는 요청들에 대한 접근 제한 설정*/
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/*").permitAll()
-//                .anyRequest().authenticated()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/user/login").permitAll()
+                .antMatchers("/user/refresh").permitAll()
+                .antMatchers("/oauth2/authorization/*").permitAll()
+                .anyRequest().authenticated()
 
                 /**JwtSecurityConfig 적용 */
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
 
-                .and().build();
+                .and()
+                .oauth2Login()
+                .successHandler(oAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
+                
+        return http.build();
+
+
     }
 }
