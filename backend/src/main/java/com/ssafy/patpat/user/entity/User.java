@@ -69,4 +69,9 @@ public class User {
     public void setRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.exp = this.exp == null ? 0 : this.exp;
+    }
 }
