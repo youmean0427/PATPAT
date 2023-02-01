@@ -1,4 +1,4 @@
-import { femaleMissingDogList, maleMissingDogList, missingDogList } from 'mocks/data/missing';
+import { femaleMissingDogList, maleMissingDogList, missingDogDetail, missingDogList } from 'mocks/data/missing';
 import { rest } from 'msw';
 
 export const missing = [
@@ -14,5 +14,9 @@ export const missing = [
   }),
   rest.get(`${process.env.REACT_APP_API_URL}/reports/missings/:userId`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(missingDogList));
+  }),
+
+  rest.get(`${process.env.REACT_APP_API_URL}/reports/missings/detail/:missingId`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(missingDogDetail));
   }),
 ];

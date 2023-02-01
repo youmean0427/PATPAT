@@ -15,7 +15,6 @@ export default function Report() {
   return (
     <div>
       <Banner title="실종견 / 임보견" />
-
       <div className={styles.container}>
         <button
           onClick={() => handleClick('실종')}
@@ -30,11 +29,10 @@ export default function Report() {
           임보견
         </button>
       </div>
-
-      <Section>
+      <div>
         {selected === '실종' ? <MissingDogList /> : null}
         {selected === '임보' ? <PersonalDogList /> : null}
-      </Section>
+      </div>
     </div>
   );
 }
