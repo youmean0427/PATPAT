@@ -29,6 +29,7 @@ public class UserService {
 
     @Transactional
     public TokenDto login(UserDto userDto){
+
         Optional<User> userOptional = userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail());
         User user;
         if(userOptional.orElse(null) == null) {
