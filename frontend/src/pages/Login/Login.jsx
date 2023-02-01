@@ -1,36 +1,40 @@
 import React from 'react';
-import LoginNavigation from './LoginNavigation';
-import NaverLogin from './SNSLogin/Naver/NaverLogin';
-import KakaoLoginBtn from 'assets/images/kakaoBtn.png';
-import GoogleLoginBtn from 'assets/images/googleBtn.png';
+import logo from 'assets/images/logo.png';
+import { RiKakaoTalkLine } from 'react-icons/ri';
+import { SiNaver } from 'react-icons/si';
+import { GrGoogle } from 'react-icons/gr';
 import PatLogo from 'assets/images/pat.png';
-import styles from './login.module.scss';
-import { REST_API_KEY, REDIRECT_URI } from './SNSLogin/Kakao/KAuth';
+import styles from './Login.module.scss';
 
 export default function Login() {
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
+  const kauthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+  console.log(process.env.REACT_APP_KAKAO_REDIRECT_URI);
   return (
     <>
-      <LoginNavigation />
       <div className={styles['main-container']}>
         <div className={styles.header}>
-          <h1 className={styles['main-h1']}>로그인</h1>
-          <p>PATPAT에 방문해주셔서 감사합니다.</p>
-        </div>
-        <hr className={styles.hr} />
-        <div className={styles['sub-container']}>
-          <h1 className={styles['sub-h1']}>SNS 로그인</h1>
-          <div className={styles.functions}>
-            <NaverLogin />
-            <a href={KAKAO_AUTH_URL}>
-              <img src={KakaoLoginBtn} alt="카카오" title="카카오 로그인" />
-            </a>
-            <a href="">
-              <img src={GoogleLoginBtn} alt="구글" title="구글 로그인" />
-            </a>
+          <img src={logo} alt="logo" />
+          <div className={styles['header-title']}>
+            <span>어쩌면 우리 가족을 바꾸게 될</span> <span>새로운 가족을 받아들이는 일</span>
           </div>
         </div>
+        <button
+          onClick={() => {
+            window.location.href = kauthUrl;
+          }}
+          className={styles.button}
+        >
+          <RiKakaoTalkLine />
+          <div>카카오로 바로시작</div>
+        </button>
+        <button className={styles.button}>
+          <SiNaver />
+          <div>네이버로 바로시작</div>
+        </button>
+        <button className={styles.button}>
+          <GrGoogle />
+          <div>구글로 바로시작</div>
+        </button>
       </div>
       <img src={PatLogo} alt="" className={styles['pat-logo']} />
     </>

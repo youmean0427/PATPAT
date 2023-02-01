@@ -9,11 +9,10 @@ export default function ReviewList() {
     queryFn: () => getBoardList(0, 4, 0),
   });
   if (isLoading) return;
-
   return (
     <div className={styles.list}>
       {data.map(item => (
-        <ReviewItem key={item.id} item={item} />
+        <ReviewItem key={item.boardId} item={item} />
       ))}
     </div>
   );
