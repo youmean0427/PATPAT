@@ -24,6 +24,8 @@ public class ConsultingDto {
     private String shelterName;
     @Schema(example = "유저 이름")
     private String userName;
+    @Schema(example = "유저 이름")
+    private int userId;
     @Schema(example = "주소")
     private String address;
     @Schema(example = "시간코드")
@@ -36,4 +38,6 @@ public class ConsultingDto {
     private LocalDate registDate;
     @Schema(example = "대기중,수락,거절")
     private int stateCode;
+    @Schema(example = "강아지id")
+    private int shelterDogId;
 }

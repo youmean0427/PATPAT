@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestConsultingDto {
-    private int offset;
+    private int userId;
+    private int offSet;
     private int limit;
     private int shelterId;
 }

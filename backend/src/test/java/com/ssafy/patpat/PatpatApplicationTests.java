@@ -1,5 +1,8 @@
 package com.ssafy.patpat;
 
+import com.ssafy.patpat.consulting.dto.ConsultingDto;
+import com.ssafy.patpat.consulting.entity.Consulting;
+import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -29,6 +32,8 @@ class PatpatApplicationTests {
 	ShelterProtectedDogRepository shelterProtectedDogRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	@Autowired
+	ConsultingRepository consultingRepository;
 
 	@Test
 	void contextLoads() {
@@ -236,5 +241,16 @@ class PatpatApplicationTests {
 //			}
 
 		}
-
+	@Test
+	void consulting() {
+		Consulting consulting = Consulting.builder()
+				.userId(1)
+				.spDogId(2)
+				.shelterId(2)
+				.stateCode(0)
+				.registDate(LocalDate.now())
+				.timeCode(0)
+				.build();
+		consultingRepository.save(consulting);
+	}
 }
