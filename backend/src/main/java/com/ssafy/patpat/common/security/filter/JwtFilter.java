@@ -1,4 +1,4 @@
-package com.ssafy.patpat.common.jwt;
+package com.ssafy.patpat.common.security.filter;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ssafy.patpat.common.code.error.ErrorCode;
+import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;

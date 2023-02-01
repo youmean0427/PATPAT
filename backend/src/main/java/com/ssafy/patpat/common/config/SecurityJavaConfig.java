@@ -1,13 +1,12 @@
 package com.ssafy.patpat.common.config;
 
-import com.ssafy.patpat.common.jwt.JwtAccessDeniedHandler;
-import com.ssafy.patpat.common.jwt.JwtAuthenticationEntryPoint;
-import com.ssafy.patpat.common.jwt.JwtSecurityConfig;
-import com.ssafy.patpat.common.jwt.TokenProvider;
+import com.ssafy.patpat.common.security.jwt.JwtAccessDeniedHandler;
+import com.ssafy.patpat.common.security.jwt.JwtAuthenticationEntryPoint;
+import com.ssafy.patpat.common.security.jwt.JwtSecurityConfig;
+import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.oauth.OAuth2SuccessHandler;
 import com.ssafy.patpat.user.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -69,7 +68,7 @@ public class SecurityJavaConfig {
                 /** HttpServletRequest를 사용하는 요청들에 대한 접근 제한 설정*/
                 .and()
                 .authorizeRequests()
-                .antMatchers("/*").permitAll()
+                .antMatchers("/**").permitAll()
 //                .antMatchers("/user/login").permitAll()
 //                .antMatchers("/user/refresh").permitAll()
 //                .antMatchers("/oauth2/authorization/*").permitAll()
@@ -93,7 +92,7 @@ public class SecurityJavaConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
