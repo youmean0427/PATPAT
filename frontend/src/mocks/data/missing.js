@@ -303,6 +303,27 @@ export const missingDogList = [
     userId: 0,
     weight: '1.8',
   },
+  {
+    breedName: '웰시코기',
+    categoryCloth: '옷여부',
+    categoryClothColor: '옷색깔',
+    categoryColor: '털색',
+    categoryEar: '귀모양',
+    categoryPattern: '패턴',
+    categoryTail: '꼬리모양',
+    content: '사람을 좋아합니다.',
+    fileUrlList: 'https://cdn.salgoonews.com/news/photo/202201/14846_37584_921.jpg',
+    gender: 0,
+    latitude: '위도',
+    longitude: '경도',
+    missingId: 8,
+    name: '견훈',
+    neutered: 0,
+    personalProtectionId: 0,
+    title: '[실종] 부산 광역시 사하구 하단동 근처 초코푸들 발견하신분 연락주세요',
+    userId: 0,
+    weight: '1.8',
+  },
 ];
 
 export const missingDogDetail = {

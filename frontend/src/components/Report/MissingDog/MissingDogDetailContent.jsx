@@ -1,8 +1,18 @@
 import React from 'react';
 import styles from './MissingDogDetailContent.module.scss';
-export default function MissingDogDetailContent({ data }) {
-  console.log('1마리', data);
+import { useQuery } from '@tanstack/react-query';
+import { getMissingDogDetail } from 'apis/api/report';
+import { Link } from 'react-router-dom';
+export default function MissingDogDetailContent({ item }) {
+  console.log('1마리', item);
   // if (isLoading) return;
+
+  const { isLoading, data } = useQuery({
+    queryKey: ['missingDogDetail'],
+    queryFn: () => getMissingDogDetail(item),
+  });
+
+  if (isLoading) return;
 
   return (
     <div>
@@ -64,7 +74,9 @@ export default function MissingDogDetailContent({ data }) {
 
         <div className={styles['container-button']}>
           <button>이전</button>
-          <button>목록</button>
+          <Link to="/report">
+            <button>목록</button>
+          </Link>
           <button>다음</button>
         </div>
       </div>

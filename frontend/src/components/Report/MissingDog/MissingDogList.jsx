@@ -3,6 +3,7 @@ import { getMissingDogList } from 'apis/api/report';
 import MissingDogItem from './MissingDogItem';
 import styles from './MissingDogList.module.scss';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MissingDogList() {
   const [selectedGender, setSelectedGender] = useState(localStorage.getItem('selectedGender') || '');
@@ -19,7 +20,7 @@ export default function MissingDogList() {
 
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogList'],
-    queryFn: () => getMissingDogList(selectedBreed, selectedGender, 6, 0),
+    queryFn: () => getMissingDogList(selectedBreed, selectedGender, 0, 0),
   });
 
   if (isLoading) return;
@@ -37,6 +38,7 @@ export default function MissingDogList() {
           </span>
           <span>
             <select onChange={handleGenderChange} value={selectedGender}>
+              <option>전체</option>
               <option value={0}>수컷</option>
               <option value={1}>암컷</option>
             </select>
@@ -51,7 +53,9 @@ export default function MissingDogList() {
         </div>
       </div>
       <div>
-        <button className={styles.searchButton}>글쓰기</button>
+        <Link to="create">
+          <button className={styles.searchButton}>글쓰기</button>
+        </Link>
       </div>
     </div>
   );
