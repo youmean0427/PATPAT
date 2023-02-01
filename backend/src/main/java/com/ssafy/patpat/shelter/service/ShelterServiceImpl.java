@@ -77,8 +77,9 @@
 //		int breedId = breed.ordinal();
 //        String sidoCode = dto.getSidoCode();
 //        String gugunCode = dto.getGugunCode();
-//
-//        //시도코드, 견종 코드만 받아왔을 경우
+//          // 견종만
+//         // 시도코드
+//        // 시도코드, 견종 코드만 받아왔을 경우
 //        if(gugunCode.equals("")){
 //            List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCode(breedId,sidoCode);
 //            HashSet<Integer> set = new HashSet<>();
