@@ -1,4 +1,4 @@
-package com.ssafy.patpat.common.jwt;
+package com.ssafy.patpat.common.security.jwt;
 
 import java.io.IOException;
 
