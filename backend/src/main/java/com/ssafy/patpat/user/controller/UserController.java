@@ -6,7 +6,9 @@ import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.user.dto.FavoriteDto;
 import com.ssafy.patpat.user.dto.TokenDto;
 import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.dto.UserResponseDto;
 import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.service.KakaoService;
 import com.ssafy.patpat.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +33,7 @@ public class UserController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;
-
+    private final KakaoService kakaoService;
     /**
      * 찜 동물 리스트
      * @return
@@ -82,16 +84,17 @@ public class UserController {
     }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@Valid @RequestBody UserDto userDto) {
+    @GetMapping("/login/kakao")
+    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam("code") String code) throws Exception{
 
-        TokenDto tokenDto = userService.login(userDto);
+
+        UserResponseDto dto = kakaoService.login(code);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
-        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
+        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
+        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
 
-        return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/refresh")

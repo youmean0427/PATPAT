@@ -12,15 +12,17 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserDto {
 
-    @NotNull
     @Size(min=1, max=50)
     private String provider;
 
-    @NotNull
     @Size(min=3, max=100)
     private String email;
 
     private String username;
+
+    private String ageRange;
+
+    private String profileImageUrl;
 
     private String providerId;
 
