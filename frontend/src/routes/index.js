@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
+import LoginLayout from 'layouts/LoginLayout';
 import Login from 'pages/Login/Login';
 import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
 import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
@@ -17,6 +18,7 @@ import VideoRoomComponent from 'pages/Consulting/Meeting/components/VideoRoomCom
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
 import Address from 'pages/Volunteer/Address';
+import MyPage from 'pages/MyPage/MyPage';
 import Report from 'pages/Report/Report';
 import MissingDetail from 'components/Report/MissingDog/MissingDetail';
 import MoreInfo from 'pages/Mbti/MoreInfo';
@@ -33,6 +35,7 @@ const router = createBrowserRouter([
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
+      { path: 'mypage', element: <MyPage /> },
       { path: 'volunteer/address', element: <Address /> },
       { path: 'report', element: <Report /> },
       { path: 'report/missing/:id', element: <MissingDetail /> },
@@ -40,7 +43,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <PlainLayout />,
+    element: <LoginLayout />,
     errorElement: <giNotFound />,
     children: [
       { index: true, element: <Login /> },

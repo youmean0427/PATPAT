@@ -1,0 +1,23 @@
+.table {
+  width: 100%;
+}
+.table table {
+  border-spacing: 10px;
+  border-collapse: separate;
+  width: 100%;
+}
+.table table thead tr th {
+  font-size: 1vw;
+  color: lightgray;
+  white-space: nowrap;
+}
+.cat01,
+.cat03,
+.cat04,
+.cat05 {
+  width: 10%;
+}
+.cat02 {
+  width: 60%;
+  text-align: left;
+}

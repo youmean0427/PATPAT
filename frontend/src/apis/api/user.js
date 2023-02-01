@@ -6,8 +6,8 @@ import { authInstance } from 'apis/utils';
  * GET : 유저의 꾹 리스트
  * @returns
  */
-export const getFavListListOfUser = async () => {
-  const { data } = await authInstance.get('/user/favs');
+export const getFavListListOfUser = async userId => {
+  const { data } = await authInstance.get(`/user/favorite`);
   return data;
 };
 

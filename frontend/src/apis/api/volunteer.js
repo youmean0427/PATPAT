@@ -10,7 +10,7 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @returns
  */
 export const getVolNoticeList = async (keyword, limit, offset) => {
-  const { data } = await defaultInstance.get(`volunteers/notices?keyword=${keyword}&limit=${limit}&offset=${offset}`);
+  const { data } = await defaultInstance.get(`/volunteers/notices?keyword=${keyword}&limit=${limit}&offset=${offset}`);
   return data;
 };
 
@@ -20,7 +20,7 @@ export const getVolNoticeList = async (keyword, limit, offset) => {
  * @returns
  */
 export const getVolNoticeDetail = async noticeId => {
-  const { data } = await defaultInstance.get(`volunteers/notices/detail/${noticeId}`);
+  const { data } = await defaultInstance.get(`/volunteers/notices/detail/${noticeId}`);
   return data;
 };
 
@@ -33,7 +33,7 @@ export const getVolNoticeDetail = async noticeId => {
  */
 export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
   const { data } = await authInstance.get(
-    `volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offset=${offset}`
+    `/volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offset=${offset}`
   );
   return data;
 };
@@ -45,7 +45,7 @@ export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
  * @returns
  */
 export const getVolNoticePerMonth = async (shelterId, month) => {
-  const { data } = await authInstance.get(`volunteers/months?shelterId=${shelterId}&month=${month}`);
+  const { data } = await authInstance.get(`/volunteers/months?shelterId=${shelterId}&month=${month}`);
   return data;
 };
 
@@ -55,7 +55,7 @@ export const getVolNoticePerMonth = async (shelterId, month) => {
  * @returns
  */
 export const getVolReservationOfUser = async userId => {
-  const { data } = await authInstance.get(`volunteers/reservations?userId=${userId}`);
+  const { data } = await defaultInstance.get(`/volunteers/reservations?userId=${userId}`);
   return data;
 };
 
@@ -65,7 +65,7 @@ export const getVolReservationOfUser = async userId => {
  * @returns
  */
 export const getVolReservationOfShelter = async shelterId => {
-  const { data } = await authInstance.get(`volunteers/reservations?shelterId=${shelterId}`);
+  const { data } = await authInstance.get(`/volunteers/reservations?shelterId=${shelterId}`);
   return data;
 };
 
@@ -77,7 +77,7 @@ export const getVolReservationOfShelter = async shelterId => {
  * @returns
  */
 export const createVolNotice = async data => {
-  const res = await authInstance.post(`volunteers/notices`, data, {
+  const res = await authInstance.post(`/volunteers/notices`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -90,7 +90,7 @@ export const createVolNotice = async data => {
  * @returns
  */
 export const applyVolReservation = async (volunteerId, capacity) => {
-  const res = await authInstance.post(`volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}`);
+  const res = await authInstance.post(`/volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}`);
   return res;
 };
 
@@ -102,7 +102,7 @@ export const applyVolReservation = async (volunteerId, capacity) => {
  * @returns
  */
 export const updateVolNotice = async (volunteerId, data) => {
-  const res = await authInstance.put(`volunteers/notices/${volunteerId}`, data, {
+  const res = await authInstance.put(`/volunteers/notices/${volunteerId}`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -117,7 +117,7 @@ export const updateVolNotice = async (volunteerId, data) => {
  */
 export const updateVolReservation = async (volunteerId, capacity, state) => {
   const res = await authInstance.put(
-    `volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}&state=${state}`
+    `/volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}&state=${state}`
   );
   return res;
 };

@@ -12,4 +12,7 @@ export const missing = [
       return res(ctx.status(200), ctx.json(missingDogList));
     }
   }),
+  rest.get(`${process.env.REACT_APP_API_URL}/reports/missings/:userId`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(missingDogList));
+  }),
 ];

@@ -18,7 +18,7 @@ export default function Login() {
           <h1 className={styles['main-h1']}>로그인</h1>
           <p>PATPAT에 방문해주셔서 감사합니다.</p>
         </div>
-        <hr />
+        <hr className={styles.hr} />
         <div className={styles['sub-container']}>
           <h1 className={styles['sub-h1']}>SNS 로그인</h1>
           <div className={styles.functions}>

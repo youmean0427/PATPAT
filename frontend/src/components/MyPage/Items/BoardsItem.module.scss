@@ -1,0 +1,19 @@
+.items td {
+  font-size: 1.3vw;
+  white-space: nowrap;
+}
+.type {
+  font-weight: bolder;
+}
+.title {
+  float: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 30vw;
+}
+.type,
+.author,
+.count,
+.registDate {
+  width: 10%;
+}
