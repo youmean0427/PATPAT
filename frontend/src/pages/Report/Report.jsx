@@ -1,5 +1,4 @@
 import Banner from 'components/Banner/Banner';
-import Section from 'components/Home/Section';
 import MissingDogList from 'components/Report/MissingDog/MissingDogList';
 import PersonalDogList from 'components/Report/PersonalDog/PersonalDogList';
 import React from 'react';
@@ -15,7 +14,6 @@ export default function Report() {
   return (
     <div>
       <Banner title="실종견 / 임보견" />
-
       <div className={styles.container}>
         <button
           onClick={() => handleClick('실종')}
@@ -30,11 +28,10 @@ export default function Report() {
           임보견
         </button>
       </div>
-
-      <Section>
+      <div>
         {selected === '실종' ? <MissingDogList /> : null}
         {selected === '임보' ? <PersonalDogList /> : null}
-      </Section>
+      </div>
     </div>
   );
 }
