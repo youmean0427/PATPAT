@@ -1,4 +1,4 @@
-import Banner from 'components/Banner/Banner';
+import Banner from 'components/Common/Banner/Banner';
 import Section from 'components/Home/Section';
 import MissingDogList from 'components/Report/MissingDog/MissingDogList';
 import PersonalDogList from 'components/Report/PersonalDog/PersonalDogList';
