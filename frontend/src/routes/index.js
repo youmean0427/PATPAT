@@ -3,8 +3,6 @@ import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
 import LoginLayout from 'layouts/LoginLayout';
 import Login from 'pages/Login/Login';
-import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
-import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 import NotFound from 'pages/NotFound/NotFound';
 import MbtiLayout from 'layouts/MbtiLayout';
 import Result from 'pages/Mbti/Result';
@@ -22,6 +20,7 @@ import MyPage from 'pages/MyPage/MyPage';
 import Report from 'pages/Report/Report';
 import MissingDetail from 'components/Report/MissingDog/MissingDetail';
 import MoreInfo from 'pages/Mbti/MoreInfo';
+import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 
 const router = createBrowserRouter([
   {
@@ -48,7 +47,6 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Login /> },
       { path: 'kakao', element: <KakaoLogin /> },
-      { path: 'naver', element: <NaverLogin /> },
     ],
   },
   {

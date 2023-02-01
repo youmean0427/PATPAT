@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Banner.module.scss';
-import pat from '../../assets/images/pat.png';
+import pat from 'assets/images/pat.png';
 export default function Banner({ title }) {
   return (
     <div>
