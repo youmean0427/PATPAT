@@ -8,7 +8,9 @@ import com.ssafy.patpat.user.dto.TokenDto;
 import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.dto.UserResponseDto;
 import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.service.GoogleService;
 import com.ssafy.patpat.user.service.KakaoService;
+import com.ssafy.patpat.user.service.NaverService;
 import com.ssafy.patpat.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +36,8 @@ public class UserController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;
     private final KakaoService kakaoService;
+    private final NaverService naverService;
+    private final GoogleService googleService;
     /**
      * 찜 동물 리스트
      * @return
@@ -89,6 +93,32 @@ public class UserController {
 
 
         UserResponseDto dto = kakaoService.login(code);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
+        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
+
+        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/login/naver")
+    public ResponseEntity<UserResponseDto> naverLogin(@RequestParam("code") String code) throws Exception{
+
+
+        UserResponseDto dto = naverService.login(code);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
+        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
+
+        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/login/google")
+    public ResponseEntity<UserResponseDto> googleLogin(@RequestParam("code") String code) throws Exception{
+
+
+        UserResponseDto dto = googleService.login(code);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
