@@ -36,4 +36,14 @@ public class KakaoUserDto implements Oauth2UserInfo{
     public String getName() {
         return attributesProfile.get("nickname").toString();
     }
+
+    @Override
+    public String getAgeRange() {
+        return attributesAccount.get("age_range").toString();
+    }
+
+    @Override
+    public String getProfileImageUrl() {
+        return attributesProfile.get("profile_image_url").toString();
+    }
 }

@@ -2,6 +2,7 @@ package com.ssafy.patpat.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -35,7 +36,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        System.out.println("여기옴?");
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
         Oauth2UserInfo oAuth2UserInfo = null;
@@ -43,7 +43,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
         oAuth2UserInfo = new KakaoUserDto(oAuth2User.getAttributes());
 
         String providerId = oAuth2UserInfo.getProviderId();
-        String username = provider+"_"+providerId;
+        String username = oAuth2UserInfo.getName();
+
+        String profileImage = oAuth2UserInfo.getProfileImageUrl();
+        String ageRange = oAuth2UserInfo.getAgeRange();
 
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
@@ -52,17 +55,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
         List<Authority> list = new ArrayList<>();
         list.add(authority);
 
-        String uuid = UUID.randomUUID().toString().substring(0, 6);
-        String password = bCryptPasswordEncoder.encode("패스워드"+uuid);
+        String password = bCryptPasswordEncoder.encode(provider+providerId);
 
         String email = oAuth2UserInfo.getEmail();
 
-        User user = userRepository.findByEmail(email).get();
-
-        if(user == null){
+        Optional<User> userOptional = userRepository.findOneWithAuthoritiesByEmail(email);
+        User user;
+        if(userOptional.orElse(null) == null){
 
             user = User.builder()
                     .email(email)
+                    .ageRange(ageRange)
+                    .profileImage(profileImage)
                     .provider(provider)
                     .providerId(providerId)
                     .password(password)
@@ -72,6 +76,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
                     .build();
 
             userRepository.save(user);
+        }else{
+            user = userOptional.get();
         }
 
         return new CustomDetails(user, oAuth2UserInfo);

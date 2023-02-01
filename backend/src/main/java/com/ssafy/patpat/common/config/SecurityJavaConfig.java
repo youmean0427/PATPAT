@@ -4,6 +4,7 @@ import com.ssafy.patpat.common.jwt.JwtAccessDeniedHandler;
 import com.ssafy.patpat.common.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.patpat.common.jwt.JwtSecurityConfig;
 import com.ssafy.patpat.common.jwt.TokenProvider;
+import com.ssafy.patpat.common.oauth.OAuth2SuccessHandler;
 import com.ssafy.patpat.user.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,7 @@ public class SecurityJavaConfig {
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
@@ -58,11 +60,12 @@ public class SecurityJavaConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 /** HttpServletRequest를 사용하는 요청들에 대한 접근 제한 설정*/
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/user/login").permitAll()
-//                .antMatchers("/user/refresh").permitAll()
-//                .anyRequest().authenticated()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/user/login").permitAll()
+                .antMatchers("/user/refresh").permitAll()
+                .antMatchers("/oauth2/authorization/*").permitAll()
+                .anyRequest().authenticated()
 
                 /**JwtSecurityConfig 적용 */
                 .and()
@@ -70,6 +73,7 @@ public class SecurityJavaConfig {
 
                 .and()
                 .oauth2Login()
+                .successHandler(oAuth2SuccessHandler)
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService);
                 
