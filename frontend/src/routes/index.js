@@ -19,6 +19,7 @@ import Volunteer from 'pages/Volunteer/Volunteer';
 import Address from 'pages/Volunteer/Address';
 import Report from 'pages/Report/Report';
 import MissingDetail from 'components/Report/MissingDog/MissingDetail';
+import MoreInfo from 'pages/Mbti/MoreInfo';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
       { index: true, element: <Start /> },
       { path: 'test', element: <Test /> },
       { path: 'result', element: <Result /> },
+      { path: 'result/map', element: <MoreInfo /> },
     ],
   },
   {
