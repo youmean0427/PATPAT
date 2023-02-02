@@ -11,8 +11,8 @@
   left: 0;
   z-index: 1;
   background-color: $white-color;
-  border: 2px solid $violet-color;
   border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 0.5rem;
 }
 
@@ -23,48 +23,48 @@
 }
 
 .land.zero {
-  fill: #fff0f3;
+  fill: #efebe9;
 }
 
 .land.one {
-  fill: #ffb3c1;
+  fill: #bcaaa4;
   &:hover {
-    fill: $blue-color;
+    fill: $map-hover-color;
   }
 }
 
 .land.two {
-  fill: #ff758f;
+  fill: #a1887f;
   &:hover {
-    fill: $blue-color;
+    fill: $map-hover-color;
   }
 }
 
 .land.three {
-  fill: #ff4d6d;
+  fill: #8d6e63;
   &:hover {
-    fill: $blue-color;
+    fill: $map-hover-color;
   }
 }
 
 .land.four {
-  fill: #c9184a;
+  fill: #795548;
   &:hover {
-    fill: $blue-color;
+    fill: $map-hover-color;
   }
 }
 
 .land.five {
-  fill: #a4133c;
+  fill: #4e342e;
   &:hover {
-    fill: $blue-color;
+    fill: $map-hover-color;
   }
 }
 
 .land.six {
-  fill: #800f2f;
+  fill: #3e2723;
   &:hover {
-    fill: $blue-color;
+    fill: $map-hover-color;
   }
 }
 .sido {

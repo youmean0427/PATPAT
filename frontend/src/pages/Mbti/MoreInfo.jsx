@@ -5,7 +5,6 @@ import SouthKorea from 'components/Common/SouthKorea';
 import React from 'react';
 import { useLocation } from 'react-router';
 import styles from './MoreInfo.module.scss';
-import { Tooltip } from 'react-tooltip';
 
 export default function MoreInfo() {
   const {
@@ -28,7 +27,6 @@ export default function MoreInfo() {
         </div>
       </div>
       <SouthKorea list={data.list} />
-      <Tooltip place="bottom" effect="solid" type="warning" />
     </MbtiContainer>
   );
 }
