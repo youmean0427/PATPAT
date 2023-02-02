@@ -43,6 +43,10 @@ public class SecurityJavaConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> web.ignoring()
+                .antMatchers("/boards/**")
+                .antMatchers("/protects/**")
+                .antMatchers("/user/login/*")
+                .antMatchers("/user/refresh")
                 .antMatchers("/favicon.ico");
     }
     @Bean
@@ -71,9 +75,9 @@ public class SecurityJavaConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-//                .antMatchers("/**").permitAll()
-                .antMatchers("/user/login/*").permitAll()
-                .antMatchers("/user/refresh").permitAll()
+                .antMatchers("/**").permitAll()
+//                .antMatchers("/user/login/*").permitAll()
+//                .antMatchers("/user/refresh").permitAll()
 //                .antMatchers("//authorization/*").permitAll()
                 .anyRequest().authenticated()
 

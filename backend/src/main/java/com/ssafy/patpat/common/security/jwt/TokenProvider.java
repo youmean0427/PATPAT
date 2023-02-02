@@ -7,12 +7,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import com.ssafy.patpat.common.redis.RefreshRedis;
+import com.ssafy.patpat.common.redis.RefreshRedisRepository;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -86,6 +89,7 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(validity)
                 .compact();
         LOGGER.info("accessToken이 생성되었습니다.");
+
         return token;
     }
 
