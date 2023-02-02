@@ -1,6 +1,6 @@
 import React from 'react';
-import AdoptionReviewList from '../../components/Community/AdoptionReview/AdoptionReviewList';
-import Banner from '../../components/Banner/Banner';
+import AdoptionReviewList from 'components/Community/AdoptionReview/AdoptionReviewList';
+import Banner from 'components/Common/Banner/Banner';
 import SideMenu from 'components/Common/SideMenu/SideMenu';
 
 const AdoptionMain = () => {
