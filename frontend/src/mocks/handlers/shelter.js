@@ -1,4 +1,4 @@
-import { mbtiResultList, searchBreedCountPerRegion } from 'mocks/data/shelter';
+import { mbtiResultList, searchBreedCountPerRegion, searchAllShelters, searchBreeds } from 'mocks/data/shelter';
 import { rest } from 'msw';
 
 export const shelter = [
@@ -9,5 +9,11 @@ export const shelter = [
   }),
   rest.get(`${process.env.REACT_APP_API_URL}/shelters/mbti/count/:breedId`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(searchBreedCountPerRegion));
+  }),
+  rest.get(`${process.env.REACT_APP_API_URL}/shelters`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(searchAllShelters));
+  }),
+  rest.get(`${process.env.REACT_APP_API_URL}/shelters/breeds`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(searchBreeds));
   }),
 ];

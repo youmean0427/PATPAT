@@ -1,0 +1,52 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  margin: auto;
+  padding: 50px 0 50px 0;
+}
+.svg {
+  width: 45rem;
+  height: 50rem;
+  margin-left: -5vw;
+}
+.land {
+  stroke: #fff;
+  cursor: pointer;
+
+  &:hover ~ .sido {
+    fill: $white-color;
+  }
+}
+
+.land {
+  fill: $light-blue-color;
+  transition: 0.5s ease-in-out;
+}
+.land:hover {
+  fill: $blue-color;
+  stroke: $blue-color;
+  stroke-width: 1px;
+  transition: 0.5s ease-in-out;
+}
+.land-click {
+  fill: $blue-color;
+  stroke: $blue-color;
+  stroke-width: 1px;
+  transition: 0.5s ease-in-out;
+}
+.sido {
+  font-size: 1.2rem;
+  font-family: $sunflower-font;
+  font-weight: 900;
+  user-select: none;
+}
+.lists {
+  width: 60rem;
+  height: 50rem;
+  border: 1px solid black;
+  overflow: auto;
+}

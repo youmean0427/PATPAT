@@ -22,7 +22,7 @@ import MyPage from 'pages/MyPage/MyPage';
 import Report from 'pages/Report/Report';
 import MissingDetail from 'components/Report/MissingDog/MissingDetail';
 import MoreInfo from 'pages/Mbti/MoreInfo';
-
+import Shelter from 'pages/Shelters/Shelters';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -39,6 +39,7 @@ const router = createBrowserRouter([
       { path: 'volunteer/address', element: <Address /> },
       { path: 'report', element: <Report /> },
       { path: 'report/missing/:id', element: <MissingDetail /> },
+      { path: 'shelters', element: <Shelter /> },
     ],
   },
   {

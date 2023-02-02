@@ -159,3 +159,46 @@ export const searchBreedCountPerRegion = {
     { code: 50, name: '제주특별자치도', count: 22 },
   ],
 };
+
+export const searchAllShelters = [
+  {
+    shelterId: 0,
+    name: '보호소1',
+    address: '주소1',
+    filePath: 'https://cphoto.asiae.co.kr/listimglink/6/2018121017144081678_1544429678.jpg',
+    infoContent: '보호소1 입니다.',
+    phone: '010-1111-1111',
+  },
+  {
+    shelterId: 1,
+    name: '보호소2',
+    address: '주소2',
+    filePath: 'https://cphoto.asiae.co.kr/listimglink/6/2018121017144081678_1544429678.jpg',
+    infoContent: '보호소2 입니다.',
+    phone: '010-2222-2222',
+  },
+  {
+    shelterId: 2,
+    name: '보호소3',
+    address: '주소3',
+    filePath: 'https://cphoto.asiae.co.kr/listimglink/6/2018121017144081678_1544429678.jpg',
+    infoContent: '보호소3 입니다.',
+    phone: '010-3333-3333',
+  },
+  {
+    shelterId: 3,
+    name: '보호소4',
+    address: '주소4',
+    filePath: 'https://cphoto.asiae.co.kr/listimglink/6/2018121017144081678_1544429678.jpg',
+    infoContent: '보호소4 입니다.',
+    phone: '010-4444-4444',
+  },
+];
+export const searchBreeds = [
+  { breedName: '개1' },
+  { breedName: '개2' },
+  { breedName: '개3' },
+  { breedName: '개4' },
+  { breedName: '개5' },
+  { breedName: '개6' },
+];
