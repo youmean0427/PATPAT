@@ -13,18 +13,35 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
-@RequestMapping("report")
+@RequestMapping("reports")
 @Api(tags = {"04. Report"}, description = "실종,임보 관련 서비스")
 public class ReportController {
     /**
      * 실종견 리스트
      * @return
      */
-    @GetMapping("/missing")
-    @ApiOperation(value = "실종견 조회", notes = "{code==0 전체 실종견 , code==1 해당 유저의 실종공고 리스트 , code==2 견종 성별 필터링 검색}")
+    @GetMapping("/missings")
+    @ApiOperation(value = "실종견 조회", notes = "{code==0 전체 실종견, code==2 견종 성별 필터링 검색}")
     public ResponseEntity<ArrayList<ReportDto>> selectMissingList(RequestReportDto requestReportDto){
+        //서비스 호출 코드
+        if(true){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ArrayList<ReportDto>());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ArrayList<ReportDto>());
+        }
+    }
+    /**
+     * 실종견 리스트(현재 유저의 실종견 공고 리스트)
+     * @return
+     */
+    @GetMapping("/missings/{userId}")
+    @ApiOperation(value = "실종견 조회", notes = "{현재 유저의 실종견 공고 리스트}")
+    public ResponseEntity<ArrayList<ReportDto>> selectMissingListByUser(@PathVariable int userId, RequestReportDto requestReportDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -38,7 +55,7 @@ public class ReportController {
      * 임보견 리스트
      * @return
      */
-    @GetMapping("/personal")
+    @GetMapping("/personals")
     @ApiOperation(value = "임보견 조회", notes = "{code==0 전체조회, code==1 성별 견종 필터링}")
     public ResponseEntity<ArrayList<ReportDto>> selectPersonalProtectionList(RequestReportDto requestReportDto){
         //서비스 호출 코드
@@ -54,7 +71,7 @@ public class ReportController {
      * 실종견 상세
      * @return
      */
-    @GetMapping("/missing/{missingId}")
+    @GetMapping("/missings/detail/{missingId}")
     @ApiOperation(value = "실종견 상세", notes = "실종견 상세")
     public ResponseEntity<ReportDto> detailMissing(@PathVariable int missingId){
         //서비스 호출 코드
@@ -70,7 +87,7 @@ public class ReportController {
      * 임보견 상세
      * @return
      */
-    @GetMapping("/protect/{personalProtectId}")
+    @GetMapping("/personals/{personalProtectId}")
     @ApiOperation(value = "임보견 상세", notes = "임보견 상세")
     public ResponseEntity<ReportDto> detailPersonalProtection(@PathVariable int personalProtectId){
         //서비스 호출 코드
@@ -87,7 +104,7 @@ public class ReportController {
      * 내가 잃어버린 강아지로 의심되는 보호견 리스트
      * @return
      */
-    @GetMapping("/recommend")
+    @GetMapping("/recommends")
     @ApiOperation(value = "유사견종 조회", notes = "실종된 견종과 유사한 견종 조회")
     public ResponseEntity<ArrayList<ProtectDto>> selectRecommendList(RequestReportDto requestReportDto){
         //서비스 호출 코드
@@ -103,7 +120,7 @@ public class ReportController {
      * 내가 잃어버린 강아지로 의심되는 보호견 갯수
      * @return
      */
-    @GetMapping("/recommend/count")
+    @GetMapping("/recommends/count")
     @ApiOperation(value = "유사견종 마리수 조회", notes = "유사견종 갯수 조회")
     public ResponseEntity<HashMap<String,Integer>> selectRecommendCount(RequestReportDto requestReportDto){
         //서비스 호출 코드
@@ -124,7 +141,7 @@ public class ReportController {
      */
     @PostMapping
     @ApiOperation(value = "실종,임보 등록", notes = "0==실종, 1==임보")
-    public ResponseEntity<ResponseMessage> insertReport(ReportDto reportDto, MultipartFile[] uploadFile){
+    public ResponseEntity<ResponseMessage> insertReport(ReportDto reportDto, @RequestPart List<MultipartFile> uploadFile){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -138,9 +155,9 @@ public class ReportController {
      * 실종,임보 수정
      * @return
      */
-    @PostMapping("/update")
+    @PostMapping("/updates")
     @ApiOperation(value = "실종,임보 수정", notes = "0==실종, 1==임보")
-    public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, MultipartFile[] uploadFile){
+    public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart List<MultipartFile> uploadFile){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)

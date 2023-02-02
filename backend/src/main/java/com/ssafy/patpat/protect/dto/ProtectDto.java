@@ -5,12 +5,14 @@ import com.ssafy.patpat.common.dto.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Getter
+@Setter
 @ToString
 @Builder
 public class ProtectDto {
@@ -20,28 +22,32 @@ public class ProtectDto {
     private int protectId;
     @Schema(example = "보호동물이름")
     private String protectName;
+    @Schema(description = "발견날짜")
+    private LocalDate findingDate;
     @Schema(description = "수컷,암컷")
-    private String gender;
+    private int gender;
     @Schema(example = "견종")
-    private String breedId;
+    private int breedId;
+    @Schema(example = "나이")
+    private int age;
     @Schema(example = "무게")
-    private String weight;
+    private double weight;
     @Schema(description = "중성화=0,아니면=1")
-    private String neutered;
+    private int neutered;
     @Schema(example = "귀모양")
-    private String categoryEar;
+    private int categoryEar;
     @Schema(example = "꼬리모양")
-    private String categoryTail;
+    private int categoryTail;
     @Schema(example = "털색")
-    private String categoryColor;
+    private int categoryColor;
     @Schema(example = "패턴")
-    private String categoryPattern;
+    private int categoryPattern;
     @Schema(example = "옷입은여부")
-    private String categoryCloth;
+    private int categoryCloth;
     @Schema(example = "옷색")
-    private String categoryClothColor;
+    private int categoryClothColor;
     @Schema(description = "입양대기,보호중, 입양예정")
-    private String stateCode;
+    private int stateCode;
     @Schema(example = "내용")
     private String infoContent;
     @Schema(example = "파일 url 리스트")

@@ -1,4 +1,4 @@
-package com.ssafy.patpat.board.entity;
+package com.ssafy.patpat.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

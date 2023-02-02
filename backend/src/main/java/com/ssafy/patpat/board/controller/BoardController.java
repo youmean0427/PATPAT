@@ -13,11 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/boards")
 @Api(tags = {"01. Board"},description = "게시판 관련 서비스")
 @ApiResponses({
         @ApiResponse(code=200, message = "성공"),
@@ -49,7 +50,7 @@ public class BoardController {
      * 전체 게시판 리스트를 리턴한다.(카테고리별)
      * @return
      */
-    @GetMapping("/all")
+    @GetMapping("/me")
     @ApiOperation(value = "게시판 리스트", notes = "전체 게시판 리스트를 조회한다.")
     public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
         //service 호출
@@ -138,7 +139,7 @@ public class BoardController {
      * 댓글 등록하기
      * @return
      */
-    @PostMapping("/comment")
+    @PostMapping("/comments")
     @ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
     public ResponseEntity<ResponseMessage> insertComment(@RequestBody CommentDto commentDto){
         //service 호출
@@ -156,7 +157,7 @@ public class BoardController {
      * 댓글 수정하기
      * @return
      */
-    @PutMapping("/comment/{commentId}")
+    @PutMapping("/comments/{commentId}")
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
     public ResponseEntity<ResponseMessage> updateComment(@PathVariable int commentId, @RequestBody CommentDto commentDto){
         //service 호출
@@ -174,7 +175,7 @@ public class BoardController {
      * 댓글 삭제하기
      * @return
      */
-    @DeleteMapping("/comment/{commentId}")
+    @DeleteMapping("/comments/{commentId}")
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
     public ResponseEntity<ResponseMessage> deleteComment(@PathVariable int commentId){
         //service 호출
@@ -192,7 +193,7 @@ public class BoardController {
      * 대댓글 등록하기
      * @return
      */
-    @PostMapping("/reply")
+    @PostMapping("/replies")
     @ApiOperation(value = "대댓글 등록", notes = "대댓글을 등록한다.")
     public ResponseEntity<ResponseMessage> insertReply(@RequestBody ReplyDto replyDto){
         //service 호출
@@ -210,7 +211,7 @@ public class BoardController {
      * 대댓글 수정하기
      * @return
      */
-    @PutMapping("/reply/{replyId}")
+    @PutMapping("/replies/{replyId}")
     @ApiOperation(value = "대댓글 수정", notes = "대댓글을 수정한다.")
     public ResponseEntity<ResponseMessage> updateReply(@PathVariable int replyId,@RequestBody ReplyDto replyDto){
         //service 호출
@@ -228,7 +229,7 @@ public class BoardController {
      * 대댓글 삭제하기
      * @return
      */
-    @DeleteMapping("/reply/{replyId}")
+    @DeleteMapping("/replies/{replyId}")
     @ApiOperation(value = "대댓글 삭제", notes = "대댓글을 삭제한다.")
     public ResponseEntity<ResponseMessage> deleteReply(@PathVariable int replyId){
         //service 호출
@@ -241,4 +242,5 @@ public class BoardController {
                     .body(responseMessage);
         }
     }
+
 }

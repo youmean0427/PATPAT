@@ -1,121 +1,111 @@
-package com.ssafy.patpat.shelter.service;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.patpat.common.code.Breed;
-import com.ssafy.patpat.shelter.dto.RequestShelterDto;
-import com.ssafy.patpat.shelter.entity.Gugun;
-import com.ssafy.patpat.shelter.entity.Shelter;
-import com.ssafy.patpat.shelter.entity.ShelterDog;
-import com.ssafy.patpat.shelter.entity.Sido;
-import com.ssafy.patpat.shelter.repository.GugunRepository;
-import com.ssafy.patpat.shelter.repository.ShelterDogRepository;
-import com.ssafy.patpat.shelter.repository.ShelterRepository;
-import com.ssafy.patpat.shelter.repository.SidoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.time.LocalDateTime;
-import java.util.*;
-
-@Service
-public class ShelterServiceImpl implements ShelterService{
-    @Autowired
-    ShelterRepository shelterRepository;
-    @Autowired
-    SidoRepository sidoRepository;
-    @Autowired
-    GugunRepository gugunRepository;
-    @Autowired
-    ShelterDogRepository shelterDogRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    /**
-     * 각종 조건들에 의한 보호소 리스트 조회
-     */
-    @Override
-    public Breed randomBreed() {
-        Breed[] arr = Breed.values();
-        Random random = new Random();
-        Breed breed = Breed.values()[random.nextInt(arr.length)];
-        return breed;
-    }
-    @Override
-    public List<Sido> sidoList() {
-        return sidoRepository.findAll();
-    }
-
-    @Override
-    public List<Gugun> gugunList(String sidoCode) {
-        return gugunRepository.findBySidoCode(sidoCode);
-    }
-    @Override
-    public List<Breed> breedListBasedSidoCode(String sidoCode){
-        List<ShelterDog> list = shelterDogRepository.findBySidoCode(sidoCode);
-        HashSet<Integer> set = new HashSet<>();
-        for(ShelterDog s : list){
-            set.add(s.getBreedId());
-        }
-        List<Breed> breedList = new ArrayList<>();
-        for(Integer i : set){
-            breedList.add(Breed.values()[i]);
-        }
-        return breedList;
-    }
-    @Override
-    public List<Breed> breedListBasedSidoCodeAndGugunCode(String sidoCode, String gugunCode){
-        List<ShelterDog> list = shelterDogRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode);
-        HashSet<Integer> set = new HashSet<>();
-        for(ShelterDog s : list){
-            set.add(s.getBreedId());
-        }
-        List<Breed> breedList = new ArrayList<>();
-        for(Integer i : set){
-            breedList.add(Breed.values()[i]);
-        }
-        return breedList;
-    }
-    @Override
-    public List<Shelter> shelterList(RequestShelterDto dto) {
-		Breed breed = Breed.valueOf(dto.getBreedName());
-		int breedId = breed.ordinal();
-        String sidoCode = dto.getSidoCode();
-        String gugunCode = dto.getGugunCode();
-
-        //시도코드, 견종 코드만 받아왔을 경우
-        if(gugunCode.equals("")){
-            List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCode(breedId,sidoCode);
-            HashSet<Integer> set = new HashSet<>();
-            for(ShelterDog s : list){
-                set.add(s.getShelterId());
-            }
-            return shelterRepository.findByShelterIdIn(set);
-        }
-        //시도코드, 구군코드, 견종 모두 받아왔을 경우
-        else{
-            List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCodeAndGugunCode(breedId,sidoCode,gugunCode);
-            HashSet<Integer> set = new HashSet<>();
-            for(ShelterDog s : list){
-                set.add(s.getShelterId());
-            }
-            return shelterRepository.findByShelterIdIn(set);
-        }
-    }
-
-    @Override
-    public List<Shelter> shelterListInVolunteer(String sidoCode, String gugunCode) {
-        return shelterRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode);
-    }
-
-    /**
-     *보호소 등록, 수정, 상세
-     */
+//package com.ssafy.patpat.shelter.service;
+//
+//import com.ssafy.patpat.common.code.Breed;
+//import com.ssafy.patpat.common.dto.ResponseMessage;
+//import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+//import com.ssafy.patpat.shelter.dto.BreedDto;
+//import com.ssafy.patpat.shelter.dto.RequestShelterDto;
+//import com.ssafy.patpat.shelter.dto.ShelterDto;
+//import com.ssafy.patpat.shelter.entity.Gugun;
+//import com.ssafy.patpat.shelter.entity.Shelter;
+//import com.ssafy.patpat.shelter.entity.Sido;
+//import com.ssafy.patpat.shelter.repository.GugunRepository;
+//import com.ssafy.patpat.shelter.repository.ShelterRepository;
+//import com.ssafy.patpat.shelter.repository.SidoRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.stereotype.Service;
+//import org.springframework.web.multipart.MultipartFile;
+//
+//import java.util.*;
+//
+//@Service
+//public class ShelterServiceImpl implements ShelterService{
+//    @Autowired
+//    ShelterRepository shelterRepository;
+//    @Autowired
+//    SidoRepository sidoRepository;
+//    @Autowired
+//    GugunRepository gugunRepository;
+//    @Autowired
+//    ShelterProtectedDogRepository shelterDogRepository;
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
+//
+//    @Override
+//    public BreedDto selectBreedByMbti(String mbtiId) {
+//        return null;
+//    }
+//    @Override
+//    public List<Sido> sidoList() {
+//        return sidoRepository.findAll();
+//    }
+//
+//    @Override
+//    public List<Gugun> gugunList(String sidoCode) {
+//        return gugunRepository.findBySidoCode(sidoCode);
+//    }
+//    @Override
+//    public List<Breed> breedListBasedSidoCode(String sidoCode){
+//        List<ShelterDog> list = shelterDogRepository.findBySidoCode(sidoCode);
+//        HashSet<Integer> set = new HashSet<>();
+//        for(ShelterDog s : list){
+//            set.add(s.getBreedId());
+//        }
+//        List<Breed> breedList = new ArrayList<>();
+//        for(Integer i : set){
+//            breedList.add(Breed.values()[i]);
+//        }
+//        return breedList;
+//    }
+//    @Override
+//    public List<Breed> breedListBasedSidoCodeAndGugunCode(String sidoCode, String gugunCode){
+//        List<ShelterDog> list = shelterDogRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode);
+//        HashSet<Integer> set = new HashSet<>();
+//        for(ShelterDog s : list){
+//            set.add(s.getBreedId());
+//        }
+//        List<Breed> breedList = new ArrayList<>();
+//        for(Integer i : set){
+//            breedList.add(Breed.values()[i]);
+//        }
+//        return breedList;
+//    }
+//    @Override
+//    public List<Shelter> shelterList(RequestShelterDto dto) {
+//		Breed breed = Breed.valueOf(dto.getBreedName());
+//		int breedId = breed.ordinal();
+//        String sidoCode = dto.getSidoCode();
+//        String gugunCode = dto.getGugunCode();
+//
+//        //시도코드, 견종 코드만 받아왔을 경우
+//        if(gugunCode.equals("")){
+//            List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCode(breedId,sidoCode);
+//            HashSet<Integer> set = new HashSet<>();
+//            for(ShelterDog s : list){
+//                set.add(s.getShelterId());
+//            }
+//            return shelterRepository.findByShelterIdIn(set);
+//        }
+//        //시도코드, 구군코드, 견종 모두 받아왔을 경우
+//        else{
+//            List<ShelterDog> list = shelterDogRepository.findByBreedIdAndSidoCodeAndGugunCode(breedId,sidoCode,gugunCode);
+//            HashSet<Integer> set = new HashSet<>();
+//            for(ShelterDog s : list){
+//                set.add(s.getShelterId());
+//            }
+//            return shelterRepository.findByShelterIdIn(set);
+//        }
+//    }
+//
+//    @Override
+//    public List<Shelter> shelterListInVolunteer(String sidoCode, String gugunCode) {
+//        return shelterRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode);
+//    }
+//
+//    /**
+//     *보호소 등록, 수정, 상세
+//     */
 //    @Override
 //    public ResultInsertShelterDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto){
 //        String shelterNm = requestParamShelterInsertDto.getShelterName();
@@ -184,11 +174,20 @@ public class ShelterServiceImpl implements ShelterService{
 //        }
 //        return dto;
 //    }
-
-    @Override
-    public Optional<Shelter> detailShelter(int shelterId) {
-        return shelterRepository.findById(shelterId);
-    }
-
-
-}
+//    @Override
+//    public ResponseMessage updateShelter(String shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) {
+//        return null;
+//    }
+//
+//    @Override
+//    public ResponseMessage AuthShelter(String authCode) {
+//        return null;
+//    }
+//    @Override
+//    public ShelterDto detailShelter(int shelterId) {
+//        //return shelterRepository.findByShelterId(shelterId);
+//        return null;
+//    }
+//
+//
+//}
