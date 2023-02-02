@@ -6,6 +6,7 @@ import com.ssafy.patpat.common.redis.RefreshRedis;
 import com.ssafy.patpat.common.redis.RefreshRedisRepository;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.util.SecurityUtil;
+import com.ssafy.patpat.user.dto.ResultDto;
 import com.ssafy.patpat.user.dto.TokenDto;
 import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.dto.UserResponseDto;
@@ -160,14 +161,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto logout(TokenDto tokenDto) throws Exception{
-        UserResponseDto userResponseDto = new UserResponseDto();
+    public ResultDto logout(TokenDto tokenDto) throws Exception{
+        ResultDto resultDto = new ResultDto();
         String accessToken = tokenProvider.resolveToken(tokenDto.getAccessToken());
         String refreshToken = tokenProvider.resolveToken(tokenDto.getRefreshToken());
 
         // 토큰 유효성 검사
         if(!tokenProvider.validateToken(accessToken)){
-            userResponseDto.setResult("fail");
+            resultDto.setResult("fail");
         }else{
             // 토큰이 유효하다면 해당 토큰의 남은 기간과 함께 redis에 logout으로 저장
             long validExpiration = tokenProvider.getExpiration(accessToken);
@@ -177,10 +178,38 @@ public class UserService {
             if(redisService.getValues(refreshToken) != null){
                 redisService.delValues(refreshToken);
             }
-            userResponseDto.setResult("success");
+            resultDto.setResult("success");
         }
-        return userResponseDto;
+        return resultDto;
     }
+
+    @Transactional
+    public ResultDto updateUser(UserDto userDto){
+        ResultDto resultDto = new ResultDto();
+        User user = userRepository.findOneWithAuthoritiesById(userDto.getUserId()).get();
+
+        user.setNickname(userDto.getUsername());
+        user.setProfileImage(userDto.getProfileImageUrl());
+
+        userRepository.save(user);
+
+        resultDto.setResult("success");
+
+        return resultDto;
+    }
+
+//    @Transactional
+//    public ResultDto deleteUser(TokenDto tokenDto, UserDto userDto) throws Exception {
+//
+//        ResultDto resultDto = logout(tokenDto);
+//        User user = userRepository.findOneWithAuthoritiesById(userDto.getUserId()).get();
+//        userRepository.delete(user);
+//
+//        resultDto.setResult("success");
+//
+//        return resultDto;
+//
+//    }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities(String email) {

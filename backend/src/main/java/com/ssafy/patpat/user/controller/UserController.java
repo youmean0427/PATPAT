@@ -3,10 +3,7 @@ package com.ssafy.patpat.user.controller;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.security.filter.JwtFilter;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
-import com.ssafy.patpat.user.dto.FavoriteDto;
-import com.ssafy.patpat.user.dto.TokenDto;
-import com.ssafy.patpat.user.dto.UserDto;
-import com.ssafy.patpat.user.dto.UserResponseDto;
+import com.ssafy.patpat.user.dto.*;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.service.GoogleService;
 import com.ssafy.patpat.user.service.KakaoService;
@@ -137,11 +134,11 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<UserResponseDto> logout(HttpServletRequest request) throws Exception{
+    public ResponseEntity<ResultDto> logout(HttpServletRequest request) throws Exception{
         String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
         TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
-        UserResponseDto result = userService.logout(tokenDto);
+        ResultDto result = userService.logout(tokenDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -155,6 +152,23 @@ public class UserController {
         httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
         return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }
+
+    @PutMapping("/info")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<ResultDto> updateUserInfo(UserDto userDto){
+        ResultDto result = userService.updateUser(userDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+//    @DeleteMapping("/info")
+//    @PreAuthorize("hasAnyRole('USER')")
+//    public ResponseEntity<ResultDto> deleteUserInfo(UserDto userDto, HttpServletRequest request) throws Exception{
+//        String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
+//        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+//        TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
+//        ResultDto result = userService.deleteUser(tokenDto,userDto);
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 
     @GetMapping("/info")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
