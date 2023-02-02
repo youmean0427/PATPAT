@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import CommunityTable from '../table/CommunityTable';
 import CommunityTableColumn from '../table/CommunityTableColumn';
 import CommunityTableRow from '../table/CommunityTableRow';
-import Pagination from '../Pagination';
 import SearchBar from '../SearchBar';
 
 export default function FreeShareList() {
@@ -37,9 +36,7 @@ export default function FreeShareList() {
           );
         })}
       </CommunityTable>
-      <footer>
-        <Pagination total={data.length} limit={limit} page={page} setPage={setPage} />
-      </footer>
+      <footer></footer>
     </>
   );
 }
