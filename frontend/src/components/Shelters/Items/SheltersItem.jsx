@@ -3,7 +3,7 @@ import styles from './SheltersItem.module.scss';
 
 export default function SheltersItem({ item }) {
   const isLogin = localStorage.getItem('isLogin');
-  const { name, address, filePath, infoContent, phone } = item;
+  const { shelterId, name, address, filePath, infoContent, phone } = item;
 
   return (
     <div className={isLogin ? styles['shelters-login'] : styles.shelters}>
