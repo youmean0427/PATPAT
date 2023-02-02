@@ -34,7 +34,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-
 public class NaverService {
 
     @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")

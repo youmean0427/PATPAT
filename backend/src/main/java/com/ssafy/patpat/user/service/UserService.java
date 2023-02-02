@@ -1,6 +1,8 @@
 package com.ssafy.patpat.user.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.patpat.common.redis.RefreshRedis;
+import com.ssafy.patpat.common.redis.RefreshRedisRepository;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.dto.TokenDto;
@@ -10,6 +12,7 @@ import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -34,6 +37,10 @@ public class UserService {
 
     private final GoogleService googleService;
 
+    private final RefreshRedisRepository refreshRedisRepository;
+
+    @Value("${jwt.refresh-token-validity-in-seconds}")
+    private Integer expiration;
 
     @Transactional
     public UserResponseDto login(String provider, String code) throws JsonProcessingException {
@@ -66,20 +73,23 @@ public class UserService {
 
         TokenDto token = new TokenDto();
 
+        /** 토큰 생성 */
         String accessToken = tokenProvider.createAccessToken(authentication);
         String refreshToken = tokenProvider.createRefreshToken();
 
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
 
-        user.setRefreshToken(refreshToken);
+        /** 리프레쉬 토큰 레디스 저장 */
+        RefreshRedis newRedisToken = RefreshRedis.createToken(user.getEmail(), refreshToken, expiration);
+        refreshRedisRepository.save(newRedisToken);
+
         user.setActivated(true);
         userRepository.save(user);
 
         UserResponseDto userResponseDto = new UserResponseDto();
         userResponseDto.setTokenDto(token);
         userResponseDto.setUserDto(user);
-        System.out.println(user.getEmail());
 
         return userResponseDto;
     }
