@@ -4,6 +4,7 @@ import {
   searchAllShelters,
   searchAllBreeds,
   searchAllGuguns,
+  shelterDetail,
 } from 'mocks/data/shelter';
 import { rest } from 'msw';
 
@@ -24,5 +25,8 @@ export const shelter = [
   }),
   rest.get(`${process.env.REACT_APP_API_URL}/shelters/guguns`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(searchAllGuguns));
+  }),
+  rest.get(`${process.env.REACT_APP_API_URL}/shelters/:shelterId`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(shelterDetail));
   }),
 ];

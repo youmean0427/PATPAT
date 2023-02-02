@@ -217,3 +217,20 @@ export const searchAllGuguns = [
   { code: 4, name: '구4' },
   { code: 5, name: '구5' },
 ];
+export const shelterDetail = [
+  {
+    address: '주소1',
+    fileDto: {
+      filePath: 'string',
+      filename: 'string',
+      id: 0,
+      origFilename: 'http://ojsfile.ohmynews.com/CRI_T_IMG/2022/0329/A0002821968_T.jpg',
+    },
+    infoContent: '보호소 1입니다.',
+    latitude: 'string',
+    longitude: 'string',
+    name: '보호소1',
+    phoneNum: '전화번호',
+    shelterId: 0,
+  },
+];

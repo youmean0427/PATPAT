@@ -27,3 +27,25 @@ export const consultingrReservationList = [
     state: 2,
   },
 ];
+export const searchAllConsultingReservation = [
+  {
+    consultingId: 0,
+    shelterId: 0,
+    shelterName: '보호소 이름',
+    address: '주소',
+    userName: '유저1 이름',
+    state: 0,
+    timeCode: 0,
+    date: [2023, 2, 22],
+  },
+  {
+    consultingId: 1,
+    shelterId: 0,
+    shelterName: '보호소 이름',
+    address: '주소',
+    userName: '유저2 이름',
+    state: 5,
+    timeCode: 0,
+    date: [2023, 3, 23],
+  },
+];
