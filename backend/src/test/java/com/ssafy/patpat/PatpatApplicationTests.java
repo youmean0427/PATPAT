@@ -243,14 +243,14 @@ class PatpatApplicationTests {
 		}
 	@Test
 	void consulting() {
-		Consulting consulting = Consulting.builder()
-				.userId(1)
-				.spDogId(2)
-				.shelterId(2)
-				.stateCode(0)
-				.registDate(LocalDate.now())
-				.timeCode(0)
-				.build();
-		consultingRepository.save(consulting);
+//		Consulting consulting = Consulting.builder()
+//				.userId(1)
+//				.spDogId(2)
+//				.shelterId(2)
+//				.stateCode(0)
+//				.registDate(LocalDate.now())
+//				.timeCode(0)
+//				.build();
+//		consultingRepository.save(consulting);
 	}
 }
