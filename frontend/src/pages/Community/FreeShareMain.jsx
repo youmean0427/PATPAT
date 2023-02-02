@@ -1,6 +1,6 @@
 import React from 'react';
 import FreeShareList from 'components/Community/FreeShare/FreeShareList';
-import Banner from 'components/Banner/Banner';
+import Banner from 'components/Common/Banner/Banner';
 
 export default function FreeShareMain() {
   return (
