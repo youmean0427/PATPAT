@@ -37,6 +37,6 @@ public class RedisService {
 
     // 키-벨류 삭제
     public void delValues(String token) {
-        redisTemplate.delete(token.substring(7));
+        redisTemplate.delete(token);
     }
 }

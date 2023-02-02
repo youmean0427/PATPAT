@@ -186,10 +186,16 @@ public class UserService {
     @Transactional
     public ResultDto updateUser(UserDto userDto){
         ResultDto resultDto = new ResultDto();
-        User user = userRepository.findOneWithAuthoritiesById(userDto.getUserId()).get();
+        System.out.println(userDto.getUserId());
+        // userId가 넘어오질 않아 null이 될수도 있는 경우 예외처리해야함
+        User user = userRepository.findOneWithAuthoritiesByUserId(userDto.getUserId()).get();
 
-        user.setNickname(userDto.getUsername());
-        user.setProfileImage(userDto.getProfileImageUrl());
+        if(userDto.getUsername() != null){
+            user.setNickname(userDto.getUsername());
+        }
+        if(userDto.getProfileImageUrl() != null){
+            user.setProfileImage(userDto.getProfileImageUrl());
+        }
 
         userRepository.save(user);
 
@@ -199,10 +205,10 @@ public class UserService {
     }
 
     @Transactional
-    public ResultDto deleteUser(TokenDto tokenDto, UserDto userDto) throws Exception {
+    public ResultDto deleteUser(TokenDto tokenDto, Long userId) throws Exception {
 
         ResultDto resultDto = logout(tokenDto);
-        User user = userRepository.findOneWithAuthoritiesById(userDto.getUserId()).get();
+        User user = userRepository.findOneWithAuthoritiesByUserId(userId).get();
         userRepository.delete(user);
 
         resultDto.setResult("success");

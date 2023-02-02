@@ -1,10 +1,7 @@
 package com.ssafy.patpat.common.security.jwt;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.ssafy.patpat.common.redis.RedisService;
@@ -88,12 +85,16 @@ public class TokenProvider implements InitializingBean {
 
     /**Refresh token 생성 algorithm */
     public String createRefreshToken(Authentication authentication){
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenRefreshValidityInMilliseconds);
 
         String token = Jwts.builder()
                 .setSubject(authentication.getName())
                 .setIssuedAt(new Date())
+                .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
@@ -107,9 +108,9 @@ public class TokenProvider implements InitializingBean {
 
         String token = resolveToken(refreshToken);
 
-        String email = redisService.getValues(token);
+        Optional<String> email = Optional.ofNullable(redisService.getValues(token));
 
-        if(email == null){
+        if(!email.isPresent()){
             LOGGER.info("refreshToken이 존재하지 않습니다.");
             return false;
         }

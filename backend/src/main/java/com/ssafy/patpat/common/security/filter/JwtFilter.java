@@ -1,6 +1,7 @@
 package com.ssafy.patpat.common.security.filter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -41,15 +42,19 @@ public class JwtFilter extends GenericFilterBean {
         String bearerToken = httpServletRequest.getHeader(ACCESSTOKEN_HEADER);
         String jwt = tokenProvider.resolveToken(bearerToken);
         String requestURI = httpServletRequest.getRequestURI();
+
         try{
             if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
-                String isLogout = redisService.getValues(jwt);
-                if(isLogout.equals("logout")){
+                Optional<String> isLogout = Optional.ofNullable(redisService.getValues(jwt));
+
+                if(!isLogout.isPresent()){
+                    Authentication authentication = tokenProvider.getAuthentication(jwt);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    LOGGER.info("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+                }
+                else {
                     throw new LogoutException("로그아웃");
                 }
-                Authentication authentication = tokenProvider.getAuthentication(jwt);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                LOGGER.info("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
             }
         }catch(io.jsonwebtoken.security.SecurityException | MalformedJwtException e){
             LOGGER.info("잘못된 JWT 서명입니다. uri: {}", requestURI);

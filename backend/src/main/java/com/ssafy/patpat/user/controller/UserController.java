@@ -153,20 +153,31 @@ public class UserController {
         return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }
 
+    @GetMapping("/reissue")
+    public ResponseEntity<TokenDto> reissue(HttpServletRequest request) {
+
+        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = userService.reissue(refreshToken);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
+        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
+        return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+    }
+
     @PutMapping("/info")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<ResultDto> updateUserInfo(UserDto userDto){
+    public ResponseEntity<ResultDto> updateUserInfo(@RequestBody UserDto userDto){
         ResultDto result = userService.updateUser(userDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping("/info")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<ResultDto> deleteUserInfo(UserDto userDto, HttpServletRequest request) throws Exception{
+    public ResponseEntity<ResultDto> deleteUserInfo(@RequestParam("userId") Long userId, HttpServletRequest request) throws Exception{
         String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
         TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
-        ResultDto result = userService.deleteUser(tokenDto,userDto);
+        ResultDto result = userService.deleteUser(tokenDto,userId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

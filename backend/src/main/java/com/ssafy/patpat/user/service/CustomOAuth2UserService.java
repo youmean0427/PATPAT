@@ -72,7 +72,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
                     .password(password)
                     .nickname(username)
                     .authorities(list)
-                    .activated(true)
                     .build();
 
             userRepository.save(user);
