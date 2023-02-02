@@ -43,6 +43,7 @@ public class SecurityJavaConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> web.ignoring()
+                .antMatchers("/swagger-ui/**")
                 .antMatchers("/favicon.ico");
     }
     @Bean
