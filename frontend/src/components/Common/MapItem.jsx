@@ -19,7 +19,7 @@ export default function MapItem(props) {
         const container = document.querySelector(`.${styles2.container}`);
 
         infoBox.style.top = `${e.clientY - 70}px`;
-        infoBox.style.left = `${e.clientX - container.offsetLeft - 100}px`;
+        infoBox.style.left = `${e.clientX - container.offsetLeft - 50}px`;
       }}
       {...props}
     ></path>
