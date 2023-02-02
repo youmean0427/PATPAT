@@ -1,4 +1,4 @@
-import Banner from 'components/Banner/Banner';
+import Banner from 'components/Common/Banner/Banner';
 import VolunteerContent from 'components/Volunteer/VolunteerContent';
 import React from 'react';
 

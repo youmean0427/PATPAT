@@ -1,0 +1,11 @@
+@import 'assets/styles/variable.scss';
+
+.list {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+  min-width: 500px;
+  margin: auto;
+}
