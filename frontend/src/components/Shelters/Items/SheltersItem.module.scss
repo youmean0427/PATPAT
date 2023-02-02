@@ -1,0 +1,34 @@
+@import 'assets/styles/variable.scss';
+
+.shelters {
+  display: flex;
+  width: 85vw;
+  height: 10rem;
+  padding: 5px;
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+}
+.shelters-login {
+  display: flex;
+  width: 85vw;
+  height: 10rem;
+  padding: 5px;
+}
+.shelter-img img {
+  width: 10rem;
+}
+.text-box {
+  margin-left: 2rem;
+  margin-top: 8px;
+}
+.shelter-name {
+  color: $blue-color;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+.shelter-address {
+  color: $gray-color;
+}
+.shelter-info {
+  padding-top: 0.5rem;
+}
