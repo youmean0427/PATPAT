@@ -1,5 +1,6 @@
 package com.ssafy.patpat.user.service;
 
+import com.ssafy.patpat.common.details.CustomDetails;
 import com.ssafy.patpat.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.ssafy.patpat.user.entity.User;
@@ -35,6 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
                 .collect(Collectors.toList());
+
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(),
                 grantedAuthorities);

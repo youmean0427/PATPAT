@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,12 +34,7 @@ import java.util.ArrayList;
 @Api(tags = {"06. User"},description = "유저 관련 서비스")
 public class UserController {
 
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;
-    private final KakaoService kakaoService;
-    private final NaverService naverService;
-    private final GoogleService googleService;
     /**
      * 찜 동물 리스트
      * @return
@@ -88,11 +85,49 @@ public class UserController {
     }
 
 
-    @GetMapping("/login/kakao")
-    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam("code") String code) throws Exception{
+//    @GetMapping("/login/kakao")
+//    public ResponseEntity<UserResponseDto> kakaoLogin(@RequestParam("code") String code) throws Exception{
+//
+//
+//        UserResponseDto dto = kakaoService.login(code);
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
+//        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
+//
+//        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/login/naver")
+//    public ResponseEntity<UserResponseDto> naverLogin(@RequestParam("code") String code) throws Exception{
+//
+//
+//        UserResponseDto dto = naverService.login(code);
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
+//        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
+//
+//        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/login/google")
+//    public ResponseEntity<UserResponseDto> googleLogin(@RequestParam("code") String code) throws Exception{
+//
+//
+//        UserResponseDto dto = googleService.login(code);
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
+//        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
+//
+//        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
+//    }
 
+    @GetMapping("/login/{provider}")
+    public ResponseEntity<UserResponseDto> googleLogin(@PathVariable("provider") String provider, @RequestParam("code") String code) throws Exception{
 
-        UserResponseDto dto = kakaoService.login(code);
+        UserResponseDto dto = userService.login(provider, code);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
@@ -101,30 +136,11 @@ public class UserController {
         return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/login/naver")
-    public ResponseEntity<UserResponseDto> naverLogin(@RequestParam("code") String code) throws Exception{
-
-
-        UserResponseDto dto = naverService.login(code);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
-        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
-
-        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
-    }
-
-    @GetMapping("/login/google")
-    public ResponseEntity<UserResponseDto> googleLogin(@RequestParam("code") String code) throws Exception{
-
-
-        UserResponseDto dto = googleService.login(code);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + dto.getTokenDto().getAccessToken());
-        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + dto.getTokenDto().getRefreshToken());
-
-        return new ResponseEntity<>(dto, httpHeaders, HttpStatus.OK);
+    @GetMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(){
+        Map<String, String> res = new HashMap<>();
+        res.put("result","success");
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/refresh")
