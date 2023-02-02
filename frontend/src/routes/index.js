@@ -22,6 +22,11 @@ import MyPage from 'pages/MyPage/MyPage';
 import Report from 'pages/Report/Report';
 import MissingDetail from 'components/Report/MissingDog/MissingDetail';
 import MoreInfo from 'pages/Mbti/MoreInfo';
+import InfoMain from 'pages/Community/InfoMain';
+import InfoDetail from 'components/Community/Info/InfoDetail';
+import AdoptionReviewMain from 'pages/Community/AdoptionReviewMain';
+import FreeShareMain from 'pages/Community/FreeShareMain';
+import FreeShareDetail from 'components/Community/FreeShare/FreeShareDetail';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +44,11 @@ const router = createBrowserRouter([
       { path: 'volunteer/address', element: <Address /> },
       { path: 'report', element: <Report /> },
       { path: 'report/missing/:id', element: <MissingDetail /> },
+      { path: 'community/info', element: <InfoMain /> },
+      { path: 'community/infodetail/:id', element: <InfoDetail /> },
+      { path: 'community/adoptionreview', element: <AdoptionReviewMain /> },
+      { path: 'community/freeshare', element: <FreeShareMain /> },
+      { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
     ],
   },
   {
