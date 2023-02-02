@@ -3,41 +3,69 @@
 .map-wrapper {
 }
 
+.info-box {
+  display: none;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: $white-color;
+  border: 2px solid $violet-color;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
 .land {
   stroke: #fff;
   cursor: pointer;
-
-  &:hover ~ .sido {
-    fill: $white-color;
-  }
+  transition: all 0.3s;
 }
 
 .land.zero {
-  fill: #aaa;
+  fill: #fff0f3;
 }
 
 .land.one {
-  fill: #86a3b8;
+  fill: #ffb3c1;
+  &:hover {
+    fill: $blue-color;
+  }
 }
 
 .land.two {
-  fill: #e8d2a6;
+  fill: #ff758f;
+  &:hover {
+    fill: $blue-color;
+  }
 }
 
 .land.three {
-  fill: #f48484;
+  fill: #ff4d6d;
+  &:hover {
+    fill: $blue-color;
+  }
 }
 
 .land.four {
-  fill: #f55050;
+  fill: #c9184a;
+  &:hover {
+    fill: $blue-color;
+  }
 }
 
 .land.five {
-  fill: #abc270;
+  fill: #a4133c;
+  &:hover {
+    fill: $blue-color;
+  }
 }
 
 .land.six {
-  fill: #fec868;
+  fill: #800f2f;
+  &:hover {
+    fill: $blue-color;
+  }
 }
 .sido {
   font-size: 1.2rem;
