@@ -55,79 +55,6 @@ public class NaverService {
     @Value("${spring.security.oauth2.client.registration.naver.authorization-grant-type}")
     String grantType;
 
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final TokenProvider tokenProvider;
-    private final UserRepository userRepository;
-    @Transactional
-    public UserResponseDto login(String code) throws JsonProcessingException{
-        // 1. "인가 코드"로 "액세스 토큰" 요청
-        String naverAccessToken = getAccessToken(code);
-        UserDto userDto = getUserInfo(naverAccessToken);
-
-        System.out.println(userDto.getEmail());
-        Optional<User> userOptional = userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail());
-        User user;
-        if(userOptional.orElse(null) == null) {
-            user = signup(userDto);
-
-        }else{
-            user = userOptional.get();
-        }
-
-
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getProvider() + user.getProviderId());
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        TokenDto token = new TokenDto();
-
-        String accessToken = tokenProvider.createAccessToken(authentication);
-        String refreshToken = tokenProvider.createRefreshToken();
-
-        token.setAccessToken(accessToken);
-        token.setRefreshToken(refreshToken);
-
-        user.setRefreshToken(refreshToken);
-
-        userRepository.save(user);
-
-        UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setTokenDto(token);
-        userResponseDto.setUserDto(user);
-        System.out.println(user.getEmail());
-
-        return userResponseDto;
-    }
-
-    @Transactional
-    public User signup(UserDto userDto){
-
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")
-                .build();
-
-        List<Authority> list = new ArrayList<>();
-        list.add(authority);
-
-        String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
-
-        User user = User.builder()
-                .email(userDto.getEmail())
-                .ageRange(userDto.getAgeRange())
-                .profileImage(userDto.getProfileImageUrl())
-                .provider(userDto.getProvider())
-                .providerId(userDto.getProviderId())
-                .password(password)
-                .nickname(userDto.getUsername())
-                .authorities(list)
-                .activated(true)
-                .build();
-
-        return userRepository.save(user);
-    }
 
     // 1. "인가 코드"로 "액세스 토큰" 요청
     @Transactional
@@ -165,7 +92,7 @@ public class NaverService {
 
     // 2. 토큰으로 카카오 API 호출
     @Transactional
-    private UserDto getUserInfo(String accessToken) throws JsonProcessingException {
+    public UserDto getUserInfo(String accessToken) throws JsonProcessingException {
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
