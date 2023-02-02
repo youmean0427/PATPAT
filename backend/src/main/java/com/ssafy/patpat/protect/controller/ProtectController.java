@@ -44,11 +44,11 @@ public class ProtectController {
      * 보호동물 리스트(보호소별)
      * @return
      */
-    @GetMapping("/{shelterId}/shelter")
-    @ApiOperation(value = "보호동물 리스트", notes = "{code==0 안락사, code==1 최신순, code==2 해당 보호소가 가진 강아지 리스트}")
-    public ResponseEntity<Object> selectProtectListByShelter(@PathVariable int shelterId, RequestProtectDto requestProtectDto){
+    @GetMapping("/shelters")
+    @ApiOperation(value = "보호동물 리스트", notes = "{code==2 해당 보호소가 가진 강아지 리스트}")
+    public ResponseEntity<Object> selectProtectListByShelter(RequestProtectDto requestProtectDto){
         //서비스 호출 코드
-        List<ProtectDto> protectDtoList = service.selectProtectListByShelter(shelterId,requestProtectDto);
+        List<ProtectDto> protectDtoList = service.selectProtectListByShelter(requestProtectDto);
         if(protectDtoList != null){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(protectDtoList);

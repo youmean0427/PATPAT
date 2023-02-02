@@ -28,12 +28,14 @@ public class ProtectDto {
     private int gender;
     @Schema(example = "견종")
     private int breedId;
+    @Schema(example = "견종이름")
+    private String breed;
     @Schema(example = "나이")
     private int age;
     @Schema(example = "무게")
-    private double weight;
+    private double kg;
     @Schema(description = "중성화=0,아니면=1")
-    private int neutered;
+    private boolean isNeutered;
     @Schema(example = "귀모양")
     private int categoryEar;
     @Schema(example = "꼬리모양")
@@ -52,4 +54,6 @@ public class ProtectDto {
     private String infoContent;
     @Schema(example = "파일 url 리스트")
     private List<FileDto> fileUrlList;
+    @Schema(example = "파일 url 리스트")
+    private String thumbnail;
 }

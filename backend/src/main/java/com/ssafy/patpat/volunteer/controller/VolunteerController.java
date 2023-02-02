@@ -36,7 +36,7 @@ public class VolunteerController {
      * 봉사 공고 조회(일반 유저가 보호소에 들어간 경우 (카드형식))
      * @return
      */
-    @GetMapping("/notices/users")
+    @GetMapping("/notices/shelters")
     @ApiOperation(value = "봉사 공고 조회", notes = "일반 유저가 보호소에 들어간 경우 (카드형식)")
     public ResponseEntity<Object> selectNoticeListBySUser(@PathVariable int shelterId){
         //서비스 호출 코드
