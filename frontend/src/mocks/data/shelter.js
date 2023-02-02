@@ -193,12 +193,27 @@ export const searchAllShelters = [
     infoContent: '보호소4 입니다.',
     phone: '010-4444-4444',
   },
+  {
+    shelterId: 4,
+    name: '보호소5',
+    address: '주소5',
+    filePath: 'https://cphoto.asiae.co.kr/listimglink/6/2018121017144081678_1544429678.jpg',
+    infoContent: '보호소5 입니다.',
+    phone: '010-4444-4444',
+  },
 ];
-export const searchBreeds = [
-  { breedName: '개1' },
-  { breedName: '개2' },
-  { breedName: '개3' },
-  { breedName: '개4' },
-  { breedName: '개5' },
-  { breedName: '개6' },
+export const searchAllBreeds = [
+  { breedId: 1, breedName: '개1' },
+  { breedId: 2, breedName: '개2' },
+  { breedId: 3, breedName: '개3' },
+  { breedId: 4, breedName: '개4' },
+  { breedId: 5, breedName: '개5' },
+  { breedId: 6, breedName: '개6' },
+];
+export const searchAllGuguns = [
+  { code: 1, name: '구1' },
+  { code: 2, name: '구2' },
+  { code: 3, name: '구3' },
+  { code: 4, name: '구4' },
+  { code: 5, name: '구5' },
 ];
