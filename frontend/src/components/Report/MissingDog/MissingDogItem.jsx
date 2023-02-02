@@ -3,12 +3,12 @@ import React from 'react';
 import styles from './MissingDogItem.module.scss';
 import { Link } from 'react-router-dom';
 export default function MissingDogItem({ item }) {
-  const { missingId, title, name, fileUrlList, breedName, content } = item;
+  const { missingId, title, fileUrlList, breedName, content } = item;
   return (
     <div>
       <Link to={`missing/${missingId}`} state={{ missingId }}>
         <Card>
-          <img src={fileUrlList} alt={name} />
+          <img src={fileUrlList[0]} alt={fileUrlList[0]} />
           <div className={styles.description}>
             <div className={styles.name}>{title}</div>
             <div className={styles.kind}>{breedName}</div>
