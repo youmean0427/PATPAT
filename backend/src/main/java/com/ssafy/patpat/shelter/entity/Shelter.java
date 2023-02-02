@@ -5,14 +5,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
+import com.ssafy.patpat.consulting.entity.Time;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -28,4 +30,8 @@ public class Shelter {
     private String regNumber;
     private String sidoCode;
     private String gugunCode;
+
+    @OneToMany
+    @JoinColumn(name = "shelter_id")
+    private List<Time> timeList = new ArrayList<Time>();
 }

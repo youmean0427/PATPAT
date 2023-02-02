@@ -2,8 +2,11 @@ package com.ssafy.patpat.shelter.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ssafy.patpat.common.dto.FileDto;
+import com.ssafy.patpat.consulting.entity.Time;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Getter
@@ -21,4 +24,6 @@ public class ShelterDto {
     private String infoContent;
     @Schema(example = "전화번호")
     private String phoneNum;
+    @Schema(example = "내 상담 가능 시간 리스트")
+    private List<Time> timeList;
 }
