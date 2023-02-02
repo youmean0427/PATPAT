@@ -19,10 +19,14 @@ import Address from 'pages/Volunteer/Address';
 import MyPage from 'pages/MyPage/MyPage';
 import Report from 'pages/Report/Report';
 import MoreInfo from 'pages/Mbti/MoreInfo';
+import InfoMain from 'pages/Community/InfoMain';
+import InfoDetail from 'components/Community/Info/InfoDetail';
+import AdoptionReviewMain from 'pages/Community/AdoptionReviewMain';
+import FreeShareMain from 'pages/Community/FreeShareMain';
+import FreeShareDetail from 'components/Community/FreeShare/FreeShareDetail';
 import MissingDogDetail from 'pages/Report/MissingDog/MissingDogDetail';
 import ReportCreate from 'pages/Report/ReportCreate';
 import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
-
 
 const router = createBrowserRouter([
   {
@@ -39,6 +43,12 @@ const router = createBrowserRouter([
       { path: 'mypage', element: <MyPage /> },
       { path: 'volunteer/address', element: <Address /> },
       { path: 'report', element: <Report /> },
+      { path: 'report/missing/:id', element: <MissingDetail /> },
+      { path: 'community/info', element: <InfoMain /> },
+      { path: 'community/infodetail/:id', element: <InfoDetail /> },
+      { path: 'community/adoptionreview', element: <AdoptionReviewMain /> },
+      { path: 'community/freeshare', element: <FreeShareMain /> },
+      { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
       { path: 'report/missing/:id', element: <MissingDogDetail /> },
       { path: 'report/create', element: <ReportCreate /> },
     ],
