@@ -11,16 +11,23 @@ import org.springframework.data.redis.core.TimeToLive;
 import java.util.concurrent.TimeUnit;
 
 @Getter
-@AllArgsConstructor
 @RedisHash(value = "refresh")
 public class RefreshRedis {
     @Id
-    private String email;
-    private String token;
+    String email;
+
+    String token;
 
     @TimeToLive(unit = TimeUnit.MICROSECONDS)
-    private Integer expiration;
+    Integer expiration;
 
+
+    @Builder
+    public RefreshRedis(String email, String token, Integer expiration){
+        this.email = email;
+        this.token = token;
+        this.expiration = expiration;
+    }
 
     public static RefreshRedis createToken(String email, String token, Integer expiration) {
         return new RefreshRedis(email, token, expiration);

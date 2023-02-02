@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.redis.RefreshRedis;
 import com.ssafy.patpat.common.redis.RefreshRedisRepository;
 import com.ssafy.patpat.common.util.SecurityUtil;
@@ -28,12 +29,17 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class TokenProvider implements InitializingBean {
     private final Logger LOGGER = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "PatPatAPI";
+    public static final String ACCESSTOKEN_HEADER = "AccessToken";
+    public static final String REFRESHTOKEN_HEADER = "RefreshToken";
 
     private final String secret;
     private final long tokenAccessValidityInMilliseconds;
@@ -42,15 +48,19 @@ public class TokenProvider implements InitializingBean {
 
     private final long tokenRefreshValidityInMilliseconds;
     private Key key;
+    private final RedisService redisService;
+
 
     public TokenProvider(@Value("${jwt.secret}") String secret,
                          @Value("${jwt.access-token-validity-in-seconds}") long tokenAccessValidityInMilliseconds,
                          @Value("${jwt.refresh-token-validity-in-seconds}") long tokenRefreshValidityInMilliseconds,
-                         UserRepository userRepository){
+                         UserRepository userRepository,
+                         RedisService redisService){
         this.secret = secret;
         this.tokenAccessValidityInMilliseconds = tokenAccessValidityInMilliseconds;
         this.tokenRefreshValidityInMilliseconds = tokenRefreshValidityInMilliseconds;
         this.userRepository = userRepository;
+        this.redisService = redisService;
     }
 
     @Override
@@ -77,13 +87,12 @@ public class TokenProvider implements InitializingBean {
     }
 
     /**Refresh token 생성 algorithm */
-    public String createRefreshToken(){
-        String email = SecurityUtil.getCurrentEmail().get();
+    public String createRefreshToken(Authentication authentication){
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenRefreshValidityInMilliseconds);
 
         String token = Jwts.builder()
-                .setId(email)
+                .setSubject(authentication.getName())
                 .setIssuedAt(new Date())
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
@@ -94,31 +103,27 @@ public class TokenProvider implements InitializingBean {
     }
 
     /** access token 재발급 체크 */
-    public com.ssafy.patpat.user.entity.User checkRefreshToken(String refreshToken){
-        com.ssafy.patpat.user.entity.User user = userRepository.findOneWithAuthoritiesByEmail(getTokenEmail(refreshToken.substring(7))).get();
+    public boolean checkRefreshToken(String refreshToken){
 
-        if(user.getRefreshToken() == null){
+        String token = resolveToken(refreshToken);
+
+        String email = redisService.getValues(token);
+
+        if(email == null){
             LOGGER.info("refreshToken이 존재하지 않습니다.");
-            return null;
-        }
-        String userRefreshToken = user.getRefreshToken();
-
-        System.out.println(userRefreshToken);
-        if(!userRefreshToken.equals(refreshToken.substring(7))){
-            LOGGER.info("refreshToken이 맞지 않습니다.");
-            return null;
+            return false;
         }
 
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(userRefreshToken);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             LOGGER.info("refreshToken이 만료되지 않았습니다.");
-            return user;
+            return true;
         }catch (ExpiredJwtException e) {
             LOGGER.info("refreshToken이 만료되었습니다. 다시 로그인 해주세요.");
-            return null;
+            return false;
         }catch (Exception e){
             LOGGER.error("refreshToken 재발급중 에러각 발생했습니다.: {}", e.getMessage());
-            return null;
+            return false;
         }
     }
 
@@ -137,7 +142,7 @@ public class TokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    /**리프레쉬 정보 조회 */
+    /**리프레쉬 정보 조회 -일단 보류
     public String getTokenEmail(String token) {
         String email = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -147,11 +152,27 @@ public class TokenProvider implements InitializingBean {
                 .getId();
 
         return email;
-    }
+    }*/
 
     /**token 유효성 검증 */
     public boolean validateToken(String token) throws Exception{
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
+    }
+
+    /**토큰 정보 추출 */
+    public String resolveToken(String bearerToken){
+
+//        String bearerToken = request.getHeader("Authorization");
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    public Long getExpiration(String accessToken){
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
     }
 }

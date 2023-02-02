@@ -137,10 +137,12 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(){
-        Map<String, String> res = new HashMap<>();
-        res.put("result","success");
-        return new ResponseEntity<>(res, HttpStatus.OK);
+    public ResponseEntity<UserResponseDto> logout(HttpServletRequest request) throws Exception{
+        String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
+        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
+        UserResponseDto result = userService.logout(tokenDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/refresh")
