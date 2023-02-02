@@ -16,7 +16,7 @@ export default function SheltersList({ sido, gugun, breed }) {
   return (
     <div className={styles.container}>
       {data.map(item => (
-        <SheltersItem key={item.shelterId} item={item} />
+        <SheltersItem key={item.shelterId} item={item} sido={sido} gugun={gugun} breed={breed} />
       ))}
     </div>
   );
