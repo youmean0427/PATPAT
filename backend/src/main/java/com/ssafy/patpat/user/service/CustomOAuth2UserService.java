@@ -80,7 +80,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
             user = userOptional.get();
         }
 
-        return new CustomDetails(user, oAuth2UserInfo);
+        return null;
     }
 
 }

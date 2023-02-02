@@ -63,6 +63,7 @@ public class SecurityJavaConfig {
 
                 /**세션 사용하지 않음*/
                 .and()
+                .logout().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -70,10 +71,10 @@ public class SecurityJavaConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/**").permitAll()
-//                .antMatchers("/user/login").permitAll()
-//                .antMatchers("/user/refresh").permitAll()
-//                .antMatchers("/oauth2/authorization/*").permitAll()
+//                .antMatchers("/**").permitAll()
+                .antMatchers("/user/login/*").permitAll()
+                .antMatchers("/user/refresh").permitAll()
+//                .antMatchers("//authorization/*").permitAll()
                 .anyRequest().authenticated()
 
                 /**JwtSecurityConfig 적용 */
