@@ -4,8 +4,8 @@ import styles from './Test.module.scss';
 import { testContents as tests } from 'data/test';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Loading from 'components/Common/Loading';
 import logo from 'assets/images/mbti-logo.png';
+import Loading from './Loading';
 export default function Test() {
   const [q, setQ] = useState(0);
   const [userAns, setUserAns] = useState([]);
@@ -39,9 +39,13 @@ export default function Test() {
     );
     setTimeout(() => {
       // 계산하는 것처럼 보이게 하기 위해 넣은 timeout
-      navigate(`/mbti/result/${result}`);
+      navigate(`/mbti/result`, { state: { mbti: result } });
     }, Math.floor(Math.random() * 1000 + 2000));
-    return <Loading />;
+    return (
+      <MbtiContainer>
+        <Loading />
+      </MbtiContainer>
+    );
   };
 
   if (!tests[q]) return handleMoveToResult();
@@ -56,12 +60,14 @@ export default function Test() {
       </div>
       <div className={styles.testParagraphArea}>
         <p>{tests[q].question}</p>
-        <button onClick={handleClick} value={tests[q].selection[0].value}>
-          {tests[q].selection[0].answer}
-        </button>
-        <button onClick={handleClick} value={tests[q].selection[1].value}>
-          {tests[q].selection[1].answer}
-        </button>
+        <div>
+          <button onClick={handleClick} value={tests[q].selection[0].value}>
+            {tests[q].selection[0].answer}
+          </button>
+          <button onClick={handleClick} value={tests[q].selection[1].value}>
+            {tests[q].selection[1].answer}
+          </button>
+        </div>
       </div>
     </MbtiContainer>
   );

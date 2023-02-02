@@ -1,0 +1,18 @@
+@import 'assets/styles/variable.scss';
+.category ul li {
+  position: relative;
+  display: inline;
+  font-size: 0.8vw;
+  float: left;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.click {
+  color: black;
+}
+.default {
+  color: rgb(170, 170, 170);
+}
+.list {
+  margin: auto;
+}

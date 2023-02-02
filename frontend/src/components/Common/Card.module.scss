@@ -19,4 +19,11 @@
     height: 18rem;
     margin-bottom: 2rem;
   }
+
+  & > div > img {
+    width: 23rem;
+    height: 18rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
 }

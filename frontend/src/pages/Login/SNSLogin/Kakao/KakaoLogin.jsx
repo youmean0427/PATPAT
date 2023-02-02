@@ -1,36 +1,30 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { REST_API_KEY, REDIRECT_URI } from './KAuth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function KakaoLogin() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const KAKAO_CODE = location.search.split('=')[1]; // 카카오톡 인가 토큰값
+  const code = new URL(window.location.href).searchParams.get('code');
+  const getTokenFromServer = async code => {
+    try {
+      const res = await axios.get(`http://i8e104.p.ssafy.io:8081/user/login/kakao?code=${code}`);
+      // token이랑 user 정보 받으면 token은 localStorage에 user 정보는 recoil에 ☆★☆★☆★ 저 ~ 장 ☆★☆★☆★
+      const accessToken = res.data.tokenDto.accessToken;
+      const refreshToken = res.data.tokenDto.refreshToken;
+      const userInfo = res.data.userDto;
 
-  // 토큰 받아오기
-  const getKakaoToken = () => {
-    fetch('https://kauth.kakao.com/oauth/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${KAKAO_CODE}`,
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.access_token) {
-          // 로컬 스토리지에 저장
-          localStorage.setItem('token', data.access_token);
-          navigate('/'); // 메인페이지로 리다이렉션
-        } else {
-          navigate('/');
-        }
-      });
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('isLogin', true);
+      localStorage.setItem('userProfile', userInfo);
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
   };
-
-  // 로그인 완료 후 한번만 실행
   useEffect(() => {
-    if (!location.search) return;
-    getKakaoToken();
+    getTokenFromServer(code);
   }, []);
 
-  return <div>KAKAO</div>;
+  return;
 }

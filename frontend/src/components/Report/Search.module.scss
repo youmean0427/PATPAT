@@ -1,0 +1,50 @@
+@import 'assets/styles/variable.scss';
+@import 'assets/styles/font.scss';
+.container {
+  // margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+
+  &-search {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+
+    &-inner {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.list {
+  width: 100%;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+}
+
+select {
+  font-size: 20px;
+  font-family: $spoqa-font;
+}
+
+span {
+  margin: 10px;
+  > select {
+    width: auto;
+  }
+}
+
+.searchButton {
+  font-size: 20px;
+  margin: 10px;
+  width: 100px;
+  text-align: center;
+  padding: auto;
+  border-style: solid;
+  border-color: $blue-color;
+  background-color: $blue-color;
+  color: $white-color;
+}

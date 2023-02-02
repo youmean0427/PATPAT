@@ -6,7 +6,6 @@ import MbtiContainer from 'components/Common/MbtiContainer';
 export default function Start() {
   return (
     <MbtiContainer>
-      <div className={styles.title}>나는 어떤 강아지 일까 ?</div>
       <img className={styles.logo} src={logo} alt="mbti" />
       <div className={styles.bottom}>
         <p className={styles.desc}>

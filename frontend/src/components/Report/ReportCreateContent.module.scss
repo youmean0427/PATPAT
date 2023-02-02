@@ -1,0 +1,12 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  display: flex;
+  font-size: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageSize {
+  width: 100px;
+}

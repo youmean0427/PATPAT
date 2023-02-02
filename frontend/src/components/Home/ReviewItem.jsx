@@ -2,7 +2,7 @@ import Card from 'components/Common/Card';
 import React from 'react';
 import styles from './ReviewItem.module.scss';
 export default function ReviewItem({ item }) {
-  const { title, content, thumbnail } = item;
+  const { boardId, author, title, content, thumbnail, count } = item;
   return (
     <Card>
       <img src={thumbnail} alt="thumbnail" />

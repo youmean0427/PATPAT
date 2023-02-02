@@ -1,0 +1,32 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.button {
+  &-selected {
+    font-size: 20px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    padding: 15px;
+    border-style: solid;
+    border-color: $blue-color;
+    background-color: $blue-color;
+    color: $white-color;
+  }
+  &-unselected {
+    font-size: 20px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    padding: 15px;
+    border-style: solid;
+    border-color: $blue-color;
+    background-color: $white-color;
+    color: $blue-color;
+  }
+}
