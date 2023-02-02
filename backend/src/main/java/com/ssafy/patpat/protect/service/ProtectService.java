@@ -16,5 +16,5 @@ public interface ProtectService {
 
     ResponseMessage updateProtect(int protectId, List<MultipartFile> uploadFile, ProtectDto protectDto);
 
-    List<ProtectDto> selectProtectListByShelter(int shelterId ,RequestProtectDto requestProtectDto);
+    List<ProtectDto> selectProtectListByShelter(RequestProtectDto requestProtectDto);
 }
