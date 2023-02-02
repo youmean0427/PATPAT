@@ -34,7 +34,7 @@ export default function Result() {
           <button
             onClick={() => {
               window.scrollTo(0, 0);
-              navigator('/mbti/result/map', { state: { breedId: id, breedName: name } });
+              navigator('/mbti/result/map', { state: { breedId: id, breedName: name, breedImg: imgUrl } });
             }}
             className={styles.link}
           >
