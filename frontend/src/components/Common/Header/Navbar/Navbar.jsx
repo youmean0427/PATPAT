@@ -1,11 +1,14 @@
 import React from 'react';
 import styles from './Navbar.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
 import MenuList from './MenuList';
+import { logout } from 'apis/utils/auth';
 
 export default function Navbar() {
+  const navigator = useNavigate();
   const isLogin = localStorage.getItem('isLogin');
+  console.log(isLogin);
   return (
     <>
       <div className={styles.left}>
@@ -18,15 +21,21 @@ export default function Navbar() {
       </div>
       {isLogin ? (
         <div className={styles.right}>
-          <Link to="/logout" className={styles.login}>
+          <div
+            onClick={() => {
+              logout();
+              navigator('/');
+            }}
+            className={styles.login}
+          >
             로그아웃
-          </Link>
+          </div>
         </div>
       ) : (
         <div className={styles.right}>
-          <Link to="/login" className={styles.login}>
+          <div onClick={() => navigator('/login')} className={styles.login}>
             로그인
-          </Link>
+          </div>
         </div>
       )}
     </>

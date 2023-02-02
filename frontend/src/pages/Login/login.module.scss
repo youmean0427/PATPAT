@@ -1,6 +1,8 @@
 @import 'assets/styles/variable.scss';
 
 .main-container {
+  width: 60%;
+  max-width: 400px;
   padding: 4rem;
   border: 1px solid $border-color;
   border-radius: 0.8rem;
@@ -34,46 +36,14 @@
   }
 }
 
-.button {
-  width: 100%;
-  height: 5rem;
-  font-size: 1.8rem;
+.button-box {
   display: flex;
-  align-items: center;
-  background-color: #f7e600;
-  border-radius: 0.8rem;
-  padding: 2rem 8rem;
-  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
-  transition-duration: 0.4s;
-  &:hover {
-    background-color: #f7e700bb;
-  }
-  & > div {
-    margin-left: 1rem;
-  }
-
-  &:nth-child(3) {
-    background-color: #1ec800;
-    margin: 1.5rem 0;
-
-    &:hover {
-      background-color: #1ec800bb;
-    }
-  }
-
-  &:last-child {
-    background-color: $white-color;
-    &:hover {
-      background-color: $black-color;
-      color: $white-color;
-    }
-  }
 }
-
-.pat-logo {
-  position: absolute;
-  bottom: 0%;
-  right: 0%;
-  transform: translateX(-30%);
-  width: 25%;
+.button {
+  & > img {
+    width: 70px;
+  }
+  &:nth-child(2) {
+    margin: 0 1rem;
+  }
 }
