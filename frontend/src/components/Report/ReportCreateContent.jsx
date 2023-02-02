@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import { file } from '@babel/types';
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
+import { createReport } from 'apis/api/report';
+import axios from 'axios';
+import { missingDogList } from 'mocks/data/missing';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './ReportCreateContent.module.scss';
 
 export default function ReportCreateContent() {
@@ -19,25 +25,9 @@ export default function ReportCreateContent() {
   const [categoryTail, setCategoryTail] = useState('');
   const [categoryCloth, setCategoryCloth] = useState('');
   const [categoryClothColor, setCategoryClothColor] = useState('');
-
-  console.log(
-    title,
-    name,
-    state,
-    gender,
-    breedName,
-    weight,
-    neutered,
-    content,
-    categoryEar,
-    categoryColor,
-    categoryPattern,
-    categoryTail,
-    categoryCloth,
-    categoryClothColor
-  );
-
   const [showImages, setShowImages] = useState([]);
+
+  //  ========== 사진 업로드 ==========
 
   // 이미지 상대경로 저장
   const handleAddImages = event => {
@@ -61,9 +51,44 @@ export default function ReportCreateContent() {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
 
+  //  ==============================
+
+  // const data = {
+  //   title: title,
+  //   name: name,
+  //   state: state,
+  //   gender: gender,
+  //   breedName: breedName,
+  //   weight: weight,
+  //   neutered: neutered,
+  //   content: content,
+  //   categoryEar: categoryEar,
+  //   categoryColor: categoryColor,
+  //   fileUrlList: showImages,
+  // };
+
+  let formData = new FormData();
+  formData.append('title', title);
+
+  for (let i = 0; i < 4; i++) {
+    formData.append('fileUrlList', showImages[i]);
+  }
+
+  const { mutate: mutation } = useMutation(['missingDogList'], () => {
+    return createReport(state, formData);
+  });
+
+  console.log('DATA: ', formData);
+
   return (
     <div className={styles.container}>
-      <form>
+      {/* <form onSubmit={handleSubmit}> */}
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          mutation();
+        }}
+      >
         <div>
           <input type="text" placeholder="제목" onChange={e => setTitle(e.target.value)} />
         </div>
@@ -103,7 +128,7 @@ export default function ReportCreateContent() {
             <option value="웰시코기">웰시코기</option>
             <option value="푸들">푸들</option>
             <option value="보더콜리">보더콜리</option>
-            <option value="일글리쉬쉽독">잉글리쉬쉽독</option>
+            <option value="잉글리쉬쉽독">잉글리쉬쉽독</option>
           </select>
         </div>
         <div>
@@ -150,9 +175,10 @@ export default function ReportCreateContent() {
             <option value="모름">모름</option>
           </select>
         </div>
-
         <button type="submit">등록</button>
-        <button>취소</button>
+        <Link to="/report">
+          <button>취소</button>
+        </Link>
       </form>
     </div>
   );

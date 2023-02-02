@@ -4,8 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getMissingDogDetail } from 'apis/api/report';
 import { Link } from 'react-router-dom';
 export default function MissingDogDetailContent({ item }) {
-  console.log('1마리', item);
-  // if (isLoading) return;
+  // console.log('id', item);
 
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
