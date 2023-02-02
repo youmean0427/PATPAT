@@ -5,6 +5,7 @@ import logo from 'assets/images/logo.png';
 import MenuList from './MenuList';
 
 export default function Navbar() {
+  const isLogin = localStorage.getItem('isLogin');
   return (
     <>
       <div className={styles.left}>
@@ -15,11 +16,19 @@ export default function Navbar() {
         </Link>
         <MenuList />
       </div>
-      <div className={styles.right}>
-        <Link to="/login" className={styles.login}>
-          로그인
-        </Link>
-      </div>
+      {isLogin ? (
+        <div className={styles.right}>
+          <Link to="/logout" className={styles.login}>
+            로그아웃
+          </Link>
+        </div>
+      ) : (
+        <div className={styles.right}>
+          <Link to="/login" className={styles.login}>
+            로그인
+          </Link>
+        </div>
+      )}
     </>
   );
 }

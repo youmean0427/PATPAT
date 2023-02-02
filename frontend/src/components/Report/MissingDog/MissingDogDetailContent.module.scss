@@ -1,0 +1,46 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  display: flex;
+  font-size: 20px;
+  flex-direction: column;
+  align-items: center;
+
+  &-content {
+    display: flex;
+
+    > div > div {
+      margin: 10px;
+      text-align: right;
+    }
+    &-inner {
+      background-color: red;
+      display: flex;
+    }
+  }
+
+  &-character {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    background-color: $light-blue-color;
+    padding: 20px;
+
+    > div > div {
+      margin: 10px;
+      text-align: center;
+    }
+  }
+
+  &-button {
+    display: flex;
+    margin: 20px;
+  }
+}
+.thumbnail {
+}
+.title {
+  font-size: 30px;
+  margin: 30px;
+  font-weight: 700;
+}

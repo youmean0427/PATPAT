@@ -3,8 +3,6 @@ import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
 import LoginLayout from 'layouts/LoginLayout';
 import Login from 'pages/Login/Login';
-import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
-import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 import NotFound from 'pages/NotFound/NotFound';
 import MbtiLayout from 'layouts/MbtiLayout';
 import Result from 'pages/Mbti/Result';
@@ -20,13 +18,15 @@ import Volunteer from 'pages/Volunteer/Volunteer';
 import Address from 'pages/Volunteer/Address';
 import MyPage from 'pages/MyPage/MyPage';
 import Report from 'pages/Report/Report';
-import MissingDetail from 'components/Report/MissingDog/MissingDetail';
 import MoreInfo from 'pages/Mbti/MoreInfo';
 import InfoMain from 'pages/Community/InfoMain';
 import InfoDetail from 'components/Community/Info/InfoDetail';
 import AdoptionReviewMain from 'pages/Community/AdoptionReviewMain';
 import FreeShareMain from 'pages/Community/FreeShareMain';
 import FreeShareDetail from 'components/Community/FreeShare/FreeShareDetail';
+import MissingDogDetail from 'pages/Report/MissingDog/MissingDogDetail';
+import ReportCreate from 'pages/Report/ReportCreate';
+import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +49,8 @@ const router = createBrowserRouter([
       { path: 'community/adoptionreview', element: <AdoptionReviewMain /> },
       { path: 'community/freeshare', element: <FreeShareMain /> },
       { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
+      { path: 'report/missing/:id', element: <MissingDogDetail /> },
+      { path: 'report/create', element: <ReportCreate /> },
     ],
   },
   {
@@ -58,7 +60,6 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Login /> },
       { path: 'kakao', element: <KakaoLogin /> },
-      { path: 'naver', element: <NaverLogin /> },
     ],
   },
   {

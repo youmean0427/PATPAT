@@ -1,6 +1,6 @@
 import React from 'react';
-import Banner from '../../components/Banner/Banner';
-import VisionContent from '../../components/Intro/VisionContent/VisionContent';
+import Banner from 'components/Common/Banner/Banner';
+import VisionContent from 'components/Intro/VisionContent/VisionContent';
 export default function Vision() {
   return (
     <div>

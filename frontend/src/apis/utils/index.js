@@ -2,16 +2,23 @@ import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const axiosApi = (baseURL, options) => {
-  const instance = axios.create({ baseURL, ...options });
+const axiosApi = baseURL => {
+  const instance = axios.create({
+    baseURL,
+    headers: {
+      withCredentials: true,
+    },
+  });
   return instance;
 };
 
-const axiosAuthApi = (baseURL, options) => {
+const axiosAuthApi = baseURL => {
   const access_token = localStorage.getItem('ACCESS_TOKEN');
   const instance = axios.create({
     baseURL,
-    ...options,
+    headers: {
+      withCredentials: true,
+    },
   });
   instance.defaults.headers.common.Authorization = `Bearer ${access_token}`;
   instance.interceptors.request.use(config => {

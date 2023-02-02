@@ -12,7 +12,7 @@ export default function AbandonedDogList() {
   return (
     <div className={styles.list}>
       {data.map(item => (
-        <AbandonedDogItem key={item.id} item={item} />
+        <AbandonedDogItem key={item.protectId} item={item} />
       ))}
     </div>
   );
