@@ -198,18 +198,18 @@ public class UserService {
         return resultDto;
     }
 
-//    @Transactional
-//    public ResultDto deleteUser(TokenDto tokenDto, UserDto userDto) throws Exception {
-//
-//        ResultDto resultDto = logout(tokenDto);
-//        User user = userRepository.findOneWithAuthoritiesById(userDto.getUserId()).get();
-//        userRepository.delete(user);
-//
-//        resultDto.setResult("success");
-//
-//        return resultDto;
-//
-//    }
+    @Transactional
+    public ResultDto deleteUser(TokenDto tokenDto, UserDto userDto) throws Exception {
+
+        ResultDto resultDto = logout(tokenDto);
+        User user = userRepository.findOneWithAuthoritiesById(userDto.getUserId()).get();
+        userRepository.delete(user);
+
+        resultDto.setResult("success");
+
+        return resultDto;
+
+    }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities(String email) {

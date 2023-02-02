@@ -160,15 +160,15 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-//    @DeleteMapping("/info")
-//    @PreAuthorize("hasAnyRole('USER')")
-//    public ResponseEntity<ResultDto> deleteUserInfo(UserDto userDto, HttpServletRequest request) throws Exception{
-//        String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
-//        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
-//        TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
-//        ResultDto result = userService.deleteUser(tokenDto,userDto);
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
+    @DeleteMapping("/info")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<ResultDto> deleteUserInfo(UserDto userDto, HttpServletRequest request) throws Exception{
+        String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
+        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
+        ResultDto result = userService.deleteUser(tokenDto,userDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @GetMapping("/info")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
