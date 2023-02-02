@@ -1,7 +1,9 @@
 package com.ssafy.patpat;
 
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
+import com.ssafy.patpat.consulting.dto.TimeDto;
 import com.ssafy.patpat.consulting.entity.Consulting;
+import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
@@ -15,9 +17,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @SpringBootTest
@@ -242,6 +247,7 @@ class PatpatApplicationTests {
 
 		}
 	@Test
+	@Transactional
 	void consulting() {
 //		Consulting consulting = Consulting.builder()
 //				.userId(1)
@@ -252,5 +258,45 @@ class PatpatApplicationTests {
 //				.timeCode(0)
 //				.build();
 //		consultingRepository.save(consulting);
+//
+
+//		Shelter shelter = shelterRepository.findByShelterId(5);
+//		List<Integer> list = new ArrayList<>();
+//
+//		for(Time t : shelter.getTimeList()){
+//			if(t.getState() == 1){
+//				list.add(t.timeCode);
+//			}
+//		}
+//		List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),LocalDate.now());
+//		int hour = LocalDateTime.now().getHour();
+//
+//		for(Consulting c : consultings){
+//			if(!(c.getStateCode()==2 || c.getStateCode()==3)){
+//				list.remove(Integer.valueOf(c.getTimeCode()));
+//			}
+//		}
+//		System.out.println(list);
+//		for(int i=0; i<list.size(); i++){
+//			if(list.get(i)==0){
+//				if(list.get(i)+10 <= hour) {
+//					list.remove(Integer.valueOf(list.get(i)));
+//					i--;
+//				}
+//			}
+//			else{
+//
+//				if(list.get(i)+13 <= hour){
+//					list.remove(Integer.valueOf(list.get(i)));
+//					i--;
+//				}
+//			}
+//		}
+//		System.out.println(list);
+//		List<TimeDto> timeDtoList = new ArrayList<>();
+//		for(Integer i : list){
+//			timeDtoList.add(new TimeDto(i));
+//		}
+//		System.out.println(timeDtoList);
 	}
 }
