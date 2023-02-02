@@ -2,22 +2,18 @@ package com.ssafy.patpat.common.oauth;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.ssafy.patpat.common.jwt.JwtFilter;
-import com.ssafy.patpat.common.jwt.TokenProvider;
+import com.ssafy.patpat.common.security.filter.JwtFilter;
+import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.user.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -58,5 +54,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         response.getWriter().print(tokenJson);
 
+        response.sendRedirect("http://localhost:3000/login/token");
     }
 }

@@ -1,5 +1,6 @@
-package com.ssafy.patpat.common.jwt;
+package com.ssafy.patpat.common.security.jwt;
 
+import com.ssafy.patpat.common.security.filter.JwtFilter;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;

@@ -1,6 +1,9 @@
 package com.ssafy.patpat.user.service;
 
-import com.ssafy.patpat.common.jwt.TokenProvider;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.patpat.common.redis.RefreshRedis;
+import com.ssafy.patpat.common.redis.RefreshRedisRepository;
+import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.dto.TokenDto;
 import com.ssafy.patpat.user.dto.UserDto;
@@ -8,16 +11,13 @@ import com.ssafy.patpat.user.dto.UserResponseDto;
 import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +32,30 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
 
+    private final KakaoService kakaoService;
+    private final NaverService naverService;
+
+    private final GoogleService googleService;
+
+    private final RefreshRedisRepository refreshRedisRepository;
+
+    @Value("${jwt.refresh-token-validity-in-seconds}")
+    private Integer expiration;
+
     @Transactional
-    public TokenDto login(UserDto userDto){
+    public UserResponseDto login(String provider, String code) throws JsonProcessingException {
+        UserDto userDto;
+        if(provider.equals("kakao")){
+            String kakaoAccessToken = kakaoService.getAccessToken(code);
+            userDto = kakaoService.getUserInfo(kakaoAccessToken);
+        }else if(provider.equals("naver")){
+            String naverAccessToken = naverService.getAccessToken(code);
+            userDto = naverService.getUserInfo(naverAccessToken);
+        }else{
+            String googleAccessToken = googleService.getAccessToken(code);
+            userDto = googleService.getUserInfo(googleAccessToken);
+        }
+
         Optional<User> userOptional = userRepository.findOneWithAuthoritiesByEmail(userDto.getEmail());
         User user;
         if(userOptional.orElse(null) == null) {
@@ -44,24 +66,32 @@ public class UserService {
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getProvider() + user.getUserid());
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getProvider() + user.getProviderId());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         TokenDto token = new TokenDto();
 
+        /** 토큰 생성 */
         String accessToken = tokenProvider.createAccessToken(authentication);
         String refreshToken = tokenProvider.createRefreshToken();
 
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
 
-        user.setRefreshToken(refreshToken);
+        /** 리프레쉬 토큰 레디스 저장 */
+        RefreshRedis newRedisToken = RefreshRedis.createToken(user.getEmail(), refreshToken, expiration);
+        refreshRedisRepository.save(newRedisToken);
 
+        user.setActivated(true);
         userRepository.save(user);
 
-        return token;
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setTokenDto(token);
+        userResponseDto.setUserDto(user);
+
+        return userResponseDto;
     }
 
     @Transactional
@@ -74,11 +104,12 @@ public class UserService {
         List<Authority> list = new ArrayList<>();
         list.add(authority);
 
-        String uuid = UUID.randomUUID().toString().substring(0, 6);
-        String password = passwordEncoder.encode("패스워드"+uuid);
+        String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
         User user = User.builder()
                 .email(userDto.getEmail())
+                .ageRange(userDto.getAgeRange())
+                .profileImage(userDto.getProfileImageUrl())
                 .provider(userDto.getProvider())
                 .providerId(userDto.getProviderId())
                 .password(password)

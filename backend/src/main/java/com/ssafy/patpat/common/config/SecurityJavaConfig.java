@@ -1,13 +1,13 @@
 package com.ssafy.patpat.common.config;
 
-import com.ssafy.patpat.common.jwt.JwtAccessDeniedHandler;
-import com.ssafy.patpat.common.jwt.JwtAuthenticationEntryPoint;
-import com.ssafy.patpat.common.jwt.JwtSecurityConfig;
-import com.ssafy.patpat.common.jwt.TokenProvider;
+import com.ssafy.patpat.common.security.jwt.JwtAccessDeniedHandler;
+import com.ssafy.patpat.common.security.jwt.JwtAuthenticationEntryPoint;
+import com.ssafy.patpat.common.security.jwt.JwtSecurityConfig;
+import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.oauth.OAuth2SuccessHandler;
 import com.ssafy.patpat.user.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -43,10 +48,12 @@ public class SecurityJavaConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors().disable()
                 .csrf().disable()
                 .formLogin().disable()
                 .headers().frameOptions().disable()
+
+                .and()
+                .cors().configurationSource(corsConfigurationSource())
 
                 /**401, 403 Exception 핸들링 */
                 .and()
@@ -56,16 +63,20 @@ public class SecurityJavaConfig {
 
                 /**세션 사용하지 않음*/
                 .and()
+                .logout().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 /** HttpServletRequest를 사용하는 요청들에 대한 접근 제한 설정*/
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/user/login").permitAll()
-//                .antMatchers("/user/refresh").permitAll()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/**").permitAll()
-//                .antMatchers("/oauth2/authorization/*").permitAll()
+//                .antMatchers("/swagger-ui/**").permitAll()
+//                .antMatchers("/boards/**").permitAll()
+//                .antMatchers("/protects/**").permitAll()
+//                .antMatchers("/user/login/*").permitAll()
+//                .antMatchers("/user/refresh").permitAll()
                 .anyRequest().authenticated()
 
                 /**JwtSecurityConfig 적용 */
@@ -81,5 +92,18 @@ public class SecurityJavaConfig {
         return http.build();
 
 
+    }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
