@@ -20,8 +20,10 @@ const dList = [
 
 export const getRegionList = list => {
   return list.map((item, index) => {
-    let colorStyle = 'zero';
-    if (item.count > 0 && item.count <= 10) {
+    let colorStyle = '';
+    if (item.count === 0) {
+      colorStyle = 'zero';
+    } else if (item.count <= 10) {
       colorStyle = 'one';
     } else if (item.count <= 20) {
       colorStyle = 'two';
