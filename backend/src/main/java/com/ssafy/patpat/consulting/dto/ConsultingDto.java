@@ -30,10 +30,6 @@ public class ConsultingDto {
     private String address;
     @Schema(example = "시간코드")
     private int timeCode;
-    @Schema(example = "시작시간")
-    private LocalDateTime startTime;
-    @Schema(example = "종료시간")
-    private LocalDateTime endTime;
     @Schema(example = "날짜")
     private LocalDate registDate;
     @Schema(example = "대기중,수락,거절")

@@ -33,7 +33,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         TokenDto token = new TokenDto();
         LOGGER.info("토큰 발행 시작");
         String accessToken = tokenProvider.createAccessToken(authentication);
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = tokenProvider.createRefreshToken(authentication);
 
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);

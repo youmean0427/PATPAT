@@ -1,4 +1,4 @@
-package com.ssafy.patpat.common.code.error;
+package com.ssafy.patpat.common.error;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,8 @@ public enum ErrorCode {
     EXPIRED_TOKEN("003","만료된 토큰입니다."),
     UNSUPPORTED_TOKEN("004","지원하지않는 토큰입니다."),
     ACCESS_DENIED("005", "접근이 거부된 토큰입니다."),
-    WRONG_TOKEN("006", "잘못된 토큰입니다.");
+    WRONG_TOKEN("006", "잘못된 토큰입니다."),
+    LOGOUT_TOKEN("007", "로그아웃된 토큰입니다.");
 
 
     private final String code;

@@ -80,16 +80,43 @@ public class BoardServiceImpl implements BoardService{
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit());
         List<Board> entityList = boardRepository.findByPostCode(requestBoardDto.getTypeCode(),pageRequest);
         List<BoardDto> dtoList = new ArrayList<>();
-        for(Board entity : entityList){
-            dtoList.add(
-                    BoardDto.builder()
-                            .boardId(entity.getBoardId())
-                            .title(entity.getContent())
-                            .author(entity.getNickName())
-                            .registDate(entity.getDateTime().toLocalDate())
-                            .count(entity.getCount())
-                            .build()
-            );
+        for(Board board : entityList){
+            if(requestBoardDto.getTypeCode() == 0){
+                List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
+                List<Image> imageList = new ArrayList<>();
+                for(PostImage post : postImageList){
+                    imageList.add(imageRepository.findByImageId(post.getImageId()));
+                }
+                FileDto fileDto = new FileDto();
+                if(imageList.size()!=0){
+                    fileDto = FileDto.builder()
+                            .filePath(imageList.get(0).getFilePath())
+                            .build();
+                }
+                dtoList.add(
+                        BoardDto.builder()
+                                .boardId(board.getBoardId())
+                                .title(board.getContent())
+                                .author(board.getNickName())
+                                .registDate(board.getDateTime().toLocalDate())
+                                .count(board.getCount())
+                                .fileUrl(fileDto)
+                                .content(board.getContent())
+                                .build()
+                );
+            }
+            else{
+                dtoList.add(
+                        BoardDto.builder()
+                                .boardId(board.getBoardId())
+                                .title(board.getContent())
+                                .author(board.getNickName())
+                                .registDate(board.getDateTime().toLocalDate())
+                                .count(board.getCount())
+                                .content(board.getContent())
+                                .build()
+                );
+            }
         }
         return dtoList;
     }
@@ -135,7 +162,7 @@ public class BoardServiceImpl implements BoardService{
         for(Image entity : imageList){
             fileDtoList.add(
                     FileDto.builder()
-                            .filePath(entity.getOrigFilename())
+                            .filePath(entity.getFilePath())
                             .build()
             );
         }

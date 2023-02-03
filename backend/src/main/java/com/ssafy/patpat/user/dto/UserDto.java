@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserDto {
 
+    private long userId;
     @Size(min=1, max=50)
     private String provider;
 

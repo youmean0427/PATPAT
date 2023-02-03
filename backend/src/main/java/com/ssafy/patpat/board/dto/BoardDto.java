@@ -41,4 +41,6 @@ public class BoardDto {
     @Schema(example = "파일 url 리스트("+
             "    파일 url = filePath)")
     private List<FileDto> fileUrlList;
+    @Schema(example = "썸네일")
+    private FileDto fileUrl;
 }

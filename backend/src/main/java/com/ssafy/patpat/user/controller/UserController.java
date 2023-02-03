@@ -3,10 +3,7 @@ package com.ssafy.patpat.user.controller;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.security.filter.JwtFilter;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
-import com.ssafy.patpat.user.dto.FavoriteDto;
-import com.ssafy.patpat.user.dto.TokenDto;
-import com.ssafy.patpat.user.dto.UserDto;
-import com.ssafy.patpat.user.dto.UserResponseDto;
+import com.ssafy.patpat.user.dto.*;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.service.GoogleService;
 import com.ssafy.patpat.user.service.KakaoService;
@@ -30,7 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("api/user")
 @Api(tags = {"06. User"},description = "유저 관련 서비스")
 public class UserController {
 
@@ -137,10 +134,12 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(){
-        Map<String, String> res = new HashMap<>();
-        res.put("result","success");
-        return new ResponseEntity<>(res, HttpStatus.OK);
+    public ResponseEntity<ResultDto> logout(HttpServletRequest request) throws Exception{
+        String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
+        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
+        ResultDto result = userService.logout(tokenDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/refresh")
@@ -152,6 +151,34 @@ public class UserController {
         httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
         httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
         return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/reissue")
+    public ResponseEntity<TokenDto> reissue(HttpServletRequest request) {
+
+        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = userService.reissue(refreshToken);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
+        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
+        return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+    }
+
+    @PutMapping("/info")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<ResultDto> updateUserInfo(@RequestBody UserDto userDto){
+        ResultDto result = userService.updateUser(userDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/info")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<ResultDto> deleteUserInfo(@RequestParam("userId") Long userId, HttpServletRequest request) throws Exception{
+        String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
+        String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
+        TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
+        ResultDto result = userService.deleteUser(tokenDto,userId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/info")

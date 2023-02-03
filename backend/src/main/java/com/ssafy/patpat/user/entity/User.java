@@ -21,7 +21,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userid;
+    private Long userId;
 
     @Column(name = "age_range")
     private String ageRange;
@@ -46,13 +46,6 @@ public class User {
     @Column(name = "profile_image")
     private String profileImage;
 
-    @Column(name = "refresh_token")
-    private String refreshToken;
-
-    @JsonIgnore
-    @Column(name = "activated")
-    private boolean activated;
-
     @Column(name = "password")
     private String password;
 
@@ -65,9 +58,6 @@ public class User {
 
     public void setPassword(String password){
         this.password = password;
-    }
-    public void setRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
     }
 
     @PrePersist

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.common.config;
 
+import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.security.jwt.JwtAccessDeniedHandler;
 import com.ssafy.patpat.common.security.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.patpat.common.security.jwt.JwtSecurityConfig;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 public class SecurityJavaConfig {
 
     private final TokenProvider tokenProvider;
+    private final RedisService redisService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
@@ -43,10 +45,6 @@ public class SecurityJavaConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> web.ignoring()
-                .antMatchers("/boards/**")
-                .antMatchers("/protects/**")
-                .antMatchers("/user/login/*")
-                .antMatchers("/user/refresh")
                 .antMatchers("/favicon.ico");
     }
     @Bean
@@ -76,14 +74,16 @@ public class SecurityJavaConfig {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/**").permitAll()
+//                .antMatchers("/swagger-ui/**").permitAll()
+//                .antMatchers("/boards/**").permitAll()
+//                .antMatchers("/protects/**").permitAll()
 //                .antMatchers("/user/login/*").permitAll()
 //                .antMatchers("/user/refresh").permitAll()
-//                .antMatchers("//authorization/*").permitAll()
                 .anyRequest().authenticated()
 
                 /**JwtSecurityConfig 적용 */
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider))
+                .apply(new JwtSecurityConfig(tokenProvider, redisService))
 
                 .and()
                 .oauth2Login()

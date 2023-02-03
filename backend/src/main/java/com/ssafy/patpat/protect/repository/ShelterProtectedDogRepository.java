@@ -17,4 +17,8 @@ public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProt
     List<ShelterProtectedDog> findByBreedIdAndSidoCode(int breedId,String sidoCode);
     List<ShelterProtectedDog> findBySidoCodeAndGugunCode(String sidoCode, String gugunCode);
     List<ShelterProtectedDog> findBySidoCode(String sidoCode);
+    Integer countDistinctShelterIdBySidoCodeAndBreedId(String sidoCode, int breedId);
+    List<ShelterProtectedDog> findDistinctShelterIdByBreedId(int breedId);
+    List<ShelterProtectedDog> findDistinctShelterIdBySidoCode(String sidoCode);
+    List<ShelterProtectedDog> findDistinctShelterIdBySidoCodeAndBreedId(String sidoCode,int breedId);
 }
