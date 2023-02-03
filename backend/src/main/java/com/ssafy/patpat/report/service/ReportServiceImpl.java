@@ -2,9 +2,10 @@ package com.ssafy.patpat.report.service;
 
 import com.ssafy.patpat.report.dto.ReportDto;
 import com.ssafy.patpat.report.dto.RequestReportDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ReportServiceImpl implements ReportService{
 
     @Override
