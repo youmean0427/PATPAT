@@ -19,4 +19,15 @@ export const missing = [
   rest.get(`${process.env.REACT_APP_API_URL}/reports/missings/detail/:missingId`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(missingDogDetail));
   }),
+
+  rest.post(`${process.env.REACT_APP_API_URL}/reports`, (req, res, ctx) => {
+    const reportType = req.url.searchParams.get('reportType');
+    if (reportType === '0') {
+      console.log('req', req.body);
+      missingDogList.push(req.body);
+      console.log('Handler', missingDogList);
+      console.log('ful', missingDogList);
+      return res(ctx.status(201));
+    }
+  }),
 ];

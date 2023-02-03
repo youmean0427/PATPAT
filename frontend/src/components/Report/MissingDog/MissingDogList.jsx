@@ -22,7 +22,7 @@ export default function MissingDogList() {
     queryKey: ['missingDogList'],
     queryFn: () => getMissingDogList(selectedBreed, selectedGender, 0, 0),
   });
-
+  // console.log(data);
   if (isLoading) return;
   return (
     <div>
@@ -47,8 +47,8 @@ export default function MissingDogList() {
       </div>
       <div className={styles.container}>
         <div className={styles.list}>
-          {data.map(item => (
-            <MissingDogItem key={item.missingId} item={item} />
+          {data.map((item, index) => (
+            <MissingDogItem key={index} item={item} />
           ))}
         </div>
       </div>

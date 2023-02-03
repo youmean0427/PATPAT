@@ -1,0 +1,42 @@
+@import 'assets/styles/variable.scss';
+
+.card {
+  width: 80%;
+  background-color: $white-color;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 0.8rem;
+  padding: 2rem 2rem;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  @include breakpoint(sm) {
+    font-size: 1.4rem;
+  }
+}
+
+.img-box {
+  & > img {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    @include breakpoint(sm) {
+      width: 10rem;
+      height: 10rem;
+    }
+  }
+}
+.desc-box {
+  margin-left: 2rem;
+}
+
+.desc-breed {
+  margin-bottom: 1rem;
+}
+
+.desc-count {
+  & > span {
+    font-weight: 900;
+    color: $violet-color;
+    margin: 0;
+  }
+}

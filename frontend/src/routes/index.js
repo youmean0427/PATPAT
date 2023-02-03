@@ -29,6 +29,8 @@ import FreeShareDetail from 'components/Community/FreeShare/FreeShareDetail';
 import MissingDogDetail from 'pages/Report/MissingDog/MissingDogDetail';
 import ReportCreate from 'pages/Report/ReportCreate';
 import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
+import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
+import GoogleLogin from 'pages/Login/SNSLogin/Google/GoogleLogin';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +65,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Login /> },
       { path: 'kakao', element: <KakaoLogin /> },
+      { path: 'naver', element: <NaverLogin /> },
+      { path: 'google', element: <GoogleLogin /> },
     ],
   },
   {
