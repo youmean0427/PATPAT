@@ -46,6 +46,15 @@ export const getGugunList = async sidoCode => {
 };
 
 /**
+ * GET : 견종 리스트
+ * @returns [] : 견종 데이터 리스트
+ */
+export const getBreedsList = async () => {
+  const { data } = await defaultInstance(`/shelters/breeds`);
+  return data;
+};
+
+/**
  * GET : MBTI 결과에 따른 견종 결과 데이터
  * @param {string} mbtiId ex) infp,isfp ...
  * @returns 견종 결과 테이터 -> breedName,files,desc,title,mbti
