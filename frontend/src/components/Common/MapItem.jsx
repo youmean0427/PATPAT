@@ -18,8 +18,8 @@ export default function MapItem(props) {
         const infoBox = document.querySelector(`.${styles['info-box']}`);
         const container = document.querySelector(`.${styles2.container}`);
 
-        infoBox.style.top = `${e.clientY - 70}px`;
-        infoBox.style.left = `${e.clientX - container.offsetLeft - 50}px`;
+        infoBox.style.top = `${e.clientY - 60}px`;
+        infoBox.style.left = `${e.clientX}px`;
       }}
       {...props}
     ></path>
