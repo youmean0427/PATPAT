@@ -10,7 +10,7 @@ export default function VolunteerItem({ item }) {
         <img src={ShelterImg} alt="" />
       </div>
       <div className={styles.contents}>
-        <p className={styles['user-name']}>{shelterName}</p>
+        <p className={styles['shelter-name']}>{shelterName}</p>
         <p>{address}</p>
         <p>
           {startTime[0]}.{startTime[1]}.{startTime[2]} {startTime[3]}:

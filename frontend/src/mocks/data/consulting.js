@@ -1,7 +1,9 @@
 export const consultingrReservationList = [
   {
     consultingId: 0,
+    shelterId: 0,
     shelterName: '보호소 이름1',
+    userName: '사용자1',
     address: '주소1',
     date: [2023, 1, 31],
     startTime: [13, 0],
@@ -10,7 +12,9 @@ export const consultingrReservationList = [
   },
   {
     consultingId: 1,
+    shelterId: 0,
     shelterName: '보호소 이름2',
+    userName: '사용자1',
     address: '주소2',
     date: [2023, 2, 22],
     startTime: [14, 0],
@@ -19,12 +23,25 @@ export const consultingrReservationList = [
   },
   {
     consultingId: 2,
+    shelterId: 0,
     shelterName: '보호소 이름3',
+    userName: '사용자1',
     address: '주소3',
     date: [2023, 3, 3],
     startTime: [15, 0],
     endTime: [16, 0],
     state: 2,
+  },
+  {
+    consultingId: 3,
+    shelterId: 0,
+    shelterName: '보호소 이름3',
+    userName: '사용자1',
+    address: '주소3',
+    date: [2023, 3, 3],
+    startTime: [15, 0],
+    endTime: [16, 0],
+    state: 5,
   },
 ];
 export const searchAllConsultingReservation = [

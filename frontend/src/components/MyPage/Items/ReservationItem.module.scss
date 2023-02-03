@@ -19,7 +19,7 @@
   width: 25rem;
   margin-top: 2rem;
 }
-.user-name {
+.shelter-name {
   margin: 1rem 0 1rem 0;
   font-size: 1.5rem;
   color: $blue-color;
@@ -34,22 +34,28 @@
 .state0 {
   background-color: $lighter-blue-color;
   color: white;
+  pointer-events: none;
 }
 .state1 {
   background-color: $green-color;
   color: white;
+  pointer-events: none;
 }
 .state2 {
   background-color: $red-color;
   color: white;
+  pointer-events: none;
 }
 .state3 {
   background-color: $yellow-color;
+  pointer-events: none;
 }
 .state4 {
   background-color: lightgray;
+  pointer-events: none;
 }
 .state5 {
+  cursor: pointer;
   background-color: $purple-color;
   color: white;
 }
