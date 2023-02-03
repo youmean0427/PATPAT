@@ -19,8 +19,6 @@ import Address from 'pages/Volunteer/Address';
 import MyPage from 'pages/MyPage/MyPage';
 import Report from 'pages/Report/Report';
 import MoreInfo from 'pages/Mbti/MoreInfo';
-import Shelters from 'pages/Shelters/Shelters';
-import ShelterPage from 'pages/ShelterPage/ShelterPage';
 import InfoMain from 'pages/Community/InfoMain';
 import InfoDetail from 'components/Community/Info/InfoDetail';
 import AdoptionReviewMain from 'pages/Community/AdoptionReviewMain';
@@ -31,6 +29,8 @@ import ReportCreate from 'pages/Report/ReportCreate';
 import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
 import GoogleLogin from 'pages/Login/SNSLogin/Google/GoogleLogin';
+import Shelter from 'pages/Shelter/Shelter';
+import SearchShelter from 'pages/SearchShelter/SearchShelter';
 
 const router = createBrowserRouter([
   {
@@ -47,8 +47,8 @@ const router = createBrowserRouter([
       { path: 'mypage', element: <MyPage /> },
       { path: 'volunteer/address', element: <Address /> },
       { path: 'report', element: <Report /> },
-      { path: 'shelters', element: <Shelters /> },
-      { path: 'shelters/:shelterId', element: <ShelterPage /> },
+      { path: 'shelter/search', element: <SearchShelter /> },
+      { path: 'shelter/:shelterId', element: <Shelter /> },
       { path: 'community/info', element: <InfoMain /> },
       { path: 'community/infodetail/:id', element: <InfoDetail /> },
       { path: 'community/adoptionreview', element: <AdoptionReviewMain /> },

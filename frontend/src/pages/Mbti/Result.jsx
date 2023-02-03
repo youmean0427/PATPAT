@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import MbtiContainer from 'components/Common/MbtiContainer';
+import MbtiContainer from 'containers/MbtiContainer';
 import kakao from 'assets/images/kakaoBtn.png';
 import copyLink from 'assets/images/link.png';
-import facebook from 'assets/images/facebook.png';
-import logo from 'assets/images/mbti-logo.png';
 import styles from './Result.module.scss';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';

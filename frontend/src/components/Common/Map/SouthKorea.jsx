@@ -1,8 +1,10 @@
 import React from 'react';
 import styles from './SouthKorea.module.scss';
 import { getRegionList } from 'apis/utils/parsingRegionData';
-import MapItem from './MapItem';
-export default function SouthKorea({ list }) {
+import MapItem from './SouthKoreaItem';
+import { useNavigate } from 'react-router-dom';
+export default function SouthKorea({ breedId, breedName, list }) {
+  const navigate = useNavigate();
   return (
     <div className={styles['map-wrapper']}>
       <div className={styles['info-box']}></div>
@@ -12,6 +14,10 @@ export default function SouthKorea({ list }) {
             const color = item.color;
             return (
               <MapItem
+                onClick={() => {
+                  navigate('/shelter/search', { state: { breedId, breedName, sidoCode: item.code } });
+                  console.log(item.name);
+                }}
                 key={item.code}
                 className={`${styles.land} ${styles[color]}`}
                 count={item.count}

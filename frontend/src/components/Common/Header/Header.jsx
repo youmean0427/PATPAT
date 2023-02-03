@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import styles from './Header.module.scss';
-import Container from '../Container';
+import Container from 'containers/Container';
 import Navbar from './Navbar/Navbar';
 export default function Header() {
   const handleScroll = useCallback(() => {

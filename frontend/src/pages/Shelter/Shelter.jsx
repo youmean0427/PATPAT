@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { getShelterDetail } from 'apis/api/shelter';
 import React from 'react';
 import { useParams } from 'react-router';
-import styles from './ShelterPage.module.scss';
+import styles from './Shelter.module.scss';
 import Content from 'components/ShelterPage/Content';
 
-export default function ShelterPage() {
+export default function Shelter() {
   const params = useParams();
   const shelterId = params.shelterId;
 
