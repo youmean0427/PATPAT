@@ -1,11 +1,11 @@
 import { atom } from 'recoil';
 
-export const userInfoAtom = atom({
+export const userInfoState = atom({
   key: 'recoilUserState',
   default: {},
 });
 
-export const isLoginAtom = atom({
+export const isLoginState = atom({
   key: 'recoilIsLogin',
   default: false,
 });
