@@ -57,18 +57,28 @@ public class ShelterServiceImpl implements ShelterService{
         int breedId = MBTI.valueOf(mbtiId).ordinal();
         Breed breed = breedRepository.findByBreedId(breedId);
         BreedImage breedImage = breedImageRepository.findByBreedId(breedId);
-        Image image =imageRepository.findByImageId(breedImage.getImageId());
-        FileDto fileDto = FileDto.builder()
-                .filePath(image.getFilePath())
-                .build();
+        BreedDto breedDto = null;
+        if(breedImage != null){
+            Image image =imageRepository.findByImageId(breedImage.getImageId());
+            FileDto fileDto = FileDto.builder()
+                    .filePath(image.getFilePath())
+                    .build();
 
-        BreedDto breedDto = BreedDto.builder()
-                .breedId(breed.getBreedId())
-                .breedName(breed.getName())
-                .title(breed.getTitle())
-                .description(breed.getDescription())
-                .fileDto(fileDto)
-                .build();
+            breedDto = BreedDto.builder()
+                    .breedId(breed.getBreedId())
+                    .breedName(breed.getName())
+                    .title(breed.getTitle())
+                    .description(breed.getDescription())
+                    .fileDto(fileDto)
+                    .build();
+        }else{
+            breedDto = BreedDto.builder()
+                    .breedId(breed.getBreedId())
+                    .breedName(breed.getName())
+                    .title(breed.getTitle())
+                    .description(breed.getDescription())
+                    .build();
+        }
 
         return breedDto;
     }

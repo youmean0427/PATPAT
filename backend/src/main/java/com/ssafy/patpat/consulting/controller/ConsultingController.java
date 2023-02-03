@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("consultations")
+@RequestMapping("api/consultations")
 @Api(tags = {"02. Consulting"},description = "상담 관련 서비스")
 public class ConsultingController {
     @Autowired

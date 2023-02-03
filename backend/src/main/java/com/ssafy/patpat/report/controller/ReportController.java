@@ -4,8 +4,10 @@ import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.protect.dto.ProtectDto;
 import com.ssafy.patpat.report.dto.ReportDto;
 import com.ssafy.patpat.report.dto.RequestReportDto;
+import com.ssafy.patpat.report.service.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +18,20 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("reports")
+@RequestMapping("api/reports")
 @Api(tags = {"04. Report"}, description = "실종,임보 관련 서비스")
 public class ReportController {
+    @Autowired
+    ReportService service;
     /**
      * 실종견 리스트
      * @return
      */
     @GetMapping("/missings")
     @ApiOperation(value = "실종견 조회", notes = "{code==0 전체 실종견, code==2 견종 성별 필터링 검색}")
-    public ResponseEntity<ArrayList<ReportDto>> selectMissingList(RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectMissingList(RequestReportDto requestReportDto){
         //서비스 호출 코드
+        List<ReportDto> reportDtoList = service.selectMissingList(requestReportDto);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ArrayList<ReportDto>());
@@ -41,8 +46,9 @@ public class ReportController {
      */
     @GetMapping("/missings/{userId}")
     @ApiOperation(value = "실종견 조회", notes = "{현재 유저의 실종견 공고 리스트}")
-    public ResponseEntity<ArrayList<ReportDto>> selectMissingListByUser(@PathVariable int userId, RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectMissingListByUser(@PathVariable int userId, RequestReportDto requestReportDto){
         //서비스 호출 코드
+        List<ReportDto> reportDtoList = service.selectMissingListByUser(userId,requestReportDto);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ArrayList<ReportDto>());
@@ -57,8 +63,9 @@ public class ReportController {
      */
     @GetMapping("/personals")
     @ApiOperation(value = "임보견 조회", notes = "{code==0 전체조회, code==1 성별 견종 필터링}")
-    public ResponseEntity<ArrayList<ReportDto>> selectPersonalProtectionList(RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectPersonalProtectionList(RequestReportDto requestReportDto){
         //서비스 호출 코드
+        List<ReportDto> reportDtoList = service.selectPersonalProtectionList(requestReportDto);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ArrayList<ReportDto>());
@@ -75,6 +82,7 @@ public class ReportController {
     @ApiOperation(value = "실종견 상세", notes = "실종견 상세")
     public ResponseEntity<ReportDto> detailMissing(@PathVariable int missingId){
         //서비스 호출 코드
+        ReportDto reportDto = service.detailMissing(missingId);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ReportDto());
@@ -91,6 +99,7 @@ public class ReportController {
     @ApiOperation(value = "임보견 상세", notes = "임보견 상세")
     public ResponseEntity<ReportDto> detailPersonalProtection(@PathVariable int personalProtectId){
         //서비스 호출 코드
+        ReportDto reportDto = service.detailPersonalProtection(personalProtectId);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ReportDto());
@@ -108,6 +117,7 @@ public class ReportController {
     @ApiOperation(value = "유사견종 조회", notes = "실종된 견종과 유사한 견종 조회")
     public ResponseEntity<ArrayList<ProtectDto>> selectRecommendList(RequestReportDto requestReportDto){
         //서비스 호출 코드
+        //Protect
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ArrayList<ProtectDto>());

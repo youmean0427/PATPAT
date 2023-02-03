@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/protects")
+@RequestMapping("api/protects")
 @Api(tags = {"03. Protect"},description = "보호 동물 서비스")
 public class ProtectController {
     @Autowired

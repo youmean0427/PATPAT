@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/boards")
+@RequestMapping("api/boards")
 @Api(tags = {"01. Board"},description = "게시판 관련 서비스")
 @ApiResponses({
         @ApiResponse(code=200, message = "성공"),
