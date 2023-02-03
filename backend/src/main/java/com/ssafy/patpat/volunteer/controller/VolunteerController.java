@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/volunteers")
+@RequestMapping("api/volunteers")
 @Api(tags = {"07. Volunteer"},description = "봉사 관련 서비스")
 public class VolunteerController {
     /**

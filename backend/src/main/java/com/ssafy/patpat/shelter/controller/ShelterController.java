@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shelters")
+@RequestMapping("api/shelters")
 @Api(tags = {"05. Shelter"},description = "보호소 관련 서비스")
 public class ShelterController {
     @Autowired
@@ -86,6 +86,7 @@ public class ShelterController {
     @ApiOperation(value = "견종 정보 반환", notes = "견종 정보 반환(이미지, 견종)")
     public ResponseEntity<Object> selectBreedByMbti(@PathVariable String mbtiId){
         //service 호출
+        System.out.println(mbtiId);
         BreedDto breedDto = service.selectBreedByMbti(mbtiId);
         if(breedDto!=null){
             return ResponseEntity.status(HttpStatus.OK)

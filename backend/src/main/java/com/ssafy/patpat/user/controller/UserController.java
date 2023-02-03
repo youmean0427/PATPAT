@@ -27,7 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("api/user")
 @Api(tags = {"06. User"},description = "유저 관련 서비스")
 public class UserController {
 

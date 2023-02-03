@@ -101,6 +101,7 @@ public class BoardServiceImpl implements BoardService{
                                 .registDate(board.getDateTime().toLocalDate())
                                 .count(board.getCount())
                                 .fileUrl(fileDto)
+                                .content(board.getContent())
                                 .build()
                 );
             }
@@ -112,6 +113,7 @@ public class BoardServiceImpl implements BoardService{
                                 .author(board.getNickName())
                                 .registDate(board.getDateTime().toLocalDate())
                                 .count(board.getCount())
+                                .content(board.getContent())
                                 .build()
                 );
             }

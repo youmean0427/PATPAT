@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Builder
 public class BreedDto {
     @Schema(example = "견종id")
