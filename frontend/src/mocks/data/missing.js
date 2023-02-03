@@ -327,13 +327,13 @@ export const missingDogList = [
 ];
 
 export const missingDogDetail = {
-  breedName: '웰시코기',
-  categoryCloth: '옷여부',
-  categoryClothColor: '옷색깔',
-  categoryColor: '털색',
-  categoryEar: '귀모양',
-  categoryPattern: '패턴',
-  categoryTail: '꼬리모양',
+  breedName: 0,
+  categoryCloth: 0,
+  categoryClothColor: 1,
+  categoryColor: 1,
+  categoryEar: 1,
+  categoryPattern: 0,
+  categoryTail: 2,
   content:
     '부산광역시 사하구 하단동 근처에서 초코푸들 발견하신분 꼭 연락주세요, 실종 당시 사진과 같은 검정색 몸줄 착용하고 있었습니다. 발견하시면 010-1234-5678로 연락주세요',
   fileUrlList: [

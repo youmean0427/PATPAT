@@ -52,9 +52,9 @@ export default function MissingDogList() {
           ))}
         </div>
       </div>
-      <div>
+      <div className={styles['container-newButton']}>
         <Link to="create">
-          <button className={styles.searchButton}>글쓰기</button>
+          <button className={styles.newButton}>글쓰기</button>
         </Link>
       </div>
     </div>

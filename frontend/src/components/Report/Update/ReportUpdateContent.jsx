@@ -1,31 +1,32 @@
 import { file } from '@babel/types';
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
-import { createReport } from 'apis/api/report';
+import { createReport, updateReport } from 'apis/api/report';
 import axios from 'axios';
 import { missingDogList } from 'mocks/data/missing';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styles from './ReportCreateContent.module.scss';
+import { Link, useLocation } from 'react-router-dom';
+import styles from './ReportUpdateContent.module.scss';
 
-export default function ReportCreateContent() {
-  const [title, setTitle] = useState('');
-  const [name, setName] = useState('');
-  const [state, setState] = useState('0');
+export default function ReportUpdateContent(items) {
+  const item = items.items;
+  const [title, setTitle] = useState(item.title);
+  const [name, setName] = useState(item.name);
+  const [state, setState] = useState(item.state);
   // 위도,경도로 수정
   const [place, setPlace] = useState('0');
 
-  const [gender, setGender] = useState('0');
-  const [breedName, setBreedName] = useState('');
-  const [weight, setWeight] = useState('');
-  const [neutered, setNeutered] = useState('0');
-  const [content, setContent] = useState('');
-  const [categoryEar, setCategoryEar] = useState('');
-  const [categoryColor, setCategoryColor] = useState('');
-  const [categoryPattern, setCategoryPattern] = useState('');
-  const [categoryTail, setCategoryTail] = useState('');
-  const [categoryCloth, setCategoryCloth] = useState('');
-  const [categoryClothColor, setCategoryClothColor] = useState('');
-  const [showImages, setShowImages] = useState([]);
+  const [gender, setGender] = useState(item.gender);
+  const [breedName, setBreedName] = useState(`${item.breedName}`);
+  const [weight, setWeight] = useState(item.weight);
+  const [neutered, setNeutered] = useState(`${item.neutered}`);
+  const [content, setContent] = useState(item.content);
+  const [categoryEar, setCategoryEar] = useState(`${item.categoryEar}`);
+  const [categoryColor, setCategoryColor] = useState(item.categoryColor);
+  const [categoryPattern, setCategoryPattern] = useState(item.categoryPattern);
+  const [categoryTail, setCategoryTail] = useState(item.categoryTail);
+  const [categoryCloth, setCategoryCloth] = useState(item.categoryCloth);
+  const [categoryClothColor, setCategoryClothColor] = useState(item.categoryClothColor);
+  const [showImages, setShowImages] = useState(item.fileUrlList);
 
   //  ========== 사진 업로드 ==========
 
@@ -51,21 +52,7 @@ export default function ReportCreateContent() {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
 
-  //  ==============================
-
-  // const data = {
-  //   title: title,
-  //   name: name,
-  //   state: state,
-  //   gender: gender,
-  //   breedName: breedName,
-  //   weight: weight,
-  //   neutered: neutered,
-  //   content: content,
-  //   categoryEar: categoryEar,
-  //   categoryColor: categoryColor,
-  //   fileUrlList: showImages,
-  // };
+  //  ===========================================
 
   let formData = new FormData();
   formData.append('title', title);
@@ -74,11 +61,13 @@ export default function ReportCreateContent() {
     formData.append('fileUrlList', showImages[i]);
   }
 
-  const { mutate: mutation } = useMutation(['missingDogList'], () => {
-    return createReport(state, formData);
+  // ================= Mutation =================
+  const { mutate: mutation } = useMutation(['reportUpdate'], () => {
+    return updateReport(state, formData);
   });
 
   console.log('DATA: ', formData);
+  // ============================================
 
   return (
     <div>
@@ -89,12 +78,15 @@ export default function ReportCreateContent() {
           mutation();
         }}
       >
+        {/* ================== Title ==================== */}
         <div className={styles.container}>
           <div className={styles.title}>
-            <input type="text" placeholder="제목" onChange={e => setTitle(e.target.value)} />
+            <input type="text" placeholder="제목" onChange={e => setTitle(e.target.value)} value={title} />
           </div>
           <div className={styles['container-inner']}>
-            {/* ===================Picture================== */}
+            {/* =============================== */}
+
+            {/* =================== Picture ================== */}
 
             <div className={styles['container-picture']}>
               <div>
@@ -131,23 +123,12 @@ export default function ReportCreateContent() {
 
                   <div className={styles['container-content-info-inner-content']}>
                     <div>
-                      <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                      <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} value={name} />
                     </div>
                     <div>
-                      <input
-                        type="radio"
-                        value="0"
-                        checked={gender === '0'}
-                        onChange={e => setGender(e.target.value)}
-                      />
+                      <input type="radio" checked={gender === 0} onChange={() => setGender(0)} />
                       남
-                      <input
-                        type="radio"
-                        value="1"
-                        checked={gender === '1'}
-                        onChange={e => setGender(e.target.value)}
-                      />
-                      여
+                      <input type="radio" checked={gender === 1} onChange={() => setGender(1)} />여
                     </div>
                     <div>
                       <select name="" id="" onChange={e => setState(e.target.value)}>
@@ -164,7 +145,19 @@ export default function ReportCreateContent() {
                       </select>
                     </div>
                     <div>
-                      <input type="number" placeholder="몸무게" onChange={e => setWeight(e.target.value)} />
+                      <select name="" id="" selected={breedName} onChange={e => setBreedName(e.target.value)}>
+                        <option value="0">웰시</option>
+                        <option value="1">감자</option>
+                        <option value="2">푸들</option>
+                      </select>
+                    </div>
+                    <div>
+                      <input
+                        type="number"
+                        placeholder="몸무게"
+                        onChange={e => setWeight(e.target.value)}
+                        value={weight}
+                      />
                     </div>
                     <div>
                       <input
@@ -199,9 +192,34 @@ export default function ReportCreateContent() {
                   <div>무늬색</div>
                 </div>
                 <div>
-                  <div>ㅇ</div>
-                  <div>ㅇ</div>
-                  <div>ㅇ</div>
+                  <div>
+                    <select name="" id="" onChange={e => setCategoryEar(e.target.value)}>
+                      <option disabled>귀</option>
+                      <option value="0">접힘</option>
+                      <option value="1">펴짐</option>
+                      <option value="2">모름</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select name="" id="" onChange={e => setCategoryColor(e.target.value)}>
+                      <option selected disabled>
+                        털색
+                      </option>
+                      <option value="0">흰색</option>
+                      <option value="1">검은색</option>
+                      <option value="2">모름</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select name="" id="" onChange={e => setCategoryPattern(e.target.value)}>
+                      <option selected disabled>
+                        무늬색
+                      </option>
+                      <option value="0">흰색</option>
+                      <option value="1">검은색</option>
+                      <option value="2">모름</option>
+                    </select>
+                  </div>
                 </div>
                 <div>
                   <div>꼬리</div>
@@ -209,15 +227,42 @@ export default function ReportCreateContent() {
                   <div>옷색</div>
                 </div>
                 <div>
-                  <div>ㅇ</div>
-                  <div>ㅇ</div>
-                  <div>ㅇ</div>
+                  <div>
+                    <select name="" id="" onChange={e => setCategoryTail(e.target.value)}>
+                      <option selected disabled>
+                        꼬리
+                      </option>
+                      <option value="0">말림</option>
+                      <option value="1">안말림</option>
+                      <option value="2">모름</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select name="" id="" onChange={e => setCategoryCloth(e.target.value)}>
+                      <option selected disabled>
+                        옷착용
+                      </option>
+                      <option value="0">예</option>
+                      <option value="1">아니오</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select name="" id="" onChange={e => setCategoryClothColor(e.target.value)}>
+                      <option selected disabled>
+                        옷색
+                      </option>
+                      <option value="0">빨강</option>
+                      <option value="1">파랑</option>
+                      <option value="2">노랑</option>
+                      <option value="3">모름</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div>
-            <textarea name="" id="" cols="150" rows="30"></textarea>
+            <textarea name="" id="" cols="150" rows="30" value={content}></textarea>
           </div>
           <button type="submit">등록</button>
           <Link to="/report">

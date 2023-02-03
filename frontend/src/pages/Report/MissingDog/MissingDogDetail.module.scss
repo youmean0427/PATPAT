@@ -35,10 +35,23 @@
   &-button {
     display: flex;
     margin: 20px;
+    justify-content: center;
   }
 }
 .title {
   font-size: 30px;
   margin: 30px;
   font-weight: 700;
+}
+
+.button {
+  font-size: 20px;
+  margin: 10px;
+  width: 100px;
+  text-align: center;
+  padding: auto;
+  border-style: solid;
+  border-color: $blue-color;
+  background-color: $blue-color;
+  color: $white-color;
 }

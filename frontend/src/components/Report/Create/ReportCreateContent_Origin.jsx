@@ -125,6 +125,7 @@ export default function ReportCreateContent() {
         </div>
         <div>
           <select name="" id="" onChange={e => setBreedName(e.target.value)}>
+            <option value="0" selected>견종</option>
             <option value="웰시코기">웰시코기</option>
             <option value="푸들">푸들</option>
             <option value="보더콜리">보더콜리</option>

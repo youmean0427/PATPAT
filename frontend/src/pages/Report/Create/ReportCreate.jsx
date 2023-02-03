@@ -1,4 +1,4 @@
-import ReportCreateContent from 'components/Report/ReportCreateContent';
+import ReportCreateContent from 'components/Report/Create/ReportCreateContent';
 import React from 'react';
 import styles from './ReportCreate.module.scss';
 export default function ReportCreate() {
