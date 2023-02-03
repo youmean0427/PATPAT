@@ -3,14 +3,25 @@ import MbtiContainer from 'components/Common/MbtiContainer';
 import kakao from 'assets/images/kakaoBtn.png';
 import copyLink from 'assets/images/link.png';
 import facebook from 'assets/images/facebook.png';
+import logo from 'assets/images/mbti-logo.png';
 import styles from './Result.module.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { getMbtiBreedInfo } from 'apis/api/shelter';
+import { shareKakao } from 'utils/shareKakaoLink';
 
 export default function Result() {
   const { state } = useLocation();
-  const navigator = useNavigate();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
   const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiBreedInfo(state.mbti));
   if (isLoading) return;
   const { id, mbti, name, title, desc, imgUrl } = data;
@@ -34,7 +45,7 @@ export default function Result() {
           <button
             onClick={() => {
               window.scrollTo(0, 0);
-              navigator('/mbti/result/map', { state: { breedId: id, breedName: name, breedImg: imgUrl } });
+              navigate('/mbti/result/map', { state: { breedId: id, breedName: name, breedImg: imgUrl } });
             }}
             className={styles.link}
           >
@@ -44,7 +55,7 @@ export default function Result() {
       </div>
       <button
         onClick={() => {
-          navigator('/mbti/test');
+          navigate('/mbti/test');
         }}
         className={styles.retry}
       >
@@ -57,9 +68,25 @@ export default function Result() {
       <div className={styles['share-box']}>
         <span>공유하기</span>
         <div className={styles['share-list']}>
-          <img src={kakao} alt="kakao" />
-          <img src={facebook} alt="facebook" />
-          <img src={copyLink} alt="url" />
+          <button
+            onClick={() => {
+              shareKakao(
+                `${process.env.REACT_APP_PROD_CLIENT_URL}/mbti`,
+                "어쩌면 우리의 가족을 바꾸는\n'PATPAT'에서 새로운 가족을 만나보세요.",
+                'PATPAT 토닥토닥\n나는 어떤 강아지일까?',
+                'https://ifh.cc/g/6V6qsV.png'
+              );
+            }}
+          >
+            <img src={kakao} alt="kakao" />
+          </button>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(`${process.env.REACT_APP_PROD_CLIENT_URL}/mbti`);
+            }}
+          >
+            <img src={copyLink} alt="url" />
+          </button>
         </div>
       </div>
     </MbtiContainer>

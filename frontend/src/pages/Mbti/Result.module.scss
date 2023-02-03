@@ -129,11 +129,11 @@
 
 .share-list {
   margin-top: 1rem;
-  & > img {
+  & > button {
+    margin-right: 1rem;
+  }
+  & > button > img {
     width: 5rem;
     cursor: pointer;
-  }
-  & > img:nth-child(2) {
-    margin: 0 1rem;
   }
 }
