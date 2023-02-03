@@ -16,6 +16,7 @@ import com.ssafy.patpat.shelter.entity.*;
 import com.ssafy.patpat.shelter.repository.*;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -131,6 +132,9 @@ public class ShelterServiceImpl implements ShelterService{
         String breedName = dto.getBreedName();
         String sidoCode = dto.getSidoCode();
         String gugunCode = dto.getGugunCode();
+        int offSet = dto.getOffSet();
+        int limit = dto.getLimit();
+        PageRequest pageRequest = PageRequest.of(offSet,limit);
         List<Shelter> shelterList;
         List<Integer> integerList = new ArrayList<>();
         if(breedName==null && sidoCode==null){

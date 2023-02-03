@@ -117,7 +117,7 @@ public class ReportController {
     @ApiOperation(value = "유사견종 조회", notes = "실종된 견종과 유사한 견종 조회")
     public ResponseEntity<ArrayList<ProtectDto>> selectRecommendList(RequestReportDto requestReportDto){
         //서비스 호출 코드
-        //Protect
+        List<ProtectDto> protectDtoList = service.selectRecommendList(requestReportDto);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ArrayList<ProtectDto>());
@@ -134,8 +134,7 @@ public class ReportController {
     @ApiOperation(value = "유사견종 마리수 조회", notes = "유사견종 갯수 조회")
     public ResponseEntity<HashMap<String,Integer>> selectRecommendCount(RequestReportDto requestReportDto){
         //서비스 호출 코드
-        HashMap<String,Integer> map = new HashMap<>();
-        map.put("count",5);
+        HashMap<String, Integer> map = service.selectRecommendCount(requestReportDto);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new HashMap<String,Integer>());
@@ -153,6 +152,7 @@ public class ReportController {
     @ApiOperation(value = "실종,임보 등록", notes = "0==실종, 1==임보")
     public ResponseEntity<ResponseMessage> insertReport(ReportDto reportDto, @RequestPart List<MultipartFile> uploadFile){
         //서비스 호출 코드
+        ResponseMessage responseMessage = service.insertReport(reportDto, uploadFile);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
@@ -169,6 +169,7 @@ public class ReportController {
     @ApiOperation(value = "실종,임보 수정", notes = "0==실종, 1==임보")
     public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart List<MultipartFile> uploadFile){
         //서비스 호출 코드
+        ResponseMessage responseMessage = service.updateReport(reportDto, uploadFile);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
