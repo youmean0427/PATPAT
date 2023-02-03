@@ -2,7 +2,7 @@ import { updateConsultant } from 'apis/api/consulting';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ConsultingItem.module.scss';
-import ConsultingImg from 'assets/images/consulting2.png';
+import ConsultingImg from 'assets/images/consulting.png';
 
 export default function ConsultingItem({ item }) {
   const { consultingId, shelterId, shelterName, address, userName, state, timeCode, date } = item;

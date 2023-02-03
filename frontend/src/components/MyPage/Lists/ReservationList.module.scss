@@ -1,6 +1,7 @@
 .container {
-  width: 90%;
-  margin: auto;
-  padding: 30px;
-  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  margin: 20px 0 50px 0;
 }
