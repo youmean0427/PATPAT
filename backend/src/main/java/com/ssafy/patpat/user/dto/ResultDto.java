@@ -1,6 +1,5 @@
 package com.ssafy.patpat.user.dto;
 
-import com.ssafy.patpat.user.entity.User;
 import lombok.*;
 
 @Getter
@@ -8,8 +7,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDto {
-    private TokenDto tokenDto;
-    private User userDto;
+public class ResultDto {
     private String result;
 }
