@@ -196,8 +196,8 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
-    public List<ShelterDto> shelterListInVolunteer(String sidoCode, String gugunCode) {
-        List<Shelter> shelterList = shelterRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode);
+    public List<ShelterDto> shelterListInVolunteer(String gugunCode) {
+        List<Shelter> shelterList = shelterRepository.findByGugunCode(gugunCode);
         List<ShelterDto> shelterDtoList = new ArrayList<>();
         for(Shelter s : shelterList){
             shelterDtoList.add(

@@ -13,7 +13,7 @@ public interface ShelterService {
     List<Sido> sidoList();
     List<Gugun> gugunList(String sidoCode);
     List<ShelterDto> shelterList(RequestShelterDto dto);
-    List<ShelterDto> shelterListInVolunteer(String sidoCode, String gugunCode);
+    List<ShelterDto> shelterListInVolunteer(String gugunCode);
     ShelterDto detailShelter(int shelterId);
     BreedDto selectBreedByMbti(String mbtiId);
     AuthCodeDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto);
