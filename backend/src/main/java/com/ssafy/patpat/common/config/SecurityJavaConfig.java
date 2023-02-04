@@ -6,7 +6,7 @@ import com.ssafy.patpat.common.security.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.patpat.common.security.jwt.JwtSecurityConfig;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.oauth.OAuth2SuccessHandler;
-import com.ssafy.patpat.user.service.CustomOAuth2UserService;
+//import com.ssafy.patpat.user.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -35,7 +35,7 @@ public class SecurityJavaConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    private final CustomOAuth2UserService customOAuth2UserService;
+//    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -83,13 +83,13 @@ public class SecurityJavaConfig {
 
                 /**JwtSecurityConfig 적용 */
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider, redisService))
+                .apply(new JwtSecurityConfig(tokenProvider, redisService));
 
-                .and()
-                .oauth2Login()
-                .successHandler(oAuth2SuccessHandler)
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+//                .and()
+//                .oauth2Login()
+//                .successHandler(oAuth2SuccessHandler)
+//                .userInfoEndpoint()
+//                .userService(customOAuth2UserService);
                 
         return http.build();
 

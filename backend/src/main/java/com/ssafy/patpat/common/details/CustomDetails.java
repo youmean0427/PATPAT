@@ -22,14 +22,14 @@ public class CustomDetails implements UserDetails {
     private String username;
     private String password;
 
-    private List<Authority> roles = new ArrayList<>();
+    private List<Authority> authorities = new ArrayList<>();
 
 
     public static UserDetails of(User user) {
         return CustomDetails.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .roles(user.getAuthorities())
+                .authorities(user.getAuthorities())
                 .build();
     }
 
@@ -37,7 +37,7 @@ public class CustomDetails implements UserDetails {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        return roles.stream()
+        return authorities.stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
                 .collect(Collectors.toList());
     }

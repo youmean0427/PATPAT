@@ -1,6 +1,7 @@
 package com.ssafy.patpat.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.patpat.common.entity.Image;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -43,11 +44,12 @@ public class User {
     @Column(name = "provider_id")
     private String providerId;
 
-    @Column(name = "profile_image")
-    private String profileImage;
-
     @Column(name = "password")
     private String password;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @ManyToMany
     @JoinTable(
@@ -56,9 +58,6 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private List<Authority> authorities;
 
-    public void setPassword(String password){
-        this.password = password;
-    }
 
     @PrePersist
     public void prePersist() {
