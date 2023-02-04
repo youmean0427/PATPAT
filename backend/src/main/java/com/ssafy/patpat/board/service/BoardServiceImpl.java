@@ -79,44 +79,38 @@ public class BoardServiceImpl implements BoardService{
     public List<BoardDto> selectBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit());
         List<Board> entityList = boardRepository.findByPostCode(requestBoardDto.getTypeCode(),pageRequest);
+        System.out.println(entityList);
+
         List<BoardDto> dtoList = new ArrayList<>();
+        //보드 하나 골라서
         for(Board board : entityList){
+            //0번 상태인 경우 썸네일을 넣는다.
+            FileDto thumbnail = null;
             if(requestBoardDto.getTypeCode() == 0){
                 List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
                 List<Image> imageList = new ArrayList<>();
                 for(PostImage post : postImageList){
                     imageList.add(imageRepository.findByImageId(post.getImageId()));
                 }
-                FileDto fileDto = new FileDto();
+
                 if(imageList.size()!=0){
-                    fileDto = FileDto.builder()
+                    thumbnail = FileDto.builder()
                             .filePath(imageList.get(0).getFilePath())
                             .build();
                 }
-                dtoList.add(
-                        BoardDto.builder()
-                                .boardId(board.getBoardId())
-                                .title(board.getContent())
-                                .author(board.getNickName())
-                                .registDate(board.getDateTime().toLocalDate())
-                                .count(board.getCount())
-                                .fileUrl(fileDto)
-                                .content(board.getContent())
-                                .build()
-                );
             }
-            else{
-                dtoList.add(
-                        BoardDto.builder()
-                                .boardId(board.getBoardId())
-                                .title(board.getContent())
-                                .author(board.getNickName())
-                                .registDate(board.getDateTime().toLocalDate())
-                                .count(board.getCount())
-                                .content(board.getContent())
-                                .build()
-                );
-            }
+            dtoList.add(
+                    BoardDto.builder()
+                            .boardId(board.getBoardId())
+                            .title(board.getContent())
+                            .author(board.getNickName())
+                            .registDate(board.getDateTime().toLocalDate())
+                            .count(board.getCount())
+                            .content(board.getContent())
+                            .thumbnail(thumbnail)
+                            .typeCode(board.getPostCode())
+                            .build()
+            );
         }
         return dtoList;
     }
@@ -186,7 +180,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage insertBoard(BoardDto boardDto, List<MultipartFile> uploadFile) {
+    public ResponseMessage insertBoard(BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         /**
          * 유저 정보 들어오는거 생기면 다시하기
@@ -204,38 +198,38 @@ public class BoardServiceImpl implements BoardService{
 
             File uploadDir = new File(uploadPath +File.separator+uploadFolder);
             if(!uploadDir.exists()) uploadDir.mkdir();
-            System.out.println(uploadFile.size());
+            if(uploadFile!=null) {
+                for (MultipartFile partFile : uploadFile) {
+                    int boardId = board.getBoardId();
+                    String fileName = partFile.getOriginalFilename();
 
-            for(MultipartFile partFile : uploadFile){
-                int boardId = board.getBoardId();
-                String fileName = partFile.getOriginalFilename();
+                    UUID uuid = UUID.randomUUID();
 
-                UUID uuid = UUID.randomUUID();
+                    String extension = FilenameUtils.getExtension(fileName);
 
-                String extension = FilenameUtils.getExtension(fileName);
+                    String savingFileName = uuid + "." + extension;
 
-                String savingFileName = uuid+"."+extension;
+                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 
-                File destFile = new File(uploadPath+File.separator+uploadFolder+File.separator+savingFileName);
+                    partFile.transferTo(destFile);
 
-                partFile.transferTo(destFile);
+                    Image image = Image.builder()
+                            .origFilename(fileName)
+                            .fileSize((int) partFile.getSize())
+                            .filename(fileName)
+                            .filePath(uploadFolder + "/" + savingFileName)
+                            .build();
 
-                Image image = Image.builder()
-                        .origFilename(fileName)
-                        .fileSize((int) partFile.getSize())
-                        .filename(fileName)
-                        .filePath(uploadFolder+"/"+savingFileName)
-                        .build();
+                    imageRepository.save(image);
 
-                imageRepository.save(image);
+                    PostImage postImage = PostImage.builder()
+                            .imageId(image.getImageId())
+                            .boardId(board.getBoardId())
+                            .build();
 
-                PostImage postImage = PostImage.builder()
-                        .imageId(image.getImageId())
-                        .boardId(board.getBoardId())
-                        .build();
+                    postImageRepository.save(postImage);
 
-                postImageRepository.save(postImage);
-
+                }
             }
             responseMessage.setMessage("SUCCESS");
         }catch (Exception e){

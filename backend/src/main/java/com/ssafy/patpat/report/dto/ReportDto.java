@@ -31,20 +31,23 @@ public class ReportDto {
     @Schema(example = "이름")
     private String name;
     @Schema(example = "무게")
-    private String weight;
-    private int neutered;
+    private double weight;
+    @Schema(example = "중성화 여부")
+    private boolean isNeutered;
     @Schema(example = "귀모양")
-    private String categoryEar;
+    private int categoryEar;
     @Schema(example = "꼬리모양")
-    private String categoryTail;
+    private int categoryTail;
     @Schema(example = "털색")
-    private String categoryColor;
+    private int categoryColor;
     @Schema(example = "패턴")
-    private String categoryPattern;
+    private int categoryPattern;
     @Schema(example = "옷여부")
-    private String categoryCloth;
+    private int categoryCloth;
     @Schema(example = "옷색깔")
-    private String categoryClothColor;
+    private int categoryClothColor;
     @Schema(example = "fileurl:.png")
     private List<FileDto> fileUrlList;
+    @Schema(example = "fileurl:.png")
+    private FileDto thumbnail;
 }

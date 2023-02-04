@@ -94,6 +94,7 @@ public class ProtectServiceImpl implements ProtectService{
                 protectDtoList.add(
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
+                                .protectName(s.getName())
                                 .stateCode(s.getStateCode())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
