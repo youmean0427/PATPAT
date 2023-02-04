@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VolunteerScheduleServiceImpl implements VolunteerScheduleService{
     private final VolunteerScheduleRepository volunteerScheduleRepository;
-    
+
     @Override
     public List<ShelterDto> volunteerScheduleListInGugun(List<ShelterDto> list) {
         return null;
