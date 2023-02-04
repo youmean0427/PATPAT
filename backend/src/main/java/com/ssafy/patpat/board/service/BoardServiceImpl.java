@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -211,9 +213,12 @@ public class BoardServiceImpl implements BoardService{
 
                     String savingFileName = uuid + "." + extension;
 
-                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 
-                    partFile.transferTo(destFile);
+                    String FilePath = uploadPath + File.separator + uploadFolder + File.separator + savingFileName;
+                    Path path = Paths.get(FilePath).toAbsolutePath();
+
+                    partFile.transferTo(path.toFile());
 
                     Image image = Image.builder()
                             .origFilename(fileName)

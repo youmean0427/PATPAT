@@ -6,8 +6,7 @@ import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import java.util.List;
 
 public interface VolunteerScheduleService {
-    /** 개인이 전체 봉사일정을 볼 때 */
-    List<VolunteerSchedule> volunteerScheduleListByGugun(String gugunCode);
+
 
     /**
      * 리턴 타입 : 쉘터 ID List
