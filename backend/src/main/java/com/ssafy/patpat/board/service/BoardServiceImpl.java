@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,6 +65,7 @@ public class BoardServiceImpl implements BoardService{
                             .title(entity.getContent())
                             .author(entity.getNickName())
                             .registDate(entity.getDateTime().toLocalDate())
+                            .typeCode(entity.getPostCode())
                             .count(entity.getCount())
                             .build()
             );
@@ -180,7 +182,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage insertBoard(BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile) {
+    public ResponseMessage insertBoard(BoardDto boardDto, List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         /**
          * 유저 정보 들어오는거 생기면 다시하기
@@ -245,7 +247,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage updateBoard(int boardId, BoardDto boardDto, List<MultipartFile> uploadFile) {
+    public ResponseMessage updateBoard(int boardId, BoardDto boardDto,  List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         /**
          * 유저 정보 들어오는거 생기면 다시하기

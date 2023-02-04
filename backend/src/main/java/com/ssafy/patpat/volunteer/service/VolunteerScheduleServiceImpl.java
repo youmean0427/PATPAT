@@ -18,4 +18,9 @@ public class VolunteerScheduleServiceImpl implements VolunteerScheduleService{
     public List<VolunteerSchedule> volunteerScheduleListByGugun(String gugunCode) {
         return null;
     }
+
+    @Override
+    public List<ShelterDto> volunteerScheduleListInGugun(List<ShelterDto> list) {
+        return null;
+    }
 }

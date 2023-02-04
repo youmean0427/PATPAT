@@ -151,7 +151,7 @@ public class ReportController {
      */
     @PostMapping
     @ApiOperation(value = "실종,임보 등록", notes = "0==실종, 1==임보")
-    public ResponseEntity<ResponseMessage> insertReport(ReportDto reportDto, @RequestPart List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> insertReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
         //서비스 호출 코드
         ResponseMessage responseMessage = service.insertReport(reportDto, uploadFile);
         if(true){
@@ -168,7 +168,7 @@ public class ReportController {
      */
     @PostMapping("/updates")
     @ApiOperation(value = "실종,임보 수정", notes = "0==실종, 1==임보")
-    public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateReport(reportDto, uploadFile);
         if(true){

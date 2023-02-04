@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface PersonalProtectedDogImageRepository extends JpaRepository<PersonalProtectedDogImage,String> {
     List<PersonalProtectedDogImage> findByPpDogId(int ppDogId);
+    void deleteByPdImageId(int ppDogId);
 }

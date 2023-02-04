@@ -5,6 +5,7 @@ import com.ssafy.patpat.common.dto.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -14,6 +15,8 @@ import java.util.List;
 @ToString
 @Builder
 public class ReportDto {
+    @Schema(example = "타입")
+    private int typeCode;
     private int missingId;
     private int personalProtectionId;
     private int userId;
@@ -52,6 +55,10 @@ public class ReportDto {
     private int categoryClothColor;
     @Schema(example = "fileurl:.png")
     private List<FileDto> fileUrlList;
-    @Schema(example = "fileurl:.png")
+    @Schema(example = "filePath: ")
     private FileDto thumbnail;
+    @Schema(example = "발견날짜")
+    private LocalDate findDate;
+    @Schema(example = "상태코드")
+    private int stateCode;
 }

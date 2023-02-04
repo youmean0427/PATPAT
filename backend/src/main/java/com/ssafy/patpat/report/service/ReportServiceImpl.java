@@ -17,16 +17,23 @@ import com.ssafy.patpat.report.repository.PersonalProtectedDogImageRepository;
 import com.ssafy.patpat.report.repository.PersonalProtectedDogRepository;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 @Service
 public class ReportServiceImpl implements ReportService{
 
@@ -42,6 +49,11 @@ public class ReportServiceImpl implements ReportService{
     ImageRepository imageRepository;
     @Autowired
     BreedRepository breedRepository;
+    @Value("${app.fileupload.uploadPath}")
+    String uploadPath;
+
+    @Value("${app.fileupload.uploadDir}")
+    String uploadFolder;
     @Override
     public List<ReportDto> selectMissingList(RequestReportDto requestReportDto) {
         int gender = requestReportDto.getGender();
@@ -300,12 +312,256 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public ResponseMessage updateReport(ReportDto reportDto, List<MultipartFile> uploadFile) {
-        return null;
+        ResponseMessage responseMessage = new ResponseMessage();
+        try{
+            if(reportDto.getTypeCode() == 1) {
+                MissingDog missingDog = missingDogRepository.findByMissingId(reportDto.getMissingId());
+                missingDog.update(
+                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGender(), reportDto.getBreedId(),
+                        reportDto.getGender(), reportDto.isNeutered() ? 1 : 0, reportDto.getCategoryEar(), reportDto.getCategoryTail(),
+                        reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
+                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+                if (!uploadDir.exists()) uploadDir.mkdir();
+                List<MissingDogImage> missingDogImageList = missingDogImageRepository.findByMissingId(reportDto.getMissingId());
+
+                List<Integer> list = new ArrayList<>();
+                for (MissingDogImage i : missingDogImageList) {
+                    list.add(i.getImageId());
+                }
+                List<Image> imageList = imageRepository.findByImageIdIn(list);
+                for (Image i : imageList) {
+                    File file = new File(uploadPath + File.separator + i.getFilePath());
+                    if (file.exists()) file.delete();
+                }
+
+                imageRepository.deleteByImageIdIn(list);
+                missingDogImageRepository.deleteByMissingId(reportDto.getMissingId());
+
+                for (MultipartFile partFile : uploadFile) {
+                    int missingId = missingDog.getMissingId();
+                    String fileName = partFile.getOriginalFilename();
+
+                    UUID uuid = UUID.randomUUID();
+
+                    String extension = FilenameUtils.getExtension(fileName);
+
+                    String savingFileName = uuid + "." + extension;
+
+                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+
+                    partFile.transferTo(destFile);
+
+                    Image image = Image.builder()
+                            .origFilename(fileName)
+                            .fileSize((int) partFile.getSize())
+                            .filename(fileName)
+                            .filePath(uploadFolder + "/" + savingFileName)
+                            .build();
+
+                    imageRepository.save(image);
+                    MissingDogImage missingDogImage = MissingDogImage.builder()
+                            .imageId(image.getImageId())
+                            .missingId(missingId)
+                            .build();
+
+                    missingDogImageRepository.save(missingDogImage);
+                }
+            }
+            else {
+                PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(reportDto.getPersonalProtectionId());
+                personalProtectedDog.update(
+                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGender(), reportDto.getBreedId(),
+                        reportDto.getGender(), reportDto.isNeutered() ? 1 : 0, reportDto.getCategoryEar(), reportDto.getCategoryTail(),
+                        reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
+                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+                if (!uploadDir.exists()) uploadDir.mkdir();
+                List<PersonalProtectedDogImage> personalProtectedDogImageList = personalProtectedDogImageRepository.findByPpDogId(reportDto.getPersonalProtectionId());
+
+                List<Integer> list = new ArrayList<>();
+                for (PersonalProtectedDogImage i : personalProtectedDogImageList) {
+                    list.add(i.getImageId());
+                }
+                List<Image> imageList = imageRepository.findByImageIdIn(list);
+                for (Image i : imageList) {
+                    File file = new File(uploadPath + File.separator + i.getFilePath());
+                    if (file.exists()) file.delete();
+                }
+
+                imageRepository.deleteByImageIdIn(list);
+                personalProtectedDogImageRepository.deleteByPdImageId(reportDto.getPersonalProtectionId());
+
+                for (MultipartFile partFile : uploadFile) {
+                    int ppDogId = personalProtectedDog.getPpDogId();
+                    String fileName = partFile.getOriginalFilename();
+
+                    UUID uuid = UUID.randomUUID();
+
+                    String extension = FilenameUtils.getExtension(fileName);
+
+                    String savingFileName = uuid + "." + extension;
+
+                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+
+                    partFile.transferTo(destFile);
+
+                    Image image = Image.builder()
+                            .origFilename(fileName)
+                            .fileSize((int) partFile.getSize())
+                            .filename(fileName)
+                            .filePath(uploadFolder + "/" + savingFileName)
+                            .build();
+
+                    imageRepository.save(image);
+                    PersonalProtectedDogImage personalProtectedDogImage = PersonalProtectedDogImage.builder()
+                            .imageId(image.getImageId())
+                            .ppDogId(ppDogId)
+                            .build();
+
+                    personalProtectedDogImageRepository.save(personalProtectedDogImage);
+                }
+            }
+            responseMessage.setMessage("SUCCESS");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            responseMessage.setMessage("FAIL");
+        }
+
+        return responseMessage;
     }
 
     @Override
+    @Transactional
     public ResponseMessage insertReport(ReportDto reportDto, List<MultipartFile> uploadFile) {
-        return null;
+        ResponseMessage responseMessage = new ResponseMessage();
+        /**
+         * 유저 정보 들어오는거 생기면 다시하기
+         */
+        try{
+            if(reportDto.getTypeCode() == 1) {
+                MissingDog missingDog = MissingDog.builder()
+                        .missingDate(reportDto.getFindDate())
+                        .breedId(reportDto.getBreedId())
+                        .age(reportDto.getAge())
+                        .gender(reportDto.getGender())
+                        .categoryCloth(reportDto.getCategoryCloth())
+                        .categoryPattern(reportDto.getCategoryPattern())
+                        .categoryTail(reportDto.getCategoryTail())
+                        .categoryEar(reportDto.getCategoryEar())
+                        .categoryClothColor(reportDto.getCategoryClothColor())
+                        .categoryColor(reportDto.getCategoryColor())
+                        .latitude(reportDto.getLatitude())
+                        .longitude(reportDto.getLongitude())
+                        .name(reportDto.getName())
+                        .neutered(reportDto.isNeutered() ? 1 : 0)
+                        .title(reportDto.getTitle())
+                        .weight(reportDto.getKg())
+                        .userId(reportDto.getUserId())
+                        .feature(reportDto.getContent())
+                        .stateCode(0)
+                        .registDate(LocalDate.now())
+                        .build();
+
+                missingDogRepository.save(missingDog);
+
+                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+                if (!uploadDir.exists()) uploadDir.mkdir();
+                if (uploadFile != null) {
+                    for (MultipartFile partFile : uploadFile) {
+                        int missingId = missingDog.getMissingId();
+                        String fileName = partFile.getOriginalFilename();
+
+                        UUID uuid = UUID.randomUUID();
+
+                        String extension = FilenameUtils.getExtension(fileName);
+
+                        String savingFileName = uuid + "." + extension;
+
+                        File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+
+                        partFile.transferTo(destFile);
+
+                        Image image = Image.builder()
+                                .origFilename(fileName)
+                                .fileSize((int) partFile.getSize())
+                                .filename(fileName)
+                                .filePath(uploadFolder + "/" + savingFileName)
+                                .build();
+
+                        imageRepository.save(image);
+                        MissingDogImage missingDogImage = MissingDogImage.builder()
+                                .imageId(image.getImageId())
+                                .missingId(missingId)
+                                .build();
+
+                        missingDogImageRepository.save(missingDogImage);
+                    }
+                }
+            }else{
+                PersonalProtectedDog personalProtectedDog = PersonalProtectedDog.builder()
+                        .breedId(reportDto.getBreedId())
+                        .age(reportDto.getAge())
+                        .gender(reportDto.getGender())
+                        .categoryCloth(reportDto.getCategoryCloth())
+                        .categoryPattern(reportDto.getCategoryPattern())
+                        .categoryTail(reportDto.getCategoryTail())
+                        .categoryEar(reportDto.getCategoryEar())
+                        .categoryClothColor(reportDto.getCategoryClothColor())
+                        .categoryColor(reportDto.getCategoryColor())
+                        .latitude(reportDto.getLatitude())
+                        .longitude(reportDto.getLongitude())
+                        .name(reportDto.getName())
+                        .neutered(reportDto.isNeutered() ? 1 : 0)
+                        .title(reportDto.getTitle())
+                        .weight(reportDto.getKg())
+                        .userId(reportDto.getUserId())
+                        .feature(reportDto.getContent())
+                        .stateCode(0)
+                        .registDate(LocalDate.now())
+                        .build();
+
+            personalProtectedDogRepository.save(personalProtectedDog);
+
+                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+                if (!uploadDir.exists()) uploadDir.mkdir();
+                if (uploadFile != null) {
+                    for (MultipartFile partFile : uploadFile) {
+                        int ppDogId = personalProtectedDog.getPpDogId();
+                        String fileName = partFile.getOriginalFilename();
+
+                        UUID uuid = UUID.randomUUID();
+
+                        String extension = FilenameUtils.getExtension(fileName);
+
+                        String savingFileName = uuid + "." + extension;
+
+                        File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+
+                        partFile.transferTo(destFile);
+
+                        Image image = Image.builder()
+                                .origFilename(fileName)
+                                .fileSize((int) partFile.getSize())
+                                .filename(fileName)
+                                .filePath(uploadFolder + "/" + savingFileName)
+                                .build();
+
+                        imageRepository.save(image);
+                        PersonalProtectedDogImage personalProtectedDogImage = PersonalProtectedDogImage.builder()
+                                .imageId(image.getImageId())
+                                .ppDogId(ppDogId)
+                                .build();
+
+                        personalProtectedDogImageRepository.save(personalProtectedDogImage);
+                    }
+                }
+            }
+            responseMessage.setMessage("SUCCESS");
+        }catch (Exception e){
+            e.printStackTrace();
+            responseMessage.setMessage("FAIL");
+        }
+        return responseMessage;
     }
 
     @Override

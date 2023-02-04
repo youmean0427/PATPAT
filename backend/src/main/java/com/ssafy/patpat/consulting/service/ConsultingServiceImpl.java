@@ -58,6 +58,8 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .registDate(c.getRegistDate())
                                 .shelterName(shelter.getName())
                                 .address(shelter.getAddress())
+                                .timeCode(c.getTimeCode())
+                                .shelterId(c.getShelterId())
                                 .build()
                 );
             }
@@ -88,7 +90,11 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .stateCode(transferStateCode)
                                 .registDate(c.getRegistDate())
                                 //임시값
+                                .shelterId(c.getShelterId())
+                                .userId(requestConsultingDto.getUserId())
                                 .userName("유저아이디로 이름 가져오기")
+                                .timeCode(c.getTimeCode())
+
                                 .build()
                 );
             }
