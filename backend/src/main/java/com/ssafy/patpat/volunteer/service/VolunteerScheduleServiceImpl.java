@@ -12,10 +12,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VolunteerScheduleServiceImpl implements VolunteerScheduleService{
     private final VolunteerScheduleRepository volunteerScheduleRepository;
-
-    /** 개인이 구군 정보를 이용하여 전체 봉사일정을 볼 때 */
+    
     @Override
-    public List<VolunteerSchedule> volunteerScheduleListByGugun(String gugunCode) {
+    public List<ShelterDto> volunteerScheduleListInGugun(List<ShelterDto> list) {
         return null;
     }
 }
