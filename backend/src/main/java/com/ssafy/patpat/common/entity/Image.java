@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigInteger;
 
@@ -17,10 +18,10 @@ import java.math.BigInteger;
 @AllArgsConstructor
 public class Image {
     @Id
-    @GeneratedValue()
-    private int imageId;
-    private String origFilename;
-    private String filename;
-    private String filePath;
-    private int fileSize;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int imageId;
+    public String origFilename;
+    public String filename;
+    public String filePath;
+    public int fileSize;
 }
