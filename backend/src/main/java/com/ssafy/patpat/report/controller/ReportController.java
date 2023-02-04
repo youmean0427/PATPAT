@@ -31,6 +31,7 @@ public class ReportController {
     @ApiOperation(value = "실종견 조회", notes = "{code==0 전체 실종견, code==2 견종 성별 필터링 검색}")
     public ResponseEntity<Object> selectMissingList(RequestReportDto requestReportDto){
         //서비스 호출 코드
+        System.out.println(requestReportDto);
         List<ReportDto> reportDtoList = service.selectMissingList(requestReportDto);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)

@@ -29,7 +29,7 @@ public class ProtectDto {
     @Schema(example = "견종")
     private int breedId;
     @Schema(example = "견종이름")
-    private String breed;
+    private String breedName;
     @Schema(example = "나이")
     private int age;
     @Schema(example = "무게")

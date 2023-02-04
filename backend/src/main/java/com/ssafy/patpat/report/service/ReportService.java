@@ -11,21 +11,12 @@ import java.util.List;
 
 public interface ReportService {
     List<ReportDto> selectMissingList(RequestReportDto requestReportDto);
-
     List<ReportDto> selectMissingListByUser(int userId, RequestReportDto requestReportDto);
-
-
     List<ReportDto> selectPersonalProtectionList(RequestReportDto requestReportDto);
-
     ReportDto detailMissing(int missingId);
-
     ReportDto detailPersonalProtection(int personalProtectId);
-
     ResponseMessage updateReport(ReportDto reportDto, List<MultipartFile> uploadFile);
-
     ResponseMessage insertReport(ReportDto reportDto, List<MultipartFile> uploadFile);
-
     List<ProtectDto> selectRecommendList(RequestReportDto requestReportDto);
-
     HashMap<String, Integer> selectRecommendCount(RequestReportDto requestReportDto);
 }

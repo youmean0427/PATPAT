@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestReportDto {
-    private int code;
     private int offset;
     private int limit;
     private int breedId;

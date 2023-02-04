@@ -26,14 +26,18 @@ public class ReportDto {
     private String title;
     @Schema(example = "본문")
     private String content;
+    @Schema(example = "견종아이디")
+    private int breedId;
     @Schema(example = "견종")
     private String breedName;
     @Schema(example = "이름")
     private String name;
     @Schema(example = "무게")
-    private double weight;
+    private double kg;
     @Schema(example = "중성화 여부")
     private boolean isNeutered;
+    @Schema(example = "나이")
+    private int age;
     @Schema(example = "귀모양")
     private int categoryEar;
     @Schema(example = "꼬리모양")

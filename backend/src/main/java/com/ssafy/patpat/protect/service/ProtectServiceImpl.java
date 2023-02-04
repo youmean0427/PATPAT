@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -96,11 +97,13 @@ public class ProtectServiceImpl implements ProtectService{
                                 .protectId(s.getSpDogId())
                                 .protectName(s.getName())
                                 .stateCode(s.getStateCode())
+                                .gender(s.getGender())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
                                 .isNeutered(s.getNeutered()==0?false:true)
                                 .age(s.getAge())
-                                .breed(breed.getName())
+                                .breedName(breed.getName())
+                                .breedId(breed.getBreedId())
                                 .kg(s.getWeight())
                                 .build()
 
@@ -145,9 +148,11 @@ public class ProtectServiceImpl implements ProtectService{
                                 .stateCode(s.getStateCode())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
+                                .gender(s.getGender())
                                 .isNeutered(s.getNeutered()==0?false:true)
                                 .age(s.getAge())
-                                .breed(breed.getName())
+                                .breedName(breed.getName())
+                                .breedId(breed.getBreedId())
                                 .kg(s.getWeight())
                                 .build()
 
@@ -184,7 +189,8 @@ public class ProtectServiceImpl implements ProtectService{
                     .protectId(shelterProtectedDog.getSpDogId())
                     .shelterId(shelterProtectedDog.getShelterId())
                     .breedId(shelterProtectedDog.getBreedId())
-                    .breed(breed.getName())
+                    .breedName(breed.getName())
+                    .breedId(breed.getBreedId())
                     .stateCode(shelterProtectedDog.getStateCode())
                     .gender(shelterProtectedDog.getGender())
                     .isNeutered((shelterProtectedDog.getNeutered()==0)?true:false)
@@ -206,7 +212,7 @@ public class ProtectServiceImpl implements ProtectService{
 
     @Override
     @Transactional
-    public ResponseMessage insertProtect(ProtectDto protectDto, List<MultipartFile> uploadFile) {
+    public ResponseMessage insertProtect(ProtectDto protectDto, @RequestPart()  List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         Shelter shelter = shelterRepository.findByShelterId(protectDto.getShelterId());
         System.out.println(protectDto);
