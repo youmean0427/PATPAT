@@ -6,8 +6,9 @@ import FavoriteList from './Lists/FavoriteList';
 import VolunteerList from './Lists/VolunteerList';
 import ConsultingList from './Lists/ConsultingList';
 
-export default function Contents() {
+export default function Contents({ data }) {
   const [click, setClick] = useState([true, false, false, false, false]);
+
   return (
     <div className={styles.container}>
       <div className={styles.buttons}>
@@ -43,11 +44,11 @@ export default function Contents() {
         </button>
       </div>
       <div className={styles.contents}>
-        {click[0] ? <MissingDogList /> : null}
+        {click[0] ? <MissingDogList userId={data.userId} /> : null}
         {click[1] ? <FavoriteList /> : null}
         {click[2] ? <BoardsList /> : null}
-        {click[3] ? <VolunteerList /> : null}
-        {click[4] ? <ConsultingList /> : null}
+        {click[3] ? <VolunteerList userId={data.userId} /> : null}
+        {click[4] ? <ConsultingList userId={data.userId} /> : null}
       </div>
     </div>
   );

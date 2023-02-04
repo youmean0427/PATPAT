@@ -4,10 +4,10 @@ import React from 'react';
 import styles from './MissingDogList.module.scss';
 import MissingDogItem from '../Items/MissingDogItem';
 
-export default function MissingDog() {
+export default function MissingDog({ userId }) {
   const { data, isLoading } = useQuery({
     queryKey: ['myMissingDogList'],
-    queryFn: () => getMissingDogListOfUser(1),
+    queryFn: () => getMissingDogListOfUser(20, userId),
   });
 
   if (isLoading) return;

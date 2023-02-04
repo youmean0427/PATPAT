@@ -20,8 +20,8 @@ import { authInstance, defaultInstance } from 'apis/utils';
     }
   ] 
  */
-export const getMyConsultations = async (limit, offset) => {
-  const { data } = await authInstance.get(`/consultations?limit=${limit}&offset=${offset}`);
+export const getMyConsultations = async (limit, offset, userId) => {
+  const { data } = await authInstance.get(`/consultations?limit=${limit}&offset=${offset}&userId=${userId}`);
   return data;
 };
 
@@ -33,7 +33,7 @@ export const getMyConsultations = async (limit, offset) => {
  * @returns
  */
 export const getShelterConsultations = async (shelterId, limit, offset) => {
-  const { data } = await defaultInstance.get(
+  const { data } = await authInstance.get(
     `/consultations/shelters?shelterId=${shelterId}?limit=${limit}&offset=${offset}`
   );
   return data;

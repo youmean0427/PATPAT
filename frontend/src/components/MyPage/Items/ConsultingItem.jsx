@@ -6,13 +6,13 @@ import { useDispatch } from 'react-redux';
 import { setConsulting } from 'redux/consulting';
 
 export default function Consulting({ item }) {
-  const { consultingId, shelterId, shelterName, userName, address, date, startTime, endTime, state } = item;
+  const { consultingId, shelterId, shelterName, address, registDate, stateCode, timeCode } = item;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(shelterId);
+
   const startConsulting = () => {
-    dispatch(setConsulting({ resShelterId: shelterId, resUserName: userName }));
+    dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
     navigate('/consulting/meeting');
   };
 
@@ -25,45 +25,56 @@ export default function Consulting({ item }) {
         <p className={styles['shelter-name']}>{shelterName}</p>
         <p>{address}</p>
         <p>
-          {date[0]}.{date[1]}.{date[2]} {startTime[0]}:{startTime[1] <= 9 ? '0' + startTime[1] : startTime[1]} ~{' '}
-          {endTime[0]}:{endTime[1] <= 9 ? '0' + endTime[1] : endTime[1]}
+          {registDate[0]}.{registDate[1] <= 9 ? '0' + registDate[1] : registDate[1]}.
+          {registDate[2] <= 9 ? '0' + registDate[2] : registDate[2]}
+        </p>
+        <p>
+          {timeCode === 0
+            ? '10 : 00 ~ 11 : 00'
+            : timeCode === 1
+            ? '14 : 00 ~ 15 : 00'
+            : timeCode === 2
+            ? '15 : 00 ~ 16 : 00'
+            : timeCode === 3
+            ? '16 : 00 ~ 17 : 00'
+            : '17 : 00 ~ 18 : 00'}
         </p>
       </div>
       <div className={styles.buttons}>
-        {state === 0 || state === 1 ? (
+        {stateCode === 0 || stateCode === 1 ? (
           <button className={styles.cancel}>예약 취소</button>
         ) : (
           <button className={styles.cancel} style={{ visibility: 'hidden' }}></button>
         )}
-        {state === 5 ? (
+        {stateCode === 5 ? (
           <button onClick={startConsulting} className={styles.state5}>
             방참가
           </button>
         ) : (
           <button
             className={
-              state === 0
+              stateCode === 0
                 ? styles.state0
-                : state === 1
+                : stateCode === 1
                 ? styles.state1
-                : state === 2
+                : stateCode === 2
                 ? styles.state2
-                : state === 3
+                : stateCode === 3
                 ? styles.state3
-                : state === 4
+                : stateCode === 4
                 ? styles.state4
                 : null
             }
           >
-            {state === 0
+            {stateCode === 0
               ? '대기'
-              : state === 1
+              : stateCode === 1
               ? '승인'
-              : state === 2
+              : stateCode === 2
               ? '거부'
-              : state === 3
+              : stateCode === 3
               ? '미완료'
-              : state === 4
+              : stateCode === 4
               ? '완료'
               : null}
           </button>
