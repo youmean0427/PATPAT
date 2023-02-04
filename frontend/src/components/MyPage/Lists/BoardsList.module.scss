@@ -1,4 +1,10 @@
 @import 'assets/styles/variable.scss';
+.board-list {
+  position: relative;
+  width: 90%;
+  text-align: center;
+  margin: auto;
+}
 .category ul li {
   position: relative;
   display: inline;

@@ -18,7 +18,7 @@ export default function BoardsList() {
   console.log(data, typeCode);
 
   return (
-    <>
+    <div className={styles['board-list']}>
       <div className={styles.category}>
         <ul>
           <li
@@ -67,6 +67,6 @@ export default function BoardsList() {
           ))}
         </Table>
       </div>
-    </>
+    </div>
   );
 }
