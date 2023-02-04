@@ -30,7 +30,11 @@ export default function Consulting({ item }) {
         </p>
       </div>
       <div className={styles.buttons}>
-        <button className={styles.cancel}>예약 취소</button>
+        {state === 0 || state === 1 ? (
+          <button className={styles.cancel}>예약 취소</button>
+        ) : (
+          <button className={styles.cancel} style={{ visibility: 'hidden' }}></button>
+        )}
         {state === 5 ? (
           <button onClick={startConsulting} className={styles.state5}>
             방참가
