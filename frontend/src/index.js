@@ -7,6 +7,9 @@ import { CircularProgress } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { worker } from 'mocks/worker';
 import { RecoilRoot } from 'recoil';
+import store from 'redux/store';
+import { Provider } from 'react-redux';
+
 if (process.env.NODE_ENV === 'development') {
   // worker.start();
 }
@@ -26,7 +29,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <RecoilRoot>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} fallbackElement={<CircularProgress />} />
+      <Provider store={store}>
+        <RouterProvider router={router} fallbackElement={<CircularProgress />} />
+      </Provider>
     </QueryClientProvider>
   </RecoilRoot>
 );
