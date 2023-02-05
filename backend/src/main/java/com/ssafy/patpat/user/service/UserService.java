@@ -6,16 +6,20 @@ import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.redis.RefreshRedis;
 import com.ssafy.patpat.common.redis.RefreshRedisRepository;
+import com.ssafy.patpat.common.security.filter.JwtFilter;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.user.dto.*;
 import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -33,7 +37,10 @@ import java.util.*;
 @Slf4j
 public class UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
     private final UserRepository userRepository;
+    private final ShelterProtectedDogRepository shelterProtectedDogRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -108,6 +115,8 @@ public class UserService {
         List<Authority> list = new ArrayList<>();
         list.add(authority);
 
+        Set<ShelterProtectedDog> favoriteDogs = new HashSet<>();
+
         String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
         Image image = fileService.insertFileUrl(userDto.getProfileImageUrl(), userDto.getProvider());
@@ -121,6 +130,7 @@ public class UserService {
                 .nickname(userDto.getUsername())
                 .image(image)
                 .authorities(list)
+                .favoriteDogs(favoriteDogs)
                 .build();
 
         return userRepository.save(user);
@@ -262,6 +272,9 @@ public class UserService {
         }
     }
 
+    /**
+     * 찜 목록
+     * */
     @Transactional(readOnly = true)
     public List<FavoriteDto> getFavoriteDogs(UserDto userDto){
         Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userDto.getUserId());
@@ -270,7 +283,7 @@ public class UserService {
         }
 
         List<FavoriteDto> list = new ArrayList<>();
-        List<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
+        Set<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
         for (ShelterProtectedDog dog:
              dogs) {
             list.add(FavoriteDto.builder()
@@ -283,6 +296,57 @@ public class UserService {
                     .build());
         }
         return list;
+    }
+
+    /**
+     * 찜 등록
+     * */
+    @Transactional
+    public boolean insertFavoriteDogs(Long userId, int protectId){
+        LOGGER.info("user {}", userId);
+        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userId);
+        if(!user.isPresent()){
+            return false;
+        }
+
+        LOGGER.info("userEmail {} : ", user.get().getEmail());
+        Set<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
+        if(dogs.isEmpty()){
+            LOGGER.info("최초 관심 동물 등록");
+        }
+        dogs.add(shelterProtectedDogRepository.findById(protectId).get());
+
+        user.get().setFavoriteDogs(dogs);
+
+        userRepository.save(user.get());
+        return true;
+    }
+
+    /**
+     * 찜 해제
+     * */
+    @Transactional
+    public boolean deleteFavoriteDogs(Long userId, int protectId){
+        LOGGER.info("user {}", userId);
+        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userId);
+        if(!user.isPresent()){
+            return false;
+        }
+
+        LOGGER.info("userEmail {} : ", user.get().getEmail());
+        Set<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
+        if(dogs.isEmpty()){
+            LOGGER.info("삭제할 것이 없습니다.");
+            return false;
+        }else{
+            dogs.remove(shelterProtectedDogRepository.findById(protectId).get());
+        }
+
+
+        user.get().setFavoriteDogs(dogs);
+
+        userRepository.save(user.get());
+        return true;
     }
 
     /**

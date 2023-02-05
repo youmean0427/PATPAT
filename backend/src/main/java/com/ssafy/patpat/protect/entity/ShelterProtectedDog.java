@@ -21,6 +21,7 @@ import java.util.List;
 public class ShelterProtectedDog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sp_dog_id")
     private int spDogId;
 
     @Column(name = "shelter_id")

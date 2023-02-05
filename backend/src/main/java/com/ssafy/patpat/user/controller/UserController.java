@@ -61,10 +61,12 @@ public class UserController {
      * @return
      */
     @GetMapping("/favorite/{protectId}")
+    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "찜 등록", notes = "찜 동물 등록")
     public ResponseEntity<Object> insertFavorite(@PathVariable int protectId){
         //서비스 호출 코드
-        if(true){
+        UserDto user = userService.getUserWithAuthorities();
+        if(userService.insertFavoriteDogs(user.getUserId(), protectId)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
@@ -80,7 +82,8 @@ public class UserController {
     @ApiOperation(value = "찜 해제", notes = "찜 동물 해제")
     public ResponseEntity<Object> deleteFavorite(@PathVariable int protectId){
         //서비스 호출 코드
-        if(true){
+        UserDto user = userService.getUserWithAuthorities();
+        if(userService.deleteFavoriteDogs(user.getUserId(), protectId)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
