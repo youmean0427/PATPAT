@@ -9,10 +9,8 @@ import com.ssafy.patpat.common.redis.RefreshRedisRepository;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
-import com.ssafy.patpat.user.dto.ResultDto;
-import com.ssafy.patpat.user.dto.TokenDto;
-import com.ssafy.patpat.user.dto.UserDto;
-import com.ssafy.patpat.user.dto.UserResponseDto;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.user.dto.*;
 import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
@@ -172,6 +170,9 @@ public class UserService {
         return token;
     }
 
+    /**
+     * 로그아웃
+     *  */
     @Transactional
     public ResponseMessage logout(TokenDto tokenDto) throws Exception{
         ResponseMessage responseMessage = new ResponseMessage();
@@ -180,7 +181,7 @@ public class UserService {
 
         // 토큰 유효성 검사
         if(!tokenProvider.validateToken(accessToken)){
-            responseMessage.setMessage("fail");
+            responseMessage.setMessage("FAIL");
         }else{
             // 토큰이 유효하다면 해당 토큰의 남은 기간과 함께 redis에 logout으로 저장
             long validExpiration = tokenProvider.getExpiration(accessToken);
@@ -190,11 +191,14 @@ public class UserService {
             if(redisService.getValues(refreshToken) != null){
                 redisService.delValues(refreshToken);
             }
-            responseMessage.setMessage("success");
+            responseMessage.setMessage("SUCCESS");
         }
         return responseMessage;
     }
 
+    /**
+     * 회원 정보 수정
+     *  */
     @Transactional
     public ResponseMessage updateUser(UserDto userDto, MultipartFile profileFile) throws Exception{
         ResponseMessage responseMessage = new ResponseMessage();
@@ -215,11 +219,14 @@ public class UserService {
 
         userRepository.save(user);
 
-        responseMessage.setMessage("success");
+        responseMessage.setMessage("SUCCESS");
 
         return responseMessage;
     }
 
+    /**
+     * 회원 탈퇴
+     *  */
     @Transactional
     public ResponseMessage deleteUser(TokenDto tokenDto, Long userId) throws Exception {
         ResponseMessage responseMessage = logout(tokenDto);
@@ -228,7 +235,7 @@ public class UserService {
         fileService.deleteFile(userImage);
         userRepository.delete(user);
 
-        responseMessage.setMessage("success");
+        responseMessage.setMessage("SUCCESS");
 
         return responseMessage;
 
@@ -253,6 +260,43 @@ public class UserService {
                     .build();
             return userDto;
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<FavoriteDto> getFavoriteDogs(UserDto userDto){
+        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userDto.getUserId());
+        if(!user.isPresent()){
+            return null;
+        }
+
+        List<FavoriteDto> list = new ArrayList<>();
+        List<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
+        for (ShelterProtectedDog dog:
+             dogs) {
+            list.add(FavoriteDto.builder()
+                    .spDogId(dog.getSpDogId())
+                    .userId(user.get().getUserId())
+                    .name(dog.getName())
+                    .imageUrl(fileService.getFileUrl(dog.getImages().get(0)))
+                    .stateCode(dog.getStateCode().getCode())
+                    .state(dog.getStateCode().name())
+                    .build());
+        }
+        return list;
+    }
+
+    /**
+     * 사진 넣기 용도 입니다.
+      */
+    @Transactional
+    public boolean insertImage(List<MultipartFile> profileFile) throws Exception{
+
+        for (MultipartFile m:
+             profileFile) {
+            fileService.insertFile(m);
+        }
+
+        return true;
     }
 
 }

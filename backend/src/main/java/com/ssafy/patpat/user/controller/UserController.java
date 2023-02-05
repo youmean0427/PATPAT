@@ -1,6 +1,7 @@
 package com.ssafy.patpat.user.controller;
 
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.security.filter.JwtFilter;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.user.dto.*;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,12 +42,15 @@ public class UserController {
      * @return
      */
     @GetMapping("/favorite")
+    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "찜 동물 조회", notes = "찜 동물 리스트 조회")
     public ResponseEntity<Object> selectFavoriteList(){
         //서비스 호출 코드
-        if(true){
+        UserDto user = userService.getUserWithAuthorities();
+        List<FavoriteDto> list = userService.getFavoriteDogs(user);
+        if(list != null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ArrayList<FavoriteDto>());
+                    .body(list);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
@@ -194,6 +199,24 @@ public class UserController {
         }
         else{
             return ResponseEntity.ok(user);
+        }
+    }
+
+    /**
+     * 사진 넣을 용도
+     * @return
+     */
+    @PostMapping("/insert")
+    @ApiOperation(value = "찜 등록", notes = "임시용 사진 넣기")
+    public ResponseEntity<Object> insertImage(@RequestPart List<MultipartFile> profileFile) throws Exception{
+        //서비스 호출 코드
+        userService.insertImage(profileFile);
+        if(true){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
         }
     }
 

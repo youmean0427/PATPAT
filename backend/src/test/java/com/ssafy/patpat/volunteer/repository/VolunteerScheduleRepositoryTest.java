@@ -1,17 +1,22 @@
 package com.ssafy.patpat.volunteer.repository;
 
 import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.volunteer.dto.VolunteerShelterDto;
 import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import com.ssafy.patpat.volunteer.mapping.VolunteerShelterIdMapping;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +29,11 @@ class VolunteerScheduleRepositoryTest {
     @Autowired
     private ShelterRepository shelterRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
+    @Transactional
     void find(){
 
 //
@@ -43,10 +52,17 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(v.getName());
 //        }
 
-        List<VolunteerSchedule> list = volunteerScheduleRepository.findWithShelterByVolunteerDateAndShelterShelterIdOrderByStartTimeAsc("2023-02-06", 2);
-        for (VolunteerSchedule v:
-             list) {
-            System.out.println(v.getVolunteerId());
+//        List<VolunteerSchedule> list = volunteerScheduleRepository.findWithShelterByVolunteerDateAndShelterShelterIdOrderByStartTimeAsc("2023-02-06", 2);
+//        for (VolunteerSchedule v:
+//             list) {
+//            System.out.println(v.getVolunteerId());
+//        }
+
+        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
+        List<ShelterProtectedDog> list = user.get().getFavoriteDogs();
+        for (ShelterProtectedDog d:
+                list) {
+            System.out.println(d.getBreedId());
         }
     }
 

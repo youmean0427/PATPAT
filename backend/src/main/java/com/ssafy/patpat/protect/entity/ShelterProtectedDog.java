@@ -1,14 +1,20 @@
 package com.ssafy.patpat.protect.entity;
 
+import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -29,7 +35,7 @@ public class ShelterProtectedDog {
     private int neutered;//
     private LocalDate registDate;//
     private String feature;//
-    private int stateCode;//
+
     private int categoryEar;//
     private int categoryTail;//
     private int categoryColor;//
@@ -41,8 +47,16 @@ public class ShelterProtectedDog {
     private String sidoCode;//
     private String gugunCode;//
 
-    public void updateShelterProtectedDog(double weight,String feature){
-        this.weight = weight;
-        this.feature =feature;
-    }
+    private ProtectState stateCode;//
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "shelter_dog_image",
+            joinColumns = {@JoinColumn(name = "sp_dog_id")},
+            inverseJoinColumns = {@JoinColumn(name = "image_id")})
+    private List<Image> images;
+
+    @ManyToMany(mappedBy = "favoriteDogs")
+    private List<User> users;
+
 }

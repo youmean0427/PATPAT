@@ -5,8 +5,6 @@ import com.ssafy.patpat.common.security.jwt.JwtAccessDeniedHandler;
 import com.ssafy.patpat.common.security.jwt.JwtAuthenticationEntryPoint;
 import com.ssafy.patpat.common.security.jwt.JwtSecurityConfig;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
-import com.ssafy.patpat.common.oauth.OAuth2SuccessHandler;
-//import com.ssafy.patpat.user.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -34,8 +32,6 @@ public class SecurityJavaConfig {
     private final RedisService redisService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
-//    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
