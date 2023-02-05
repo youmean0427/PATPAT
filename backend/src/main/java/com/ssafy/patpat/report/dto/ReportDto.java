@@ -11,8 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@Getter
-@ToString
+@Data
 @Builder
 public class ReportDto {
     @Schema(example = "타입")

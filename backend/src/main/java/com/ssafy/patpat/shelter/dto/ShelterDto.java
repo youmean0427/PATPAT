@@ -8,8 +8,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,6 +18,8 @@ public class ShelterDto {
     private String address;
     @Schema(example = "fileUrl:.png")
     private FileDto fileDto;
+    @Schema(example = "fileUrl:.png")
+    private List<FileDto> fileDtoList;
     @Schema(example = "설명")
     private String infoContent;
     @Schema(example = "전화번호")
@@ -29,4 +30,6 @@ public class ShelterDto {
     private String sidoName;
     private String gugunCode;
     private String gugunName;
+    private String adminName;
+    private int adminId;
 }

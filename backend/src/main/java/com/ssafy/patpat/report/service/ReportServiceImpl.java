@@ -495,6 +495,7 @@ public class ReportServiceImpl implements ReportService{
                     }
                 }
             }else{
+                System.out.println(reportDto);
                 PersonalProtectedDog personalProtectedDog = PersonalProtectedDog.builder()
                         .breedId(reportDto.getBreedId())
                         .age(reportDto.getAge())

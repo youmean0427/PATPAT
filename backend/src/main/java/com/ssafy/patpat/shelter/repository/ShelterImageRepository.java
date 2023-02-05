@@ -4,7 +4,9 @@ import com.ssafy.patpat.shelter.entity.ShelterImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ShelterImageRepository extends JpaRepository<ShelterImage,String> {
-    ShelterImage findByShelterId(int shelterId);
+    List<ShelterImage> findByShelterId(int shelterId);
 }

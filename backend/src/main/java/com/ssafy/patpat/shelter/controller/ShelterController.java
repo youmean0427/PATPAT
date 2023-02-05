@@ -159,11 +159,12 @@ public class ShelterController {
      */
     @PostMapping
     @ApiOperation(value = "보호소 등록", notes = "보호소 등록")
-    public ResponseEntity<ResponseMessage> insertShelter(RequestShelterInsertDto requestShelterInsertDto){
-        //ResponseMessage responseMessage = service.insertS
-        if(true){
+    public ResponseEntity<Object> insertShelter(@RequestBody RequestParamShelterInsertDto requestParamShelterInsertDto){
+        System.out.println(requestParamShelterInsertDto);
+        AuthCodeDto authCodeDto = service.insertShelter(requestParamShelterInsertDto);
+        if(authCodeDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(authCodeDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
