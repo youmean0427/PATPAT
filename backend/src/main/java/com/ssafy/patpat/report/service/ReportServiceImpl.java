@@ -103,7 +103,6 @@ public class ReportServiceImpl implements ReportService{
                             .missingId(missingDog.getMissingId())
                             .gender(missingDog.getGender())
                             .isNeutered(missingDog.getNeutered()==1?true:false)
-                            .gender(missingDog.getGender())
                             .age(missingDog.getAge())
                             .breedId(missingDog.getBreedId())
                             .breedName(breed.getName())
@@ -146,7 +145,6 @@ public class ReportServiceImpl implements ReportService{
                             .missingId(missingDog.getMissingId())
                             .gender(missingDog.getGender())
                             .isNeutered(missingDog.getNeutered()==1?true:false)
-                            .gender(missingDog.getGender())
                             .age(missingDog.getAge())
                             .breedId(missingDog.getBreedId())
                             .breedName(breed.getName())
@@ -207,7 +205,6 @@ public class ReportServiceImpl implements ReportService{
                             .personalProtectionId(personalProtectedDog.getPpDogId())
                             .gender(personalProtectedDog.getGender())
                             .isNeutered(personalProtectedDog.getNeutered()==1?true:false)
-                            .gender(personalProtectedDog.getGender())
                             .age(personalProtectedDog.getAge())
                             .breedId(personalProtectedDog.getBreedId())
                             .breedName(breed.getName())
@@ -498,6 +495,7 @@ public class ReportServiceImpl implements ReportService{
                     }
                 }
             }else{
+                System.out.println(reportDto);
                 PersonalProtectedDog personalProtectedDog = PersonalProtectedDog.builder()
                         .breedId(reportDto.getBreedId())
                         .age(reportDto.getAge())

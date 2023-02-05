@@ -36,8 +36,10 @@ public class Shelter {
     private String sidoCode;
     private String gugunCode;
     private String info;
+    private int userId;
 
     @OneToMany
     @JoinColumn(name = "shelter_id")
     private List<Time> timeList = new ArrayList<Time>();
+
 }

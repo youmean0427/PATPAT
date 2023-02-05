@@ -153,10 +153,11 @@ public class ReportController {
     @ApiOperation(value = "실종,임보 등록", notes = "0==실종, 1==임보")
     public ResponseEntity<ResponseMessage> insertReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
         //서비스 호출 코드
+        System.out.println(reportDto);
         ResponseMessage responseMessage = service.insertReport(reportDto, uploadFile);
-        if(true){
+        if(responseMessage.getMessage() == "SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));

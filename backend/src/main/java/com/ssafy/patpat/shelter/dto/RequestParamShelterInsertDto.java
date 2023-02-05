@@ -3,8 +3,7 @@ package com.ssafy.patpat.shelter.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-@ToString
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
