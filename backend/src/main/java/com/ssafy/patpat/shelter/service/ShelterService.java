@@ -24,5 +24,5 @@ public interface ShelterService {
 
     List<BreedDto> selectBreedList();
 
-    List<SidoCountDto> selectBreedCountByMbti(int breedId);
+    MbtiMapDto selectBreedCountByMbti(int breedId);
 }

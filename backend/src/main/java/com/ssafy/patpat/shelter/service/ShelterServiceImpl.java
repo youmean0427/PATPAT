@@ -10,6 +10,7 @@ import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.dto.*;
 import com.ssafy.patpat.shelter.entity.*;
@@ -109,20 +110,25 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
-    public List<SidoCountDto> selectBreedCountByMbti(int breedId) {
+    public MbtiMapDto selectBreedCountByMbti(int breedId) {
+        MbtiMapDto mbtiMapDto = new MbtiMapDto();
         List<SidoCountDto> sidoCountDtoList = new ArrayList<>();
         List<Sido> sidoList = sidoRepository.findAll();
+        int total = 0;
         for(Sido s : sidoList){
-            int count = shelterProtectedDogRepository.countDistinctShelterIdBySidoCodeAndBreedId(s.getCode(),breedId);
+            List<ShelterIdMapping> count = shelterProtectedDogRepository.findDistinctBySidoCodeAndBreedId(s.getCode(),breedId);
+            total += count.size();
             sidoCountDtoList.add(
                     SidoCountDto.builder()
                             .sidoCode(s.getCode())
                             .sidoName(s.getName())
-                            .count(count)
+                            .count(count.size())
                             .build()
             );
         }
-        return sidoCountDtoList;
+        mbtiMapDto.setTotalCount(total);
+        mbtiMapDto.setList(sidoCountDtoList);
+        return mbtiMapDto;
     }
 
     // 견종만
