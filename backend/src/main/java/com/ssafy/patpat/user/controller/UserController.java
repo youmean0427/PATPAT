@@ -184,13 +184,14 @@ public class UserController {
 
     @GetMapping("/info")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<User> getMyUserInfo(){
-        return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
+    public ResponseEntity<Object> getMyUserInfo(){
+        UserDto user = userService.getUserWithAuthorities();
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("fail"));
+        }
+        else{
+            return ResponseEntity.ok(user);
+        }
     }
 
-    @GetMapping("/info/{email}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<User> getUserInfo(@PathVariable String email){
-        return ResponseEntity.ok(userService.getUserWithAuthorities(email).get());
-    }
 }
