@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -134,12 +135,12 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<ResultDto> logout(HttpServletRequest request) throws Exception{
+    public ResponseEntity<ResponseMessage> logout(HttpServletRequest request) throws Exception{
         String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
         TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
-        ResultDto result = userService.logout(tokenDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        ResponseMessage responseMessage = userService.logout(tokenDto);
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @GetMapping("/refresh")
@@ -164,21 +165,21 @@ public class UserController {
         return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
     }
 
-    @PutMapping("/info")
+    @PostMapping("/info")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<ResultDto> updateUserInfo(@RequestBody UserDto userDto){
-        ResultDto result = userService.updateUser(userDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<ResponseMessage> updateUserInfo(UserDto userDto, @RequestPart(required = false)MultipartFile profileFile) throws Exception{
+        ResponseMessage responseMessage = userService.updateUser(userDto, profileFile);
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @DeleteMapping("/info")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<ResultDto> deleteUserInfo(@RequestParam("userId") Long userId, HttpServletRequest request) throws Exception{
+    public ResponseEntity<ResponseMessage> deleteUserInfo(@RequestParam("userId") Long userId, HttpServletRequest request) throws Exception{
         String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
         TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
-        ResultDto result = userService.deleteUser(tokenDto,userId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        ResponseMessage responseMessage = userService.deleteUser(tokenDto,userId);
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @GetMapping("/info")

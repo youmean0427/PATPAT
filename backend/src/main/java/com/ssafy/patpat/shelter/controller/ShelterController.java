@@ -104,10 +104,10 @@ public class ShelterController {
     @ApiOperation(value = "견종 정보 반환", notes = "견종 정보 반환(이미지, 견종)")
     public ResponseEntity<Object> selectBreedCountByMbti(@PathVariable int breedId){
         //service 호출
-        List<SidoCountDto> sidoCountDtoList = service.selectBreedCountByMbti(breedId);
-        if(sidoCountDtoList!=null){
+        MbtiMapDto mbtiMapDto = service.selectBreedCountByMbti(breedId);
+        if(mbtiMapDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(sidoCountDtoList);
+                    .body(mbtiMapDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));

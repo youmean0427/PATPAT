@@ -10,6 +10,7 @@ import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.dto.*;
 import com.ssafy.patpat.shelter.entity.*;
@@ -109,21 +110,27 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
-    public List<SidoCountDto> selectBreedCountByMbti(int breedId) {
+    public MbtiMapDto selectBreedCountByMbti(int breedId) {
+        MbtiMapDto mbtiMapDto = new MbtiMapDto();
         List<SidoCountDto> sidoCountDtoList = new ArrayList<>();
         List<Sido> sidoList = sidoRepository.findAll();
+        int total = 0;
         for(Sido s : sidoList){
-            int count = shelterProtectedDogRepository.countDistinctShelterIdBySidoCodeAndBreedId(s.getCode(),breedId);
+            List<ShelterIdMapping> count = shelterProtectedDogRepository.findDistinctBySidoCodeAndBreedId(s.getCode(),breedId);
+            total += count.size();
             sidoCountDtoList.add(
                     SidoCountDto.builder()
                             .sidoCode(s.getCode())
                             .sidoName(s.getName())
-                            .count(count)
+                            .count(count.size())
                             .build()
             );
         }
-        System.out.println(sidoCountDtoList);
-        return sidoCountDtoList;
+
+        mbtiMapDto.setTotalCount(total);
+        mbtiMapDto.setList(sidoCountDtoList);
+        return mbtiMapDto;
+
     }
 
     // 견종만
@@ -189,13 +196,13 @@ public class ShelterServiceImpl implements ShelterService{
         List<ShelterDto> shelterDtoList = new ArrayList<>();
         System.out.println(shelterList);
         for(Shelter s : shelterList){
-            ShelterImage shelterImage = shelterImageRepository.findByShelterId(s.getShelterId());
+            Optional<ShelterImage> shelterImage = Optional.ofNullable(shelterImageRepository.findByShelterId(s.getShelterId()));
             FileDto fileDto = FileDto.builder()
                     .filePath("noProfile")
                     .build();
             Image image = null;
             if(shelterImage != null){
-                image = imageRepository.findByImageId(shelterImage.getImageId());
+                image = imageRepository.findByImageId(shelterImage.get().getImageId());
             }
             if(image != null){
                 fileDto = FileDto.builder()
@@ -323,11 +330,17 @@ public class ShelterServiceImpl implements ShelterService{
     @Override
     public ShelterDto detailShelter(int shelterId) {
         Shelter s = shelterRepository.findByShelterId(shelterId);
-        ShelterImage shelterImage = shelterImageRepository.findByShelterId(s.getShelterId());
-        Image image = imageRepository.findByImageId(shelterImage.getImageId());
-        FileDto fileDto = FileDto.builder()
-                .filePath(image.getFilePath())
-                .build();
+        Optional<ShelterImage> shelterImage = Optional.ofNullable(shelterImageRepository.findByShelterId(s.getShelterId()));
+        FileDto fileDto;
+        if(shelterImage.isPresent()){
+            Image image = imageRepository.findByImageId(shelterImage.get().getImageId());
+            fileDto = FileDto.builder()
+                    .filePath(image.getFilePath())
+                    .build();
+        }else {
+            fileDto = null;
+        }
+
         ShelterDto shelterDto = ShelterDto.builder()
                 .shelterId(s.getShelterId())
                 .name(s.getName())

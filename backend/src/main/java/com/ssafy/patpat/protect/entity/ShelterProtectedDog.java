@@ -3,10 +3,7 @@ package com.ssafy.patpat.protect.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -19,7 +16,10 @@ public class ShelterProtectedDog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int spDogId;
+
+    @Column(name = "shelter_id")
     private int shelterId;//
+    @Column(name = "breed_id")
     private int breedId;//
     private LocalDate findingDate;
     private String latitude;//

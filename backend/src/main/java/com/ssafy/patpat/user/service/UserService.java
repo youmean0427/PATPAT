@@ -1,10 +1,13 @@
 package com.ssafy.patpat.user.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.redis.RefreshRedis;
 import com.ssafy.patpat.common.redis.RefreshRedisRepository;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
+import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.dto.ResultDto;
 import com.ssafy.patpat.user.dto.TokenDto;
@@ -22,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -33,6 +37,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
+
+    private final FileService fileService;
 
     private final KakaoService kakaoService;
     private final NaverService naverService;
@@ -102,14 +108,16 @@ public class UserService {
 
         String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
+        Image image = fileService.insertFileUrl(userDto.getProfileImageUrl(), userDto.getProvider());
+
         User user = User.builder()
                 .email(userDto.getEmail())
                 .ageRange(userDto.getAgeRange())
-                .profileImage(userDto.getProfileImageUrl())
                 .provider(userDto.getProvider())
                 .providerId(userDto.getProviderId())
                 .password(password)
                 .nickname(userDto.getUsername())
+                .image(image)
                 .authorities(list)
                 .build();
 
@@ -161,14 +169,14 @@ public class UserService {
     }
 
     @Transactional
-    public ResultDto logout(TokenDto tokenDto) throws Exception{
-        ResultDto resultDto = new ResultDto();
+    public ResponseMessage logout(TokenDto tokenDto) throws Exception{
+        ResponseMessage responseMessage = new ResponseMessage();
         String accessToken = tokenProvider.resolveToken(tokenDto.getAccessToken());
         String refreshToken = tokenProvider.resolveToken(tokenDto.getRefreshToken());
 
         // 토큰 유효성 검사
         if(!tokenProvider.validateToken(accessToken)){
-            resultDto.setResult("fail");
+            responseMessage.setMessage("fail");
         }else{
             // 토큰이 유효하다면 해당 토큰의 남은 기간과 함께 redis에 logout으로 저장
             long validExpiration = tokenProvider.getExpiration(accessToken);
@@ -178,14 +186,14 @@ public class UserService {
             if(redisService.getValues(refreshToken) != null){
                 redisService.delValues(refreshToken);
             }
-            resultDto.setResult("success");
+            responseMessage.setMessage("success");
         }
-        return resultDto;
+        return responseMessage;
     }
 
     @Transactional
-    public ResultDto updateUser(UserDto userDto){
-        ResultDto resultDto = new ResultDto();
+    public ResponseMessage updateUser(UserDto userDto, MultipartFile profileFile) throws Exception{
+        ResponseMessage responseMessage = new ResponseMessage();
         System.out.println(userDto.getUserId());
         // userId가 넘어오질 않아 null이 될수도 있는 경우 예외처리해야함
         User user = userRepository.findOneWithAuthoritiesByUserId(userDto.getUserId()).get();
@@ -193,27 +201,31 @@ public class UserService {
         if(userDto.getUsername() != null){
             user.setNickname(userDto.getUsername());
         }
-        if(userDto.getProfileImageUrl() != null){
-            user.setProfileImage(userDto.getProfileImageUrl());
+        if(profileFile != null){
+            Image userImage = user.getImage();
+            fileService.deleteFile(userImage);
+            Image image = fileService.insertFile(profileFile);
+            user.setImage(image);
         }
 
         userRepository.save(user);
 
-        resultDto.setResult("success");
+        responseMessage.setMessage("success");
 
-        return resultDto;
+        return responseMessage;
     }
 
     @Transactional
-    public ResultDto deleteUser(TokenDto tokenDto, Long userId) throws Exception {
-
-        ResultDto resultDto = logout(tokenDto);
+    public ResponseMessage deleteUser(TokenDto tokenDto, Long userId) throws Exception {
+        ResponseMessage responseMessage = logout(tokenDto);
         User user = userRepository.findOneWithAuthoritiesByUserId(userId).get();
+        Image userImage = user.getImage();
+        fileService.deleteFile(userImage);
         userRepository.delete(user);
 
-        resultDto.setResult("success");
+        responseMessage.setMessage("success");
 
-        return resultDto;
+        return responseMessage;
 
     }
 
