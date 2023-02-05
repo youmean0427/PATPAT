@@ -14,7 +14,7 @@ export default function ForPawMeter({ data }) {
   const [profile, setProfile] = useState('');
   const [preProfile, setPreProfile] = useState('');
   const [userName, setUserName] = useState('');
-  const [distance, setDistance] = useState(82); // 최대 Distance = 82
+  const [distance, setDistance] = useState(0); // 최대 Distance = 82
 
   const fileInput = useRef(null);
   const reader = new FileReader();
