@@ -14,8 +14,8 @@
     text-align: center;
     padding: 15px;
     border-style: solid;
-    border-color: $blue-color;
-    background-color: $blue-color;
+    border-color: $main-color;
+    background-color: $main-color;
     color: $white-color;
   }
   &-unselected {
@@ -25,8 +25,8 @@
     text-align: center;
     padding: 15px;
     border-style: solid;
-    border-color: $blue-color;
+    border-color: $main-color;
     background-color: $white-color;
-    color: $blue-color;
+    color: $main-color;
   }
 }
