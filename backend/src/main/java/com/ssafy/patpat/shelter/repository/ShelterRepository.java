@@ -16,6 +16,8 @@ public interface ShelterRepository extends JpaRepository<Shelter,Integer> {
     List<Shelter> findByGugunCode(String gugunCode);
     List<Shelter> findByShelterIdIn(Set<Integer> list);
     List<Shelter> findByShelterIdIn(List<Integer> list,PageRequest pageRequest);
+    List<Shelter> findBySidoCodeAndGugunCode(String sidoCode, String gugunCode, PageRequest pageRequest);
+    List<Shelter>  findBySidoCode(String sidoCode,PageRequest pageRequest);
     Shelter findByShelterId(int shelterId);
 
 }

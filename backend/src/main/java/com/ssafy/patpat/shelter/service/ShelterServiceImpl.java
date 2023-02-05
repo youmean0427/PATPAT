@@ -164,19 +164,10 @@ public class ShelterServiceImpl implements ShelterService{
         }
         else if(breedId==0 && sidoCode!=null && gugunCode == null){
             //시도만
-            List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCode(sidoCode);
-            for(ShelterProtectedDog s : list){
-                integerList.add(s.getShelterId());
-            }
-            shelterList = shelterRepository.findByShelterIdIn(integerList,pageRequest);
+            shelterList = shelterRepository.findBySidoCode(sidoCode,pageRequest);
         }
         else if(breedId==0 && sidoCode!=null && gugunCode != null){
-            //시도, 구군만
-            List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCodeAndGugunCode(sidoCode,gugunCode);
-            for(ShelterProtectedDog s : list){
-                integerList.add(s.getShelterId());
-            }
-            shelterList = shelterRepository.findByShelterIdIn(integerList,pageRequest);
+            shelterList = shelterRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode,pageRequest);
         }
         else if(breedId>0 && sidoCode != null && gugunCode==null){
             //시도, 견종
@@ -214,6 +205,8 @@ public class ShelterServiceImpl implements ShelterService{
                             .address(s.getAddress())
                             .shelterId(s.getShelterId())
                             .name(s.getName())
+                            .sidoCode(s.getSidoCode())
+                            .gugunCode(s.getGugunCode())
                             .fileDto(fileDto)
                             .build()
             );
