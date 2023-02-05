@@ -1,4 +1,4 @@
-import { authInstance, defaultInstance } from 'apis/utils';
+import { authInstance } from 'apis/utils';
 
 // GET
 
@@ -34,7 +34,7 @@ export const getMyConsultations = async (limit, offset, userId) => {
  */
 export const getShelterConsultations = async (shelterId, limit, offset) => {
   const { data } = await authInstance.get(
-    `/consultations/shelters?shelterId=${shelterId}?limit=${limit}&offset=${offset}`
+    `/consultations/shelters?limit=${limit}&offset=${offset}&shelterId=${shelterId}`
   );
   return data;
 };

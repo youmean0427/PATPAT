@@ -16,7 +16,7 @@ export default function FavoriteItem({ item }) {
           </div>
           <img src={image} alt="" />
           <img
-            onclick={deleteFavProtect(protectId)}
+            onclick={() => deleteFavProtect(protectId)}
             title="꾹 해제"
             className={styles['fav-img']}
             src={FavImg}

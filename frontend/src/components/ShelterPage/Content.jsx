@@ -42,9 +42,12 @@ export default function Content() {
           상담 관리
         </button>
       </div>
-      <button onClick={openModal} className={styles.manage}>
-        관리
-      </button>
+      {click[2] || click[3] ? (
+        <button onClick={openModal} className={styles.manage}>
+          관리
+        </button>
+      ) : null}
+
       <Modal open={modal} close={closeModal} title="상담시간 관리">
         <div className={styles['modal-content']}>
           <p className={styles['modal-title']}>상담시간 관리</p>
@@ -87,7 +90,7 @@ export default function Content() {
           </div>
         </div>
       </Modal>
-      <div className={styles.contents}>{click[3] ? <ConsultingList /> : null}</div>
+      <div className={styles.contents}>{click[3] ? <ConsultingList shelterId="0" shelterName="보호소1" /> : null}</div>
     </div>
   );
 }

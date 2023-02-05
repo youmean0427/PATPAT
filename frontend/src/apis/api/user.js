@@ -30,6 +30,7 @@ export const getUserInfo = async () => {
 export const modifyUserInfo = async formData => {
   const res = await authInstance.post(`/user/info`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    body: formData,
   });
   return res;
 };

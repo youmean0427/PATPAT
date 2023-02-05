@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { modifyUserInfo } from 'apis/api/user';
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './ForPawMeter.module.scss';
@@ -14,16 +15,14 @@ export default function ForPawMeter({ data }) {
   const [preProfile, setPreProfile] = useState('');
   const [userName, setUserName] = useState('');
 
-  const userInfo = JSON.parse(localStorage.getItem('user'));
   const distance = 0;
   const fileInput = useRef(null);
   const reader = new FileReader();
-  const formData = new FormData();
 
   useEffect(() => {
-    setProfile(userInfo.thumbnail);
-    setPreProfile(userInfo.thumbnail);
-    setUserName(userInfo.username);
+    setProfile(data.profileImageUrl);
+    setPreProfile(data.profileImageUrl);
+    setUserName(data.username);
   }, []);
 
   const openModal = () => {
@@ -32,22 +31,19 @@ export default function ForPawMeter({ data }) {
   const closeModal = () => {
     setModal(false);
   };
+
   const saveModal = () => {
     alert('저장하시겠습니까?');
     setProfile(preProfile);
-    // FormData로 값 넘겨주기
     createFormData();
     closeModal();
   };
 
   const createFormData = () => {
-    formData.append('ageRange', data.ageRange);
-    formData.append('email', data.email);
-    formData.append('profileImageUrl', file);
-    formData.append('provider', data.provider);
-    formData.append('profideId', data.provideId);
+    const formData = new FormData();
     formData.append('userId', data.userId);
-    formData.append('userName', data.userName);
+    formData.append('username', data.username);
+    formData.append('profileFile', file);
     modifyUserInfo(formData);
   };
 

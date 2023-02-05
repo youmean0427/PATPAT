@@ -7,14 +7,15 @@ import { useDispatch } from 'react-redux';
 import { setConsulting } from 'redux/consulting';
 
 export default function ConsultingItem({ item }) {
-  const { consultingId, shelterId, shelterName, address, userName, state, timeCode, date } = item;
+  const { consultingId, stateCode, registDate, userId, userName, timeCode } = item.item;
+  const shelterId = item.shelterId;
+  const shelterName = item.shelterName;
   const [click, setClick] = useState(false);
-  const [btnState, setBtnState] = useState(state);
+  const [btnState, setBtnState] = useState(stateCode);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(shelterId);
   const startConsulting = () => {
     dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
     navigate('/consulting/meeting');
@@ -28,7 +29,8 @@ export default function ConsultingItem({ item }) {
       <div className={styles.contents}>
         <p className={styles['user-name']}>{userName}</p>
         <p>
-          {date[0]}.{date[1]}.{date[2]}
+          {registDate[0]}.{registDate[1] <= 9 ? '0' + registDate[1] : registDate[1]}.
+          {registDate[2] <= 9 ? '0' + registDate[2] : registDate[2]}
         </p>
         <p>
           {timeCode === 0
@@ -43,7 +45,7 @@ export default function ConsultingItem({ item }) {
         </p>
       </div>
       <div className={styles.buttons}>
-        {state === 5 ? (
+        {stateCode === 5 ? (
           <button onClick={startConsulting} className={styles.state5}>
             방생성
           </button>
@@ -83,7 +85,7 @@ export default function ConsultingItem({ item }) {
           onClick={() => {
             setBtnState(0);
             setClick(false);
-            const data = JSON.stringify({ shelterId, address, userName, btnState, timeCode, date });
+            const data = JSON.stringify({ shelterId, userName, btnState, timeCode, registDate });
             updateConsultant(consultingId, data);
           }}
           className={styles.state0}
@@ -94,7 +96,16 @@ export default function ConsultingItem({ item }) {
           onClick={() => {
             setBtnState(1);
             setClick(false);
-            const data = JSON.stringify({ shelterId, address, userName, btnState, timeCode, date });
+            const data = JSON.stringify({
+              consultingId,
+              shelterId,
+              shelterName,
+              btnState,
+              registDate,
+              userId,
+              userName,
+              timeCode,
+            });
             updateConsultant(consultingId, data);
           }}
           className={styles.state1}
@@ -105,7 +116,16 @@ export default function ConsultingItem({ item }) {
           onClick={() => {
             setBtnState(2);
             setClick(false);
-            const data = JSON.stringify({ shelterId, address, userName, btnState, timeCode, date });
+            const data = JSON.stringify({
+              consultingId,
+              shelterId,
+              shelterName,
+              btnState,
+              registDate,
+              userId,
+              userName,
+              timeCode,
+            });
             updateConsultant(consultingId, data);
           }}
           className={styles.state2}
@@ -116,7 +136,16 @@ export default function ConsultingItem({ item }) {
           onClick={() => {
             setBtnState(3);
             setClick(false);
-            const data = JSON.stringify({ shelterId, address, userName, btnState, timeCode, date });
+            const data = JSON.stringify({
+              consultingId,
+              shelterId,
+              shelterName,
+              btnState,
+              registDate,
+              userId,
+              userName,
+              timeCode,
+            });
             updateConsultant(consultingId, data);
           }}
           className={styles.state3}
@@ -127,14 +156,23 @@ export default function ConsultingItem({ item }) {
           onClick={() => {
             setBtnState(4);
             setClick(false);
-            const data = JSON.stringify({ shelterId, address, userName, btnState, timeCode, date });
+            const data = JSON.stringify({
+              consultingId,
+              shelterId,
+              shelterName,
+              btnState,
+              registDate,
+              userId,
+              userName,
+              timeCode,
+            });
             updateConsultant(consultingId, data);
           }}
           className={styles.state4}
         >
           완료
         </button>
-        {state === 5 ? (
+        {stateCode === 5 ? (
           <button className={styles.state5}>방생성</button>
         ) : (
           <button disabled={true} className={styles.disabled}>
