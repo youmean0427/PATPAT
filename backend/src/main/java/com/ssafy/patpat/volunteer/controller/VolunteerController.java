@@ -1,37 +1,63 @@
 package com.ssafy.patpat.volunteer.controller;
 
 import com.ssafy.patpat.common.dto.ResponseMessage;
-import com.ssafy.patpat.volunteer.dto.NoticeDto;
-import com.ssafy.patpat.volunteer.dto.RequestVolunteerDto;
-import com.ssafy.patpat.volunteer.dto.ReservationDto;
+import com.ssafy.patpat.volunteer.dto.*;
+import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
+import com.ssafy.patpat.volunteer.service.VolunteerScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/volunteers")
 @Api(tags = {"07. Volunteer"},description = "봉사 관련 서비스")
 public class VolunteerController {
+
+    private final VolunteerScheduleService volunteerScheduleService;
+
     /**
      * 봉사 공고 조회(전체)
      * @return
      */
     @GetMapping("/notices")
-    @ApiOperation(value = "봉사 공고 조회", notes = "전체 봉사 공고를 조회")
+    @ApiOperation(value = "봉사 공고 조회", notes = "구군 봉사 공고를 조회")
     public ResponseEntity<Object> selectNoticeList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        if(true){
+        List<VolunteerShelterDto> list = volunteerScheduleService.volunteerScheduleListInGugun(requestVolunteerDto.getGugunCode());
+        if(list != null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ArrayList<NoticeDto>());
+                    .body(list);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
         }
     }
+
+    /**
+     * 봉사 공고 조회(구군)
+     * @return
+     */
+    @GetMapping("/details")
+    @ApiOperation(value = "일별 봉사 공고 조회", notes = "파라미터로 shelterId와 volunteerDate 주세요.")
+    public ResponseEntity<Object> selectNoticeDetailList(RequestVolunteerDto requestVolunteerDto){
+        //서비스 호출 코드
+        List<VolunteerScheduleDto> list = volunteerScheduleService.volunteerScheduleDetailList(requestVolunteerDto.getVolunteerDate(), requestVolunteerDto.getShelterId());
+        if(list != null){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(list);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+
     /**
      * 봉사 공고 조회(일반 유저가 보호소에 들어간 경우 (카드형식))
      * @return

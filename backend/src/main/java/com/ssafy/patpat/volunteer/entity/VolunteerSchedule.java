@@ -1,5 +1,7 @@
 package com.ssafy.patpat.volunteer.entity;
 
+import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.shelter.entity.Shelter;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -20,16 +22,12 @@ public class VolunteerSchedule {
     @Column(name = "volunteer_id")
     private Long volunteerId;
 
-    @NotNull
-    @Column(name = "shelter_id")
-    private Long shelterId;
-
     @Column(name = "title")
     private String title;
 
     @NotNull
     @Column(name = "volunteer_date")
-    private LocalDate volunteerDate;
+    private String volunteerDate;
 
     @NotNull
     @Column(name = "start_time")
@@ -42,15 +40,21 @@ public class VolunteerSchedule {
     @Column(name = "capacity")
     private Integer capacity;
 
+    @Column(name = "total_capacity")
+    private Integer totalCapacity;
+
     @Column(name = "guide_line")
     private String guideLine;
 
-    @NotNull
     @Column(name = "reservation_state_code")
-    private Integer reservationStateCode;
+    private Reservation reservationStateCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
 
     @PrePersist
     public void prePersist() {
-        this.reservationStateCode = this.reservationStateCode == null ? 0 : this.reservationStateCode;
+        this.reservationStateCode = this.reservationStateCode == null ? Reservation.대기중 : this.reservationStateCode;
     }
 }

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.consulting.entity.Time;
+import io.swagger.models.auth.In;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +24,9 @@ import java.util.List;
 public class Shelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int shelterId;
+    @Column(name = "shelter_id")
+    private Integer shelterId;
+
     private String address;
     private String latitude;
     private String longitude;
