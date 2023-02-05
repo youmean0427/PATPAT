@@ -9,7 +9,6 @@ export default function AbandonedDogList() {
     queryFn: () => getProtectList(0, 4, 0),
   });
   if (isLoading) return;
-  console.log(data);
   return (
     <div className={styles.list}>
       {data.map(item => (

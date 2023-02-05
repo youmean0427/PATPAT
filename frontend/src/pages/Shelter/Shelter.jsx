@@ -15,7 +15,7 @@ export default function Shelter() {
   });
 
   if (isLoading) return;
-
+  console.log(data);
   return (
     <div className={styles.container}>
       <div className={styles['main-info']}>

@@ -12,6 +12,7 @@ export default function MoreInfo() {
   } = useLocation();
   const { data, isLoading } = useQuery(['searchBreedCountPerRegion'], () => getCountShelterByBreed(breedId));
   if (isLoading) return;
+  console.log(data);
   return (
     <MbtiContainer>
       <div className={styles.card}>
@@ -21,11 +22,11 @@ export default function MoreInfo() {
         <div className={styles['desc-box']}>
           <div className={styles['desc-breed']}>{breedName}</div>
           <div className={styles['desc-count']}>
-            PATPAT에 등록된 보호소 중 해당 견종을 보유한 곳은 총 <span>80개</span>입니다
+            PATPAT에 등록된 보호소 중 해당 견종을 보유한 곳은 총 <span>{data.totalCount}개</span> 입니다
           </div>
         </div>
       </div>
-      <SouthKorea breedId={breedId} breedName={breedName} list={data} />
+      <SouthKorea breedId={breedId} breedName={breedName} list={data.list} />
     </MbtiContainer>
   );
 }

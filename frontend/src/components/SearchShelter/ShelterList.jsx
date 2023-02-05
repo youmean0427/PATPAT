@@ -6,33 +6,28 @@ import { selectBreedState, selectGugunState, selectSidoState } from 'recoil/atom
 import ShelterItem from './ShelterItem';
 import styles from './ShelterList.module.scss';
 
-const list = [
-  { shelterId: 1, name: '초량 보호소' },
-  { shelterId: 2, name: '초량 보호소' },
-  { shelterId: 3, name: '초량 보호소' },
-  { shelterId: 4, name: '초량 보호소' },
-  { shelterId: 5, name: '초량 보호소' },
-  { shelterId: 6, name: '초량 보호소' },
-  { shelterId: 7, name: '초량 보호소' },
-  { shelterId: 8, name: '초량 보호소' },
-  { shelterId: 9, name: '초량 보호소' },
-  { shelterId: 10, name: '초량 보호소' },
-  { shelterId: 11, name: '초량 보호소' },
-  { shelterId: 12, name: '초량 보호소' },
-];
 function ShelterList() {
-  const { sidoCode } = useRecoilValue(selectSidoState);
-  const { gugunCode } = useRecoilValue(selectGugunState);
-  const { breedId } = useRecoilValue(selectBreedState);
-  const { data, isLoading } = useQuery(['shelterList', sidoCode, gugunCode, breedId], () => {
-    return getShelterList(sidoCode, gugunCode, breedId, 4, 0);
-  });
+  const sido = useRecoilValue(selectSidoState);
+  const gugun = useRecoilValue(selectGugunState);
+  const breed = useRecoilValue(selectBreedState);
+  const { data, isLoading } = useQuery(
+    ['shelterList', sido.sidoCode, gugun.gugunCode, breed.breedId],
+    () => {
+      return getShelterList(sido.sidoCode, gugun.gugunCode, breed.breedId, 12, 0);
+    },
+    { staleTime: 1000 * 60 * 5 }
+  );
   if (isLoading) return;
+  console.log(data);
   return (
     <div className={styles.container}>
-      {list.map((item, index) => {
-        return <ShelterItem key={index} item={item} />;
-      })}
+      {data.length !== 0 ? (
+        data.map((item, index) => {
+          return <ShelterItem key={index} item={item} />;
+        })
+      ) : (
+        <span>검색 결과가 없습니다.</span>
+      )}
     </div>
   );
 }
