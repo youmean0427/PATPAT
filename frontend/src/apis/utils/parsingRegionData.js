@@ -37,3 +37,9 @@ export const getRegionList = list => {
     return { ...item, d: dList[index], color: colorStyle };
   });
 };
+
+export const getRegionSelectList = list => {
+  return list.map((item, index) => {
+    return { ...item, d: dList[index] };
+  });
+};

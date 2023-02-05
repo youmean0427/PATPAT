@@ -5,17 +5,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
+import com.ssafy.patpat.common.dto.FileDto;
+import com.ssafy.patpat.consulting.entity.Time;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Shelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +32,9 @@ public class Shelter {
     private String regNumber;
     private String sidoCode;
     private String gugunCode;
+    private String info;
+
+    @OneToMany
+    @JoinColumn(name = "shelter_id")
+    private List<Time> timeList = new ArrayList<Time>();
 }

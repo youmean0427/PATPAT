@@ -1,173 +1,73 @@
 @import 'assets/styles/variable.scss';
 
-.card div {
-  display: inline-block;
-  vertical-align: middle;
+.items {
+  position: relative;
+  display: flex;
+  width: 37rem;
+  height: 13rem;
+  margin: 10px;
+  background-color: #f5f4f4;
 }
-.shelter-img img {
-  display: inline-block;
-  width: 100%;
+.consulting-img img {
+  width: 8rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+.contents {
+  text-align: left;
+  width: 25rem;
+  margin-top: 2rem;
 }
 .shelter-name {
-  font-weight: bolder;
+  margin: 1rem 0 1rem 0;
+  font-size: 1.5rem;
+  color: $blue-color;
+  font-weight: 900;
 }
-.cancel {
-  color: white;
-  background-color: $blue-color;
-  border-radius: 30px;
-  transition: all 0.2s ease-in-out;
-}
-.state0,
-.state1,
-.state2 {
-  color: white;
+.buttons button {
+  width: 5rem;
+  height: 2.5rem;
+  margin-top: 10px;
+  margin-right: 1rem;
 }
 .state0 {
-  background-color: $skyblue-color;
+  background-color: $lighter-blue-color;
+  color: white;
+  pointer-events: none;
 }
 .state1 {
   background-color: $green-color;
+  color: white;
+  pointer-events: none;
 }
 .state2 {
   background-color: $red-color;
+  color: white;
+  pointer-events: none;
 }
-
-/* desktop 규격 */
-@media screen and (min-width: 1024px) {
-  .card div {
-    margin: 20px 2px 0 2px;
-  }
-  .shelter-img {
-    width: 20%;
-    height: 100px;
-  }
-  .shelter-img img {
-    width: 100%;
-  }
-  .contents {
-    width: 50%;
-    height: 150px;
-    text-align: left;
-    font-size: 1.5rem;
-    padding-top: 35px;
-  }
-  .contents p {
-    margin-left: 20px;
-  }
-  .shelter-name {
-    font-size: larger;
-  }
-  .buttons {
-    width: 20%;
-    height: 200px;
-  }
-  .cancel {
-    padding: 8px;
-    font-size: 1.5rem;
-  }
-  .cancel:hover {
-    transform: translateY(-3px);
-    box-shadow: 10px 20px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
-  }
-  .state0,
-  .state1,
-  .state2 {
-    margin-top: 150px;
-    margin-left: 30px;
-    width: 50px;
-    height: 30px;
-    font-size: larger;
-  }
+.state3 {
+  background-color: $yellow-color;
+  pointer-events: none;
 }
-
-/* tablet 규격 */
-@media screen and (max-width: 1023px) {
-  .card div {
-    margin: 10px 1px 0 1px;
-  }
-  .shelter-img {
-    width: 15%;
-    height: 50px;
-    padding-top: 10px;
-  }
-  .contents {
-    width: 50%;
-    height: 75px;
-    text-align: left;
-    font-size: 1rem;
-    padding-top: 20px;
-  }
-  .contents p {
-    margin-left: 15px;
-  }
-  .shelter-name {
-    font-size: larger;
-  }
-  .buttons {
-    width: 20%;
-    height: 100px;
-    padding-left: 10px;
-  }
-  .cancel {
-    width: 50px;
-    height: 25px;
-    font-size: 1rem;
-  }
-  .cancel:hover {
-    transform: translateY(-2px);
-    box-shadow: 10px 20px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
-  }
-  .state0,
-  .state1,
-  .state2 {
-    margin-top: 80px;
-    margin-left: 10px;
-    width: 40px;
-    height: 20px;
-    font-size: 1rem;
-  }
+.state4 {
+  background-color: lightgray;
+  pointer-events: none;
 }
-
-/* mobile 규격 */
-@media screen and (max-width: 540px) {
-  .card div {
-    margin: 10px 1px 0 1px;
-  }
-  .shelter-img {
-    width: 15%;
-    height: 50px;
-    padding-top: 10px;
-    padding-left: 5px;
-  }
-  .contents {
-    width: 55%;
-    height: 75px;
-    text-align: left;
-    font-size: 1pt;
-    padding-top: 10px;
-  }
-  .contents p {
-    margin-left: 20px;
-  }
-  .shelter-name {
-    font-size: larger;
-  }
-  .buttons {
-    width: 25%;
-    height: 80px;
-    padding-left: 3px;
-  }
-  .cancel {
-    width: 45px;
-    height: 25px;
-    font-size: 3pt;
-  }
-  .state0,
-  .state1,
-  .state2 {
-    margin-top: 30px;
-    width: 30px;
-    height: 20px;
-    font-size: 0.7rem;
-  }
+.state5 {
+  cursor: pointer;
+  background-color: $purple-color;
+  color: white;
+}
+.cancel {
+  width: 10rem;
+  background-color: $blue-color;
+  height: 2.5rem;
+  color: white;
+  border-radius: 30px;
+  float: right;
+  margin-bottom: 50px;
+}
+.cancel:hover {
+  transform: translateY(-2px);
 }

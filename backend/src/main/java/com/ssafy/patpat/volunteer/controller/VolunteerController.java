@@ -4,6 +4,8 @@ import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.volunteer.dto.NoticeDto;
 import com.ssafy.patpat.volunteer.dto.RequestVolunteerDto;
 import com.ssafy.patpat.volunteer.dto.ReservationDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/volunteer")
+@RequestMapping("api/volunteers")
+@Api(tags = {"07. Volunteer"},description = "봉사 관련 서비스")
 public class VolunteerController {
     /**
      * 봉사 공고 조회(전체)
      * @return
      */
-    @GetMapping("/notice")
-    public ResponseEntity<Object> selectNoticeList(RequestVolunteerDto dto){
+    @GetMapping("/notices")
+    @ApiOperation(value = "봉사 공고 조회", notes = "전체 봉사 공고를 조회")
+    public ResponseEntity<Object> selectNoticeList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -29,10 +33,27 @@ public class VolunteerController {
         }
     }
     /**
-     * 봉사 공고 조회(특정 보호소 내부의 봉사 리스트)
+     * 봉사 공고 조회(일반 유저가 보호소에 들어간 경우 (카드형식))
      * @return
      */
-    @GetMapping("/notice/{shelterId}")
+    @GetMapping("/notices/shelters")
+    @ApiOperation(value = "봉사 공고 조회", notes = "일반 유저가 보호소에 들어간 경우 (카드형식)")
+    public ResponseEntity<Object> selectNoticeListBySUser(@PathVariable int shelterId){
+        //서비스 호출 코드
+        if(true){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ArrayList<NoticeDto>());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+    /**
+     * 봉사 공고 조회(보호소가 자기 봉사 공고 볼 경우)
+     * @return
+     */
+    @GetMapping("/months")
+    @ApiOperation(value = "봉사 공고 조회", notes = "보호소가 자기 봉사 공고 볼 경우")
     public ResponseEntity<Object> selectNoticeListByShelter(@PathVariable int shelterId){
         //서비스 호출 코드
         if(true){
@@ -47,7 +68,8 @@ public class VolunteerController {
      * 봉사 공고 상세 조회
      * @return
      */
-    @GetMapping("/notice/detail/{noticeId}")
+    @GetMapping("/notices/detail/{noticeId}")
+    @ApiOperation(value = "봉사 공고 상세 조회", notes = "봉사 공고 상세 조회")
     public ResponseEntity<Object> detailNotice(@PathVariable int noticeId){
         //서비스 호출 코드
         if(true){
@@ -62,8 +84,9 @@ public class VolunteerController {
      * 봉사 공고 등록
      * @return
      */
-    @PostMapping("/notice")
-    public ResponseEntity<Object> insertNotice(NoticeDto dto){
+    @PostMapping("/notices")
+    @ApiOperation(value = "봉사 공고 등록", notes = "봉사 공고 등록")
+    public ResponseEntity<Object> insertNotice(@RequestBody NoticeDto noticeDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -77,8 +100,9 @@ public class VolunteerController {
      * 봉사 공고 수정
      * @return
      */
-    @PutMapping("/notice")
-    public ResponseEntity<Object> updateNotice(NoticeDto dto){
+    @PutMapping("/notices")
+    @ApiOperation(value = "봉사 공고 수정", notes = "봉사 공고 수정")
+    public ResponseEntity<Object> updateNotice(@RequestBody NoticeDto noticeDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -92,8 +116,9 @@ public class VolunteerController {
      * 봉사 지원서 조회(개인)
      * @return
      */
-    @GetMapping("/reservation")
-    public ResponseEntity<Object> selectReservationList(RequestVolunteerDto dto){
+    @GetMapping("/reservations/users")
+    @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회")
+    public ResponseEntity<Object> selectReservationList(@RequestParam int userId){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -107,8 +132,9 @@ public class VolunteerController {
      * 봉사 지원서 조회(보호소)
      * @return
      */
-    @GetMapping("/reservation/shelter")
-    public ResponseEntity<Object> selectReservationListByShelter(RequestVolunteerDto dto){
+    @GetMapping("/reservations")
+    @ApiOperation(value = "봉사 지원서 조회", notes = "특정 보호소에 지원된 봉사 지원서 조회")
+    public ResponseEntity<Object> selectReservationListByShelter(@RequestParam int shelterId){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -122,8 +148,9 @@ public class VolunteerController {
      * 봉사 지원서 등록
      * @return
      */
-    @PostMapping("/reservation")
-    public ResponseEntity<Object> insertReservation(RequestVolunteerDto dto){
+    @PostMapping("/reservations")
+    @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록")
+    public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
@@ -137,8 +164,9 @@ public class VolunteerController {
      * 봉사 지원서 수정
      * @return
      */
-    @PostMapping("/reservation/{reservationId}")
-    public ResponseEntity<Object> updateReservation(@PathVariable int reservationId, RequestVolunteerDto dto){
+    @PutMapping("/reservations")
+    @ApiOperation(value = "봉사 지원서 수정", notes = "봉사 지원서 수정")
+    public ResponseEntity<Object> updateReservation(@RequestBody ReservationDto reservationDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)

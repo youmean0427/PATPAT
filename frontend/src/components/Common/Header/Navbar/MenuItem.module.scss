@@ -2,6 +2,7 @@
 
 .menu-item {
   position: relative;
+  transition: all 0.3s;
   padding: 2rem $spacing-lg;
   & > div {
     cursor: pointer;

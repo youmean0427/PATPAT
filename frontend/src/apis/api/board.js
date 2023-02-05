@@ -21,8 +21,8 @@ export const getBoardList = async (typeCode, limit, offset) => {
  * @param {int} offset skip할 개수
  * @returns [] : typeCode에 따른 Item을 가진 배열
  */
-export const getBoardListByMe = async (typeCode, limit, offset) => {
-  const { data } = await authInstance.get(`/boards/me?typeCode=${typeCode}&limit=${limit}&offset=${offset}`);
+export const getBoardListByMe = async (limit, offset, typecode) => {
+  const { data } = await authInstance.get(`/boards/me?limit=${limit}&offset=${offset}&typecode=${typecode}`);
   return data;
 };
 

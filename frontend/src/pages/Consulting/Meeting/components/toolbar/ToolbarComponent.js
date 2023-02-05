@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './ToolbarComponent.css';
 
 import AppBar from '@mui/material/AppBar';
@@ -113,7 +114,9 @@ export default class ToolbarComponent extends Component {
               {localUser !== undefined && this.state.fullscreen ? <FullscreenExit /> : <Fullscreen />}
             </IconButton>
             <IconButton color="warning" className="navButton" onClick={this.leaveSession} id="navLeaveButton">
-              <PowerSettingsNew />
+              <Link to="/">
+                <PowerSettingsNew />
+              </Link>
             </IconButton>
             <IconButton color="primary" onClick={this.toggleChat} id="navChatButton">
               {this.props.showNotification && <div id="point" className="" />}

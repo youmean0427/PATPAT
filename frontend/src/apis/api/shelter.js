@@ -9,10 +9,8 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @param {*} sidoCode 시도 코드
  * @returns 보호소 리스트
  */
-export const getShelterList = async (breedName, gugunCode, sidoCode) => {
-  const { data } = await defaultInstance(
-    `/shelters?breedName=${breedName}&gugunCode=${gugunCode}&sidoCode=${sidoCode}`
-  );
+export const getShelterList = async (sidoCode, gugunCode, breedId, limit, offset) => {
+  const { data } = await defaultInstance('/shelters', { params: { breedId, gugunCode, sidoCode, limit, offset } });
   return data;
 };
 
@@ -42,6 +40,15 @@ export const getSidoList = async () => {
  */
 export const getGugunList = async sidoCode => {
   const { data } = await defaultInstance(`/shelters/guguns?sidoCode=${sidoCode}`);
+  return data;
+};
+
+/**
+ * GET : 견종 리스트
+ * @returns [] : 견종 데이터 리스트
+ */
+export const getBreedsList = async () => {
+  const { data } = await defaultInstance(`/shelters/breeds`);
   return data;
 };
 
