@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import MbtiContainer from 'components/Common/MbtiContainer';
+import MbtiContainer from 'containers/MbtiContainer';
 import kakao from 'assets/images/kakaoBtn.png';
 import copyLink from 'assets/images/link.png';
-import facebook from 'assets/images/facebook.png';
-import logo from 'assets/images/mbti-logo.png';
 import styles from './Result.module.scss';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -24,7 +22,8 @@ export default function Result() {
 
   const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiBreedInfo(state.mbti));
   if (isLoading) return;
-  const { id, mbti, name, title, desc, imgUrl } = data;
+  console.log(data);
+  const { breedId, breedName, title, description, thumbnail } = data;
   return (
     <MbtiContainer>
       <div className={styles['main-result']}>
@@ -32,20 +31,20 @@ export default function Result() {
           🐶 <span>{title}</span> 🐶
         </div>
         <div className={styles['img-box']}>
-          <img src={imgUrl} alt="img" />
+          <img src={thumbnail ? thumbnail : copyLink} alt="img" />
         </div>
         <div className={styles.result}>
-          <span>{mbti}</span>
-          <span>{name}</span>
+          <span>{state.mbti}</span>
+          <span>{breedName}</span>
         </div>
       </div>
       <div className={styles['desc-box']}>
-        <span>{desc}</span>
+        <span>{description}</span>
         <div className={styles['btn-box']}>
           <button
             onClick={() => {
               window.scrollTo(0, 0);
-              navigate('/mbti/result/map', { state: { breedId: id, breedName: name, breedImg: imgUrl } });
+              navigate('/mbti/result/map', { state: { breedId, breedName, thumbnail } });
             }}
             className={styles.link}
           >

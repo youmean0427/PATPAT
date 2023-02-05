@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,11 +17,14 @@ import java.time.LocalDateTime;
 public class ReservationDto {
     private int noticeId;
     private int shelterId;
+    private String shelterName;
+    private String adress;
     private int reservationId;
     private int userId;
     private String userName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int capacity;
-    private String stateCode;
+    @Schema(example = "대기중,수락,거절,불참,완료")
+    private int stateCode;
 }

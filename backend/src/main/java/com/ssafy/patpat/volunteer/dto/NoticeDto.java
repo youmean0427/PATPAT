@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,6 @@ public class NoticeDto {
     private LocalDateTime endTime;
     private int capacity;
     private String guideLine;
-    private String stateCode;
-    private String link;
+    @Schema(example = "대기중,수락,거절,미완료,불참,완료")
+    private int stateCode;
 }

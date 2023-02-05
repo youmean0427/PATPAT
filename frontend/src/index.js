@@ -9,6 +9,7 @@ import { worker } from 'mocks/worker';
 import { RecoilRoot } from 'recoil';
 import store from 'redux/store';
 import { Provider } from 'react-redux';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 if (process.env.NODE_ENV === 'development') {
   // worker.start();
@@ -32,6 +33,7 @@ root.render(
       <Provider store={store}>
         <RouterProvider router={router} fallbackElement={<CircularProgress />} />
       </Provider>
+      <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   </RecoilRoot>
 );
