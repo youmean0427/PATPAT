@@ -49,7 +49,7 @@ public class ShelterProtectedDog {
 
     private ProtectState stateCode;//
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "shelter_dog_image",
             joinColumns = {@JoinColumn(name = "sp_dog_id")},

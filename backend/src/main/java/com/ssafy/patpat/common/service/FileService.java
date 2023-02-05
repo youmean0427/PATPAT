@@ -83,6 +83,11 @@ public class FileService {
     }
 
     @Transactional
+    public Image getDefaultImage(){
+        return imageRepository.findById(11).get();
+    }
+
+    @Transactional
     public boolean deleteFile(Image image){
 
         String fileName = image.getFilename();
