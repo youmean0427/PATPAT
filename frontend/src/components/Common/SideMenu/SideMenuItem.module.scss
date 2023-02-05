@@ -3,7 +3,7 @@
 .link {
   width: 60px;
   height: 50px;
-  background-color: $blue-color;
+  background-color: $main-color;
   color: $white-color;
   text-align: center;
   font-size: 0.6rem;
@@ -19,7 +19,7 @@
 }
 
 .link::before {
-  border-bottom: 20px solid $blue-color;
+  border-bottom: 20px solid $main-color;
   border-left: 30px solid transparent;
   border-right: 31px solid transparent;
   content: '';
