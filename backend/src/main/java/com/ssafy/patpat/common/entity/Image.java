@@ -1,5 +1,6 @@
 package com.ssafy.patpat.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
