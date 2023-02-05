@@ -169,13 +169,13 @@ public class ShelterServiceImpl implements ShelterService{
         List<ShelterDto> shelterDtoList = new ArrayList<>();
 
         for(Shelter s : shelterList){
-            ShelterImage shelterImage = shelterImageRepository.findByShelterId(s.getShelterId());
+            Optional<ShelterImage> shelterImage = Optional.ofNullable(shelterImageRepository.findByShelterId(s.getShelterId()));
             FileDto fileDto = FileDto.builder()
                     .filePath("noProfile")
                     .build();
             Image image = null;
             if(shelterImage != null){
-                image = imageRepository.findByImageId(shelterImage.getImageId());
+                image = imageRepository.findByImageId(shelterImage.get().getImageId());
             }
             if(image != null){
                 fileDto = FileDto.builder()
@@ -303,11 +303,17 @@ public class ShelterServiceImpl implements ShelterService{
     @Override
     public ShelterDto detailShelter(int shelterId) {
         Shelter s = shelterRepository.findByShelterId(shelterId);
-        ShelterImage shelterImage = shelterImageRepository.findByShelterId(s.getShelterId());
-        Image image = imageRepository.findByImageId(shelterImage.getImageId());
-        FileDto fileDto = FileDto.builder()
-                .filePath(image.getFilePath())
-                .build();
+        Optional<ShelterImage> shelterImage = Optional.ofNullable(shelterImageRepository.findByShelterId(s.getShelterId()));
+        FileDto fileDto;
+        if(shelterImage.isPresent()){
+            Image image = imageRepository.findByImageId(shelterImage.get().getImageId());
+            fileDto = FileDto.builder()
+                    .filePath(image.getFilePath())
+                    .build();
+        }else {
+            fileDto = null;
+        }
+
         ShelterDto shelterDto = ShelterDto.builder()
                 .shelterId(s.getShelterId())
                 .name(s.getName())
