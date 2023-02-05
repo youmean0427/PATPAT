@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './Navbar.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from 'assets/images/logo.png';
+import logo from 'assets/images/logo3.png';
 import MenuList from './MenuList';
 import { logout } from 'apis/utils/auth';
 import { useRecoilState } from 'recoil';
