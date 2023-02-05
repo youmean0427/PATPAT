@@ -232,12 +232,24 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities(String email) {
-        return userRepository.findOneWithAuthoritiesByEmail(email);
+    public UserDto getUserWithAuthorities() {
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        if(user.orElse(null) == null) {
+
+            return null;
+
+        }else{
+            UserDto userDto = UserDto.builder()
+                    .userId(user.get().getUserId())
+                    .provider(user.get().getProvider())
+                    .email(user.get().getEmail())
+                    .username(user.get().getNickname())
+                    .ageRange(user.get().getAgeRange())
+                    .profileImageUrl(fileService.getFileUrl(user.get().getImage()))
+                    .providerId(user.get().getProviderId())
+                    .build();
+            return userDto;
+        }
     }
 
-    @Transactional(readOnly = true)
-    public Optional<User> getMyUserWithAuthorities(){
-        return SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
-    }
 }
