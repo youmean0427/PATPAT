@@ -201,7 +201,7 @@ public class ShelterServiceImpl implements ShelterService{
                     .filePath("noProfile")
                     .build();
             Image image = null;
-            if(shelterImage != null){
+            if(shelterImage.isPresent()){
                 image = imageRepository.findByImageId(shelterImage.get().getImageId());
             }
             if(image != null){
