@@ -226,10 +226,16 @@ public class ProtectServiceImpl implements ProtectService{
         System.out.println(protectDto);
         try {
             List<Image> images = new ArrayList<>();
-            for (MultipartFile partFile : uploadFile) {
-                Image image = fileService.insertFile(partFile);
+            if(uploadFile == null){
+                Image image = fileService.getDefaultImage();
                 images.add(image);
+            }else{
+                for (MultipartFile partFile : uploadFile) {
+                    Image image = fileService.insertFile(partFile);
+                    images.add(image);
+                }
             }
+
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
                     .breedId(protectDto.getBreedId())

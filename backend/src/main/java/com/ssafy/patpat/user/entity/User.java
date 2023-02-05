@@ -66,7 +66,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "sp_dog_id")}
     )
-    private List<ShelterProtectedDog> favoriteDogs;
+    private Set<ShelterProtectedDog> favoriteDogs;
 
     @PrePersist
     public void prePersist() {

@@ -21,6 +21,7 @@ import java.util.List;
 public class ShelterProtectedDog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sp_dog_id")
     private int spDogId;
 
     @Column(name = "shelter_id")
@@ -49,7 +50,7 @@ public class ShelterProtectedDog {
 
     private ProtectState stateCode;//
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "shelter_dog_image",
             joinColumns = {@JoinColumn(name = "sp_dog_id")},
