@@ -59,7 +59,7 @@
             font-size: 20px;
             padding: 5.5px;
             padding-left: 10px;
-            font-family: $spoqa-font;
+            font-family: $seoul-font;
             border: 1px;
             border-style: solid;
             border-color: #cccccc;
@@ -96,7 +96,7 @@
     font-size: 20px;
     padding: 5.5px;
     padding-left: 10px;
-    font-family: $spoqa-font;
+    font-family: $seoul-font;
     border: 1px;
     border-style: solid;
     border-color: #cccccc;
@@ -154,7 +154,7 @@
     width: 100%;
     font-size: 25px;
     padding: 10px;
-    font-family: $spoqa-font;
+    font-family: $seoul-font;
     border: 1px;
     border-style: solid;
     border-color: #cccccc;
@@ -178,11 +178,28 @@
   font-size: 20px !important;
   margin: 10px !important;
   width: 100px !important;
-  font-family: $spoqa-font !important;
+  font-family: $seoul-font !important;
 
   background-color: $blue-color !important;
   &:hover {
     background-color: #4d5996 !important;
+  }
+}
+
+.pictureButtonCont {
+  margin: 10px;
+}
+.pictureButton {
+  font-size: 20px;
+  margin: 10px;
+  width: 100px;
+  font-family: $seoul-font;
+  border: $blue-color solid 2px;
+  color: $blue-color;
+  border-radius: 4px;
+  padding: 2.5px;
+  &:hover {
+    border-color: #4d5996;
   }
 }
 
@@ -239,4 +256,8 @@
       width: 100%;
     }
   }
+}
+
+.file {
+  display: none;
 }

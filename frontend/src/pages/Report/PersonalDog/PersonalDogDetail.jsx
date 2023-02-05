@@ -1,13 +1,13 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import styles from './MissingDogDetail.module.scss';
+import styles from './PersonalDogDetail.module.scss';
 import Button from '@mui/material/Button';
 import DogDetailContent from 'components/Report/DogDetailContent';
-export default function MissingDogDetail() {
+export default function PersonalDogDetail() {
   const location = useLocation();
-  const item = location.state.missingId;
-  const state = 0;
+  const item = location.state.personalProtectionId;
+  const state = 1;
   return (
     <div>
       <DogDetailContent item={item} state={state} />

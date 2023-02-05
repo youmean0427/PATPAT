@@ -8,12 +8,12 @@ import Select from 'react-select';
 import Button from '@mui/material/Button';
 
 export default function PersonalDogList() {
-  const [selectedGender, setSelectedGender] = useState('');
-  const [selectedBreed, setSelectedBreed] = useState('');
+  const [selectedGender, setSelectedGender] = useState(0);
+  const [selectedBreed, setSelectedBreed] = useState(0);
 
   const { isLoading, data } = useQuery({
     queryKey: ['personalDogList'],
-    queryFn: () => getPersonalDogList(selectedBreed, selectedGender, 0, 0),
+    queryFn: () => getPersonalDogList(selectedBreed, selectedGender, 10, 0),
   });
 
   // Data

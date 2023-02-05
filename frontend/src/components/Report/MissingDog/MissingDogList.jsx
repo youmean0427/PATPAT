@@ -8,12 +8,11 @@ import Select from 'react-select';
 import Button from '@mui/material/Button';
 
 export default function MissingDogList() {
-  const [selectedGender, setSelectedGender] = useState('');
-  const [selectedBreed, setSelectedBreed] = useState('');
-
+  const [selectedGender, setSelectedGender] = useState(0);
+  const [selectedBreed, setSelectedBreed] = useState(0);
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogList'],
-    queryFn: () => getMissingDogList(selectedBreed, selectedGender, 0, 0),
+    queryFn: () => getMissingDogList(selectedBreed, selectedGender.value, 10, 0),
   });
 
   // Data

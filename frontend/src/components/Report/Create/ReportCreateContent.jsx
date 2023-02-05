@@ -230,11 +230,11 @@ export default function ReportCreateContent({ items, nowState }) {
                     )}
                   </div>
                 </div>
-                <div>
+                <div className={styles.pictureButtonCont}>
                   {showImages.length < 3 ? (
-                    <label htmlFor="input-file" onChange={handleAddImages}>
-                      <input type="file" id="input-file" multiple />
-                      {/* <span>사진추가</span> */}
+                    <label htmlFor="file" onChange={handleAddImages} className={styles.pictureButton}>
+                      사진추가
+                      <input type="file" id="file" className={styles.file} multiple />
                     </label>
                   ) : (
                     <div> 3장까지 업로드 가능합니다. </div>
@@ -363,7 +363,6 @@ export default function ReportCreateContent({ items, nowState }) {
         <div>
           <div className={styles.ckEditor}>
             <CKEditor
-              data={content}
               editor={ClassicEditor}
               onReady={editor => {
                 // You can store the "editor" and use when it is needed.

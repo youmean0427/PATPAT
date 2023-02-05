@@ -43,7 +43,7 @@
   font-size: 20px !important;
   margin: 10px !important;
   width: 100px !important;
-  font-family: $spoqa-font !important;
+  font-family: $seoul-font !important;
 
   background-color: $blue-color !important;
   &:hover {
@@ -56,10 +56,10 @@
   &-breed {
     width: 200px;
     font-size: 15px;
-    font-family: $spoqa-font;
+    font-family: $seoul-font;
   }
   &-gender {
     font-size: 15px;
-    font-family: $spoqa-font;
+    font-family: $seoul-font;
   }
 }

@@ -32,6 +32,7 @@ import GoogleLogin from 'pages/Login/SNSLogin/Google/GoogleLogin';
 import ReportUpdate from 'pages/Report/Update/ReportUpdate';
 import Shelter from 'pages/Shelter/Shelter';
 import SearchShelter from 'pages/SearchShelter/SearchShelter';
+import PersonalDogDetail from 'pages/Report/PersonalDog/PersonalDogDetail';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,8 @@ const router = createBrowserRouter([
       { path: 'community/freeshare', element: <FreeShareMain /> },
       { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
       { path: 'report/missing/:id', element: <MissingDogDetail /> },
+      { path: 'report/personal/:id', element: <PersonalDogDetail /> },
+      { path: 'report/personal/:id/update', element: <ReportUpdate /> },
       { path: 'report/missing/:id/update', element: <ReportUpdate /> },
       { path: 'report/create', element: <ReportCreate /> },
     ],

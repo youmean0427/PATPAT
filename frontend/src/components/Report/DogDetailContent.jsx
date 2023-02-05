@@ -1,16 +1,16 @@
 import React from 'react';
-import styles from './MissingDogDetailContent.module.scss';
+import styles from './DogDetailContent.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import { getMissingDogDetail } from 'apis/api/report';
 import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
+export default function DogDetailContent({ item, state }) {
+  console.log(state);
 
-export default function MissingDogDetailContent({ item }) {
-  // GET
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
   });
-  // console.log(data);
 
   if (isLoading) return;
 
@@ -26,38 +26,38 @@ export default function MissingDogDetailContent({ item }) {
             </div>
             <div>
               <Link to="update" state={{ data }}>
-                <button className={styles.updateButton}>수정</button>
+                <Button variant="contained" className={styles.button}>
+                  수정
+                </Button>
               </Link>
             </div>
           </div>
         </div>
         <hr />
       </header>
-
       <div className={styles.container}>
         <div className={styles['container-inner']}>
-          {/* ========== Picture ========== */}
           <div className={styles['container-picture']}>
             <div className={styles.thumbnail}>
-              <img src={data.fileUrlList[0]} alt="pic" />
+              <img src={data.fileUrlList[0]} alt="" />
             </div>
             <div className={styles['container-subpicture']}>
               <div className={styles['container-subpicture-inner']}>
                 <div>
-                  <img src={data.fileUrlList[1]} alt="pic" />
+                  <img src={data.fileUrlList[1]} alt="" />
                 </div>
                 <div>
-                  <img src={data.fileUrlList[2]} alt="pic" />
+                  <img src={data.fileUrlList[2]} alt="" />
                 </div>
               </div>
             </div>
           </div>
-          {/* ============================= */}
 
           <div className={styles['container-content']}>
             <div className={styles['container-content-title']}>
               <div className={styles.name}>{data.name}</div>
-              <div className={styles.stateButton}>실종</div>
+              {state === 0 ? <div className={styles.stateButtonRed}>실종</div> : null}
+              {state === 1 ? <div className={styles.stateButtonOrange}>임시보호</div> : null}
             </div>
             <hr />
             <div className={styles['container-content-info']}>
