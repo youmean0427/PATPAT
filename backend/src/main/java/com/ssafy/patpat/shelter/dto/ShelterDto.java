@@ -25,4 +25,8 @@ public class ShelterDto {
     private String phoneNum;
     @Schema(example = "내 상담 가능 시간 리스트")
     private List<Time> timeList;
+    private String sidoCode;
+    private String sidoName;
+    private String gugunCode;
+    private String gugunName;
 }
