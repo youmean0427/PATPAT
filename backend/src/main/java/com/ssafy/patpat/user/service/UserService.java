@@ -17,6 +17,7 @@ import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,6 +32,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -196,6 +198,7 @@ public class UserService {
     @Transactional
     public ResponseMessage updateUser(UserDto userDto, MultipartFile profileFile) throws Exception{
         ResponseMessage responseMessage = new ResponseMessage();
+        log.info("userId : " + userDto.getUserId() );
         System.out.println(userDto.getUserId());
         // userId가 넘어오질 않아 null이 될수도 있는 경우 예외처리해야함
         User user = userRepository.findOneWithAuthoritiesByUserId(userDto.getUserId()).get();
