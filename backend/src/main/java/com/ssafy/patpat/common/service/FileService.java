@@ -27,6 +27,9 @@ public class FileService {
     @Value("${app.fileupload.uploadDir}")
     String uploadFolder;
 
+    @Value("${app.filecall.url}")
+    String callUrl;
+
     @Transactional
     public Image insertFile(MultipartFile uploadFile) throws Exception {
         File uploadDir = new File(uploadPath + File.separator + uploadFolder);
@@ -67,6 +70,16 @@ public class FileService {
                 .build();
         imageRepository.save(image);
         return image;
+    }
+
+    @Transactional
+    public String getFileUrl(Image image){
+        String fileName = image.getFilename();
+        if(!fileName.equals("kakao") && !fileName.equals("naver") && !fileName.equals("google")){
+            return callUrl+File.separator+image.getFilePath();
+        }else{
+            return image.getFilePath();
+        }
     }
 
     @Transactional
