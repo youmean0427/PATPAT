@@ -1,6 +1,5 @@
 package com.ssafy.patpat.user.service;
 
-import com.ssafy.patpat.common.details.CustomDetails;
 import com.ssafy.patpat.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.ssafy.patpat.user.entity.User;

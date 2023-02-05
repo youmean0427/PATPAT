@@ -1,6 +1,7 @@
 package com.ssafy.patpat.protect.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.dto.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -48,8 +49,10 @@ public class ProtectDto {
     private int categoryCloth;
     @Schema(example = "옷색")
     private int categoryClothColor;
-    @Schema(description = "입양대기,보호중, 입양예정")
+    @Schema(example = "상태코드")
     private int stateCode;
+    @Schema(description = "입양대기,보호중, 입양예정")
+    private String state;
     @Schema(example = "내용")
     private String infoContent;
     @Schema(example = "파일 url 리스트")

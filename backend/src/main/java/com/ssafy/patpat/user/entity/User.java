@@ -2,12 +2,14 @@ package com.ssafy.patpat.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -58,6 +60,13 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private List<Authority> authorities;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_favorite",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "sp_dog_id")}
+    )
+    private List<ShelterProtectedDog> favoriteDogs;
 
     @PrePersist
     public void prePersist() {

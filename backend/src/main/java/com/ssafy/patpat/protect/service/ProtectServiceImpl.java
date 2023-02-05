@@ -1,15 +1,16 @@
 package com.ssafy.patpat.protect.service;
 
 import com.ssafy.patpat.board.entity.PostImage;
+import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.protect.dto.ProtectDto;
 import com.ssafy.patpat.protect.dto.RequestProtectDto;
-import com.ssafy.patpat.protect.entity.ShelterDogImage;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
-import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
+//import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -40,13 +41,16 @@ public class ProtectServiceImpl implements ProtectService{
     ImageRepository imageRepository;
     @Autowired
     ShelterProtectedDogRepository shelterProtectedDogRepository;
-    @Autowired
-    ShelterDogImageRepository shelterDogImageRepository;
+//    @Autowired
+//    ShelterDogImageRepository shelterDogImageRepository;
 
     @Autowired
     ShelterRepository shelterRepository;
     @Autowired
     BreedRepository breedRepository;
+
+    @Autowired
+    FileService fileService;
 
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;
@@ -78,13 +82,14 @@ public class ProtectServiceImpl implements ProtectService{
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
                 //파일 담을 객체 생성 후 받아오기
-                List<ShelterDogImage> shelterDogImageList = shelterDogImageRepository.findByspDogId(s.getSpDogId());
+                List<Image> shelterDogImageList = s.getImages();
                 //만약 파일이 있다면
                 List<FileDto> fileDtoList = new ArrayList<>();
                 String thumbnail = "noProfile";
                 if(shelterDogImageList.size() > 0) {
                     //이미지를 한개 받아온다.
-                    Image image = imageRepository.findByImageId(shelterDogImageList.get(0).getImageId());
+//                    Image image = imageRepository.findByImageId(shelterDogImageList.get(0).getImageId());
+                    Image image = shelterDogImageList.get(0);
                     //파일 디티오에 넣는다.
                     FileDto fileDto = FileDto.builder()
                             .origFilename(image.getOrigFilename())
@@ -96,7 +101,8 @@ public class ProtectServiceImpl implements ProtectService{
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
                                 .protectName(s.getName())
-                                .stateCode(s.getStateCode())
+                                .stateCode(s.getStateCode().getCode())
+                                .state(s.getStateCode().name())
                                 .gender(s.getGender())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
@@ -128,7 +134,7 @@ public class ProtectServiceImpl implements ProtectService{
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
                 //파일 담을 객체 생성 후 받아오기
-                List<ShelterDogImage> shelterDogImageList = shelterDogImageRepository.findByspDogId(s.getSpDogId());
+                List<Image> shelterDogImageList = s.getImages();
                 //만약 파일이 있다면
                 String thumbnail = "noProfile";
                 if(shelterDogImageList.size() > 0) {
@@ -145,7 +151,8 @@ public class ProtectServiceImpl implements ProtectService{
                 protectDtoList.add(
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
-                                .stateCode(s.getStateCode())
+                                .stateCode(s.getStateCode().getCode())
+                                .state(s.getStateCode().name())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
                                 .gender(s.getGender())
@@ -169,14 +176,14 @@ public class ProtectServiceImpl implements ProtectService{
     public ProtectDto detailProtect(int protectId) {
         try{
             ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(protectId);
-            List<ShelterDogImage> shelterDogImageList = shelterDogImageRepository.findByspDogId(protectId);
-            List<Integer> iList = new ArrayList<>();
-            for(ShelterDogImage s : shelterDogImageList){
-                iList.add(s.getImageId());
-            }
-            List<Image> imageList = imageRepository.findByImageIdIn(iList);
+            List<Image> shelterDogImageList = shelterProtectedDog.getImages();
+//            List<Integer> iList = new ArrayList<>();
+//            for(Image s : shelterDogImageList){
+//                iList.add(s.getImageId());
+//            }
+//            List<Image> imageList = imageRepository.findByImageIdIn(iList);
             List<FileDto> fileDtoList = new ArrayList<>();
-            for(Image i : imageList){
+            for(Image i : shelterDogImageList){
                 fileDtoList.add(
                         FileDto.builder()
                                 .origFilename(i.getOrigFilename())
@@ -191,7 +198,8 @@ public class ProtectServiceImpl implements ProtectService{
                     .breedId(shelterProtectedDog.getBreedId())
                     .breedName(breed.getName())
                     .breedId(breed.getBreedId())
-                    .stateCode(shelterProtectedDog.getStateCode())
+                    .stateCode(shelterProtectedDog.getStateCode().getCode())
+                    .state(shelterProtectedDog.getStateCode().name())
                     .gender(shelterProtectedDog.getGender())
                     .isNeutered((shelterProtectedDog.getNeutered()==0)?true:false)
                     .infoContent(shelterProtectedDog.getFeature())
@@ -217,12 +225,18 @@ public class ProtectServiceImpl implements ProtectService{
         Shelter shelter = shelterRepository.findByShelterId(protectDto.getShelterId());
         System.out.println(protectDto);
         try {
+            List<Image> images = new ArrayList<>();
+            for (MultipartFile partFile : uploadFile) {
+                Image image = fileService.insertFile(partFile);
+                images.add(image);
+            }
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
                     .breedId(protectDto.getBreedId())
                     .shelterId(protectDto.getShelterId())
                     .feature(protectDto.getInfoContent())
                     .gender(protectDto.getGender())
+                    .images(images)
                     .registDate(LocalDateTime.now().toLocalDate())
                     //.findingDate(protectDto.getFindingDate())
                     .findingDate(LocalDate.now())
@@ -230,7 +244,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .longitude(shelter.getLongitude())
                     .name(protectDto.getProtectName())
                     .weight(protectDto.getKg())
-                    .stateCode(protectDto.getStateCode())
+                    .stateCode(ProtectState.of(protectDto.getStateCode()))
                     .sidoCode(shelter.getSidoCode     ())
                     .gugunCode(shelter.getGugunCode())
                     .categoryCloth(protectDto.getCategoryCloth())
@@ -245,34 +259,33 @@ public class ProtectServiceImpl implements ProtectService{
             if (!uploadDir.exists()) uploadDir.mkdir();
             System.out.println(uploadFile.size());
 
-            for (MultipartFile partFile : uploadFile) {
-                int spDogId = shelterProtectedDog.getSpDogId();
-                String fileName = partFile.getOriginalFilename();
 
-                UUID uuid = UUID.randomUUID();
+//                int spDogId = shelterProtectedDog.getSpDogId();
+//                String fileName = partFile.getOriginalFilename();
+//
+//                UUID uuid = UUID.randomUUID();
+//
+//                String extension = FilenameUtils.getExtension(fileName);
+//
+//                String savingFileName = uuid + "." + extension;
+//
+//                File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//
+//                partFile.transferTo(destFile);
+//
+//                Image image = Image.builder()
+//                        .origFilename(fileName)
+//                        .fileSize((int) partFile.getSize())
+//                        .filename(fileName)
+//                        .filePath(uploadFolder + "/" + savingFileName)
+//                        .build();
+//
+//                imageRepository.save(image);
 
-                String extension = FilenameUtils.getExtension(fileName);
 
-                String savingFileName = uuid + "." + extension;
 
-                File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-
-                partFile.transferTo(destFile);
-
-                Image image = Image.builder()
-                        .origFilename(fileName)
-                        .fileSize((int) partFile.getSize())
-                        .filename(fileName)
-                        .filePath(uploadFolder + "/" + savingFileName)
-                        .build();
-
-                imageRepository.save(image);
-                ShelterDogImage shelterDogImage = ShelterDogImage.builder()
-                        .imageId(image.getImageId())
-                        .spDogId(shelterProtectedDog.getSpDogId())
-                        .build();
-                shelterDogImageRepository.save(shelterDogImage);
-            }
+//                shelterDogImageRepository.save(shelterDogImage);
+//            }
             responseMessage.setMessage("SUCCESS");
         } catch (Exception e) {
             e.printStackTrace();
@@ -286,53 +299,66 @@ public class ProtectServiceImpl implements ProtectService{
     public ResponseMessage updateProtect(int protectId, List<MultipartFile> uploadFile,ProtectDto protectDto) {
         ResponseMessage responseMessage = new ResponseMessage();
         try{
+
             ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(protectId);
-            shelterProtectedDog.updateShelterProtectedDog(protectDto.getKg(), protectDto.getInfoContent());
 
             File uploadDir = new File(uploadPath +File.separator+uploadFolder);
             if(!uploadDir.exists()) uploadDir.mkdir();
 
-            List<ShelterDogImage> shelterDogImageList = shelterDogImageRepository.findByspDogId(protectId);
-            List<Integer> list = new ArrayList<>();
-            for(ShelterDogImage i : shelterDogImageList){
-                list.add(i.getImageId());
-            }
-            List<Image> imageList = imageRepository.findByImageIdIn(list);
-            for(Image i : imageList){
-                File file = new File(uploadPath+File.separator+i.getFilePath());
-                if(file.exists()) file.delete();
+            List<Image> shelterDogImageList = shelterProtectedDog.getImages();
+//            List<Integer> list = new ArrayList<>();
+//            for(Image i : shelterDogImageList){
+//                list.add(i.getImageId());
+//            }
+//            List<Image> imageList = imageRepository.findByImageIdIn(list);
+            for(Image i : shelterDogImageList){
+//                File file = new File(uploadPath+File.separator+i.getFilePath());
+//                if(file.exists()) file.delete();
+                fileService.deleteFile(i);
             }
 
-            imageRepository.deleteByImageIdIn(list);
-            shelterDogImageRepository.deleteBySpDogId(protectId);
+            List<Image> images = new ArrayList<>();
             for (MultipartFile partFile : uploadFile) {
-                int spDogId = shelterProtectedDog.getSpDogId();
-                String fileName = partFile.getOriginalFilename();
-
-                UUID uuid = UUID.randomUUID();
-
-                String extension = FilenameUtils.getExtension(fileName);
-
-                String savingFileName = uuid + "." + extension;
-
-                File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-
-                partFile.transferTo(destFile);
-
-                Image image = Image.builder()
-                        .origFilename(fileName)
-                        .fileSize((int) partFile.getSize())
-                        .filename(fileName)
-                        .filePath(uploadFolder + "/" + savingFileName)
-                        .build();
-
-                imageRepository.save(image);
-                ShelterDogImage shelterDogImage = ShelterDogImage.builder()
-                        .imageId(image.getImageId())
-                        .spDogId(shelterProtectedDog.getSpDogId())
-                        .build();
-                shelterDogImageRepository.save(shelterDogImage);
+                Image image = fileService.insertFile(partFile);
+                images.add(image);
             }
+
+            shelterProtectedDog.setImages(images);
+            shelterProtectedDog.setWeight(protectDto.getKg());
+            shelterProtectedDog.setFeature(protectDto.getInfoContent());
+
+            shelterProtectedDogRepository.save(shelterProtectedDog);
+//            shelterProtectedDog.updateShelterProtectedDog(protectDto.getKg(), protectDto.getInfoContent());
+
+//            shelterDogImageRepository.deleteBySpDogId(protectId);
+//            for (MultipartFile partFile : uploadFile) {
+//                int spDogId = shelterProtectedDog.getSpDogId();
+//                String fileName = partFile.getOriginalFilename();
+//
+//                UUID uuid = UUID.randomUUID();
+//
+//                String extension = FilenameUtils.getExtension(fileName);
+//
+//                String savingFileName = uuid + "." + extension;
+//
+//                File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//
+//                partFile.transferTo(destFile);
+//
+//                Image image = Image.builder()
+//                        .origFilename(fileName)
+//                        .fileSize((int) partFile.getSize())
+//                        .filename(fileName)
+//                        .filePath(uploadFolder + "/" + savingFileName)
+//                        .build();
+//
+//                imageRepository.save(image);
+//                ShelterDogImage shelterDogImage = ShelterDogImage.builder()
+//                        .imageId(image.getImageId())
+//                        .spDogId(shelterProtectedDog.getSpDogId())
+//                        .build();
+//                shelterDogImageRepository.save(shelterDogImage);
+//            }
             responseMessage.setMessage("SUCCESS");
         } catch (Exception e) {
             e.printStackTrace();
