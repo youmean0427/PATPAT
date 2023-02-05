@@ -2,7 +2,7 @@
 
 .map-wrapper {
 }
-.info-box {
+.info {
   font-size: 2rem;
   display: none;
   position: fixed;
@@ -16,15 +16,15 @@
   padding: 0.5rem;
 }
 .land {
-  fill: $violet-color;
+  fill: $map-main-color;
   stroke: #fff;
   cursor: pointer;
   transition: all 0.4s;
   &:hover {
-    fill: $black-color;
+    fill: $map-hover-color;
   }
 }
 
 .land.click {
-  fill: $black-color;
+  fill: $map-three-color;
 }

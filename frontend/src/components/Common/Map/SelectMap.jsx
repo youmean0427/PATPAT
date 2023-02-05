@@ -1,21 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
-import { getGugunList } from 'apis/api/shelter';
 import { getRegionSelectList } from 'apis/utils/parsingRegionData';
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { sidoState } from 'recoil/atoms/region';
+import React from 'react';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { selectGugunState, selectSidoState } from 'recoil/atoms/shelter';
 import styles from './SelectMap.module.scss';
 import SelectMapItem from './SelectMapItem';
 export default function SelectMap({ list }) {
-  const [sido, setSido] = useRecoilState(sidoState);
-
+  const [sido, setSido] = useRecoilState(selectSidoState);
+  const resetGugun = useResetRecoilState(selectGugunState);
   const handleClickItem = (code, name) => {
-    setSido({ ...sido, code, name });
+    setSido({ sidoCode: code, name });
+    resetGugun();
   };
-  console.log(sido);
   return (
     <div className={styles['map-wrapper']}>
-      <div className={styles['info-box']}></div>
+      <div className={styles.info}></div>
       <svg width="400" height="800" viewBox="30 100 400 800" xmlns="http://www.w3.org/2000/svg">
         <g>
           {getRegionSelectList(list).map(item => {
@@ -25,7 +23,7 @@ export default function SelectMap({ list }) {
                   handleClickItem(item.code, item.name);
                 }}
                 key={item.code}
-                className={sido.code === item.code ? `${styles.land} ${styles.click}` : styles.land}
+                className={sido.sidoCode === item.code ? `${styles.land} ${styles.click}` : styles.land}
                 name={item.name}
                 d={item.d}
               />
