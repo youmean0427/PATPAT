@@ -131,6 +131,7 @@ public class ShelterController {
                         .body(new ResponseMessage("FAIL"));
             }
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
         }
