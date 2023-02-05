@@ -8,12 +8,13 @@
 
   &-search {
     display: flex;
-    justify-content: center;
-    margin: 10px;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
 
     &-inner {
       display: flex;
-      justify-content: space-between;
+
       & > span {
         margin: 10px;
         > select {
@@ -24,6 +25,11 @@
       }
     }
   }
+
+  &-newButton {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
 .list {
@@ -33,14 +39,27 @@
   justify-content: space-between;
 }
 
-.searchButton {
-  font-size: 20px;
-  margin: 10px;
-  width: 100px;
-  text-align: center;
-  padding: auto;
-  border-style: solid;
-  border-color: $blue-color;
-  background-color: $blue-color;
-  color: $white-color;
+.newButton {
+  font-size: 20px !important;
+  margin: 10px !important;
+  width: 100px !important;
+  font-family: $spoqa-font !important;
+
+  background-color: $blue-color !important;
+  &:hover {
+    background-color: #4d5996 !important;
+  }
+}
+
+// Select
+.select {
+  &-breed {
+    width: 200px;
+    font-size: 15px;
+    font-family: $spoqa-font;
+  }
+  &-gender {
+    font-size: 15px;
+    font-family: $spoqa-font;
+  }
 }

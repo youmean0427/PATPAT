@@ -5,6 +5,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^36.0.0",
     "@ckeditor/ckeditor5-react": "^5.0.6",
+    "@ckeditor/ckeditor5-style": "^36.0.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
@@ -24,6 +25,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.2",
     "react-scripts": "5.0.1",
+    "react-select": "^5.7.0",
     "react-slick": "^0.29.0",
     "recoil": "^0.7.6",
     "slick-carousel": "^1.8.1",

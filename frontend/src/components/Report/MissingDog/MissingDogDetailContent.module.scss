@@ -72,7 +72,7 @@
         display: flex;
 
         &-list {
-          text-align: center;
+          // text-align: center;
           & > div {
             margin: 10px;
             padding: 10px;
@@ -96,17 +96,15 @@
     &-character {
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: space-between;
       margin: 5px;
-      border-color: $blue-color;
-      border-style: solid;
       padding: 5px;
       & > div {
         margin: 10px;
 
         & > div {
           margin: 5px;
-          text-align: center;
+          // text-align: center
         }
       }
     }
@@ -145,7 +143,7 @@
 }
 
 .name {
-  font-size: 35px;
+  font-size: 30px;
   color: $blue-color;
   font-weight: 700;
 }

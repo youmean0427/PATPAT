@@ -8,25 +8,29 @@
 
 .button {
   &-selected {
-    font-size: 20px;
-    margin: 10px;
-    width: 300px;
-    text-align: center;
-    padding: 15px;
-    border-style: solid;
-    border-color: $blue-color;
-    background-color: $blue-color;
-    color: $white-color;
+    font-size: 20px !important;
+    margin: 10px !important;
+    width: 300px !important;
+    font-family: $spoqa-font !important;
+
+    border-color: $blue-color !important;
+    background-color: $blue-color !important;
+    &:hover {
+      background-color: #4d5996 !important;
+    }
   }
   &-unselected {
-    font-size: 20px;
-    margin: 10px;
-    width: 300px;
-    text-align: center;
-    padding: 15px;
-    border-style: solid;
-    border-color: $blue-color;
-    background-color: $white-color;
-    color: $blue-color;
+    font-size: 20px !important;
+    margin: 10px !important;
+    width: 300px !important;
+    font-family: $spoqa-font !important;
+
+    border-color: $blue-color !important;
+    background-color: $white-color !important;
+    color: $blue-color !important;
+    &:hover {
+      background-color: #eef0fd !important;
+      border-color: #4d5996 !important;
+    }
   }
 }

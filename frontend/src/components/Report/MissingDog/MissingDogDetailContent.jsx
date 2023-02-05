@@ -5,15 +5,12 @@ import { getMissingDogDetail } from 'apis/api/report';
 import { Link } from 'react-router-dom';
 
 export default function MissingDogDetailContent({ item }) {
-  // ========== GET ===========
-
+  // GET
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
   });
-  console.log(data);
-
-  // ==========================
+  // console.log(data);
 
   if (isLoading) return;
 
@@ -24,7 +21,7 @@ export default function MissingDogDetailContent({ item }) {
         <div>
           <div className={styles['container-title-inner']}>
             <div className={styles['container-title-inner-user']}>
-              <span className={styles.writer}>김싸피</span>
+              <span className={styles.writer}>{data.userId}</span>
               <span className={styles.date}>23.02.03</span>
             </div>
             <div>
@@ -37,7 +34,7 @@ export default function MissingDogDetailContent({ item }) {
         <hr />
       </header>
 
-      <body className={styles.container}>
+      <div className={styles.container}>
         <div className={styles['container-inner']}>
           {/* ========== Picture ========== */}
           <div className={styles['container-picture']}>
@@ -82,6 +79,7 @@ export default function MissingDogDetailContent({ item }) {
                 </div>
               </div>
             </div>
+            <hr />
             <div className={styles['container-content-character']}>
               <div className={styles['container-content-character-list']}>
                 <div>귀</div>
@@ -109,7 +107,7 @@ export default function MissingDogDetailContent({ item }) {
         <div className={styles.content}>
           <div>{data.content}</div>
         </div>
-      </body>
+      </div>
     </div>
   );
 }

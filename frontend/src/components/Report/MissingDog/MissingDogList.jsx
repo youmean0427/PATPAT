@@ -4,44 +4,54 @@ import MissingDogItem from './MissingDogItem';
 import styles from './MissingDogList.module.scss';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import Button from '@mui/material/Button';
 
 export default function MissingDogList() {
-  const [selectedGender, setSelectedGender] = useState(localStorage.getItem('selectedGender') || '');
-  const [selectedBreed, setSelectedBreed] = useState(localStorage.getItem('selectedBreed') || '');
-
-  const handleGenderChange = event => {
-    setSelectedGender(event.target.value);
-    localStorage.setItem('selectedGender', event.target.value);
-  };
-  const handleBreedChange = event => {
-    setSelectedBreed(event.target.value);
-    localStorage.setItem('selectedBreed', event.target.value);
-  };
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedBreed, setSelectedBreed] = useState('');
 
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogList'],
     queryFn: () => getMissingDogList(selectedBreed, selectedGender, 0, 0),
   });
-  // console.log(data);
+
+  // Data
+  const breed = [
+    { value: 0, label: '견종' },
+    { value: 1, label: '웰시코기' },
+    { value: 2, label: '푸들' },
+  ];
+  const gender = [
+    { value: 0, label: '성별' },
+    { value: 1, label: '수컷' },
+    { value: 2, label: '암컷' },
+  ];
+
+  // console.log(selectedBreed);
+  // console.log(selectedGender);
+
   if (isLoading) return;
+
   return (
     <div>
       <div className={styles['container-search']}>
         <div className={styles['container-search-inner']}>
           <span>
-            <select onChange={handleBreedChange} value={selectedBreed}>
-              <option value={111}>웰시</option>
-              <option value={222}>푸들</option>
-              <option value={333}>불독</option>
-              <option value={444}>가나다라마바사</option>
-            </select>
+            <Select
+              options={breed}
+              className={styles['select-breed']}
+              onChange={setSelectedBreed}
+              defaultValue={breed[0]}
+            />
           </span>
           <span>
-            <select onChange={handleGenderChange} value={selectedGender}>
-              <option>전체</option>
-              <option value={0}>수컷</option>
-              <option value={1}>암컷</option>
-            </select>
+            <Select
+              options={gender}
+              className={styles['select-gender']}
+              onChange={setSelectedGender}
+              defaultValue={gender[0]}
+            />
           </span>
         </div>
       </div>
@@ -54,7 +64,9 @@ export default function MissingDogList() {
       </div>
       <div className={styles['container-newButton']}>
         <Link to="create">
-          <button className={styles.newButton}>글쓰기</button>
+          <Button variant="contained" className={styles.newButton}>
+            글쓰기
+          </Button>
         </Link>
       </div>
     </div>
