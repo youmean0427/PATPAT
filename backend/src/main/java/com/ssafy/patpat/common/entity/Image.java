@@ -19,9 +19,10 @@ import java.math.BigInteger;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int imageId;
-    public String origFilename;
-    public String filename;
-    public String filePath;
-    public int fileSize;
+    private int imageId;
+
+    private String origFilename;
+    private String filename;
+    private String filePath;
+    private int fileSize;
 }
