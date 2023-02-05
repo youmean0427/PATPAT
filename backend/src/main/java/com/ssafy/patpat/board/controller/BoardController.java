@@ -73,7 +73,7 @@ public class BoardController {
     @ApiOperation(value = "게시판 상세", notes = "게시판 상세를 조회한다.")
     public ResponseEntity<Object> detailBoard(@PathVariable int boardId){
         //service 호출
-        BoardDto boardDto = service.deatilBoard(boardId);
+        BoardDto boardDto = service.detailBoard(boardId);
         if(boardDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(boardDto);

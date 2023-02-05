@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface MissingDogImageRepository extends JpaRepository<MissingDogImage,String> {
     List<MissingDogImage> findByMissingId(int missingId);
+    void deleteByMissingId(int missingId);
 }

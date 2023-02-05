@@ -126,14 +126,18 @@ public class ShelterServiceImpl implements ShelterService{
                             .build()
             );
         }
+
         mbtiMapDto.setTotalCount(total);
         mbtiMapDto.setList(sidoCountDtoList);
         return mbtiMapDto;
+
     }
 
     // 견종만
     // 시도코드
     // 시도코드, 견종 코드만 받아왔을 경우
+    // 시도코드 , 구군코드
+    // 시도코드 , 구군코드 , 견종
     @Override
     public List<ShelterDto> shelterList(RequestShelterDto dto) {
         int breedId = dto.getBreedId();
@@ -146,10 +150,11 @@ public class ShelterServiceImpl implements ShelterService{
 
         List<Shelter> shelterList = null;
         List<Integer> integerList = new ArrayList<>();
-        if(breedId==0 && sidoCode==null){
+        if(breedId==0 && sidoCode==null && gugunCode==null){
             Page<Shelter> pages = shelterRepository.findAll(pageRequest);
+            shelterList = pages.toList();
         }
-        else if(breedId>0 && sidoCode==null){
+        else if(breedId>0 && sidoCode==null && gugunCode == null){
             //견종만
             List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdByBreedId(breedId);
             for(ShelterProtectedDog s : list){
@@ -157,7 +162,7 @@ public class ShelterServiceImpl implements ShelterService{
             }
             shelterList = shelterRepository.findByShelterIdIn(integerList,pageRequest);
         }
-        else if(breedId==0 && sidoCode!=null){
+        else if(breedId==0 && sidoCode!=null && gugunCode == null){
             //시도만
             List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCode(sidoCode);
             for(ShelterProtectedDog s : list){
@@ -165,15 +170,31 @@ public class ShelterServiceImpl implements ShelterService{
             }
             shelterList = shelterRepository.findByShelterIdIn(integerList,pageRequest);
         }
-        else{
+        else if(breedId==0 && sidoCode!=null && gugunCode != null){
+            //시도, 구군만
+            List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCodeAndGugunCode(sidoCode,gugunCode);
+            for(ShelterProtectedDog s : list){
+                integerList.add(s.getShelterId());
+            }
+            shelterList = shelterRepository.findByShelterIdIn(integerList,pageRequest);
+        }
+        else if(breedId>0 && sidoCode != null && gugunCode==null){
+            //시도, 견종
             List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCodeAndBreedId(sidoCode,breedId);
             for(ShelterProtectedDog s : list){
                 integerList.add(s.getShelterId());
             }
             shelterList = shelterRepository.findByShelterIdIn(integerList,pageRequest);
         }
+        else{
+            List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCodeAndGugunCodeAndBreedId(sidoCode,gugunCode,breedId);
+            for(ShelterProtectedDog s : list){
+                integerList.add(s.getShelterId());
+            }
+            shelterList = shelterRepository.findByShelterIdIn(integerList,pageRequest);
+        }
         List<ShelterDto> shelterDtoList = new ArrayList<>();
-
+        System.out.println(shelterList);
         for(Shelter s : shelterList){
             Optional<ShelterImage> shelterImage = Optional.ofNullable(shelterImageRepository.findByShelterId(s.getShelterId()));
             FileDto fileDto = FileDto.builder()
