@@ -42,7 +42,7 @@ export default function ForPawMeter({ data }) {
   const createFormData = () => {
     const formData = new FormData();
     formData.append('userId', data.userId);
-    formData.append('username', data.username);
+    formData.append('username', userName);
     formData.append('profileFile', file);
     modifyUserInfo(formData);
   };
