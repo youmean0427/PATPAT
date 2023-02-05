@@ -18,16 +18,16 @@ export default React.memo(function ShelterSearchBar() {
     ['gugunList', sido.sidoCode],
     () => getGugunList(sido.sidoCode),
     {
-      refetchOnWindowFocus: false,
       onSuccess: data => {
         if (data.length !== 0) {
           setGugunIsDisabled(false);
         }
       },
+      staleTime: 1000 * 60 * 5,
     }
   );
   const { data: breedList, isLoading: breedLoading } = useQuery(['breedList'], () => getBreedsList(), {
-    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
   });
 
   const handleChangeOnGugunList = selected => {
@@ -37,7 +37,6 @@ export default React.memo(function ShelterSearchBar() {
     setBreed({ breedId: selected.value, name: selected.label });
   };
 
-  const handleClickSearch = () => {};
   if (gugunLoading || breedLoading) return;
   return (
     <div className={styles.select__wrapper}>
@@ -71,9 +70,6 @@ export default React.memo(function ShelterSearchBar() {
           {gugun.gugunCode && <ShelterSearchBadge gugunSelectRef={gugunSelectRef} value={gugun.name} type="gugun" />}
           {breed.breedId && <ShelterSearchBadge value={breed.name} type="breed" />}
         </div>
-        <button onClick={handleClickSearch} className={styles['search-btn']}>
-          검색
-        </button>
       </div>
     </div>
   );

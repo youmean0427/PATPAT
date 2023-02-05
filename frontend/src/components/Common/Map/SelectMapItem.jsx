@@ -1,5 +1,4 @@
 import React from 'react';
-import SelectMap from './SelectMap';
 import styles from './SelectMap.module.scss';
 function SelectMapItem(props) {
   return (
