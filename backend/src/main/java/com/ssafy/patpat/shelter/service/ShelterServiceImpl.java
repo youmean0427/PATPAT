@@ -122,6 +122,7 @@ public class ShelterServiceImpl implements ShelterService{
                             .build()
             );
         }
+        System.out.println(sidoCountDtoList);
         return sidoCountDtoList;
     }
 

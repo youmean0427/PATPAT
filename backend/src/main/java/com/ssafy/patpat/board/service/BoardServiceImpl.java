@@ -123,7 +123,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
-    public BoardDto deatilBoard(int boardId) {
+    public BoardDto detailBoard(int boardId) {
         Board board = boardRepository.findByBoardId(boardId);
         List<Comment> commentList = commentRepository.findByboardId(boardId);
         List<CommentDto> commentDtoList = new ArrayList<>();

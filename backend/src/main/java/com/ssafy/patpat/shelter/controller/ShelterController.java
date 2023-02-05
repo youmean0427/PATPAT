@@ -121,14 +121,20 @@ public class ShelterController {
     @ApiOperation(value = "보호소 조회", notes = "보호소 리스트 조회")
     public ResponseEntity<Object> selectShelterList(RequestShelterDto requestShelterDto){
         //service 호출
-        List<ShelterDto> shelterDtoList = service.shelterList(requestShelterDto);
-        if(shelterDtoList!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(shelterDtoList);
-        }else{
+        try{
+            List<ShelterDto> shelterDtoList = service.shelterList(requestShelterDto);
+            if(shelterDtoList!=null){
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(shelterDtoList);
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ResponseMessage("FAIL"));
+            }
+        }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
         }
+
     }
     /**
      * 보호소 상세 조회
