@@ -14,9 +14,11 @@ export default function VolunteerList({ userId }) {
 
   return (
     <div className={styles.container}>
-      {data.map(item => (
-        <VolunteerItem key={item.reservationId} item={item} />
-      ))}
+      {data.length === 0 ? (
+        <div className={styles['no-data']}>신청한 봉사 정보가 없습니다.</div>
+      ) : (
+        data.map(item => <VolunteerItem key={item.reservationId} item={item} />)
+      )}
     </div>
   );
 }
