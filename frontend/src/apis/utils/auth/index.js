@@ -1,8 +1,10 @@
-import { defaultInstance } from 'apis/utils/index';
+import { authInstance, defaultInstance } from 'apis/utils/index';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/atoms/user';
 
-export const login = async (type, code) => {
+export const login = async (provider, code) => {
   try {
-    const res = await defaultInstance.get(`http://i8e104.p.ssafy.io:8081/user/login/${type}?code=${code}`);
+    const res = await defaultInstance.get(`user/login/${provider}?code=${code}`);
     const accessToken = res.data.tokenDto.accessToken;
     const refreshToken = res.data.tokenDto.refreshToken;
     const userInfo = res.data.userDto;
@@ -13,9 +15,10 @@ export const login = async (type, code) => {
     localStorage.setItem(
       'user',
       JSON.stringify({
-        userId: userInfo.userid,
-        username: userInfo.nickname,
-        thumbnail: userInfo.profileImage,
+        userId: userInfo.userId,
+        userName: userInfo.username,
+        userEmail: userInfo.email,
+        profileImageUrl: userInfo.profileImageUrl,
       })
     );
   } catch (e) {
@@ -23,9 +26,20 @@ export const login = async (type, code) => {
   }
 };
 
-export const logout = () => {
-  localStorage.removeItem('isLogin');
-  localStorage.removeItem('user');
-  localStorage.removeItem('refreshToken');
-  localStorage.removeItem('accessToken');
+export const logout = async () => {
+  const refresh = localStorage.getItem('refreshToken');
+  const access = localStorage.getItem('accessToken');
+  const res = await authInstance.get(`user/logout`, {
+    headers: {
+      RefreshToken: `Bearer ${refresh}`,
+      AccessToken: `Bearer ${access}`,
+    },
+  });
+  console.log(res);
+  if (res.data.message === 'success') {
+    localStorage.removeItem('isLogin');
+    localStorage.removeItem('user');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessToken');
+  }
 };

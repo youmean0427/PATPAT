@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Start.module.scss';
 import logo from 'assets/images/mbti-logo.png';
 import { Link } from 'react-router-dom';
-import MbtiContainer from 'components/Common/MbtiContainer';
+import MbtiContainer from 'containers/MbtiContainer';
 export default function Start() {
   return (
     <MbtiContainer>

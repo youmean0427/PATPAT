@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Navbar.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
 import MenuList from './MenuList';
 import { logout } from 'apis/utils/auth';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/atoms/user';
 
 export default function Navbar() {
-  const navigator = useNavigate();
-  const isLogin = localStorage.getItem('isLogin');
-  console.log(isLogin);
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
+  useEffect(() => {
+    if (localStorage.getItem('isLogin')) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, []);
   return (
     <>
       <div className={styles.left}>
@@ -24,7 +32,8 @@ export default function Navbar() {
           <div
             onClick={() => {
               logout();
-              navigator('/');
+              setIsLogin(false);
+              navigate('/');
             }}
             className={styles.login}
           >
@@ -33,7 +42,7 @@ export default function Navbar() {
         </div>
       ) : (
         <div className={styles.right}>
-          <div onClick={() => navigator('/login')} className={styles.login}>
+          <div onClick={() => navigate('/login')} className={styles.login}>
             로그인
           </div>
         </div>

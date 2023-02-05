@@ -13,12 +13,24 @@ $red-color: #dc0000;
 $green-color: #299a56;
 $purple-color: #601f94;
 $border-color: #c2c7c7;
+
+// map color
+$map-main-color: #bcaaa4;
+$map-zero-color: #989898;
+$map-one-color: #bcaaa4;
+$map-two-color: #a1887f;
+$map-three-color: #8d6e63;
+$map-four-color: #795548;
+$map-five-color: #4e342e;
+$map-six-color: #3e2723;
+$map-hover-color: #f39c12;
+// mbti color
 $mbti-bg-color: #eae0da;
 $mbti-btn-color: #694e4e;
 // size 관련
 $spacing-sm: 1rem;
 $spacing-md: 2rem;
-$spacing-lg: 4rem;
+$spacing-lg: 3rem;
 
 $header-height: 7.2rem;
 $footer-height: 7.2rem;
@@ -29,6 +41,7 @@ $sunflower-font: Sunflower;
 $spoqa-font: Spoqa;
 $hyemin-font: Hyemin;
 $bdja-font: BDJA;
+$seoul-font: Seoul;
 
 // media break point size
 $sm: 640px;

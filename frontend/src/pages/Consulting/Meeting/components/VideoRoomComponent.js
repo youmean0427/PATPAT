@@ -11,16 +11,20 @@ import OpenViduLayout from '../layout/openvidu-layout';
 import UserModel from '../models/user-model';
 import ToolbarComponent from './toolbar/ToolbarComponent';
 
+import store from 'redux/store';
+
 const localUser = new UserModel();
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5442/';
 
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
+    this.createSessionId = String(store.getState().user.value.resShelterId);
+    this.createUserName = store.getState().user.value.resUserName;
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = this.props.sessionName ? this.props.sessionName : 'SessionA';
-    let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
+    let sessionName = this.props.sessionName ? this.props.sessionName : this.createSessionId;
+    let userName = this.props.user ? this.props.user : this.createUserName;
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.createRoom = false;
@@ -33,6 +37,8 @@ class VideoRoomComponent extends Component {
       chatDisplay: 'none',
       currentVideoDevice: undefined,
     };
+
+    console.log('!!!!!!!!!!!!!!', this.state);
 
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);

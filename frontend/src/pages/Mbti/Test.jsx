@@ -1,4 +1,4 @@
-import MbtiContainer from 'components/Common/MbtiContainer';
+import MbtiContainer from 'containers/MbtiContainer';
 import React from 'react';
 import styles from './Test.module.scss';
 import { testContents as tests } from 'data/test';
