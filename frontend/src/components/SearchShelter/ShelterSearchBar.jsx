@@ -1,8 +1,7 @@
-import { style } from '@mui/system';
 import { useQuery } from '@tanstack/react-query';
-import { getBreedsList, getGugunList, getShelterList } from 'apis/api/shelter';
+import { getBreedsList, getGugunList } from 'apis/api/shelter';
 import ShelterSearchBadge from 'components/Common/Badge/ShelterSearchBadge';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import Select from 'react-select';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { gugunIsDisabledState, selectBreedState, selectGugunState, selectSidoState } from 'recoil/atoms/shelter';
@@ -13,7 +12,6 @@ export default React.memo(function ShelterSearchBar() {
   const [gugun, setGugun] = useRecoilState(selectGugunState);
   const [breed, setBreed] = useRecoilState(selectBreedState);
   const [gugunIsDisabled, setGugunIsDisabled] = useRecoilState(gugunIsDisabledState);
-  const gugunSelectRef = useRef(null);
   const { data: gugunList, isLoading: gugunLoading } = useQuery(
     ['gugunList', sido.sidoCode],
     () => getGugunList(sido.sidoCode),
@@ -23,7 +21,6 @@ export default React.memo(function ShelterSearchBar() {
           setGugunIsDisabled(false);
         }
       },
-      staleTime: 1000 * 60 * 5,
     }
   );
   const { data: breedList, isLoading: breedLoading } = useQuery(['breedList'], () => getBreedsList(), {
@@ -36,7 +33,6 @@ export default React.memo(function ShelterSearchBar() {
   const handleChangeOnBreedList = selected => {
     setBreed({ breedId: selected.value, name: selected.label });
   };
-
   if (gugunLoading || breedLoading) return;
   return (
     <div className={styles.select__wrapper}>
@@ -44,7 +40,6 @@ export default React.memo(function ShelterSearchBar() {
         <div className={styles['select-item']}>
           <div className={styles['select-label']}>구군</div>
           <Select
-            ref={gugunSelectRef}
             onChange={handleChangeOnGugunList}
             className="basic-single"
             options={changeGugunList(gugunList)}
@@ -67,7 +62,7 @@ export default React.memo(function ShelterSearchBar() {
       <div className={styles['selected-wrap']}>
         <div className={styles.selected}>
           {sido.sidoCode && <ShelterSearchBadge value={sido.name} type="sido" />}
-          {gugun.gugunCode && <ShelterSearchBadge gugunSelectRef={gugunSelectRef} value={gugun.name} type="gugun" />}
+          {gugun.gugunCode && <ShelterSearchBadge value={gugun.name} type="gugun" />}
           {breed.breedId && <ShelterSearchBadge value={breed.name} type="breed" />}
         </div>
       </div>
