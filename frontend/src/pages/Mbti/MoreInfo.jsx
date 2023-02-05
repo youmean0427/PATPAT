@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getCountShelterByBreed } from 'apis/api/shelter';
-import MbtiContainer from 'components/Common/MbtiContainer';
-import SouthKorea from 'components/Common/SouthKorea';
+import SouthKorea from 'components/Common/Map/SouthKorea';
+import MbtiContainer from 'containers/MbtiContainer';
 import React from 'react';
 import { useLocation } from 'react-router';
 import styles from './MoreInfo.module.scss';
@@ -26,7 +26,7 @@ export default function MoreInfo() {
           </div>
         </div>
       </div>
-      <SouthKorea list={data.list} />
+      <SouthKorea breedId={breedId} breedName={breedName} list={data.list} />
     </MbtiContainer>
   );
 }
