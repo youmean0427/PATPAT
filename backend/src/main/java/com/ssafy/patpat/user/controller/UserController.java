@@ -12,6 +12,7 @@ import com.ssafy.patpat.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("api/user")
 @Api(tags = {"06. User"},description = "유저 관련 서비스")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -168,6 +170,7 @@ public class UserController {
     @PostMapping("/info")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> updateUserInfo(UserDto userDto, @RequestPart(required = false)MultipartFile profileFile) throws Exception{
+        log.info(String.valueOf(profileFile));
         ResponseMessage responseMessage = userService.updateUser(userDto, profileFile);
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
