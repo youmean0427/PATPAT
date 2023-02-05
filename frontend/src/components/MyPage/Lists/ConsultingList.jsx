@@ -4,12 +4,10 @@ import React from 'react';
 import styles from './ReservationList.module.scss';
 import ConsultingItem from '../Items/ConsultingItem';
 
-export default function ConsultingList() {
-  const userId = 1;
-
+export default function ConsultingList({ userId }) {
   const { data, isLoading } = useQuery({
     queryKey: ['myConsultingList'],
-    queryFn: () => getMyConsultations(userId, 0),
+    queryFn: () => getMyConsultations(20, 0, userId),
   });
 
   if (isLoading) return;

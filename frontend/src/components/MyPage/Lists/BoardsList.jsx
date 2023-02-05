@@ -5,17 +5,15 @@ import BoardsItem from '../Items/BoardsItem';
 import styles from './BoardsList.module.scss';
 import Table from 'components/Common/Table';
 export default function BoardsList() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['myBoardList'],
-    queryFn: () => getBoardListByMe(typeCode, 20, 0),
-  });
-
   const [category, setCategory] = useState([true, false, false, false]);
   const [typeCode, setTypeCode] = useState(null);
 
-  if (isLoading) return;
+  const { data, isLoading } = useQuery({
+    queryKey: ['myBoardList'],
+    queryFn: () => getBoardListByMe(20, 0, typeCode),
+  });
 
-  console.log(data, typeCode);
+  if (isLoading) return;
 
   return (
     <div className={styles['board-list']}>

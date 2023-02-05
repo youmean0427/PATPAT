@@ -63,3 +63,40 @@
   bottom: 10px;
   cursor: pointer;
 }
+.modify-profile:hover {
+  transform: translateY(-2px);
+}
+.modal-content {
+  padding: 20px;
+  text-align: center;
+}
+.mmodal-profile {
+  width: 10rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.modal-profile img {
+  width: 10rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.modal-name {
+  margin-top: 2rem;
+  text-align: center;
+}
+.modal-name label {
+  font-size: 1.5rem;
+}
+.modal-name input {
+  border: none;
+  border-bottom: 3px solid $lighter-blue-color;
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-align: center;
+  width: 10rem;
+}
+.modal-name input:focus {
+  outline: none;
+  border-bottom: 3px solid $light-blue-color;
+  font-size: 1.5rem;
+}

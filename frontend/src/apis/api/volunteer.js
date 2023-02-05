@@ -55,7 +55,7 @@ export const getVolNoticePerMonth = async (shelterId, month) => {
  * @returns
  */
 export const getVolReservationOfUser = async userId => {
-  const { data } = await defaultInstance.get(`/volunteers/reservations?userId=${userId}`);
+  const { data } = await defaultInstance.get(`/volunteers/reservations/users?userId=${userId}`);
   return data;
 };
 

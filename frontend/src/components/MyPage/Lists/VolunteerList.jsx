@@ -4,9 +4,7 @@ import React from 'react';
 import styles from './ReservationList.module.scss';
 import VolunteerItem from '../Items/VolunteerItem';
 
-export default function VolunteerList() {
-  const userId = 1;
-
+export default function VolunteerList({ userId }) {
   const { data, isLoading } = useQuery({
     queryKey: ['myVolunteerList'],
     queryFn: () => getVolReservationOfUser(userId),
