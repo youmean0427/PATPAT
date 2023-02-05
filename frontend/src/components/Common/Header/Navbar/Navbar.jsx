@@ -8,7 +8,7 @@ import { useRecoilState } from 'recoil';
 import { isLoginState } from 'recoil/atoms/user';
 
 export default function Navbar() {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
   useEffect(() => {
     if (localStorage.getItem('isLogin')) {
@@ -33,6 +33,7 @@ export default function Navbar() {
             onClick={() => {
               logout();
               setIsLogin(false);
+              navigate('/');
             }}
             className={styles.login}
           >
@@ -41,7 +42,7 @@ export default function Navbar() {
         </div>
       ) : (
         <div className={styles.right}>
-          <div onClick={() => navigator('/login')} className={styles.login}>
+          <div onClick={() => navigate('/login')} className={styles.login}>
             로그인
           </div>
         </div>
