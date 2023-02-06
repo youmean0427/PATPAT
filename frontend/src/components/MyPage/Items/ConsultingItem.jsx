@@ -51,7 +51,7 @@ export default function Consulting({ item }) {
             방참가
           </button>
         ) : stateCode === 8 ? (
-          <button onClick={startConsulting} className={styles.state5}>
+          <button onClick={startConsulting} className={styles.state8}>
             방생성
           </button>
         ) : (
