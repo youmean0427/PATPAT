@@ -8,14 +8,13 @@
 
 .button {
   &-selected {
-<<<<<<< HEAD
     font-size: 20px !important;
     margin: 10px !important;
     width: 300px !important;
     font-family: $seoul-font !important;
 
-    border-color: $blue-color !important;
-    background-color: $blue-color !important;
+    border-color: $main-color !important;
+    background-color: $main-color !important;
     &:hover {
       background-color: #4d5996 !important;
     }
@@ -26,34 +25,12 @@
     width: 300px !important;
     font-family: $seoul-font !important;
 
-    border-color: $blue-color !important;
+    border-color: $main-color !important;
     background-color: $white-color !important;
-    color: $blue-color !important;
+    color: $main-color !important;
     &:hover {
       background-color: #eef0fd !important;
       border-color: #4d5996 !important;
     }
-=======
-    font-size: 20px;
-    margin: 10px;
-    width: 300px;
-    text-align: center;
-    padding: 15px;
-    border-style: solid;
-    border-color: $main-color;
-    background-color: $main-color;
-    color: $white-color;
-  }
-  &-unselected {
-    font-size: 20px;
-    margin: 10px;
-    width: 300px;
-    text-align: center;
-    padding: 15px;
-    border-style: solid;
-    border-color: $main-color;
-    background-color: $white-color;
-    color: $main-color;
->>>>>>> e05d0becfdb1792a5b8e7e86a9dfdc1a7fd690db
   }
 }

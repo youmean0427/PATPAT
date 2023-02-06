@@ -78,9 +78,9 @@
           & > div {
             margin: 10px;
             padding: 10px;
-            // border-color: $blue-color;
+            // border-color: $main-color;
             // border-style: solid;
-            // color: $blue-color;
+            // color: $main-color;
           }
         }
 
@@ -147,7 +147,7 @@
 
 .name {
   font-size: 30px;
-  color: $blue-color;
+  color: $main-color;
   font-weight: 700;
 }
 .button {
@@ -156,7 +156,7 @@
   width: 80px !important;
   font-family: $seoul-font !important;
 
-  background-color: $blue-color !important;
+  background-color: $main-color !important;
   &:hover {
     background-color: #4d5996 !important;
   }
