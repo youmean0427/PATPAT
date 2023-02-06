@@ -1,6 +1,7 @@
 package com.ssafy.patpat.protect.service;
 
 import com.ssafy.patpat.board.entity.PostImage;
+import com.ssafy.patpat.common.code.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.Gender;
 import com.ssafy.patpat.common.dto.FileDto;
@@ -112,7 +113,8 @@ public class ProtectServiceImpl implements ProtectService{
                                 .genderCode(s.getGender().getCode())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
-                                .neutered(s.isNeutered())
+                                .neuteredCode(s.getNeutered())
+                                .neutered(Neutered.values()[s.getNeutered()].name())
                                 .age(s.getAge())
                                 .breedName(breed.getName())
                                 .breedId(breed.getBreedId())
@@ -163,7 +165,8 @@ public class ProtectServiceImpl implements ProtectService{
                                 .thumbnail(thumbnail)
                                 .gender(s.getGender().name())
                                 .genderCode(s.getGender().getCode())
-                                .neutered(s.isNeutered())
+                                .neuteredCode(s.getNeutered())
+                                .neutered(Neutered.values()[s.getNeutered()].name())
                                 .age(s.getAge())
                                 .breedName(breed.getName())
                                 .breedId(breed.getBreedId())
@@ -209,7 +212,8 @@ public class ProtectServiceImpl implements ProtectService{
                     .state(shelterProtectedDog.getStateCode().name())
                     .gender(shelterProtectedDog.getGender().name())
                     .genderCode(shelterProtectedDog.getGender().getCode())
-                    .neutered(shelterProtectedDog.isNeutered())
+                    .neuteredCode(shelterProtectedDog.getNeutered())
+                    .neutered(Neutered.values()[shelterProtectedDog.getNeutered()].name())
                     .infoContent(shelterProtectedDog.getFeature())
                     .kg(shelterProtectedDog.getWeight())
                     .categoryCloth(shelterProtectedDog.getCategoryCloth())
@@ -250,7 +254,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .shelterId(protectDto.getShelterId())
                     .feature(protectDto.getInfoContent())
                     .gender(Gender.of(protectDto.getGenderCode()))
-                    .neutered(protectDto.isNeutered())
+                    .neutered(protectDto.getNeuteredCode())
                     .images(images)
                     .registDate(LocalDateTime.now().toLocalDate())
                     //.findingDate(protectDto.getFindingDate())

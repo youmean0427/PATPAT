@@ -35,7 +35,7 @@ public class ShelterProtectedDog {
     private BigDecimal longitude;
     private double weight;//
     private Gender gender;//
-    private boolean neutered;//
+    private int neutered;//
     private LocalDate registDate;//
     private String feature;//
     private int categoryEar;//
