@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -176,7 +177,7 @@ public class ShelterController {
      */
     @PostMapping("/{shelterId}")
     @ApiOperation(value = "보호소 수정", notes = "보호소 수정")
-    public ResponseEntity<ResponseMessage> updateShelter(@PathVariable int shelterId, @RequestPart List<MultipartFile> uploadFile, ShelterDto shelterDto){
+    public ResponseEntity<ResponseMessage> updateShelter(@PathVariable int shelterId, @RequestPart List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception{
         ResponseMessage responseMessage = service.updateShelter(shelterId,uploadFile,shelterDto);
         if(responseMessage.getMessage()=="SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)
@@ -191,10 +192,11 @@ public class ShelterController {
      * 보호소 인증
      * @return
      */
-    @GetMapping("/auth/{authCode}")
+    @GetMapping("/auth")
+    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "보호소 인증", notes = "보호소 인증")
-    public ResponseEntity<ResponseMessage> authShelter(@PathVariable String authCode){
-        ResponseMessage responseMessage = service.AuthShelter(authCode);
+    public ResponseEntity<ResponseMessage> authShelter(@RequestParam("shelterId") int shelterId, @RequestParam("authCode") String authCode){
+        ResponseMessage responseMessage = service.AuthShelter(shelterId, authCode);
         if(responseMessage.getMessage()=="SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));

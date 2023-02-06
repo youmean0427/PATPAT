@@ -100,6 +100,7 @@ public class UserService {
         userResponseDto.setTokenDto(token);
         userDto.setUsername(user.getNickname());
         userDto.setProfileImageUrl(fileService.getFileUrl(user.getImage()));
+        userDto.setUserId(user.getUserId());
         userResponseDto.setUserDto(userDto);
 
         return userResponseDto;

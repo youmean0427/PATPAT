@@ -17,7 +17,11 @@ import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.dto.*;
 import com.ssafy.patpat.shelter.entity.*;
 import com.ssafy.patpat.shelter.repository.*;
+import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.entity.Owner;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
+import com.ssafy.patpat.user.service.UserService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,9 +57,12 @@ public class ShelterServiceImpl implements ShelterService{
 
     @Autowired
     TimeRepository timeRepository;
-
     @Autowired
     FileService fileService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    UserService userService;
     @Override
     public BreedDto selectBreedByMbti(String mbtiId) {
         int breedId = MBTI.valueOf(mbtiId).ordinal();
@@ -313,17 +320,75 @@ public class ShelterServiceImpl implements ShelterService{
         return dto;
     }
     @Override
-    public ResponseMessage updateShelter(int shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) {
-        Shelter s = shelterRepository.findByShelterId(shelterId);
-        Set<Image> shelterImageList = s.getImages();
+    @Transactional
+    public ResponseMessage updateShelter(int shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
+        Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterId));
+        if(!s.isPresent()){
+            return null;
+        }
+        Shelter shelter = s.get();
+        // 이미지 우선 삭제
+        Set<Image> shelterImageList = shelter.getImages();
+        for (Image i:
+                shelterImageList) {
+            fileService.deleteFile(i);
+        }
+        Set<Image> newImageList = new HashSet<>();
+        Optional<Owner> owner = Optional.ofNullable(shelter.getOwner());
 
-        return null;
+        if(!owner.isPresent()){
+            return new ResponseMessage("FAIL");
+        }
+
+        for (MultipartFile partFile:
+             uploadFile) {
+            newImageList.add(fileService.insertFile(partFile));
+        }
+        shelter.setImages(newImageList);
+        if(shelterDto.getName() != null){
+            shelter.setName(shelterDto.getName());
+        }
+        if(shelterDto.getInfoContent() != null){
+            shelter.setInfo(shelterDto.getInfoContent());
+        }
+        if(shelterDto.getPhoneNumber() != null){
+            shelter.getOwner().setPhoneNumber(shelterDto.getPhoneNumber());
+        }
+        if(shelterDto.getOwnerName() != null){
+            shelter.getOwner().setName(shelterDto.getOwnerName());
+        }
+        if(shelterDto.getOwnerId() != null){
+            // 직원인지 체크
+            Optional<User> user = userRepository.findById(shelterDto.getOwnerId());
+            if(user.isPresent()){
+                if(user.get().getShelter().getShelterId() == shelter.getShelterId()){
+                    Owner newOwner = new Owner();
+                    newOwner.setUser(user.get());
+                    newOwner.setName(shelterDto.getName());
+                    newOwner.setPhoneNumber(shelterDto.getPhoneNumber());
+                    shelter.setOwner(newOwner);
+                }
+            }
+        }
+        shelterRepository.save(shelter);
+
+        return new ResponseMessage("SUCCESS");
     }
 
     @Override
-    public ResponseMessage AuthShelter(String authCode) {
-
-        return null;
+    @Transactional
+    public ResponseMessage AuthShelter(int shelterId, String authCode) {
+        Optional<Shelter> s = shelterRepository.findById(shelterId);
+        if(!s.isPresent()){
+            if(passwordEncoder.matches(s.get().getRegNumber(),authCode)){
+                UserDto user = userService.getUserWithAuthorities();
+                Optional<User> u = userRepository.findById(user.getUserId());
+                u.get().setShelter(s.get());
+                userRepository.save(u.get());
+            }
+            else return new ResponseMessage("FAIL");
+        }else return new ResponseMessage("FAIL");
+        return new ResponseMessage("SUCCESS");
     }
 
 
