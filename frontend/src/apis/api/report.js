@@ -93,11 +93,11 @@ export const getTotalSimiralCount = async breedId => {
 
 /**
  * POST : 실종, 임보 신고 공고 생성 및 등록
- * @param {int} reportType
+
  * @param {FormData} formData
  */
-export const createReport = async (reportType, formData) => {
-  const res = await authInstance.post(`/reports?reportType=${reportType}`, formData, {
+export const createReport = async formData => {
+  const res = await defaultInstance.post(`/reports`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return res;

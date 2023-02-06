@@ -5,8 +5,6 @@ import { getMissingDogDetail } from 'apis/api/report';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 export default function DogDetailContent({ item, state }) {
-  console.log(state);
-
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
@@ -25,7 +23,7 @@ export default function DogDetailContent({ item, state }) {
               <span className={styles.date}>23.02.03</span>
             </div>
             <div>
-              <Link to="update" state={{ data }}>
+              <Link to="update" state={{ data, state }}>
                 <Button variant="contained" className={styles.button}>
                   수정
                 </Button>
@@ -71,10 +69,10 @@ export default function DogDetailContent({ item, state }) {
                 </div>
 
                 <div className={styles['container-content-info-inner-content']}>
-                  <div>{data.breedName}</div>
-                  <div>{data.gender}</div>
+                  <div>{data.breedId}</div>
+                  <div>{data.genderCode}</div>
                   <div>장소</div>
-                  <div>{data.weight}</div>
+                  <div>{data.kg}</div>
                   <div>{data.neutered}</div>
                 </div>
               </div>

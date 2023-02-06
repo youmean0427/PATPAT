@@ -4,6 +4,7 @@ import styles from './PersonalDogItem.module.scss';
 import { Link } from 'react-router-dom';
 export default function PersonalDogItem({ item }) {
   const { personalProtectionId, title, fileUrlList, breedName, content } = item;
+
   return (
     <div>
       <Link to={`personal/${personalProtectionId}`} state={{ personalProtectionId }}>

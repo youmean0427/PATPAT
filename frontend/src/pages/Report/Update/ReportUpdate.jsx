@@ -5,10 +5,5 @@ import ReportCreateContent from '../../../components/Report/Create/ReportCreateC
 export default function ReportUpdate() {
   const location = useLocation();
   const items = location.state.data;
-  const state = 1;
-  return (
-    <div>
-      <ReportCreateContent items={items} nowState={state} />
-    </div>
-  );
+  return <div>{items}</div>;
 }
