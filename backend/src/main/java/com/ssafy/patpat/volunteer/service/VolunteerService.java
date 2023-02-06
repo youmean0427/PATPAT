@@ -145,7 +145,7 @@ public class VolunteerService {
         Optional<Shelter> s = shelterRepository.findById(noticeDto.getShelterId());
 
         if(!s.isPresent()){
-            LOGGER.info("보호소 조회에 실패했습니다.");
+            LOGGER.info("잘못된 보호소 ID입니다.");
             return false;
         }
 
@@ -179,6 +179,45 @@ public class VolunteerService {
         return true;
     }
 
+    @Transactional
+    public boolean updateNotice(NoticeDto noticeDto){
+        if(noticeDto.getNoticeId() == null){
+            LOGGER.info("공고 ID가 비었습니다.");
+            return false;
+        }
+        Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(noticeDto.getNoticeId());
+
+        if(!vn.isPresent()){
+            LOGGER.info("잘못된 공고 ID 입니다.");
+            return false;
+        }
+        // notice 정보 수정
+        VolunteerNotice volunteerNotice = VolunteerNotice.builder()
+                .title(noticeDto.getTitle())
+                .build();
+        volunteerNoticeRepository.save(volunteerNotice);
+
+        // schedule 정보 수정
+        List<VolunteerSchedule> volunteerSchedules = new ArrayList<>();
+        if(noticeDto.getList().isEmpty()){
+            // 아무 등록이 없을 때
+            LOGGER.info("등록된 봉사 일정이 없습니다.");
+            return false;
+        }
+        for (VolunteerScheduleDto vs:
+                noticeDto.getList()) {
+            volunteerSchedules.add(VolunteerSchedule.builder()
+                    .capacity(vs.getTotalCapacity())
+                    .startTime(vs.getStartTime())
+                    .endTime(vs.getEndTime())
+                    .guideLine(vs.getGuideLine())
+                    .build());
+        }
+        volunteerScheduleRepository.saveAll(volunteerSchedules);
+
+        return true;
+
+    }
 
 
 }

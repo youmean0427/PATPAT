@@ -102,7 +102,7 @@ public class VolunteerController {
     @ApiOperation(value = "봉사 공고 수정", notes = "봉사 공고 수정")
     public ResponseEntity<Object> updateNotice(@RequestBody NoticeDto noticeDto){
         //서비스 호출 코드
-        if(true){
+        if(volunteerService.updateNotice(noticeDto)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
