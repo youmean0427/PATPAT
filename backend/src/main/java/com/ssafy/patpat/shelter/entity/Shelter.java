@@ -5,6 +5,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
+import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
@@ -13,6 +14,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @ToString
 @Getter
@@ -42,8 +44,15 @@ public class Shelter {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "shelter_image",
+            joinColumns = {@JoinColumn(name = "shelter_id")},
+            inverseJoinColumns = {@JoinColumn(name = "image_id")})
+    private Set<Image> images;
+
     @OneToMany
     @JoinColumn(name = "shelter_id")
-    private List<Time> timeList = new ArrayList<Time>();
+    private List<Time> timeList;
 
 }

@@ -15,10 +15,11 @@ public class ShelterDto {
     private int shelterId;
     private String name;
     private String address;
-    @Schema(example = "fileUrl:.png")
-    private FileDto fileDto;
-    @Schema(example = "fileUrl:.png")
-    private List<FileDto> fileDtoList;
+//    @Schema(example = "fileUrl:.png")
+//    private FileDto fileDto;
+//    @Schema(example = "fileUrl:.png")
+//    private List<FileDto> fileDtoList;
+    private List<String> imageList;
     @Schema(example = "설명")
     private String infoContent;
     @Schema(example = "전화번호")

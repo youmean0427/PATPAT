@@ -7,6 +7,7 @@ import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
+import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 //import com.ssafy.patpat.protect.entity.ShelterDogImage;
@@ -22,14 +23,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -51,11 +47,14 @@ public class ShelterServiceImpl implements ShelterService{
     @Autowired
     ImageRepository imageRepository;
 
-    @Autowired
-    ShelterImageRepository shelterImageRepository;
+//    @Autowired
+//    ShelterImageRepository shelterImageRepository;
 
     @Autowired
     TimeRepository timeRepository;
+
+    @Autowired
+    FileService fileService;
     @Override
     public BreedDto selectBreedByMbti(String mbtiId) {
         int breedId = MBTI.valueOf(mbtiId).ordinal();
@@ -188,18 +187,11 @@ public class ShelterServiceImpl implements ShelterService{
         List<ShelterDto> shelterDtoList = new ArrayList<>();
         System.out.println(shelterList);
         for(Shelter s : shelterList){
-            List<ShelterImage> shelterImage = shelterImageRepository.findByShelterId(s.getShelterId());
-            FileDto fileDto = FileDto.builder()
-                    .filePath("noProfile")
-                    .build();
-            Image image = null;
-            if(shelterImage.size() > 0){
-                image = imageRepository.findByImageId(shelterImage.get(0).getImageId());
-            }
-            if(image != null){
-                fileDto = FileDto.builder()
-                        .filePath(image.getFilePath())
-                        .build();
+            Set<Image> shelterImage = s.getImages();
+            List<String> imageList = new ArrayList<>();
+            for (Image i:
+                 shelterImage) {
+                imageList.add(fileService.getFileUrl(i));
             }
             shelterDtoList.add(
                     ShelterDto.builder()
@@ -208,7 +200,7 @@ public class ShelterServiceImpl implements ShelterService{
                             .name(s.getName())
                             .sidoCode(s.getSidoCode())
                             .gugunCode(s.getGugunCode())
-                            .fileDto(fileDto)
+                            .imageList(imageList)
                             .build()
             );
         }
@@ -330,23 +322,14 @@ public class ShelterServiceImpl implements ShelterService{
 
 
     @Override
+    @Transactional
     public ShelterDto detailShelter(int shelterId) {
         Shelter s = shelterRepository.findByShelterId(shelterId);
-        List<ShelterImage> shelterImageList = shelterImageRepository.findByShelterId(s.getShelterId());
-        List<FileDto> fileDtoList = new ArrayList<>();
-        List<Integer> iList = new ArrayList<>();
-        if(shelterImageList.size() > 0) {
-            for (ShelterImage i : shelterImageList) {
-                iList.add(i.getImageId());
-            }
-        }
-        List<Image> imageList = imageRepository.findByImageIdIn(iList);
-        for(Image i : imageList){
-            fileDtoList.add(
-                    FileDto.builder()
-                            .origFilename(i.getOrigFilename())
-                            .build()
-            );
+        Set<Image> shelterImageList = s.getImages();
+        List<String> imageList = new ArrayList<>();
+
+        for(Image i : shelterImageList){
+            imageList.add(fileService.getFileUrl(i));
         }
 
         ShelterDto shelterDto = ShelterDto.builder()
@@ -355,7 +338,7 @@ public class ShelterServiceImpl implements ShelterService{
                 .phoneNumber(s.getOwner().getPhoneNumber())
                 .infoContent(s.getInfo())
                 .address(s.getAddress())
-                .fileDtoList(fileDtoList)
+                .imageList(imageList)
                 .ownerId(s.getOwner().getOwnerId())
                 .ownerName(s.getOwner().getName())
                 .build();
