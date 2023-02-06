@@ -2,6 +2,7 @@ package com.ssafy.patpat.volunteer.service;
 
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.volunteer.dto.RequestVolunteerDto;
+import com.ssafy.patpat.volunteer.dto.VolunteerMonthDto;
 import com.ssafy.patpat.volunteer.dto.VolunteerNoticeDto;
 import com.ssafy.patpat.volunteer.dto.VolunteerScheduleDto;
 import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
@@ -56,6 +57,29 @@ public class VolunteerNoticeService {
         }
         return list;
     }
+
+    @Transactional
+    public List<VolunteerNoticeDto> selectNoticeListByMonth(VolunteerMonthDto volunteerMonthDto){
+        List<VolunteerNotice> volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(volunteerMonthDto.getShelterId(), volunteerMonthDto.getYear()+"-"+volunteerMonthDto.getMonth());
+        if(volunteerNotices.isEmpty()){
+            return null;
+        }
+        List<VolunteerNoticeDto> list = new ArrayList<>();
+        for (VolunteerNotice vn:
+                volunteerNotices) {
+            list.add(VolunteerNoticeDto.builder()
+                    .name(vn.getShelter().getName())
+                    .noticeId(vn.getNoticeId())
+                    .shelterId(vn.getShelter().getShelterId())
+                    .state(vn.getReservationStateCode().name())
+                    .stateCode(vn.getReservationStateCode().getCode())
+                    .title(vn.getTitle())
+                    .volunteerDate(vn.getVolunteerDate())
+                    .build());
+        }
+        return list;
+    }
+
 
 
 

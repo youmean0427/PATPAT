@@ -63,7 +63,7 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(v.getName());
 //        }
         PageRequest pageRequest = PageRequest.of(0,4, Sort.by("volunteerDate").ascending());
-        List<VolunteerNotice> list = volunteerNoticeRepository.findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThan("11110",Reservation.대기중,LocalDate.now().toString(), pageRequest);
+        List<VolunteerNotice> list = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(2,"2023-02%");
 
         for (VolunteerNotice v:
              list) {

@@ -45,12 +45,12 @@ public class VolunteerController {
     }
 
     /**
-     * 봉사 공고 조회 - 일별 클릭시
+     * 봉사 공고 상세 조회 - 일별 클릭시
      * 해당 날짜 카드 클릭시 불러올 정보
      * @return
      */
     @GetMapping("/schedules")
-    @ApiOperation(value = "일별 봉사 공고 조회", notes = "파라미터로 noticeId")
+    @ApiOperation(value = "일별 봉사 공고 조회", notes = "일별 상세 조회 - 파라미터로 noticeId")
     public ResponseEntity<Object> selectScheduleList(@RequestParam("noticeId") Long noticeId){
         //서비스 호출 코드
         List<VolunteerScheduleDto> list = volunteerScheduleService.selectScheduleList(noticeId);
@@ -68,9 +68,10 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/months")
-    @ApiOperation(value = "봉사 공고 조회", notes = "보호소가 자기 봉사 공고 볼 경우")
-    public ResponseEntity<Object> selectNoticeListByShelter(@PathVariable int shelterId){
+    @ApiOperation(value = "봉사 공고 조회", notes = "보호소가 자기 봉사 공고 볼 경우 파라미터로 year, month, shelterId")
+    public ResponseEntity<Object> selectNoticeListByMonth(VolunteerMonthDto volunteerMonthDto){
         //서비스 호출 코드
+        List<VolunteerNoticeDto> list = volunteerNoticeService.selectNoticeListByMonth(volunteerMonthDto);
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ArrayList<NoticeDto>());

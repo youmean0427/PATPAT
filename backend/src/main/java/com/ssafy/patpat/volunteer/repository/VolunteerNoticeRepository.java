@@ -13,6 +13,18 @@ import java.util.List;
 @Repository
 public interface VolunteerNoticeRepository extends JpaRepository<VolunteerNotice, Long> {
 
+    /**
+     * 구군으로 탐색
+     * */
     List<VolunteerNotice> findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThan(String gugunCode, Reservation reservation, String volunteerDate, PageRequest pageRequest);
+
+    /**
+     * 보호소 id로 탐색
+     * */
     List<VolunteerNotice> findWithShelterByShelterShelterIdAndReservationStateCodeAndVolunteerDateGreaterThan(Integer shelterId, Reservation reservation, String volunteerDate, PageRequest pageRequest);
+
+    /**
+     * 월별로 탐색
+     * */
+    List<VolunteerNotice> findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(Integer shelterId, String volunteerDate);
 }
