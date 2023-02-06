@@ -1,17 +1,8 @@
 @import 'assets/styles/variable.scss';
 
-.container {
-  margin: 8rem 0;
-}
-
-.image {
-  width: 85rem;
-  height: 50rem;
-}
 .main {
   display: flex;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  padding: 2rem;
+  gap: 2rem;
 }
 .info-box {
   font-size: 2rem;
@@ -22,9 +13,6 @@
 }
 
 @include breakpoint(sm) {
-  .container {
-    margin: 2rem 0;
-  }
   .main {
     flex-direction: column;
   }
