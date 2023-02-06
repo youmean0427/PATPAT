@@ -1,42 +1,122 @@
 @import 'assets/styles/variable.scss';
 
 .container {
-  width: 100%;
-  min-height: 80vh;
-  overflow: auto;
 }
-.main-info {
-  margin-top: 3rem;
+
+.header {
   display: flex;
   justify-content: center;
-  height: auto;
-  flex-flow: wrap;
+  gap: 3rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+
+  margin-top: 5rem;
+  padding: 0 2rem;
+  & > .thumbnail {
+    & > img {
+      width: 20rem;
+      height: 20rem;
+    }
+  }
+  & > .title-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.8rem;
+    & > .title {
+      font-size: 3rem;
+      font-weight: 900;
+      color: $main-accent-color;
+    }
+    & > .sub-title {
+      font-size: 1.6rem;
+      color: $main-color;
+      & > span {
+        color: $main-accent-color;
+      }
+    }
+  }
 }
-.main-img {
-  display: flex;
-  width: 25rem;
+
+.navbar {
+  font-size: 1.8rem;
+  margin-top: 10rem;
+  transition: all 0.4s;
+  &__menu {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    & > .button {
+      font-weight: 900;
+      border-radius: 0.5rem;
+      display: block;
+      text-align: center;
+      padding: 1rem 4rem;
+      transition: all 0.2s;
+      background-color: $main-color;
+      color: $white-color;
+      box-shadow: 0px 5px 0px 0px $main-accent-color;
+      margin: 10px 0px 10px 0;
+      &.active {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      }
+      &:hover {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      }
+    }
+  }
 }
-.main-content {
-  display: flex;
-  flex-flow: wrap;
-  width: 40rem;
-  justify-content: center;
-  margin-top: 2rem;
+
+@include breakpoint(md) {
+  .navbar {
+    font-size: 1.6rem;
+    &__menu {
+      gap: 1.5rem;
+      & > .button {
+        padding: 1rem 3rem;
+      }
+    }
+  }
 }
-.shelter-name {
-  position: relative;
-  width: 25rem;
-  font-size: 3rem;
-  height: 5rem;
-  color: $blue-color;
-  font-weight: 900;
-}
-.shelter-info {
-  width: 25rem;
-  height: 4rem;
-}
-.line {
-  width: 90%;
-  margin: 2rem 0 2rem 0;
-  color: lightgray;
+
+@include breakpoint(sm) {
+  .header {
+    margin-top: 1rem;
+    padding: 0 1rem;
+    gap: 1rem;
+    & > .thumbnail {
+      & > img {
+        width: 12rem;
+        height: 12rem;
+      }
+    }
+    & > .title-box {
+      & > .title {
+        font-size: 2rem;
+        font-weight: 900;
+        color: $main-accent-color;
+      }
+      & > .sub-title {
+        font-size: 1.2rem;
+        color: $main-color;
+        & > span {
+          color: $main-accent-color;
+        }
+      }
+    }
+  }
+  .navbar {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    &__menu {
+      flex-direction: column;
+      gap: 0;
+      & > .button {
+        padding: 1rem 2rem;
+      }
+    }
+  }
 }

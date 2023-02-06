@@ -13,10 +13,10 @@
 .btn-click {
   width: 10rem;
   height: 3rem;
-  background-color: $blue-color;
+  background-color: $main-color;
   margin: 3px;
   color: white;
-  border: 3px solid $blue-color;
+  border: 3px solid $main-color;
   font-size: 1.5rem;
 }
 .btn {
@@ -24,17 +24,17 @@
   height: 3rem;
   background-color: white;
   margin: 3px;
-  color: $blue-color;
-  border: 3px solid $blue-color;
+  color: $main-color;
+  border: 3px solid $main-color;
   font-size: 1.5rem;
 }
 .btn:hover {
   width: 10rem;
   height: 3rem;
-  background-color: $blue-color;
+  background-color: $main-color;
   margin: 3px;
   color: white;
-  border: 3px solid $blue-color;
+  border: 3px solid $main-color;
   font-size: 1.5rem;
 }
 .contents {
