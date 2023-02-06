@@ -117,9 +117,14 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public List<ReportDto> selectMissingListByUser(int userId, RequestReportDto requestReportDto) {
         int limit = requestReportDto.getLimit();
-        int offSet = requestReportDto.getLimit();
+        int offSet = requestReportDto.getOffset();
         PageRequest pageRequest = PageRequest.of(offSet,limit);
+        System.out.println(userId);
+        System.out.println(requestReportDto);
+
         List<MissingDog> missingDogList = missingDogRepository.findByUserId(userId,pageRequest);
+
+        System.out.println(missingDogList);
         List<ReportDto> reportDtoList = new ArrayList<>();
 
         for(MissingDog missingDog : missingDogList){

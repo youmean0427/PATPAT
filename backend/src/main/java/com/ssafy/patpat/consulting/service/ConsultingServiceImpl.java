@@ -38,9 +38,12 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Override
     public List<ConsultingDto> selectConsultingList(RequestConsultingDto requestConsultingDto) {
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
+        System.out.println(requestConsultingDto);
         try{
             PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
+            System.out.println(requestConsultingDto);
             List<Consulting> consultingList = consultingRepository.findByUserIdAndRegistDateGreaterThanEqual(requestConsultingDto.getUserId(),LocalDate.now(),pageRequest);
+            System.out.println(consultingList);
             for(Consulting c : consultingList){
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){

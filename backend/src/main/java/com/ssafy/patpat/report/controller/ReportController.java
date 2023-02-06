@@ -48,6 +48,7 @@ public class ReportController {
     @ApiOperation(value = "실종견 조회", notes = "{현재 유저의 실종견 공고 리스트}")
     public ResponseEntity<Object> selectMissingListByUser(@PathVariable int userId, RequestReportDto requestReportDto){
         //서비스 호출 코드
+
         List<ReportDto> reportDtoList = service.selectMissingListByUser(userId,requestReportDto);
         if(reportDtoList.size() > 0){
             return ResponseEntity.status(HttpStatus.OK)
@@ -82,6 +83,7 @@ public class ReportController {
     @ApiOperation(value = "실종견 상세", notes = "실종견 상세")
     public ResponseEntity<Object> detailMissing(@PathVariable int missingId){
         //서비스 호출 코드
+
         ReportDto reportDto = service.detailMissing(missingId);
         if(reportDto != null){
             return ResponseEntity.status(HttpStatus.OK)
