@@ -1,6 +1,7 @@
 package com.ssafy.patpat.protect.entity;
 
 import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.code.category.Gender;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,11 +33,10 @@ public class ShelterProtectedDog {
     private String latitude;//
     private String longitude;//
     private double weight;//
-    private int gender;//
-    private int neutered;//
+    private Gender gender;//
+    private boolean neutered;//
     private LocalDate registDate;//
     private String feature;//
-
     private int categoryEar;//
     private int categoryTail;//
     private int categoryColor;//

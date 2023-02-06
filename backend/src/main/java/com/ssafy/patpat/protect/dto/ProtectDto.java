@@ -26,7 +26,9 @@ public class ProtectDto {
     @Schema(description = "발견날짜")
     private LocalDate findingDate;
     @Schema(description = "수컷,암컷")
-    private int gender;
+    private String gender;
+    @Schema(description = "성별 코드")
+    private Integer genderCode;
     @Schema(example = "견종")
     private int breedId;
     @Schema(example = "견종이름")
@@ -36,7 +38,7 @@ public class ProtectDto {
     @Schema(example = "무게")
     private double kg;
     @Schema(description = "중성화=0,아니면=1")
-    private boolean isNeutered;
+    private boolean neutered;
     @Schema(example = "귀모양")
     private int categoryEar;
     @Schema(example = "꼬리모양")

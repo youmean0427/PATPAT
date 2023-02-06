@@ -29,6 +29,6 @@ public class ShelterDto {
     private String sidoName;
     private String gugunCode;
     private String gugunName;
-    private String adminName;
-    private Long adminId;
+    private String ownerName;
+    private Long ownerId;
 }

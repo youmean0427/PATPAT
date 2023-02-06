@@ -318,7 +318,7 @@ public class ShelterServiceImpl implements ShelterService{
     @Override
     public ResponseMessage updateShelter(String shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) {
 
-        
+
         return null;
     }
 
@@ -356,8 +356,8 @@ public class ShelterServiceImpl implements ShelterService{
                 .infoContent(s.getInfo())
                 .address(s.getAddress())
                 .fileDtoList(fileDtoList)
-                .adminId(s.getOwner().getOwnerId())
-                .adminName(s.getOwner().getName())
+                .ownerId(s.getOwner().getOwnerId())
+                .ownerName(s.getOwner().getName())
                 .build();
         return shelterDto;
     }
