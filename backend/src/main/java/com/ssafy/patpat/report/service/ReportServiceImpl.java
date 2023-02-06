@@ -101,7 +101,7 @@ public class ReportServiceImpl implements ReportService{
                     ReportDto.builder()
                             .name(missingDog.getName())
                             .missingId(missingDog.getMissingId())
-                            .gender(missingDog.getGender())
+                            .gender(missingDog.getGender()==0?"수컷":"암컷")
                             .isNeutered(missingDog.getNeutered()==1?true:false)
                             .age(missingDog.getAge())
                             .breedId(missingDog.getBreedId())
@@ -143,7 +143,7 @@ public class ReportServiceImpl implements ReportService{
                     ReportDto.builder()
                             .name(missingDog.getName())
                             .missingId(missingDog.getMissingId())
-                            .gender(missingDog.getGender())
+                            .gender(missingDog.getGender()==0?"수컷":"암컷")
                             .isNeutered(missingDog.getNeutered()==1?true:false)
                             .age(missingDog.getAge())
                             .breedId(missingDog.getBreedId())
@@ -203,7 +203,7 @@ public class ReportServiceImpl implements ReportService{
                     ReportDto.builder()
                             .name(personalProtectedDog.getName())
                             .personalProtectionId(personalProtectedDog.getPpDogId())
-                            .gender(personalProtectedDog.getGender())
+                            .gender(personalProtectedDog.getGender()==0?"수컷":"암컷")
                             .isNeutered(personalProtectedDog.getNeutered()==1?true:false)
                             .age(personalProtectedDog.getAge())
                             .breedId(personalProtectedDog.getBreedId())
@@ -244,7 +244,8 @@ public class ReportServiceImpl implements ReportService{
                 .kg(missingDog.getWeight())
                 .isNeutered(missingDog.getNeutered()==0?false:true)
                 .age(missingDog.getAge())
-                .gender(missingDog.getGender())
+                .genderCode(missingDog.getGender())
+                .gender(missingDog.getGender()==1?"수컷":"암컷")
                 .name(missingDog.getName())
                 .categoryCloth(missingDog.getCategoryCloth())
                 .categoryColor(missingDog.getCategoryColor())
@@ -290,7 +291,8 @@ public class ReportServiceImpl implements ReportService{
                 .kg(personalProtectedDog.getWeight())
                 .isNeutered(personalProtectedDog.getNeutered()==0?false:true)
                 .age(personalProtectedDog.getAge())
-                .gender(personalProtectedDog.getGender())
+                .genderCode(personalProtectedDog.getGender())
+                .gender(personalProtectedDog.getGender()==1?"수컷":"암컷")
                 .name(personalProtectedDog.getName())
                 .categoryCloth(personalProtectedDog.getCategoryCloth())
                 .categoryColor(personalProtectedDog.getCategoryColor())
@@ -313,10 +315,12 @@ public class ReportServiceImpl implements ReportService{
         try{
             if(reportDto.getTypeCode() == 1) {
                 MissingDog missingDog = missingDogRepository.findByMissingId(reportDto.getMissingId());
+
                 missingDog.update(
-                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGender(), reportDto.getBreedId(),
-                        reportDto.getGender(), reportDto.isNeutered() ? 1 : 0, reportDto.getCategoryEar(), reportDto.getCategoryTail(),
+                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGenderCode(), reportDto.getBreedId(),
+                        reportDto.isNeutered() ? 1 : 0, reportDto.getCategoryEar(), reportDto.getCategoryTail(),
                         reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
+
                 File uploadDir = new File(uploadPath + File.separator + uploadFolder);
                 if (!uploadDir.exists()) uploadDir.mkdir();
                 List<MissingDogImage> missingDogImageList = missingDogImageRepository.findByMissingId(reportDto.getMissingId());
@@ -367,8 +371,8 @@ public class ReportServiceImpl implements ReportService{
             else {
                 PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(reportDto.getPersonalProtectionId());
                 personalProtectedDog.update(
-                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGender(), reportDto.getBreedId(),
-                        reportDto.getGender(), reportDto.isNeutered() ? 1 : 0, reportDto.getCategoryEar(), reportDto.getCategoryTail(),
+                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGenderCode(), reportDto.getBreedId(),
+                        reportDto.isNeutered() ? 1 : 0, reportDto.getCategoryEar(), reportDto.getCategoryTail(),
                         reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
                 File uploadDir = new File(uploadPath + File.separator + uploadFolder);
                 if (!uploadDir.exists()) uploadDir.mkdir();
@@ -440,7 +444,7 @@ public class ReportServiceImpl implements ReportService{
                         .missingDate(reportDto.getFindDate())
                         .breedId(reportDto.getBreedId())
                         .age(reportDto.getAge())
-                        .gender(reportDto.getGender())
+                        .gender(reportDto.getGenderCode())
                         .categoryCloth(reportDto.getCategoryCloth())
                         .categoryPattern(reportDto.getCategoryPattern())
                         .categoryTail(reportDto.getCategoryTail())
@@ -499,7 +503,7 @@ public class ReportServiceImpl implements ReportService{
                 PersonalProtectedDog personalProtectedDog = PersonalProtectedDog.builder()
                         .breedId(reportDto.getBreedId())
                         .age(reportDto.getAge())
-                        .gender(reportDto.getGender())
+                        .gender(reportDto.getGenderCode())
                         .categoryCloth(reportDto.getCategoryCloth())
                         .categoryPattern(reportDto.getCategoryPattern())
                         .categoryTail(reportDto.getCategoryTail())

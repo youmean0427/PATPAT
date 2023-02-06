@@ -36,4 +36,7 @@ public class ConsultingDto {
     private int stateCode;
     @Schema(example = "강아지id")
     private int shelterDogId;
+    @Schema(example = "강아지id")
+    private boolean isOpen;
+
 }

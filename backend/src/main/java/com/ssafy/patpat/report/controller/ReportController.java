@@ -31,14 +31,13 @@ public class ReportController {
     @ApiOperation(value = "실종견 조회", notes = "{code==0 전체 실종견, code==2 견종 성별 필터링 검색}")
     public ResponseEntity<Object> selectMissingList(RequestReportDto requestReportDto){
         //서비스 호출 코드
-        System.out.println(requestReportDto);
         List<ReportDto> reportDtoList = service.selectMissingList(requestReportDto);
-        if(true){
+        if(reportDtoList.size() > 0){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ArrayList<ReportDto>());
+                    .body(reportDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ArrayList<ReportDto>());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -50,12 +49,12 @@ public class ReportController {
     public ResponseEntity<Object> selectMissingListByUser(@PathVariable int userId, RequestReportDto requestReportDto){
         //서비스 호출 코드
         List<ReportDto> reportDtoList = service.selectMissingListByUser(userId,requestReportDto);
-        if(true){
+        if(reportDtoList.size() > 0){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ArrayList<ReportDto>());
+                    .body(reportDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ArrayList<ReportDto>());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -67,12 +66,12 @@ public class ReportController {
     public ResponseEntity<Object> selectPersonalProtectionList(RequestReportDto requestReportDto){
         //서비스 호출 코드
         List<ReportDto> reportDtoList = service.selectPersonalProtectionList(requestReportDto);
-        if(true){
+        if(reportDtoList.size() > 0){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ArrayList<ReportDto>());
+                    .body(reportDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ArrayList<ReportDto>());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -81,15 +80,15 @@ public class ReportController {
      */
     @GetMapping("/missings/detail/{missingId}")
     @ApiOperation(value = "실종견 상세", notes = "실종견 상세")
-    public ResponseEntity<ReportDto> detailMissing(@PathVariable int missingId){
+    public ResponseEntity<Object> detailMissing(@PathVariable int missingId){
         //서비스 호출 코드
         ReportDto reportDto = service.detailMissing(missingId);
-        if(true){
+        if(reportDto != null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ReportDto());
+                    .body(reportDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ReportDto());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -98,15 +97,15 @@ public class ReportController {
      */
     @GetMapping("/personals/{personalProtectId}")
     @ApiOperation(value = "임보견 상세", notes = "임보견 상세")
-    public ResponseEntity<ReportDto> detailPersonalProtection(@PathVariable int personalProtectId){
+    public ResponseEntity<Object> detailPersonalProtection(@PathVariable int personalProtectId){
         //서비스 호출 코드
         ReportDto reportDto = service.detailPersonalProtection(personalProtectId);
-        if(true){
+        if(reportDto != null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ReportDto());
+                    .body(reportDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ReportDto());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
 
@@ -116,15 +115,15 @@ public class ReportController {
      */
     @GetMapping("/recommends")
     @ApiOperation(value = "유사견종 조회", notes = "실종된 견종과 유사한 견종 조회")
-    public ResponseEntity<ArrayList<ProtectDto>> selectRecommendList(RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectRecommendList(RequestReportDto requestReportDto){
         //서비스 호출 코드
         List<ProtectDto> protectDtoList = service.selectRecommendList(requestReportDto);
-        if(true){
+        if(protectDtoList.size() > 0){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ArrayList<ProtectDto>());
+                    .body(protectDtoList);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ArrayList<ProtectDto>());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
     /**
@@ -133,15 +132,15 @@ public class ReportController {
      */
     @GetMapping("/recommends/count")
     @ApiOperation(value = "유사견종 마리수 조회", notes = "유사견종 갯수 조회")
-    public ResponseEntity<HashMap<String,Integer>> selectRecommendCount(RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectRecommendCount(RequestReportDto requestReportDto){
         //서비스 호출 코드
         HashMap<String, Integer> map = service.selectRecommendCount(requestReportDto);
-        if(true){
+        if(map.size() > 0){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new HashMap<String,Integer>());
+                    .body(map);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new HashMap<String,Integer>());
+                    .body(new ResponseMessage("FAIL"));
         }
     }
 
@@ -172,7 +171,7 @@ public class ReportController {
     public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateReport(reportDto, uploadFile);
-        if(true){
+        if(responseMessage.getMessage() == "SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{

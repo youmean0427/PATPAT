@@ -100,6 +100,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .timeCode(c.getTimeCode())
                                 .build()
                 );
+
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -133,16 +134,10 @@ public class ConsultingServiceImpl implements ConsultingService{
         ResponseMessage responseMessage = new ResponseMessage();
         try{
             Consulting consulting = consultingRepository.findByConsultingId(consultingId);
-            if(consultingDto.getStateCode() == 8){
-                consulting.createRoom();
-                consultingRepository.save(consulting);
-                responseMessage.setMessage("SUCCESS");
-            }
-            else{
-                consulting.updateConsulting(consultingDto.getStateCode());
-                consultingRepository.save(consulting);
-                responseMessage.setMessage("SUCCESS");
-            }
+            consulting.updateConsulting(consultingDto.getStateCode());
+            consultingRepository.save(consulting);
+            responseMessage.setMessage("SUCCESS");
+
         }catch (Exception e){
             e.printStackTrace();
             responseMessage.setMessage("FAIL");

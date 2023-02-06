@@ -107,7 +107,8 @@ public class ProtectServiceImpl implements ProtectService{
                                 .protectName(s.getName())
                                 .stateCode(s.getStateCode().getCode())
                                 .state(s.getStateCode().name())
-                                .gender(s.getGender())
+                                .genderCode(s.getGender())
+                                .gender(s.getGender()==0?"수컷":"암컷")
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
                                 .isNeutered(s.getNeutered()==0?false:true)
@@ -121,7 +122,6 @@ public class ProtectServiceImpl implements ProtectService{
             }
             return  protectDtoList;
         }catch(Exception e){
-            e.printStackTrace();
             return null;
         }
     }
@@ -160,7 +160,8 @@ public class ProtectServiceImpl implements ProtectService{
                                 .state(s.getStateCode().name())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
-                                .gender(s.getGender())
+                                .genderCode(s.getGender())
+                                .gender(s.getGender()==0?"수컷":"암컷")
                                 .isNeutered(s.getNeutered()==0?false:true)
                                 .age(s.getAge())
                                 .breedName(breed.getName())
@@ -172,7 +173,6 @@ public class ProtectServiceImpl implements ProtectService{
             }
             return  protectDtoList;
         }catch(Exception e){
-            e.printStackTrace();
             return null;
         }
 
@@ -206,7 +206,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .breedId(breed.getBreedId())
                     .stateCode(shelterProtectedDog.getStateCode().getCode())
                     .state(shelterProtectedDog.getStateCode().name())
-                    .gender(shelterProtectedDog.getGender())
+                    .genderCode(shelterProtectedDog.getGender())
                     .isNeutered((shelterProtectedDog.getNeutered()==0)?true:false)
                     .infoContent(shelterProtectedDog.getFeature())
                     .kg(shelterProtectedDog.getWeight())
@@ -247,7 +247,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .breedId(protectDto.getBreedId())
                     .shelterId(protectDto.getShelterId())
                     .feature(protectDto.getInfoContent())
-                    .gender(protectDto.getGender())
+                    .gender(protectDto.getGenderCode())
                     .images(images)
                     .registDate(LocalDateTime.now().toLocalDate())
                     //.findingDate(protectDto.getFindingDate())

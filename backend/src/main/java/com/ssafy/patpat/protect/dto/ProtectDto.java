@@ -25,7 +25,9 @@ public class ProtectDto {
     @Schema(description = "발견날짜")
     private LocalDate findingDate;
     @Schema(description = "수컷,암컷")
-    private int gender;
+    private int genderCode;
+    @Schema(description = "수컷,암컷")
+    private String gender;
     @Schema(example = "견종")
     private int breedId;
     @Schema(example = "견종이름")

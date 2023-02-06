@@ -65,7 +65,7 @@ public class BoardServiceImpl implements BoardService{
             dtoList.add(
                     BoardDto.builder()
                             .boardId(entity.getBoardId())
-                            .title(entity.getContent())
+                            .title(entity.getTitle())
                             .author(entity.getNickName())
                             .registDate(entity.getDateTime().toLocalDate())
                             .typeCode(entity.getPostCode())
@@ -107,7 +107,7 @@ public class BoardServiceImpl implements BoardService{
             dtoList.add(
                     BoardDto.builder()
                             .boardId(board.getBoardId())
-                            .title(board.getContent())
+                            .title(board.getTitle())
                             .author(board.getNickName())
                             .registDate(board.getDateTime().toLocalDate())
                             .count(board.getCount())
@@ -175,7 +175,7 @@ public class BoardServiceImpl implements BoardService{
                 .commentList(commentDtoList)
                 .fileUrlList(fileDtoList)
                 .build();
-
+        System.out.println(boardDto);
         return boardDto;
     }
 
