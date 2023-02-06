@@ -38,13 +38,18 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Override
     public List<ConsultingDto> selectConsultingList(RequestConsultingDto requestConsultingDto) {
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
+        System.out.println(requestConsultingDto);
         try{
             PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
+            System.out.println(requestConsultingDto);
             List<Consulting> consultingList = consultingRepository.findByUserIdAndRegistDateGreaterThanEqual(requestConsultingDto.getUserId(),LocalDate.now(),pageRequest);
+            System.out.println(consultingList);
             for(Consulting c : consultingList){
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
+                    c.updateConsulting(transferStateCode);
+                    consultingRepository.save(c);
                 }
                 else{
                     transferStateCode  = c.getStateCode();
@@ -80,6 +85,8 @@ public class ConsultingServiceImpl implements ConsultingService{
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
+                    c.updateConsulting(transferStateCode);
+                    consultingRepository.save(c);
                 }
                 else{
                     transferStateCode  = c.getStateCode();
@@ -94,9 +101,9 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .userId(requestConsultingDto.getUserId())
                                 .userName("유저아이디로 이름 가져오기")
                                 .timeCode(c.getTimeCode())
-
                                 .build()
                 );
+
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -133,6 +140,7 @@ public class ConsultingServiceImpl implements ConsultingService{
             consulting.updateConsulting(consultingDto.getStateCode());
             consultingRepository.save(consulting);
             responseMessage.setMessage("SUCCESS");
+
         }catch (Exception e){
             e.printStackTrace();
             responseMessage.setMessage("FAIL");

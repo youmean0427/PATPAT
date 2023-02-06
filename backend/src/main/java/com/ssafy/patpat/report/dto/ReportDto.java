@@ -10,7 +10,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Data
 @Builder
 public class ReportDto {
@@ -19,7 +19,8 @@ public class ReportDto {
     private int missingId;
     private int personalProtectionId;
     private int userId;
-    private int gender;
+    private int genderCode;
+    private String gender;
     @Schema(example = "위도")
     private String latitude;
     @Schema(example = "경도")

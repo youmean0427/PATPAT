@@ -6,7 +6,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Builder
 public class RequestParamShelterInsertDto {
     private String shelterCode;

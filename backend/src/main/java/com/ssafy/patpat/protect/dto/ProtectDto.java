@@ -11,7 +11,6 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Getter
 @Setter
 @ToString

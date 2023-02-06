@@ -14,6 +14,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -53,7 +54,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     public List<BoardDto> selectUserBoardList(RequestBoardDto requestBoardDto) {
-        PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit());
+        PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(), Sort.by("boardId").descending());
         /**
          * JWT  구현되면 유저 정보 가져오는거 수정해야함
          */
@@ -64,7 +65,7 @@ public class BoardServiceImpl implements BoardService{
             dtoList.add(
                     BoardDto.builder()
                             .boardId(entity.getBoardId())
-                            .title(entity.getContent())
+                            .title(entity.getTitle())
                             .author(entity.getNickName())
                             .registDate(entity.getDateTime().toLocalDate())
                             .typeCode(entity.getPostCode())
@@ -81,7 +82,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     public List<BoardDto> selectBoardList(RequestBoardDto requestBoardDto) {
-        PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit());
+        PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(),Sort.by("boardId").descending());
         List<Board> entityList = boardRepository.findByPostCode(requestBoardDto.getTypeCode(),pageRequest);
         System.out.println(entityList);
 
@@ -106,7 +107,7 @@ public class BoardServiceImpl implements BoardService{
             dtoList.add(
                     BoardDto.builder()
                             .boardId(board.getBoardId())
-                            .title(board.getContent())
+                            .title(board.getTitle())
                             .author(board.getNickName())
                             .registDate(board.getDateTime().toLocalDate())
                             .count(board.getCount())
@@ -174,7 +175,7 @@ public class BoardServiceImpl implements BoardService{
                 .commentList(commentDtoList)
                 .fileUrlList(fileDtoList)
                 .build();
-
+        System.out.println(boardDto);
         return boardDto;
     }
 

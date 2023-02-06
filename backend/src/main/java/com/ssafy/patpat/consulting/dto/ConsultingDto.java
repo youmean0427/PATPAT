@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class ConsultingDto {
     @Schema(example = "상담id")
     private int consultingId;
@@ -36,4 +36,7 @@ public class ConsultingDto {
     private int stateCode;
     @Schema(example = "강아지id")
     private int shelterDogId;
+    @Schema(example = "강아지id")
+    private boolean isOpen;
+
 }

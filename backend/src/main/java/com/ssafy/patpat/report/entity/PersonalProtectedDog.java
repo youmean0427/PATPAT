@@ -43,7 +43,7 @@ public class PersonalProtectedDog {
     private String name;
 
     public void update(int stateCode, String feature, int gender, int breedId, double weight, int neutered, int categoryEar, int categoryTail ,int categoryColor,
-                       int categoryPattern,int categoryCloth,int categoryClothColor){
+                       int categoryPattern,int categoryCloth){
         this.stateCode = stateCode;
         this.feature =feature;
         this.gender = gender;
