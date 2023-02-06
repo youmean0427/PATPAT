@@ -6,16 +6,16 @@
 .description {
   padding: 0 1rem 1rem 1rem;
 }
+.name {
+  font-weight: 900;
+  font-size: 1.7rem;
+  margin-bottom: 0.6rem;
+}
 .kind,
 .gender,
 .age {
   font-size: 1.2rem;
   color: $gray-color;
-}
-
-.name {
-  font-size: 2rem;
-  font-weight: 900;
 }
 .fav-img {
   position: relative;

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './BoardsItem.module.scss';
 
 export default function ReviewItem({ item }) {
-  const { title, author, registDate, count, typeCode } = item;
+  const { boardId, title, author, registDate, count, content, typeCode, thumbnail } = item;
 
   return (
     <tr className={styles.items}>
