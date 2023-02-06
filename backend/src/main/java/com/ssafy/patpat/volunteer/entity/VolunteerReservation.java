@@ -1,16 +1,12 @@
 package com.ssafy.patpat.volunteer.entity;
 
 import com.ssafy.patpat.common.code.Reservation;
-import com.ssafy.patpat.shelter.entity.Shelter;
-import com.sun.istack.NotNull;
+import com.ssafy.patpat.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -20,36 +16,25 @@ import java.util.List;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class VolunteerSchedule {
-
+public class VolunteerReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
-    private Long scheduleId;
-
-    @NotNull
-    @Column(name = "start_time")
-    private LocalDateTime startTime;
-
-    @NotNull
-    @Column(name = "end_time")
-    private LocalDateTime endTime;
+    @Column(name = "reservation_id")
+    private Long reservationId;
 
     @Column(name = "capacity")
-    private Integer capacity;
-
-    @Column(name = "guide_line")
-    private String guideLine;
+    private int capacity;
 
     @Column(name = "reservation_state_code")
     private Reservation reservationStateCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notice_id")
-    private VolunteerNotice volunteerNotice;
+    @JoinColumn(name = "schedule_id")
+    private VolunteerSchedule volunteerSchedule;
 
-//    @OneToMany(mappedBy = "volunteerSchedule")
-//    private List<VolunteerReservation> volunteerReservations;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @PrePersist
     public void prePersist() {

@@ -10,6 +10,8 @@ import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Builder
 public class Shelter {
     @Id
@@ -36,9 +40,6 @@ public class Shelter {
     private String sidoCode;
     private String gugunCode;
     private String info;
-
-    @OneToMany(mappedBy = "shelter")
-    private List<User> users;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")

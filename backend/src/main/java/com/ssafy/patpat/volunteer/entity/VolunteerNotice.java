@@ -2,14 +2,12 @@ package com.ssafy.patpat.volunteer.entity;
 
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.shelter.entity.Shelter;
-import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,39 +18,32 @@ import java.util.List;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class VolunteerSchedule {
+public class VolunteerNotice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
-    private Long scheduleId;
+    @Column(name = "notice_id")
+    private Long noticeId;
 
-    @NotNull
-    @Column(name = "start_time")
-    private LocalDateTime startTime;
+    @Column(name = "title")
+    private String title;
 
-    @NotNull
-    @Column(name = "end_time")
-    private LocalDateTime endTime;
-
-    @Column(name = "capacity")
-    private Integer capacity;
-
-    @Column(name = "guide_line")
-    private String guideLine;
+    @Column(name = "volunteer_date")
+    private String volunteerDate;
 
     @Column(name = "reservation_state_code")
     private Reservation reservationStateCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notice_id")
-    private VolunteerNotice volunteerNotice;
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
 
-//    @OneToMany(mappedBy = "volunteerSchedule")
-//    private List<VolunteerReservation> volunteerReservations;
+    @OneToMany(mappedBy = "volunteerNotice")
+    private List<VolunteerSchedule> volunteerSchedules;
 
     @PrePersist
     public void prePersist() {
         this.reservationStateCode = this.reservationStateCode == null ? Reservation.대기중 : this.reservationStateCode;
     }
+
 }

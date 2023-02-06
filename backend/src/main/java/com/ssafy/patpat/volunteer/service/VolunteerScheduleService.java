@@ -5,15 +5,20 @@ import com.ssafy.patpat.shelter.dto.ShelterDto;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.shelter.service.ShelterService;
+import com.ssafy.patpat.volunteer.dto.VolunteerNoticeDto;
 import com.ssafy.patpat.volunteer.dto.VolunteerScheduleDto;
 import com.ssafy.patpat.volunteer.dto.VolunteerShelterDto;
+import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
+import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
 import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import com.ssafy.patpat.volunteer.mapping.VolunteerShelterIdMapping;
+import com.ssafy.patpat.volunteer.repository.VolunteerReservationRepository;
 import com.ssafy.patpat.volunteer.repository.VolunteerScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,65 +26,41 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VolunteerScheduleService{
     private final VolunteerScheduleRepository volunteerScheduleRepository;
-    private final ShelterService shelterService;
+    private final VolunteerReservationRepository volunteerReservationRepository;
 
-    /** 개인이 구군 정보를 이용하여 전체 봉사일정을 볼 때
-     * return : Shelter의 봉사 공고 정보
-     * 상태 코드 대기중 (0)
-     *
-     * */
-
-    @Transactional
-    public List<VolunteerShelterDto> volunteerScheduleListInGugun(String gugunCode) {
-
-
-        List<VolunteerShelterIdMapping> volunteerScheduleList = volunteerScheduleRepository.findShelter(0, gugunCode);
-
-        if(volunteerScheduleList == null){
-            return null;
-        }
-        List<VolunteerShelterDto> volunteerShelterDtoList = new ArrayList<>();
-        for (VolunteerShelterIdMapping v:
-             volunteerScheduleList) {
-            volunteerShelterDtoList.add(VolunteerShelterDto.builder()
-                    .name(v.getName())
-                    .shelterId(v.getShelterId())
-                    .volunteerDate(v.getVolunteerDate())
-                    .build());
-        }
-
-        return volunteerShelterDtoList;
-    }
-
-    /** 개인이 구군 정보를 이용하여 전체 봉사일정을 클릭했을 때
-     * return : 봉사 공고의 상세 정보들
+    /** 개인이 구군 정보를 이용
+     * 특정 봉사일정을 보고 싶을 때
      * */
     @Transactional
-    public List<VolunteerScheduleDto> volunteerScheduleDetailList(String volunteerDate, int shelterId){
-        List<VolunteerSchedule> list = volunteerScheduleRepository.findWithShelterByVolunteerDateAndShelterShelterIdOrderByStartTimeAsc(volunteerDate, shelterId);
+    public List<VolunteerScheduleDto> selectScheduleList(Long noticeId){
 
-        if (list == null){
+        List<VolunteerSchedule> volunteerSchedules = volunteerScheduleRepository.findWithVolunteerNoticeByVolunteerNoticeNoticeIdAndReservationStateCode(noticeId, Reservation.대기중);
+        if(volunteerSchedules.isEmpty()){
             return null;
         }
-        List<VolunteerScheduleDto> volunteerScheduleDtoList = new ArrayList<>();
+        List<VolunteerScheduleDto> list = new ArrayList<>();
         for (VolunteerSchedule vs:
-             list) {
-            volunteerScheduleDtoList.add(VolunteerScheduleDto.builder()
-                    .volunteerId(vs.getVolunteerId())
-                    .capacity(vs.getCapacity())
-                    .totalCapacity(vs.getTotalCapacity())
-                    .volunteerDate(vs.getVolunteerDate())
-                    .shelterId(vs.getShelter().getShelterId())
-                    .shelterName(vs.getShelter().getName())
-                    .endTime(vs.getEndTime())
-                    .guideLine(vs.getGuideLine())
-                    .reservationStateCode(vs.getReservationStateCode().getCode())
-                    .reservationState(vs.getReservationStateCode().name())
-                    .startTime(vs.getStartTime())
-                    .title(vs.getTitle())
-                    .build());
+                volunteerSchedules) {
+            int capacity = 0;
+            List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCode(vs.getScheduleId(), Reservation.수락);
+            if(!volunteerReservations.isEmpty()){
+                for (VolunteerReservation vr:
+                     volunteerReservations) {
+                    capacity += vr.getCapacity();
+                }
+            }
 
+            list.add(VolunteerScheduleDto.builder()
+                    .scheduleId(vs.getScheduleId())
+                    .startTime(vs.getStartTime())
+                    .endTime(vs.getEndTime())
+                    .totalCapacity(vs.getCapacity())
+                    .capacity(capacity)
+                    .guideLine(vs.getGuideLine())
+                    .reservationState(vs.getReservationStateCode().name())
+                    .reservationStateCode(vs.getReservationStateCode().getCode())
+                    .build());
         }
-        return volunteerScheduleDtoList;
+        return list;
     }
 }
