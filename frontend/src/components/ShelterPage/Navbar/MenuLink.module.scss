@@ -14,11 +14,13 @@
   &.active {
     margin-top: 15px;
     margin-bottom: 5px;
+    background-color: $main-accent-color;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
   &:hover {
     margin-top: 15px;
     margin-bottom: 5px;
+    background-color: $main-accent-color;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
 }
