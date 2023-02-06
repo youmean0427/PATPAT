@@ -15,11 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class VolunteerScheduleDto {
 
-    private Long volunteerId;
-
-    private String title;
-
-    private String volunteerDate;
+    private Long scheduleId;
 
     private LocalDateTime startTime;
 
@@ -35,7 +31,4 @@ public class VolunteerScheduleDto {
 
     private String reservationState;
 
-    private Integer shelterId;
-
-    private String shelterName;
 }

@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestVolunteerDto {
-    private int shelterId;
+    private Integer shelterId;
     private int offset;
     private int limit;
     private String keyword;
