@@ -1,0 +1,263 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  display: flex;
+  font-size: 20px;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  &-info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    // background-color: red;
+
+    &-picture {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      flex-grow: 0;
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      &-inner {
+        display: flex;
+        &-sub {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+
+    &-content {
+      width: 50%;
+
+      & > div {
+        display: flex;
+        justify-content: center;
+        // flex-wrap: wrap;
+        margin: 10px;
+
+        & > div {
+          flex-grow: 1;
+          width: 50%;
+          margin: 10px;
+
+          // border-style: solid;
+          & > input {
+            width: 100%;
+            font-size: 20px;
+            padding: 5.5px;
+            padding-left: 10px;
+            font-family: $seoul-font;
+            border: 1px;
+            border-style: solid;
+            border-color: #cccccc;
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  &-gender {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+
+    & > div {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+
+      & > div {
+        margin-right: 5px;
+
+        & > input {
+          margin-right: 10px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  &-radio {
+    width: 100%;
+    font-size: 20px;
+    padding: 5.5px;
+    padding-left: 10px;
+    font-family: $seoul-font;
+    border: 1px;
+    border-style: solid;
+    border-color: #cccccc;
+    border-radius: 5px;
+  }
+  &-character {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+
+    & > div {
+      width: 50%;
+
+      & > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        margin-top: 15px;
+        & > span {
+          width: 70px;
+          margin-right: 20px;
+          text-align: center;
+        }
+
+        & > div {
+          width: 50%;
+        }
+      }
+    }
+  }
+
+  &-button {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+  }
+}
+
+.thumbnail {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  & > img {
+    width: 500px;
+  }
+}
+.title {
+  margin: 20px;
+  width: 100%;
+  & > input {
+    width: 100%;
+    font-size: 25px;
+    padding: 10px;
+    font-family: $seoul-font;
+    border: 1px;
+    border-style: solid;
+    border-color: #cccccc;
+    border-radius: 5px;
+  }
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.subTitle {
+  font-size: 25px;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.button {
+  font-size: 20px !important;
+  margin: 10px !important;
+  width: 100px !important;
+  font-family: $seoul-font !important;
+
+  background-color: $blue-color !important;
+  &:hover {
+    background-color: #4d5996 !important;
+  }
+}
+
+.pictureButtonCont {
+  margin: 10px;
+}
+.pictureButton {
+  font-size: 20px;
+  margin: 10px;
+  width: 100px;
+  font-family: $seoul-font;
+  border: $blue-color solid 2px;
+  color: $blue-color;
+  border-radius: 4px;
+  padding: 2.5px;
+  &:hover {
+    border-color: #4d5996;
+  }
+}
+
+.thumbnail {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 1px solid;
+}
+.subPicture {
+  width: 125px;
+  height: 125px;
+  object-fit: cover;
+
+  border: 1px solid;
+}
+
+.deleteButton {
+  position: absolute;
+
+  &-box {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.ckEditor {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+  .container-info {
+    flex-direction: column;
+    &-content {
+      width: 100%;
+    }
+  }
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .container-character {
+    flex-direction: column;
+    & > div {
+      width: 100%;
+    }
+  }
+}
+
+.file {
+  display: none;
+}

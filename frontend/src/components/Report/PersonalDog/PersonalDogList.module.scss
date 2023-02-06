@@ -8,21 +8,27 @@
 
   &-search {
     display: flex;
-    justify-content: center;
-    margin: 10px;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
 
     &-inner {
       display: flex;
-      justify-content: space-between;
+
       & > span {
         margin: 10px;
         > select {
           width: auto;
           font-size: 20px;
-          font-family: $spoqa-font;
+          font-family: $seoul-font;
         }
       }
     }
+  }
+
+  &-newButton {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
@@ -33,6 +39,31 @@
   justify-content: space-between;
 }
 
+<<<<<<< HEAD
+.newButton {
+  font-size: 20px !important;
+  margin: 10px !important;
+  width: 100px !important;
+  font-family: $seoul-font !important;
+
+  background-color: $blue-color !important;
+  &:hover {
+    background-color: #4d5996 !important;
+  }
+}
+
+// Select
+.select {
+  &-breed {
+    width: 200px;
+    font-size: 15px;
+    font-family: $seoul-font;
+  }
+  &-gender {
+    font-size: 15px;
+    font-family: $seoul-font;
+  }
+=======
 .searchButton {
   font-size: 20px;
   margin: 10px;
@@ -43,4 +74,5 @@
   border-color: $main-color;
   background-color: $main-color;
   color: $white-color;
+>>>>>>> e05d0becfdb1792a5b8e7e86a9dfdc1a7fd690db
 }
