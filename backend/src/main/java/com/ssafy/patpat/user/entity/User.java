@@ -77,6 +77,9 @@ public class User {
     )
     private Shelter shelter;
 
+    @OneToOne(mappedBy = "user")
+    private Owner owner;
+
     @PrePersist
     public void prePersist() {
         this.exp = this.exp == null ? 0 : this.exp;

@@ -293,6 +293,11 @@ public class UserService {
                     .imageUrl(fileService.getFileUrl(dog.getImages().get(0)))
                     .stateCode(dog.getStateCode().getCode())
                     .state(dog.getStateCode().name())
+                    .weight(dog.getWeight())
+                    .neutered(dog.isNeutered())
+                    .gender(dog.getGender().name())
+                    .genderCode(dog.getGender().getCode())
+                    .age(dog.getAge())
                     .build());
         }
         return list;

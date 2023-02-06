@@ -5,14 +5,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-import com.ssafy.patpat.common.dto.FileDto;
+import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.consulting.entity.Time;
-import io.swagger.models.auth.In;
+import com.ssafy.patpat.user.entity.Owner;
+import com.ssafy.patpat.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @ToString
 @Getter
@@ -26,20 +28,31 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shelter_id")
     private Integer shelterId;
-
     private String address;
     private String latitude;
     private String longitude;
-    private String phoneNum;
     private String name;
     private String regNumber;
     private String sidoCode;
     private String gugunCode;
     private String info;
-    private Long adminId;
+
+    @OneToMany(mappedBy = "shelter")
+    private List<User> users;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "shelter_image",
+            joinColumns = {@JoinColumn(name = "shelter_id")},
+            inverseJoinColumns = {@JoinColumn(name = "image_id")})
+    private Set<Image> images;
 
     @OneToMany
     @JoinColumn(name = "shelter_id")
-    private List<Time> timeList = new ArrayList<Time>();
+    private List<Time> timeList;
 
 }
