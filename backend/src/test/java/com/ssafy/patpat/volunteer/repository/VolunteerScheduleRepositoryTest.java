@@ -62,12 +62,19 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(v.getVolunteerDate());
 //            System.out.println(v.getName());
 //        }
-        PageRequest pageRequest = PageRequest.of(0,4, Sort.by("volunteerDate").ascending());
-        List<VolunteerNotice> list = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(2,"2023-02%");
+//        PageRequest pageRequest = PageRequest.of(0,4, Sort.by("volunteerDate").ascending());
+//        List<VolunteerNotice> list = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(2,"2023-02%");
+//
+//        for (VolunteerNotice v:
+//             list) {
+//            System.out.println(v.getNoticeId());
+//        }
 
-        for (VolunteerNotice v:
-             list) {
-            System.out.println(v.getNoticeId());
+        Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(4L);
+        List<VolunteerSchedule> vs = vn.get().getVolunteerSchedules();
+        for (VolunteerSchedule v:
+             vs) {
+            System.out.println(v.getScheduleId());
         }
 
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);

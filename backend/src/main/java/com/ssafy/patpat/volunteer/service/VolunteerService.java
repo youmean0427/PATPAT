@@ -219,5 +219,27 @@ public class VolunteerService {
 
     }
 
+    @Transactional
+    public boolean deleeteNotice(Long noticeId){
+        if(noticeId == null){
+            LOGGER.info("공고 ID가 비었습니다.");
+            return false;
+        }
+        Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(noticeId);
+
+        if(!vn.isPresent()){
+            LOGGER.info("잘못된 공고 ID 입니다.");
+            return false;
+        }
+        //schedule 정보 먼저 삭제
+        volunteerScheduleRepository.deleteAll(vn.get().getVolunteerSchedules());
+
+        // notice 정보 삭제
+        volunteerNoticeRepository.delete(vn.get());
+
+        return true;
+
+    }
+
 
 }

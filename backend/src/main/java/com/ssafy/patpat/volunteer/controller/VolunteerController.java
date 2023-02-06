@@ -110,6 +110,24 @@ public class VolunteerController {
                     .body(new ResponseMessage("FAIL"));
         }
     }
+
+    /**
+     * 봉사 공고 삭제
+     * @return
+     */
+    @DeleteMapping("/notices")
+    @ApiOperation(value = "봉사 공고 삭제", notes = "봉사 공고 삭제...상태코드로 한다했나..?")
+    public ResponseEntity<Object> deleteNotice(@RequestParam("noticeId") Long noticeId){
+        //서비스 호출 코드
+        if(volunteerService.deleeteNotice(noticeId)){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+
     /**
      * 봉사 지원서 조회(개인)
      * @return
