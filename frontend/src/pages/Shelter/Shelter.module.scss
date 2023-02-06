@@ -1,8 +1,5 @@
 @import 'assets/styles/variable.scss';
 
-.container {
-}
-
 .header {
   display: flex;
   justify-content: center;
@@ -37,49 +34,7 @@
   }
 }
 
-.navbar {
-  font-size: 1.8rem;
-  margin-top: 10rem;
-  transition: all 0.4s;
-  &__menu {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    & > .button {
-      font-weight: 900;
-      border-radius: 0.5rem;
-      display: block;
-      text-align: center;
-      padding: 1rem 4rem;
-      transition: all 0.2s;
-      background-color: $main-color;
-      color: $white-color;
-      box-shadow: 0px 5px 0px 0px $main-accent-color;
-      margin: 10px 0px 10px 0;
-      &.active {
-        margin-top: 15px;
-        margin-bottom: 5px;
-        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-      }
-      &:hover {
-        margin-top: 15px;
-        margin-bottom: 5px;
-        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-      }
-    }
-  }
-}
-
 @include breakpoint(md) {
-  .navbar {
-    font-size: 1.6rem;
-    &__menu {
-      gap: 1.5rem;
-      & > .button {
-        padding: 1rem 3rem;
-      }
-    }
-  }
 }
 
 @include breakpoint(sm) {
@@ -105,17 +60,6 @@
         & > span {
           color: $main-accent-color;
         }
-      }
-    }
-  }
-  .navbar {
-    font-size: 1.4rem;
-    margin-top: 2rem;
-    &__menu {
-      flex-direction: column;
-      gap: 0;
-      & > .button {
-        padding: 1rem 2rem;
       }
     }
   }

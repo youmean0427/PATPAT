@@ -9,6 +9,7 @@ import test1 from 'assets/images/test/shelter_test_img1.jpeg';
 import test2 from 'assets/images/test/shelter_test_img2.jpeg';
 import test3 from 'assets/images/test/shelter_test_img3.jpeg';
 import test4 from 'assets/images/test/shelter_test_img4.jpeg';
+import ShelterContainer from 'containers/ShelterContainer';
 export default function ShelterIntro() {
   const { shelterId } = useParams();
 
@@ -24,10 +25,9 @@ export default function ShelterIntro() {
   });
   if (isLoading) return;
   return (
-    <div className={styles.container}>
+    <ShelterContainer title="보호소 정보">
       <main className={styles.main}>
         <Carousel
-          className={styles.image}
           data={imageData}
           radius="10px"
           slideNumber={true}
@@ -45,9 +45,8 @@ export default function ShelterIntro() {
           <div>{data.address}</div>
           <div>문석환</div>
           <div>{data.phoneNum}</div>
-          <div>235마리</div>
         </div>
       </main>
-    </div>
+    </ShelterContainer>
   );
 }

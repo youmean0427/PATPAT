@@ -58,7 +58,7 @@ const router = createBrowserRouter([
         path: 'shelter/:shelterId',
         element: <Shelter />,
         children: [
-          { index: true, path: 'intro', element: <ShelterIntro /> },
+          { path: 'intro', element: <ShelterIntro /> },
           { path: 'protect', element: <ShelterProtect /> },
           { path: 'volunteer', element: <ShelterVolunteer /> },
           { path: 'consulting', element: <ShelterConsulting /> },
