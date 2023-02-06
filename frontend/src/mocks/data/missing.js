@@ -334,8 +334,7 @@ export const missingDogDetail = {
   categoryEar: '귀모양',
   categoryPattern: '패턴',
   categoryTail: '꼬리모양',
-  content:
-    '부산광역시 사하구 하단동 근처에서 초코푸들 발견하신분 꼭 연락주세요, 실종 당시 사진과 같은 검정색 몸줄 착용하고 있었습니다. 발견하시면 010-1234-5678로 연락주세요',
+  content: '사람을 좋아합니다.',
   fileUrlList: [
     'https://cdn.salgoonews.com/news/photo/202201/14846_37584_921.jpg',
     'https://cdn.salgoonews.com/news/photo/202201/14846_37584_921.jpg',
@@ -344,7 +343,7 @@ export const missingDogDetail = {
   gender: 0,
   latitude: '위도',
   longitude: '경도',
-  missingId: 1,
+  missingId: 8,
   name: '견훈',
   neutered: 0,
   personalProtectionId: 0,

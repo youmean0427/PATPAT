@@ -14,9 +14,11 @@ export default function MissingDog({ userId }) {
 
   return (
     <div className={styles.container}>
-      {data.map(item => (
-        <MissingDogItem key={item.missingId} item={item} />
-      ))}
+      {data.length === 0 ? (
+        <div className={styles['no-data']}>등록된 실종 공고가 없습니다.</div>
+      ) : (
+        data.map(item => <MissingDogItem key={item.missingId} item={item} />)
+      )}
     </div>
   );
 }

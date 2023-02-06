@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { getShelterDetail } from 'apis/api/shelter';
 import React from 'react';
-import { useParams } from 'react-router';
+import { Outlet, useParams } from 'react-router';
+import defaultShelterImage from 'assets/images/default-shelter.png';
 import styles from './Shelter.module.scss';
-import Content from 'components/ShelterPage/Content';
+import Navbar from 'components/ShelterPage/Navbar/Navbar';
+import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 
 export default function Shelter() {
   const params = useParams();
@@ -15,18 +17,30 @@ export default function Shelter() {
   });
 
   if (isLoading) return;
-  console.log(data);
   return (
     <div className={styles.container}>
-      <div className={styles['main-info']}>
-        <img className={styles['main-img']} src={data[0].fileDto.origFilename} alt="" />
-        <div className={styles['main-content']}>
-          <p className={styles['shelter-name']}>{data[0].name}</p>
-          <p className={styles['shelter-info']}>{data[0].name}에 방문해주셔서 감사합니다.</p>
+      <div className={styles.header}>
+        <div className={styles.thumbnail}>
+          {data.fileDto ? (
+            <img src={data.fileDto.thumbnail} alt="보호소 대표 이미지" />
+          ) : (
+            <img src={defaultShelterImage} alt="보호소 대표 이미지" />
+          )}
         </div>
-        <hr className={styles.line} />
+        <div className={styles['title-box']}>
+          <div className={styles.title}>{data.name}</div>
+          <div className={styles['sub-title']}>
+            <span>{data.name}</span>에 방문해주셔서 감사합니다
+          </div>
+        </div>
       </div>
-      <Content />
+      <Navbar>
+        <MenuLink move="intro" value="정보 보기" />
+        <MenuLink move="protect" value="보호 동물" />
+        <MenuLink move="volunteer" value="봉사 신청" />
+        <MenuLink move="consulting" value="상담 신청" />
+      </Navbar>
+      <Outlet />
     </div>
   );
 }

@@ -14,8 +14,8 @@ export default function ForPawMeter({ data }) {
   const [profile, setProfile] = useState('');
   const [preProfile, setPreProfile] = useState('');
   const [userName, setUserName] = useState('');
+  const [distance, setDistance] = useState(0); // 최대 Distance = 82
 
-  const distance = 0;
   const fileInput = useRef(null);
   const reader = new FileReader();
 
@@ -23,6 +23,7 @@ export default function ForPawMeter({ data }) {
     setProfile(data.profileImageUrl);
     setPreProfile(data.profileImageUrl);
     setUserName(data.username);
+    setDistance(distance >= 82 ? 82 : distance);
   }, []);
 
   const openModal = () => {
@@ -42,7 +43,7 @@ export default function ForPawMeter({ data }) {
   const createFormData = () => {
     const formData = new FormData();
     formData.append('userId', data.userId);
-    formData.append('username', data.username);
+    formData.append('username', userName);
     formData.append('profileFile', file);
     modifyUserInfo(formData);
   };
@@ -69,9 +70,9 @@ export default function ForPawMeter({ data }) {
     <div className={styles.ForPaw}>
       <div className={styles.container}>
         {click ? (
-          <div className={styles['content-text']}>
-            For Paw Meter는 봉사시간, 후기, 정보공유 등을 종합해서 만든 관심 지표입니다.
-          </div>
+          <p className={styles['content-text']}>
+            {`'For Paw Meter'는 봉사시간, 후기, 정보공유 등을 종합해서 만든 관심 지표입니다.`}
+          </p>
         ) : null}
         <div className={styles.content}>
           <p>ForPawMeter</p>
@@ -84,7 +85,7 @@ export default function ForPawMeter({ data }) {
           />
         </div>
         <br />
-        <img src={ForPawDog} alt="" className={styles['dog-gif']} style={{ marginLeft: `${distance}` }} />
+        <img src={ForPawDog} alt="" className={styles['dog-gif']} style={{ marginLeft: `${distance}%` }} />
         <img src={profile} alt="" className={styles['user-profile']} />
         <img title="프로필 수정" src={ModifyBtn} alt="" className={styles['modify-profile']} onClick={openModal} />
         <Modal open={modal} close={closeModal} save={saveModal} title="프로필 수정">
@@ -105,7 +106,9 @@ export default function ForPawMeter({ data }) {
           </div>
         </Modal>
         <br />
-        <div className={styles.road}></div>
+        <div className={styles.road}>
+          <div className={styles.status} style={{ width: `${distance === 82 ? 100 : Math.round(distance + 10)}%` }} />
+        </div>
       </div>
     </div>
   );

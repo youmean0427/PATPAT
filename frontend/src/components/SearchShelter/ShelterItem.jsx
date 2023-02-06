@@ -7,7 +7,7 @@ export default function ShelterItem({ item }) {
   return (
     <div
       onClick={() => {
-        navigate(`/shelter/${item.shelterId}`);
+        navigate(`/shelter/${item.shelterId}/intro`);
       }}
       className={styles.container}
     >

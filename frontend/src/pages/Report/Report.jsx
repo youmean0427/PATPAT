@@ -4,6 +4,7 @@ import PersonalDogList from 'components/Report/PersonalDog/PersonalDogList';
 import React from 'react';
 import { useState } from 'react';
 import styles from './Report.module.scss';
+import Button from '@mui/material/Button';
 
 export default function Report() {
   const [selected, setSelected] = useState('실종');
@@ -15,19 +16,27 @@ export default function Report() {
     <div>
       <Banner title="실종견 / 임보견" />
       <div className={styles.container}>
-        <button
+        {/* <button
+          onClick={() => handleClick('실종')}
+          className={selected === '실종' ? styles['button-selected'] : styles['button-unselected']}
+        > */}
+        <Button
+          variant={selected === '실종' ? 'contained' : 'outlined'}
           onClick={() => handleClick('실종')}
           className={selected === '실종' ? styles['button-selected'] : styles['button-unselected']}
         >
           실종견
-        </button>
-        <button
+        </Button>
+        {/* </button> */}
+        <Button
+          variant={selected === '임보' ? 'contained' : 'outlined'}
           onClick={() => handleClick('임보')}
           className={selected === '임보' ? styles['button-selected'] : styles['button-unselected']}
         >
           임보견
-        </button>
+        </Button>
       </div>
+      <hr />
       <div>
         {selected === '실종' ? <MissingDogList /> : null}
         {selected === '임보' ? <PersonalDogList /> : null}

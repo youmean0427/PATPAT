@@ -4,9 +4,9 @@ import { rest } from 'msw';
 export const missing = [
   rest.get(`${process.env.REACT_APP_API_URL}/reports/missings`, (req, res, ctx) => {
     const gender = req.url.searchParams.get('gender');
-    if (gender === '0') {
+    if (gender === '1') {
       return res(ctx.status(200), ctx.json(maleMissingDogList));
-    } else if (gender === '1') {
+    } else if (gender === '2') {
       return res(ctx.status(200), ctx.json(femaleMissingDogList));
     } else {
       return res(ctx.status(200), ctx.json(missingDogList));
@@ -23,10 +23,10 @@ export const missing = [
   rest.post(`${process.env.REACT_APP_API_URL}/reports`, (req, res, ctx) => {
     const reportType = req.url.searchParams.get('reportType');
     if (reportType === '0') {
-      console.log('req', req.body);
+      // console.log('req', req.body);
       missingDogList.push(req.body);
-      console.log('Handler', missingDogList);
-      console.log('ful', missingDogList);
+      // console.log('Handler', missingDogList);
+      // console.log('ful', missingDogList);
       return res(ctx.status(201));
     }
   }),

@@ -1,18 +1,32 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 import styles from './MissingDogDetail.module.scss';
-import MissingDogDetailContent from 'components/Report/MissingDog/MissingDogDetailContent';
-
+import Button from '@mui/material/Button';
+import DogDetailContent from 'components/Report/DogDetailContent';
 export default function MissingDogDetail() {
   const location = useLocation();
   const item = location.state.missingId;
-
+  const state = 0;
   return (
     <div>
-      <div className={styles.title}>실종견/임보견 상세</div>
+      <DogDetailContent item={item} state={state} />
       <hr />
-      <MissingDogDetailContent item={item} />
+      <div className={styles['container-button']}>
+        <Button variant="contained" className={styles.button}>
+          이전
+        </Button>
+
+        <Link to="/report">
+          <Button variant="contained" className={styles.button}>
+            목록
+          </Button>
+        </Link>
+
+        <Button variant="contained" className={styles.button}>
+          다음
+        </Button>
+      </div>
     </div>
   );
 }
