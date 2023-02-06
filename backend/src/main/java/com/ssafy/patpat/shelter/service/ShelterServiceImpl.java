@@ -9,7 +9,6 @@ import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
-import com.ssafy.patpat.protect.entity.ShelterDogImage;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;

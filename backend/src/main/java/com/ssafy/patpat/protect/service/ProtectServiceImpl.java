@@ -117,6 +117,7 @@ public class ProtectServiceImpl implements ProtectService{
             }
             return  protectDtoList;
         }catch(Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -167,6 +168,7 @@ public class ProtectServiceImpl implements ProtectService{
             }
             return  protectDtoList;
         }catch(Exception e){
+            e.printStackTrace();
             return null;
         }
 
