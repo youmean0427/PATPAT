@@ -10,6 +10,8 @@ import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
+import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +43,8 @@ public class BoardServiceImpl implements BoardService{
     NestedCommentRepository nestedCommentRepository;
     @Autowired
     PostImageRepository postImageRepository;
+    @Autowired
+    UserService userService;
 
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;
@@ -58,8 +62,13 @@ public class BoardServiceImpl implements BoardService{
         /**
          * JWT  구현되면 유저 정보 가져오는거 수정해야함
          */
-        int userId = 0;
+        UserDto userDto = userService.getUserWithAuthorities();
+        Long userId = userDto.getUserId();
+        System.out.println(requestBoardDto);
         List<Board> entityList = boardRepository.findByUserIdAndPostCode(userId,requestBoardDto.getTypeCode(),pageRequest);
+        System.out.println(entityList);
+        System.out.println(requestBoardDto);
+
         List<BoardDto> dtoList = new ArrayList<>();
         for(Board entity : entityList){
             dtoList.add(
@@ -195,7 +204,7 @@ public class BoardServiceImpl implements BoardService{
                     .title(boardDto.getTitle())
                     .content(boardDto.getContent())
                     .postCode(boardDto.getTypeCode())
-                    .userId(0)
+                    .userId(0L)
                     .nickName("dd")
                     .dateTime(LocalDateTime.now())
                     .build();

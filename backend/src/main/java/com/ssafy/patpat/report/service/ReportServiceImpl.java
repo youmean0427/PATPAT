@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,68 +57,74 @@ public class ReportServiceImpl implements ReportService{
     String uploadFolder;
     @Override
     public List<ReportDto> selectMissingList(RequestReportDto requestReportDto) {
-        int gender = requestReportDto.getGender();
-        int breedId = requestReportDto.getBreedId();
-        int limit = requestReportDto.getLimit();
-        int offSet = requestReportDto.getLimit();
-        PageRequest pageRequest = PageRequest.of(offSet,limit);
+        try{
+            int gender = requestReportDto.getGender();
+            int breedId = requestReportDto.getBreedId();
+            int limit = requestReportDto.getLimit();
+            int offSet = requestReportDto.getOffSet();
+            PageRequest pageRequest = PageRequest.of(offSet,limit, Sort.by("missingId").descending());
 
-        List<MissingDog> missingDogList = null;
-        if(gender == 0 && breedId == 0){
-            Pageable pageable =  PageRequest.of(limit,offSet);
-            Page<MissingDog> pageList = missingDogRepository.findAll(pageRequest);
-            missingDogList = pageList.toList();
-        }
-        else if(gender == 0 && breedId > 0){
-            missingDogList = missingDogRepository.findByGender(gender,pageRequest);
-        }
-        else if(gender>0 && breedId==0){
-            missingDogList = missingDogRepository.findByBreedId(breedId,pageRequest);
-        }
-        else if(gender > 0 && breedId > 0){
-            missingDogList = missingDogRepository.findByGenderAndBreedId(gender, breedId, pageRequest);
-        }
-
-        List<ReportDto> reportDtoList = new ArrayList<>();
-
-        for(MissingDog missingDog : missingDogList){
-            //이미지 FK 가져오기
-            List<MissingDogImage> missingDogImageList = missingDogImageRepository.findByMissingId(missingDog.getMissingId());
-            //실제 이미지 가져오기
-            List<Integer> imageIdList = new ArrayList<>();
-            for(MissingDogImage missingDogImage : missingDogImageList){
-                imageIdList.add(missingDogImage.getImageId());
+            List<MissingDog> missingDogList = null;
+            if(gender == 0 && breedId == 0){
+              Page<MissingDog> pageList = missingDogRepository.findAll(pageRequest);
+              missingDogList = pageList.toList();
             }
-            List<Image> imageList = imageRepository.findByImageIdIn(imageIdList);
-            //이미지 담을 파일 객체 리스트 생성
-            FileDto thumbnail = new FileDto();
-            if(imageList.size() > 0){
-                FileDto.builder()
-                        .filePath(imageList.get(0).getFilePath())
-                        .build();
+            else if(gender == 0 && breedId > 0){
+                missingDogList = missingDogRepository.findByGender(gender,pageRequest);
             }
-            Breed breed = breedRepository.findByBreedId(missingDog.getBreedId());
-            reportDtoList.add(
-                    ReportDto.builder()
-                            .name(missingDog.getName())
-                            .missingId(missingDog.getMissingId())
-                            .gender(missingDog.getGender()==0?"수컷":"암컷")
-                            .isNeutered(missingDog.getNeutered()==1?true:false)
-                            .age(missingDog.getAge())
-                            .breedId(missingDog.getBreedId())
-                            .breedName(breed.getName())
-                            .kg(missingDog.getWeight())
-                            .thumbnail(thumbnail)
-                            .build()
-            );
+            else if(gender>0 && breedId==0){
+                missingDogList = missingDogRepository.findByBreedId(breedId,pageRequest);
+            }
+            else if(gender > 0 && breedId > 0){
+                missingDogList = missingDogRepository.findByGenderAndBreedId(gender, breedId, pageRequest);
+            }
+
+            List<ReportDto> reportDtoList = new ArrayList<>();
+            System.out.println(missingDogList);
+            for(MissingDog missingDog : missingDogList){
+                //이미지 FK 가져오기
+                List<MissingDogImage> missingDogImageList = missingDogImageRepository.findByMissingId(missingDog.getMissingId());
+                //실제 이미지 가져오기
+                List<Integer> imageIdList = new ArrayList<>();
+                for(MissingDogImage missingDogImage : missingDogImageList){
+                    imageIdList.add(missingDogImage.getImageId());
+                }
+                List<Image> imageList = imageRepository.findByImageIdIn(imageIdList);
+                //이미지 담을 파일 객체 리스트 생성
+                FileDto thumbnail = new FileDto();
+                if(imageList.size() > 0){
+                    FileDto.builder()
+                            .filePath(imageList.get(0).getFilePath())
+                            .build();
+                }
+                Breed breed = breedRepository.findByBreedId(missingDog.getBreedId());
+                System.out.println(breed);
+                reportDtoList.add(
+                        ReportDto.builder()
+                                .name(missingDog.getName())
+                                .missingId(missingDog.getMissingId())
+                                .gender(missingDog.getGender()==0?"수컷":"암컷")
+                                .isNeutered(missingDog.getNeutered()==1?true:false)
+                                .age(missingDog.getAge())
+                                .breedId(missingDog.getBreedId())
+                                .breedName(breed.getName())
+                                .kg(missingDog.getWeight())
+                                .thumbnail(thumbnail)
+                                .build()
+                );
+            }
+            return reportDtoList;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
-        return reportDtoList;
+
     }
 
     @Override
     public List<ReportDto> selectMissingListByUser(int userId, RequestReportDto requestReportDto) {
         int limit = requestReportDto.getLimit();
-        int offSet = requestReportDto.getOffset();
+        int offSet = requestReportDto.getOffSet();
         PageRequest pageRequest = PageRequest.of(offSet,limit);
         System.out.println(userId);
         System.out.println(requestReportDto);

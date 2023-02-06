@@ -135,6 +135,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Override
     public ResponseMessage updateConsulting(int consultingId, ConsultingDto consultingDto) {
         ResponseMessage responseMessage = new ResponseMessage();
+        System.out.println(consultingDto);
         try{
             Consulting consulting = consultingRepository.findByConsultingId(consultingId);
             consulting.updateConsulting(consultingDto.getStateCode());

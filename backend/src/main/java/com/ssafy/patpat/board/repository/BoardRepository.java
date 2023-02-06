@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends JpaRepository<Board,String>  {
     Board findByBoardId(int boardId);
-    List<Board> findByUserId(int userId, PageRequest pageRequest);
-    List<Board> findByUserIdAndPostCode(int userId, int postCode, PageRequest pageRequest);
+    List<Board> findByUserId(long userId, PageRequest pageRequest);
+    List<Board> findByUserIdAndPostCode(long userId, int postCode, PageRequest pageRequest);
     List<Board> findByPostCode(int postCode, PageRequest pageRequest);
 
     void deleteByBoardId(int boardId);
