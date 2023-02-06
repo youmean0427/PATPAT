@@ -17,7 +17,7 @@
 
       & > span {
         margin: 10px;
-        > select {
+        & > select {
           width: auto;
           font-size: 20px;
           font-family: $seoul-font;
@@ -45,7 +45,7 @@
   width: 100px !important;
   font-family: $seoul-font !important;
 
-  background-color: $blue-color !important;
+  background-color: $main-color !important;
   &:hover {
     background-color: #4d5996 !important;
   }

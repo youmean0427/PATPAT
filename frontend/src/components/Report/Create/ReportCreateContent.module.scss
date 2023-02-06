@@ -180,7 +180,7 @@
   width: 100px !important;
   font-family: $seoul-font !important;
 
-  background-color: $blue-color !important;
+  background-color: $main-color !important;
   &:hover {
     background-color: #4d5996 !important;
   }
@@ -194,8 +194,8 @@
   margin: 10px;
   width: 100px;
   font-family: $seoul-font;
-  border: $blue-color solid 2px;
-  color: $blue-color;
+  border: $main-color solid 2px;
+  color: $main-color;
   border-radius: 4px;
   padding: 2.5px;
   &:hover {

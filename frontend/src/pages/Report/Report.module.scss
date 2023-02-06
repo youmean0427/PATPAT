@@ -13,8 +13,8 @@
     width: 300px !important;
     font-family: $seoul-font !important;
 
-    border-color: $blue-color !important;
-    background-color: $blue-color !important;
+    border-color: $main-color !important;
+    background-color: $main-color !important;
     &:hover {
       background-color: #4d5996 !important;
     }
@@ -25,9 +25,9 @@
     width: 300px !important;
     font-family: $seoul-font !important;
 
-    border-color: $blue-color !important;
+    border-color: $main-color !important;
     background-color: $white-color !important;
-    color: $blue-color !important;
+    color: $main-color !important;
     &:hover {
       background-color: #eef0fd !important;
       border-color: #4d5996 !important;
