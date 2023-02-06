@@ -28,9 +28,12 @@ public class Consulting {
     private LocalDate registDate;
     private int timeCode;
     private int spDogId;
+    private int isOpen;
 
     public void updateConsulting(int stateCode){
         this.stateCode = stateCode;
     }
-
+    public void createRoom(){
+        this.isOpen = 1;
+    }
 }

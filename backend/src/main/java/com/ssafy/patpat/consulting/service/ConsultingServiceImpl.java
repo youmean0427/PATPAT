@@ -45,6 +45,8 @@ public class ConsultingServiceImpl implements ConsultingService{
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
+                    c.updateConsulting(transferStateCode);
+                    consultingRepository.save(c);
                 }
                 else{
                     transferStateCode  = c.getStateCode();
@@ -80,6 +82,8 @@ public class ConsultingServiceImpl implements ConsultingService{
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
+                    c.updateConsulting(transferStateCode);
+                    consultingRepository.save(c);
                 }
                 else{
                     transferStateCode  = c.getStateCode();
@@ -94,7 +98,6 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .userId(requestConsultingDto.getUserId())
                                 .userName("유저아이디로 이름 가져오기")
                                 .timeCode(c.getTimeCode())
-
                                 .build()
                 );
             }
@@ -130,9 +133,16 @@ public class ConsultingServiceImpl implements ConsultingService{
         ResponseMessage responseMessage = new ResponseMessage();
         try{
             Consulting consulting = consultingRepository.findByConsultingId(consultingId);
-            consulting.updateConsulting(consultingDto.getStateCode());
-            consultingRepository.save(consulting);
-            responseMessage.setMessage("SUCCESS");
+            if(consultingDto.getStateCode() == 8){
+                consulting.createRoom();
+                consultingRepository.save(consulting);
+                responseMessage.setMessage("SUCCESS");
+            }
+            else{
+                consulting.updateConsulting(consultingDto.getStateCode());
+                consultingRepository.save(consulting);
+                responseMessage.setMessage("SUCCESS");
+            }
         }catch (Exception e){
             e.printStackTrace();
             responseMessage.setMessage("FAIL");

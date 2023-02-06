@@ -16,7 +16,10 @@ import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.service.UserService;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +40,7 @@ import java.util.UUID;
 
 @Service
 public class ProtectServiceImpl implements ProtectService{
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProtectServiceImpl.class);
     @Autowired
     ImageRepository imageRepository;
     @Autowired
@@ -63,11 +67,11 @@ public class ProtectServiceImpl implements ProtectService{
         try{
             PageRequest pageRequest;
             List<ShelterProtectedDog> shelterProtectedDogList;
-            List<Integer> filterList = new ArrayList<>();
-            filterList.add(4);
-            filterList.add(5);
-            filterList.add(6);
-
+            List<ProtectState> filterList = new ArrayList<>();
+            filterList.add(ProtectState.입양);
+            filterList.add(ProtectState.자연사);
+            filterList.add(ProtectState.안락사);
+            LOGGER.info("여기와? {} : ",requestProtectDto);
             if(requestProtectDto.getCode() == 0){
                 pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
                 shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
@@ -126,10 +130,10 @@ public class ProtectServiceImpl implements ProtectService{
         try{
             PageRequest pageRequest;
             List<ShelterProtectedDog> shelterProtectedDogList;
-            List<Integer> filterList = new ArrayList<>();
-            filterList.add(4);
-            filterList.add(5);
-            filterList.add(6);
+            List<ProtectState> filterList = new ArrayList<>();
+            filterList.add(ProtectState.입양);
+            filterList.add(ProtectState.자연사);
+            filterList.add(ProtectState.안락사);
             pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit());
             shelterProtectedDogList = shelterProtectedDogRepository.findByShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
             List<ProtectDto> protectDtoList = new ArrayList<>();

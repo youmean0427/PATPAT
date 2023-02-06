@@ -6,6 +6,9 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
+@ToString
 public class RequestProtectDto {
     private int shelterId;
     private int code;
