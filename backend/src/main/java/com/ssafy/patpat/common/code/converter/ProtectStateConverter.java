@@ -4,8 +4,10 @@ import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.Reservation;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+@Converter(autoApply = true)
 public class ProtectStateConverter implements AttributeConverter<ProtectState, Integer> {
     @Override
     public Integer convertToDatabaseColumn(ProtectState protectState) {

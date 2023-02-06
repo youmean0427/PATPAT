@@ -317,11 +317,14 @@ public class ShelterServiceImpl implements ShelterService{
     }
     @Override
     public ResponseMessage updateShelter(String shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) {
+
+
         return null;
     }
 
     @Override
     public ResponseMessage AuthShelter(String authCode) {
+
         return null;
     }
 
@@ -349,12 +352,12 @@ public class ShelterServiceImpl implements ShelterService{
         ShelterDto shelterDto = ShelterDto.builder()
                 .shelterId(s.getShelterId())
                 .name(s.getName())
-                .phoneNum(s.getPhoneNum())
+                .phoneNumber(s.getOwner().getPhoneNumber())
                 .infoContent(s.getInfo())
                 .address(s.getAddress())
                 .fileDtoList(fileDtoList)
-                .adminId(s.getAdminId())
-                .adminName("유저이름 넣어야함 리포지토리 확인")
+                .ownerId(s.getOwner().getOwnerId())
+                .ownerName(s.getOwner().getName())
                 .build();
         return shelterDto;
     }

@@ -2,6 +2,7 @@ package com.ssafy.patpat.protect.service;
 
 import com.ssafy.patpat.board.entity.PostImage;
 import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.code.category.Gender;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
@@ -107,10 +108,11 @@ public class ProtectServiceImpl implements ProtectService{
                                 .protectName(s.getName())
                                 .stateCode(s.getStateCode().getCode())
                                 .state(s.getStateCode().name())
-                                .gender(s.getGender())
+                                .gender(s.getGender().name())
+                                .genderCode(s.getGender().getCode())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
-                                .isNeutered(s.getNeutered()==0?false:true)
+                                .neutered(s.isNeutered())
                                 .age(s.getAge())
                                 .breedName(breed.getName())
                                 .breedId(breed.getBreedId())
@@ -159,8 +161,9 @@ public class ProtectServiceImpl implements ProtectService{
                                 .state(s.getStateCode().name())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
-                                .gender(s.getGender())
-                                .isNeutered(s.getNeutered()==0?false:true)
+                                .gender(s.getGender().name())
+                                .genderCode(s.getGender().getCode())
+                                .neutered(s.isNeutered())
                                 .age(s.getAge())
                                 .breedName(breed.getName())
                                 .breedId(breed.getBreedId())
@@ -204,8 +207,9 @@ public class ProtectServiceImpl implements ProtectService{
                     .breedId(breed.getBreedId())
                     .stateCode(shelterProtectedDog.getStateCode().getCode())
                     .state(shelterProtectedDog.getStateCode().name())
-                    .gender(shelterProtectedDog.getGender())
-                    .isNeutered((shelterProtectedDog.getNeutered()==0)?true:false)
+                    .gender(shelterProtectedDog.getGender().name())
+                    .genderCode(shelterProtectedDog.getGender().getCode())
+                    .neutered(shelterProtectedDog.isNeutered())
                     .infoContent(shelterProtectedDog.getFeature())
                     .kg(shelterProtectedDog.getWeight())
                     .categoryCloth(shelterProtectedDog.getCategoryCloth())
@@ -245,7 +249,8 @@ public class ProtectServiceImpl implements ProtectService{
                     .breedId(protectDto.getBreedId())
                     .shelterId(protectDto.getShelterId())
                     .feature(protectDto.getInfoContent())
-                    .gender(protectDto.getGender())
+                    .gender(Gender.of(protectDto.getGenderCode()))
+                    .neutered(protectDto.isNeutered())
                     .images(images)
                     .registDate(LocalDateTime.now().toLocalDate())
                     //.findingDate(protectDto.getFindingDate())
@@ -255,7 +260,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .name(protectDto.getProtectName())
                     .weight(protectDto.getKg())
                     .stateCode(ProtectState.of(protectDto.getStateCode()))
-                    .sidoCode(shelter.getSidoCode     ())
+                    .sidoCode(shelter.getSidoCode())
                     .gugunCode(shelter.getGugunCode())
                     .categoryCloth(protectDto.getCategoryCloth())
                     .categoryTail(protectDto.getCategoryTail())
