@@ -19,7 +19,7 @@ public class ShelterDto {
 //    private FileDto fileDto;
 //    @Schema(example = "fileUrl:.png")
 //    private List<FileDto> fileDtoList;
-    private List<String> imageList;
+    private List<FileDto> imageList;
     @Schema(example = "설명")
     private String infoContent;
     @Schema(example = "전화번호")
