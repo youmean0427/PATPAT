@@ -8,6 +8,7 @@
 
 .button {
   &-selected {
+<<<<<<< HEAD
     font-size: 20px !important;
     margin: 10px !important;
     width: 300px !important;
@@ -32,5 +33,27 @@
       background-color: #eef0fd !important;
       border-color: #4d5996 !important;
     }
+=======
+    font-size: 20px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    padding: 15px;
+    border-style: solid;
+    border-color: $main-color;
+    background-color: $main-color;
+    color: $white-color;
+  }
+  &-unselected {
+    font-size: 20px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    padding: 15px;
+    border-style: solid;
+    border-color: $main-color;
+    background-color: $white-color;
+    color: $main-color;
+>>>>>>> e05d0becfdb1792a5b8e7e86a9dfdc1a7fd690db
   }
 }

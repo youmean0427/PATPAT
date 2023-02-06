@@ -33,6 +33,10 @@ import ReportUpdate from 'pages/Report/Update/ReportUpdate';
 import Shelter from 'pages/Shelter/Shelter';
 import SearchShelter from 'pages/SearchShelter/SearchShelter';
 import PersonalDogDetail from 'pages/Report/PersonalDog/PersonalDogDetail';
+import ShelterIntro from 'pages/Shelter/ShelterIntro/ShelterIntro';
+import ShelterProtect from 'pages/Shelter/ShelterProtect/ShelterProtect';
+import ShelterVolunteer from 'pages/Shelter/ShelterVolunteer/ShelterVolunteer';
+import ShelterConsulting from 'pages/Shelter/ShelterConsulting/ShelterConsulting';
 
 const router = createBrowserRouter([
   {
@@ -50,7 +54,16 @@ const router = createBrowserRouter([
       { path: 'volunteer/address', element: <Address /> },
       { path: 'report', element: <Report /> },
       { path: 'shelter/search', element: <SearchShelter /> },
-      { path: 'shelter/:shelterId', element: <Shelter /> },
+      {
+        path: 'shelter/:shelterId',
+        element: <Shelter />,
+        children: [
+          { index: true, path: 'intro', element: <ShelterIntro /> },
+          { path: 'protect', element: <ShelterProtect /> },
+          { path: 'volunteer', element: <ShelterVolunteer /> },
+          { path: 'consulting', element: <ShelterConsulting /> },
+        ],
+      },
       { path: 'community/info', element: <InfoMain /> },
       { path: 'community/infodetail/:id', element: <InfoDetail /> },
       { path: 'community/adoptionreview', element: <AdoptionReviewMain /> },

@@ -21,6 +21,7 @@
     "node-sass": "^6.0.0",
     "openvidu-browser": "^2.25.0",
     "react": "^18.2.0",
+    "react-carousel-minimal": "^1.4.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-redux": "^8.0.5",
@@ -30,7 +31,6 @@
     "react-slick": "^0.29.0",
     "recoil": "^0.7.6",
     "redux": "^4.2.1",
-    "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

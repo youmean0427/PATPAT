@@ -18,7 +18,6 @@ function ShelterList() {
     { staleTime: 1000 * 60 * 5 }
   );
   if (isLoading) return;
-  console.log(data);
   return (
     <div className={styles.container}>
       {data.length !== 0 ? (

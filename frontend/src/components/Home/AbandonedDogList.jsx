@@ -4,14 +4,13 @@ import React from 'react';
 import AbandonedDogItem from './AbandonedDogItem';
 import styles from './AbandonedDogList.module.scss';
 export default function AbandonedDogList() {
-  const { isLoading, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ['protectListSortedByEuthanasia'],
     queryFn: () => getProtectList(0, 4, 0),
   });
-  if (isLoading) return;
   return (
     <div className={styles.list}>
-      {data.map(item => (
+      {data?.map(item => (
         <AbandonedDogItem key={item.protectId} item={item} />
       ))}
     </div>

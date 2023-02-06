@@ -39,7 +39,7 @@
     content: '';
     display: block;
     width: 300px;
-    border-bottom: 5px solid $blue-color;
+    border-bottom: 5px solid $main-color;
     margin: 20px 0px;
   }
 }
@@ -53,12 +53,13 @@
     & > span {
       font-size: 2.2rem;
       font-weight: 900;
-      color: $blue-color;
+      color: $main-color;
     }
   }
 }
 
 .logo-img {
+  width: 20rem;
   margin-top: 4rem;
   transition-duration: 0.3s;
   opacity: 1;
@@ -73,7 +74,7 @@
   bottom: -50px;
   width: 0;
   height: 0;
-  border-bottom: 300px solid #b3bdf0;
+  border-bottom: 300px solid $main-color;
   border-top: 200px solid transparent;
   border-left: 200px solid transparent;
   border-right: 200px solid transparent;
