@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styles from './MissingDogDetail.module.scss';
 import Button from '@mui/material/Button';
-import DogDetailContent from 'components/Report/DogDetailContent';
+import DogDetailContent from 'components/Report/Detail/DogDetailContent';
 export default function MissingDogDetail() {
   const location = useLocation();
   const item = location.state.missingId;

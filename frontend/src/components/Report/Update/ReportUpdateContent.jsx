@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { createReport, updateReport } from 'apis/api/report';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './ReportCreateContent.module.scss';
+import styles from './ReportUpdateContent.module.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select';
@@ -10,25 +10,25 @@ import Button from '@mui/material/Button';
 import Test from '../../../assets/images/volunteer.png';
 import { getBreedsList } from 'apis/api/shelter';
 import { changeBreedList } from 'utils/changeSelectTemplate';
-import './ckeditor.scss';
 
-export default function ReportCreateContent() {
-  const [title, setTitle] = useState('');
-  const [name, setName] = useState('');
-  const [typeCode, setTypeCode] = useState({ value: 0 });
+export default function ReportUpdateContent(items) {
+  const item = items.items;
+  const [title, setTitle] = useState(item.title);
+  const [name, setName] = useState(item.name);
+  const [typeCode, setTypeCode] = useState({ value: item.typeCode });
   const [place, setPlace] = useState('');
-  const [genderCode, setGenderCode] = useState(1);
-  const [breedId, setBreedId] = useState({ value: 0 });
-  const [kg, setKg] = useState(0);
-  const [neutered, setNeutered] = useState({ value: 0 });
+  const [genderCode, setGenderCode] = useState('1');
+  const [breedId, setBreedId] = useState({ value: item.breedId });
+  const [kg, setKg] = useState(item.kg);
+  const [neutered, setNeutered] = useState({ value: item.neutered });
 
-  const [content, setContent] = useState('');
-  const [categoryEar, setCategoryEar] = useState({ value: 0 });
-  const [categoryColor, setCategoryColor] = useState({ value: 0 });
-  const [categoryPattern, setCategoryPattern] = useState({ value: 0 });
-  const [categoryTail, setCategoryTail] = useState({ value: 0 });
-  const [categoryCloth, setCategoryCloth] = useState({ value: 0 });
-  const [categoryClothColor, setCategoryClothColor] = useState({ value: 0 });
+  const [content, setContent] = useState(item.content);
+  const [categoryEar, setCategoryEar] = useState({ value: item.categoryEar });
+  const [categoryColor, setCategoryColor] = useState({ value: item.categoryColor });
+  const [categoryPattern, setCategoryPattern] = useState({ value: item.categoryPattern });
+  const [categoryTail, setCategoryTail] = useState({ value: item.categoryTail });
+  const [categoryCloth, setCategoryCloth] = useState({ value: item.categoryCloth });
+  const [categoryClothColor, setCategoryClothColor] = useState({ value: item.categoryClothColor });
   const [uploadFile, setUploadFile] = useState([]);
 
   // Picture
@@ -159,7 +159,7 @@ export default function ReportCreateContent() {
       >
         <div className={styles.container}>
           <div className={styles.title}>
-            <input type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <input type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} value={title} />
           </div>
           <div className={styles['container-info']}>
             <div className={styles['container-info-picture']}>
@@ -221,10 +221,15 @@ export default function ReportCreateContent() {
             <div className={styles['container-info-content']}>
               <div>
                 <div>
-                  <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                  <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} value={name} />
                 </div>
                 <div>
-                  <Select options={stateOpt} onChange={setTypeCode} placeholder="상태" />
+                  <Select
+                    options={stateOpt}
+                    onChange={setTypeCode}
+                    placeholder="상태"
+                    defaultValue={stateOpt[typeCode.value]}
+                  />
                 </div>
               </div>
 
@@ -258,17 +263,27 @@ export default function ReportCreateContent() {
                   </div>
                 </div>
                 <div>
-                  <Select options={changeBreedList(breedData)} onChange={setBreedId} placeholder="견종" />
+                  <Select
+                    options={changeBreedList(breedData)}
+                    onChange={setBreedId}
+                    placeholder="견종"
+                    defaultValue={changeBreedList(breedData)[breedId.value]}
+                  />
                 </div>
               </div>
 
               <div>
                 <div>
-                  <input type="number" placeholder="몸무게" onChange={e => setKg(e.target.value)} />
+                  <input type="number" placeholder="몸무게" onChange={e => setKg(e.target.value)} value={kg} />
                 </div>
                 <div>
                   <div>
-                    <Select options={neuteredOpt} onChange={setNeutered} placeholder="중성화" />
+                    <Select
+                      options={neuteredOpt}
+                      onChange={setNeutered}
+                      placeholder="중성화"
+                      defaultValue={neuteredOpt[neutered.value]}
+                    />
                   </div>
                 </div>
               </div>
@@ -356,6 +371,7 @@ export default function ReportCreateContent() {
         <div>
           <div className={styles.ckEditor}>
             <CKEditor
+              data={item.content}
               editor={ClassicEditor}
               onReady={editor => {
                 // You can store the "editor" and use when it is needed.
@@ -371,18 +387,17 @@ export default function ReportCreateContent() {
               }}
             />
           </div>
-        </div>
-        <hr />
-        <div className={styles['container-button']}>
-          <Button variant="contained" type="submit" className={styles.button}>
-            등록
-          </Button>
-
-          <Link to="/report">
-            <Button variant="contained" className={styles.button}>
-              취소
+          <div className={styles['container-button']}>
+            <Button variant="contained" type="submit" className={styles.button}>
+              등록
             </Button>
-          </Link>
+
+            <Link to="/report">
+              <Button variant="contained" className={styles.button}>
+                취소
+              </Button>
+            </Link>
+          </div>
         </div>
       </form>
     </div>

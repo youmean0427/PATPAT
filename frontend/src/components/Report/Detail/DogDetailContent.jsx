@@ -61,7 +61,7 @@ export default function DogDetailContent({ item, state }) {
             <div className={styles['container-content-info']}>
               <div className={styles['container-content-info-inner']}>
                 <div className={styles['container-content-info-inner-list']}>
-                  <div>품종</div>
+                  <div>견종</div>
                   <div>성별</div>
                   <div>실종/발견 장소</div>
                   <div>몸무게</div>
