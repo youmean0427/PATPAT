@@ -3,6 +3,7 @@ package com.ssafy.patpat.user.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.shelter.entity.Shelter;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -67,6 +68,14 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "sp_dog_id")}
     )
     private Set<ShelterProtectedDog> favoriteDogs;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_shelter",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "shelter_id")}
+    )
+    private Shelter shelter;
 
     @PrePersist
     public void prePersist() {

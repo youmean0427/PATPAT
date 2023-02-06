@@ -36,7 +36,7 @@ public class Shelter {
     private String sidoCode;
     private String gugunCode;
     private String info;
-    private int userId;
+    private Long adminId;
 
     @OneToMany
     @JoinColumn(name = "shelter_id")

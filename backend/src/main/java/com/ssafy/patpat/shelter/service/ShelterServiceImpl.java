@@ -9,7 +9,7 @@ import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
-import com.ssafy.patpat.protect.entity.ShelterDogImage;
+//import com.ssafy.patpat.protect.entity.ShelterDogImage;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
@@ -353,7 +353,7 @@ public class ShelterServiceImpl implements ShelterService{
                 .infoContent(s.getInfo())
                 .address(s.getAddress())
                 .fileDtoList(fileDtoList)
-                .adminId(s.getUserId())
+                .adminId(s.getAdminId())
                 .adminName("유저이름 넣어야함 리포지토리 확인")
                 .build();
         return shelterDto;
