@@ -31,5 +31,5 @@ public class ShelterDto {
     private String gugunCode;
     private String gugunName;
     private String adminName;
-    private int adminId;
+    private Long adminId;
 }

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.protect.repository;
 
+import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
 import io.swagger.models.auth.In;
@@ -11,8 +12,8 @@ import java.util.List;
 
 @Repository
 public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProtectedDog, Integer> {
-    List<ShelterProtectedDog> findByShelterIdAndStateCodeNotIn(int shelterId,List<Integer> stateCode, PageRequest pageRequest);
-    List<ShelterProtectedDog> findByStateCodeNotIn(List<Integer> stateCode, PageRequest pageRequest);
+    List<ShelterProtectedDog> findByShelterIdAndStateCodeNotIn(int shelterId,List<ProtectState> stateCode, PageRequest pageRequest);
+    List<ShelterProtectedDog> findByStateCodeNotIn(List<ProtectState> stateCode, PageRequest pageRequest);
     ShelterProtectedDog findBySpDogId(int spDogId);
 
     List<ShelterProtectedDog> findByBreedIdAndSidoCodeAndGugunCode(int breedId, String sidoCode, String gugunCode);
