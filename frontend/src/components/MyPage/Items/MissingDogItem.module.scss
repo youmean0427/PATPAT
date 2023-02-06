@@ -4,11 +4,12 @@
   margin: 1%;
 }
 .description {
-  padding: 2px;
+  padding: 0 1rem 1rem 1rem;
 }
 .name {
-  font-size: 2rem;
   font-weight: 900;
+  font-size: 1.7rem;
+  margin-bottom: 0.6rem;
 }
 .fav-img {
   position: relative;
@@ -23,29 +24,9 @@
 .fav-img:hover {
   transform: translateY(-2px);
 }
-.state0,
-.state1,
-.state2 {
-  position: relative;
-  float: left;
-  width: 70px;
-  height: 30px;
-  margin-bottom: -40px;
-  z-index: 2;
-  padding: 4px;
-  font-size: 15px;
-  margin-top: 5px;
-  margin-left: 5px;
-  font-weight: 900;
-}
-.state0 {
-  background-color: $yellow-color;
-}
-.state1 {
-  background-color: $main-color;
-  color: white;
-}
-.state2 {
-  background-color: $light-blue-color;
-  color: white;
+.kind,
+.gender,
+.age {
+  font-size: 1.2rem;
+  color: $gray-color;
 }

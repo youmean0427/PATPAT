@@ -14,9 +14,11 @@ export default function FavoriteList() {
 
   return (
     <div className={styles.container}>
-      {data.map(item => (
-        <FavoriteItem key={item.dogId} item={item} />
-      ))}
+      {data.length === 0 ? (
+        <div className={styles['no-data']}>등록된 '꾹' 정보가 없습니다.</div>
+      ) : (
+        data.map(item => <FavoriteItem key={item.dogId} item={item} />)
+      )}
     </div>
   );
 }

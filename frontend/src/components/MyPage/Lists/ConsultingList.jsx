@@ -14,9 +14,11 @@ export default function ConsultingList({ userId }) {
 
   return (
     <div className={styles.container}>
-      {data.map(item => (
-        <ConsultingItem key={item.consultingId} item={item} />
-      ))}
+      {data.length === 0 ? (
+        <div className={styles['no-data']}>신청한 상담 정보가 없습니다.</div>
+      ) : (
+        data.map(item => <ConsultingItem key={item.consultingId} item={item} />)
+      )}
     </div>
   );
 }
