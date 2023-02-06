@@ -4,7 +4,6 @@ import React from 'react';
 import { Outlet, useParams } from 'react-router';
 import defaultShelterImage from 'assets/images/default-shelter.png';
 import styles from './Shelter.module.scss';
-import { NavLink } from 'react-router-dom';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 
