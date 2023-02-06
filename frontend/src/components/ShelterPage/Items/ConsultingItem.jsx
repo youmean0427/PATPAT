@@ -17,6 +17,9 @@ export default function ConsultingItem({ item }) {
   const dispatch = useDispatch();
 
   const startConsulting = () => {
+    setBtnState(8);
+    const data = JSON.stringify({ shelterId, userName, btnState, timeCode, registDate });
+    updateConsultant(consultingId, data);
     dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
     navigate('/consulting/meeting');
   };

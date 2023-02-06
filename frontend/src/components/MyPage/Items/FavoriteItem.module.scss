@@ -4,8 +4,15 @@
   margin: 1%;
 }
 .description {
-  padding: 2px;
+  padding: 0 1rem 1rem 1rem;
 }
+.kind,
+.gender,
+.age {
+  font-size: 1.2rem;
+  color: $gray-color;
+}
+
 .name {
   font-size: 2rem;
   font-weight: 900;
