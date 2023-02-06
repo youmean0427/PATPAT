@@ -61,8 +61,9 @@ export const createConsultant = async data => {
  * @param {json} data
  */
 export const updateConsultant = async (consultingId, data) => {
-  const res = await authInstance.put(`/consultations/${consultingId}`, data, {
+  const res = await authInstance.put(`/consultations/${consultingId}`, {
     headers: { 'Content-Type': 'application/json' },
+    body: { ...data },
   });
   return res;
 };
