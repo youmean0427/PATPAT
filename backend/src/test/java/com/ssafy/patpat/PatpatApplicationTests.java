@@ -18,6 +18,10 @@ import com.ssafy.patpat.shelter.repository.SidoRepository;
 import com.ssafy.patpat.test.TestDistance;
 import com.ssafy.patpat.test.TestRepository;
 import com.ssafy.patpat.user.dto.ResultDto;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,9 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -321,4 +323,43 @@ class PatpatApplicationTests {
 		System.out.println(passwordEncoder.matches("175","$2a$10$VOy/116s7ztl6fcGsh.C7.pYAinRybRqy4B8Q9OSm5fHQnvwNwH2G"));
 		
 	}
+	@Test
+	public void excelTest() throws Exception{
+		try {
+			FileInputStream inputStream = new FileInputStream("C:\\test\\test.xlsx");
+			System.out.println(inputStream);
+			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+
+			XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
+			XSSFDrawing drawing = sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
+			for (XSSFShape shape : drawing.getShapes()) {
+				if (shape instanceof XSSFPicture) {
+					XSSFPicture picture = (XSSFPicture) shape;
+
+					if (picture.getPictureData() == null) {
+						System.out.println("사진 Path 사용");
+						continue;
+					}
+					XSSFPictureData xssfPictureData = picture.getPictureData();
+					ClientAnchor anchor = picture.getPreferredSize();
+					int row1 = anchor.getRow1();
+					int row2 = anchor.getRow2();
+					int col1 = anchor.getCol1();
+					int col2 = anchor.getCol2();
+					System.out.println("Row1: " + row1 + " Row2: " + row2);
+					System.out.println("Column1: " + col1 + " Column2: " + col2);
+					// Saving the file
+					String ext = xssfPictureData.suggestFileExtension();
+					byte[] data = xssfPictureData.getData();
+
+					FileOutputStream out = new FileOutputStream(String.format("%s\\%s_%d_%d.%s", "C:\\test", sheet.getSheetName(), row1, col1, ext));
+					out.write(data);
+					out.close();
+				}
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
 }

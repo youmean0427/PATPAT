@@ -58,12 +58,12 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(v.getVolunteerId());
 //        }
 
-        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
-        List<ShelterProtectedDog> list = user.get().getFavoriteDogs();
-        for (ShelterProtectedDog d:
-                list) {
-            System.out.println(d.getBreedId());
-        }
+//        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
+//        List<ShelterProtectedDog> list = user.get().getFavoriteDogs();
+//        for (ShelterProtectedDog d:
+//                list) {
+//            System.out.println(d.getBreedId());
+//        }
     }
 
 }
