@@ -7,7 +7,7 @@ import ConsultingItem from '../Items/ConsultingItem';
 export default function ConsultingList({ shelterId, shelterName }) {
   const { data, isLoading } = useQuery({
     queryKey: ['getConsultations'],
-    queryFn: () => getShelterConsultations(20, 0, shelterId),
+    queryFn: () => getShelterConsultations(shelterId, 4, 0),
   });
 
   if (isLoading) return;

@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from 'assets/images/logo.png';
+import logo from 'assets/images/logo2.png';
 import naverBtn from 'assets/images/naverBtn.png';
 import kakaoBtn from 'assets/images/kakaoBtn.png';
 import googleBtn from 'assets/images/googleBtn.png';

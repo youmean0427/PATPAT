@@ -8,8 +8,18 @@
   font-size: 2rem;
   flex: 1;
 }
+.info-item {
+  display: flex;
+  gap: 1rem;
+}
+.info-value {
+  flex: 1;
+}
 
 @include breakpoint(md) {
+  .main {
+    flex-direction: column;
+  }
 }
 
 @include breakpoint(sm) {

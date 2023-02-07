@@ -19,7 +19,7 @@ export default function Home() {
           </Link>
         </div>
       </Section>
-      ;{/* PATPAT 슬로건 적은 banner */}
+      {/* PATPAT 슬로건 적은 banner */}
       <Section accent="유기견" basic="을 위한 플랫폼 PATPAT">
         <div className={styles.inner}>
           <div>
