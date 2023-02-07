@@ -2,7 +2,7 @@
 
 .container {
   display: flex;
-  font-size: 20px;
+  font-size: 1.6rem;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
@@ -10,6 +10,8 @@
 
   &-info {
     width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -56,8 +58,8 @@
           // border-style: solid;
           & > input {
             width: 100%;
-            font-size: 20px;
-            padding: 5.5px;
+            font-size: 1.6rem;
+            padding: 8.5px;
             padding-left: 10px;
             font-family: $seoul-font;
             border: 1px;
@@ -71,7 +73,7 @@
   }
 
   &-gender {
-    font-size: 20px;
+    font-size: 1.6rem;
     display: flex;
     align-items: center;
 
@@ -93,8 +95,8 @@
 
   &-radio {
     width: 100%;
-    font-size: 20px;
-    padding: 5.5px;
+    font-size: 1.6rem;
+    padding: 8.5px;
     padding-left: 10px;
     font-family: $seoul-font;
     border: 1px;
@@ -131,12 +133,6 @@
       }
     }
   }
-
-  &-button {
-    display: flex;
-    justify-content: center;
-    font-size: 20px;
-  }
 }
 
 .thumbnail {
@@ -152,7 +148,7 @@
   width: 100%;
   & > input {
     width: 100%;
-    font-size: 25px;
+    font-size: 20px;
     padding: 10px;
     font-family: $seoul-font;
     border: 1px;
@@ -169,7 +165,7 @@
 
 .subTitle {
   font-size: 25px;
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 10px;
   font-weight: 700;
 }
@@ -182,24 +178,23 @@
 
   background-color: $main-color !important;
   &:hover {
-    background-color: #4d5996 !important;
+    background-color: $main-accent-color !important;
   }
 }
 
 .pictureButtonCont {
-  margin: 10px;
+  margin-top: 20px;
 }
 .pictureButton {
-  font-size: 20px;
-  margin: 10px;
-  width: 100px;
+  width: 385px;
   font-family: $seoul-font;
   border: $main-color solid 2px;
   color: $main-color;
   border-radius: 4px;
   padding: 2.5px;
+  text-align: center;
   &:hover {
-    border-color: #4d5996;
+    border-color: $main-accent-color;
   }
 }
 
@@ -208,14 +203,14 @@
   height: 250px;
   object-fit: cover;
   margin-right: 10px;
-  border: 1px solid;
+  border: #cccccc 1px solid;
 }
 .subPicture {
   width: 125px;
   height: 125px;
   object-fit: cover;
 
-  border: 1px solid;
+  border: #cccccc 1px solid;
 }
 
 .deleteButton {
@@ -230,10 +225,31 @@
 
 .ckEditor {
   font-size: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.map {
+  width: 100%;
+  height: 500px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
+.modal-detail {
+  padding: 10px;
+}
+.modal-detail p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 2px;
+}
+.modal-detail img {
+  width: 100px;
+}
+.modal-detail p span {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
 /* desktop 규격 */
 @media screen and (min-width: 1024px) {
 }
@@ -260,4 +276,22 @@
 
 .file {
   display: none;
+}
+
+.colorPicker {
+  height: 38px;
+  width: 100%;
+  &Half {
+    height: 38px;
+    width: 50%;
+  }
+}
+
+.categoryIndex {
+  &Ear {
+    z-index: 3;
+  }
+  &Pat {
+    z-index: 2;
+  }
 }

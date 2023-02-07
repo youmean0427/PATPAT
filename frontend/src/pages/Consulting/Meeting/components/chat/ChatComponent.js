@@ -89,7 +89,7 @@ export default class ChatComponent extends Component {
         <div id="chatComponent" style={styleChat}>
           <div id="chatToolbar">
             <IconButton id="closeButton" onClick={this.close}>
-              <HighlightOff color="warning" />
+              <HighlightOff sx={{ color: 'white' }} />
             </IconButton>
           </div>
           <div className="message-wrap" ref={this.chatScroll}>
@@ -123,7 +123,7 @@ export default class ChatComponent extends Component {
               onKeyPress={this.handlePressKey}
             />
             <Tooltip title="메세지 전송">
-              <Fab size="small" id="sendButton" onClick={this.sendMessage}>
+              <Fab size="small" id="sendButton" onClick={this.sendMessage} sx={{ color: 'white' }}>
                 <Send />
               </Fab>
             </Tooltip>

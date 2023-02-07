@@ -5,39 +5,40 @@ import MissingDogList from './Lists/MissingDogList';
 import FavoriteList from './Lists/FavoriteList';
 import VolunteerList from './Lists/VolunteerList';
 import ConsultingList from './Lists/ConsultingList';
+import { NavLink } from 'react-router-dom';
 
 export default function Contents({ data }) {
   const [click, setClick] = useState([true, false, false, false, false]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.buttons}>
+    <div className={styles.navbar}>
+      <div className={styles.navbar__menu}>
         <button
-          className={click[0] ? styles['btn-click'] : styles.btn}
+          className={click[0] ? `${styles.button} ${styles.active}` : styles.button}
           onClick={() => setClick([true, false, false, false, false])}
         >
           내 가족 찾기
         </button>
         <button
-          className={click[1] ? styles['btn-click'] : styles.btn}
+          className={click[1] ? `${styles.button} ${styles.active}` : styles.button}
           onClick={() => setClick([false, true, false, false, false])}
         >
           꾹 리스트
         </button>
         <button
-          className={click[2] ? styles['btn-click'] : styles.btn}
+          className={click[2] ? `${styles.button} ${styles.active}` : styles.button}
           onClick={() => setClick([false, false, true, false, false])}
         >
           게시판 관리
         </button>
         <button
-          className={click[3] ? styles['btn-click'] : styles.btn}
+          className={click[3] ? `${styles.button} ${styles.active}` : styles.button}
           onClick={() => setClick([false, false, false, true, false])}
         >
           봉사신청 관리
         </button>
         <button
-          className={click[4] ? styles['btn-click'] : styles.btn}
+          className={click[4] ? `${styles.button} ${styles.active}` : styles.button}
           onClick={() => setClick([false, false, false, false, true])}
         >
           상담신청 관리

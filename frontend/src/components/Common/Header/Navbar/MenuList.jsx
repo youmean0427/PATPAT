@@ -1,16 +1,45 @@
+import useAuth from 'hooks/useAuth';
 import React from 'react';
+import { useEffect, useState } from 'react';
 import MenuItem from './MenuItem';
 import styles from './MenuList.module.scss';
+import { FaDog } from 'react-icons/fa';
+import { GiSittingDog } from 'react-icons/gi';
+import { useRecoilState } from 'recoil';
+import { isMobileMenuOpenState } from 'recoil/atoms/header';
+import AuthButton from './AuthButton';
+
 export default function MenuList() {
+  const [isLogin, setIsLogin, handleClickLogout, handleClickLogin] = useAuth();
+  const [isOpen, setIsOpen] = useRecoilState(isMobileMenuOpenState);
+  const handleClickMobileMenu = () => {
+    setIsOpen(prev => !prev);
+  };
+  useEffect(() => {
+    if (localStorage.getItem('isLogin')) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, []);
   return (
-    <div className={styles['menu-box']}>
-      <ul className={styles.menu}>
-        <MenuItem value="소개" submenu={['인사말', '미션 & 비전', '활동 내역', '통계']} />
-        <MenuItem value="보호소" submenu={['보호소 찾기']} />
-        <MenuItem value="신고" submenu={['실종 신고', '임시보호 신고']} />
-        <MenuItem value="봉사" submenu={['봉사 신청']} />
-        <MenuItem value="커뮤니티" submenu={['입양 후기', '정보 공유', '무료 나눔', '봉사 모집']} />
+    <>
+      <div onClick={handleClickMobileMenu} className={styles['mobile-menu']}>
+        {isOpen ? <GiSittingDog color="#a1887f" size="3rem" /> : <FaDog color="#a1887f" size="3rem" />}
+      </div>
+      <ul className={isOpen ? `${styles.menu} ${styles.active}` : styles.menu}>
+        <MenuItem move="intro" value="소개" dropdown={intro} />
+        <MenuItem move="shelter/search" value="보호소" />
+        <MenuItem move="report" value="신고" />
+        <MenuItem move="volunteer" value="봉사" />
+        <MenuItem move="community" value="커뮤니티" />
+        <MenuItem move={isLogin ? '/' : 'login'} value={isLogin ? '로그아웃' : '로그인'} />
       </ul>
-    </div>
+    </>
   );
 }
+const intro = [
+  { title: 'PATPAT은', path: 'intro' },
+  { title: '미션 & 비전', path: 'vision' },
+  { title: '통계', path: 'statistics' },
+];
