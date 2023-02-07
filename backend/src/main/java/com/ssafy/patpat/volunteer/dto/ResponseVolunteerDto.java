@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseVolunteerDto {
-    private Integer totalCount;
+    private Long totalCount;
+    private Integer totalPage;
     private List<Object> list;
 }

@@ -1,21 +1,32 @@
 package com.ssafy.patpat.consulting.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ssafy.patpat.common.code.TimeCode;
 import com.ssafy.patpat.shelter.entity.Shelter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.swagger.models.auth.In;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Time {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int timeId;
-    public int timeCode;
-    public int state;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long timeId;
+    private TimeCode timeCode;
+
+    // 0 대기 1 승인 2 취소 3 거절
+    private Integer state;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
+
 }

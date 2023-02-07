@@ -17,5 +17,6 @@ public class RequestVolunteerDto {
     private String volunteerDate;
     private String gugunCode;
     private Long userId;
+    private Long scheduleId;
 
 }

@@ -52,8 +52,7 @@ public class Shelter {
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     private Set<Image> images;
 
-    @OneToMany
-    @JoinColumn(name = "shelter_id")
-    private List<Time> timeList;
+    @OneToMany(mappedBy = "shelter")
+    private List<Time> times;
 
 }

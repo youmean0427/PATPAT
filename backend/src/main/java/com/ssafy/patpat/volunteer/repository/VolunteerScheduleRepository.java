@@ -26,4 +26,5 @@ public interface VolunteerScheduleRepository extends JpaRepository<VolunteerSche
 //    List<VolunteerShelterIdMapping> findShelter(int reservationStateCode, String gugunCode);
 
     List<VolunteerSchedule> findWithVolunteerNoticeByVolunteerNoticeNoticeIdAndReservationStateCode(Long notice, Reservation reservation);
+    VolunteerSchedule findByScheduleIdAndReservationStateCodeIn(Long scheduleId, List<Reservation> reservations);
 }

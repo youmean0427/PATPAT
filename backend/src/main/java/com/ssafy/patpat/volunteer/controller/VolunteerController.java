@@ -3,6 +3,7 @@ package com.ssafy.patpat.volunteer.controller;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.volunteer.dto.*;
+import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import com.ssafy.patpat.volunteer.service.VolunteerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,10 +52,10 @@ public class VolunteerController {
     @ApiOperation(value = "봉사 공고 조회", notes = "구군 봉사 공고를 조회(gugunCode)/개인의 보호소 페이지 공고 조회(shelterId)")
     public ResponseEntity<Object> selectNoticeList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        List<VolunteerNoticeDto> list = volunteerService.selectNoticeList(requestVolunteerDto);
-        if(list != null){
+        ResponseVolunteerDto responseVolunteerDto = volunteerService.selectNoticeList(requestVolunteerDto);
+        if(responseVolunteerDto != null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(list);
+                    .body(responseVolunteerDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
@@ -103,7 +104,7 @@ public class VolunteerController {
     @ApiOperation(value = "봉사 공고 삭제", notes = "봉사 공고 삭제...상태코드로 한다했나..?")
     public ResponseEntity<Object> deleteNotice(@RequestParam("noticeId") Long noticeId) throws VolunteerException {
         //서비스 호출 코드
-        if(volunteerService.deleeteNotice(noticeId)){
+        if(volunteerService.deleteNotice(noticeId)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
@@ -118,13 +119,37 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/schedules")
-    @ApiOperation(value = "일별 봉사 공고 조회", notes = "일별 상세 조회 - 파라미터로 noticeId")
-    public ResponseEntity<Object> selectScheduleList(@RequestParam("noticeId") Long noticeId){
+    @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 scheduleId offset limit")
+    public ResponseEntity<Object> selectScheduleList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        List<VolunteerScheduleDto> list = volunteerService.selectScheduleList(noticeId);
-        if(list != null){
+        VolunteerScheduleDto volunteerScheduleDto = volunteerService.selectScheduleList(requestVolunteerDto);
+        if(volunteerScheduleDto != null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(list);
+                    .body(volunteerScheduleDto);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+
+    @PostMapping("/schedules")
+    @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가")
+    public ResponseEntity<Object> insertSchedule(@RequestBody NoticeDto noticeDto){
+        if(volunteerService.insertSchedule(noticeDto)){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+
+    @PutMapping("/schedules")
+    @ApiOperation(value = "봉사 일정 수정", notes = "봉사 일정 수정")
+    public ResponseEntity<Object> updateSchedule(@RequestBody VolunteerScheduleDto volunteerScheduleDto){
+        if(volunteerService.updateSchedule(volunteerScheduleDto)){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
@@ -149,7 +174,6 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/reservations/users")
-    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회 parameter: userId, limit, offset")
     public ResponseEntity<Object> selectReservationList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
@@ -167,8 +191,8 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/reservations")
-    @ApiOperation(value = "봉사 지원서 조회", notes = "특정 보호소에 지원된 봉사 지원서 조회")
-    public ResponseEntity<Object> selectReservationListByShelter(@RequestParam int shelterId){
+    @ApiOperation(value = "봉사 지원서 조회", notes = "특정 보호소에 지원된 봉사 지원서 조회 parameter: shelterId, limit, offset")
+    public ResponseEntity<Object> selectReservationListByShelter(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
