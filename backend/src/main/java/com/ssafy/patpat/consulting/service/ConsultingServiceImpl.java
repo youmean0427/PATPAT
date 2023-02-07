@@ -88,13 +88,10 @@ public class ConsultingServiceImpl implements ConsultingService{
                     c.updateConsulting(transferStateCode);
                     consultingRepository.save(c);
                 }
-                else{
-                    transferStateCode  = c.getStateCode();
-                }
                 consultingDtoList.add(
                         ConsultingDto.builder()
                                 .consultingId(c.getConsultingId())
-                                .stateCode(transferStateCode)
+                                .stateCode(c.getStateCode())
                                 .registDate(c.getRegistDate())
                                 //임시값
                                 .shelterId(c.getShelterId())
@@ -151,7 +148,8 @@ public class ConsultingServiceImpl implements ConsultingService{
 
     @Override
     public List<TimeDto> selectTimeList(int shelterId, LocalDate date) {
-        Shelter shelter = shelterRepository.findByShelterId(5);
+        //해당 보호소 가져오기
+        Shelter shelter = shelterRepository.findByShelterId(shelterId);
         List<Integer> list = new ArrayList<>();
 
         for(Time t : shelter.getTimeList()){
