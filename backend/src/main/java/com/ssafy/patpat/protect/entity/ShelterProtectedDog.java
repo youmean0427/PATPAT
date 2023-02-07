@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,11 @@ public class ShelterProtectedDog {
     @Column(name = "breed_id")
     private int breedId;//
     private LocalDate findingDate;
-    private String latitude;//
-    private String longitude;//
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private double weight;//
     private Gender gender;//
-    private boolean neutered;//
+    private int neutered;//
     private LocalDate registDate;//
     private String feature;//
     private int categoryEar;//

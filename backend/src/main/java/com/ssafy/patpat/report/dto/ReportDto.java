@@ -38,7 +38,9 @@ public class ReportDto {
     @Schema(example = "무게")
     private double kg;
     @Schema(example = "중성화 여부")
-    private boolean isNeutered;
+    private int neuteredCode;
+    @Schema(example = "중성화 여부 스트링")
+    private String neutered;
     @Schema(example = "나이")
     private int age;
     @Schema(example = "귀모양")

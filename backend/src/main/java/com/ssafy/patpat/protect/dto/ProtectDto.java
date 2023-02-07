@@ -37,7 +37,9 @@ public class ProtectDto {
     @Schema(example = "무게")
     private double kg;
     @Schema(description = "중성화=0,아니면=1")
-    private boolean neutered;
+    private String neutered;
+    @Schema(description = "중성화=0,아니면=1")
+    private int neuteredCode;
     @Schema(example = "귀모양")
     private int categoryEar;
     @Schema(example = "꼬리모양")

@@ -5,7 +5,7 @@ import com.ssafy.patpat.common.code.ProtectState;
 import java.util.Arrays;
 
 public enum Gender {
-    수컷(0), 암컷(1);
+    전체(0),수컷(1), 암컷(2),모름(3);
 
     private int code;
 

@@ -88,13 +88,10 @@ public class ConsultingServiceImpl implements ConsultingService{
                     c.updateConsulting(transferStateCode);
                     consultingRepository.save(c);
                 }
-                else{
-                    transferStateCode  = c.getStateCode();
-                }
                 consultingDtoList.add(
                         ConsultingDto.builder()
                                 .consultingId(c.getConsultingId())
-                                .stateCode(transferStateCode)
+                                .stateCode(c.getStateCode())
                                 .registDate(c.getRegistDate())
                                 //임시값
                                 .shelterId(c.getShelterId())
@@ -135,6 +132,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Override
     public ResponseMessage updateConsulting(int consultingId, ConsultingDto consultingDto) {
         ResponseMessage responseMessage = new ResponseMessage();
+        System.out.println(consultingDto);
         try{
             Consulting consulting = consultingRepository.findByConsultingId(consultingId);
             consulting.updateConsulting(consultingDto.getStateCode());
@@ -205,7 +203,54 @@ public class ConsultingServiceImpl implements ConsultingService{
 //        }
 
 //        return timeDtoList;
-        return null;
+//        return null;
+
+        //해당 보호소 가져오기
+        Shelter shelter = shelterRepository.findByShelterId(shelterId);
+        List<Integer> list = new ArrayList<>();
+
+        for(Time t : shelter.getTimeList()){
+            if(t.getState() == 1){
+                list.add(t.timeCode);
+            }
+        }
+        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
+
+        for(Consulting c : consultings){
+            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
+                list.remove(Integer.valueOf(c.getTimeCode()));
+            }
+        }
+
+        if(date.equals(LocalDate.now())){
+            int hour = LocalDateTime.now().getHour();
+
+            System.out.println(list);
+
+            for(int i=0; i<list.size(); i++){
+                if(list.get(i)==0){
+                    if(list.get(i)+10 <= hour) {
+                        list.remove(Integer.valueOf(list.get(i)));
+                        i--;
+                    }
+                }
+                else{
+                    if(list.get(i)+13 <= hour){
+                        list.remove(Integer.valueOf(list.get(i)));
+                        i--;
+                    }
+                }
+            }
+        }
+
+        System.out.println(list);
+        List<TimeDto> timeDtoList = new ArrayList<>();
+        for(Integer i : list){
+            timeDtoList.add(new TimeDto(i));
+        }
+
+        return timeDtoList;
+
     }
 
     @Override
