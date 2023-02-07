@@ -12,6 +12,7 @@ import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.user.dto.*;
 import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.User;
@@ -100,6 +101,12 @@ public class UserService {
         userResponseDto.setTokenDto(token);
         userDto.setUsername(user.getNickname());
         userDto.setProfileImageUrl(fileService.getFileUrl(user.getImage()));
+        userDto.setUserId(user.getUserId());
+
+        Optional<Shelter> s = Optional.ofNullable(user.getShelter());
+        if(s.isPresent()){
+            userDto.setShelterId(s.get().getShelterId());
+        }
         userResponseDto.setUserDto(userDto);
 
         return userResponseDto;

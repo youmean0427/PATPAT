@@ -7,13 +7,18 @@ import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.volunteer.dto.VolunteerShelterDto;
+import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
+import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
 import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import com.ssafy.patpat.volunteer.mapping.VolunteerShelterIdMapping;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +30,12 @@ class VolunteerScheduleRepositoryTest {
 
     @Autowired
     private VolunteerScheduleRepository volunteerScheduleRepository;
+
+    @Autowired
+    private VolunteerNoticeRepository volunteerNoticeRepository;
+
+    @Autowired
+    private VolunteerReservationRepository volunteerReservationRepository;
 
     @Autowired
     private ShelterRepository shelterRepository;
@@ -51,12 +62,21 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(v.getVolunteerDate());
 //            System.out.println(v.getName());
 //        }
-
-//        List<VolunteerSchedule> list = volunteerScheduleRepository.findWithShelterByVolunteerDateAndShelterShelterIdOrderByStartTimeAsc("2023-02-06", 2);
-//        for (VolunteerSchedule v:
+//        PageRequest pageRequest = PageRequest.of(0,4, Sort.by("volunteerDate").ascending());
+//        List<VolunteerNotice> list = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(2,"2023-02%");
+//
+//        for (VolunteerNotice v:
 //             list) {
-//            System.out.println(v.getVolunteerId());
+//            System.out.println(v.getNoticeId());
 //        }
+
+        PageRequest pageRequest = PageRequest.of(1,2);
+        List<VolunteerNotice> vn = volunteerNoticeRepository.findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThanOrderByVolunteerDate("11110", Reservation.대기중, LocalDate.now().toString(), pageRequest);
+//        List<VolunteerSchedule> vs = vn.get().getVolunteerSchedules();
+        for (VolunteerNotice v:
+                vn) {
+            System.out.println(v.getVolunteerDate() + v.getShelter().getShelterId());
+        }
 
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
 //        List<ShelterProtectedDog> list = user.get().getFavoriteDogs();

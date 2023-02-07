@@ -11,6 +11,8 @@ import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -24,6 +26,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Builder
 public class Shelter {
     @Id
@@ -38,9 +42,6 @@ public class Shelter {
     private String sidoCode;
     private String gugunCode;
     private String info;
-
-    @OneToMany(mappedBy = "shelter")
-    private List<User> users;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
