@@ -8,7 +8,6 @@ export const login = async (provider, code) => {
     const accessToken = res.data.tokenDto.accessToken;
     const refreshToken = res.data.tokenDto.refreshToken;
     const userInfo = res.data.userDto;
-
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('isLogin', true);
@@ -19,6 +18,7 @@ export const login = async (provider, code) => {
         userName: userInfo.username,
         userEmail: userInfo.email,
         profileImageUrl: userInfo.profileImageUrl,
+        shelterId: userInfo.shelterId,
       })
     );
   } catch (e) {

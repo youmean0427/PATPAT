@@ -4,7 +4,8 @@ import React from 'react';
 import { Outlet, useParams } from 'react-router';
 import defaultShelterImage from 'assets/images/default-shelter.png';
 import styles from './Shelter.module.scss';
-import { NavLink } from 'react-router-dom';
+import Navbar from 'components/ShelterPage/Navbar/Navbar';
+import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 
 export default function Shelter() {
   const params = useParams();
@@ -33,34 +34,12 @@ export default function Shelter() {
           </div>
         </div>
       </div>
-      <div className={styles.navbar}>
-        <div className={styles.navbar__menu}>
-          <NavLink
-            className={({ isActive }) => (isActive ? `${styles.button} ${styles.active}` : styles.button)}
-            to="intro"
-          >
-            정보 보기
-          </NavLink>
-          <NavLink
-            className={({ isActive }) => (isActive ? `${styles.button} ${styles.active}` : styles.button)}
-            to="protect"
-          >
-            보호 동물
-          </NavLink>
-          <NavLink
-            className={({ isActive }) => (isActive ? `${styles.button} ${styles.active}` : styles.button)}
-            to="volunteer"
-          >
-            봉사 신청
-          </NavLink>
-          <NavLink
-            className={({ isActive }) => (isActive ? `${styles.button} ${styles.active}` : styles.button)}
-            to="consulting"
-          >
-            상담 신청
-          </NavLink>
-        </div>
-      </div>
+      <Navbar>
+        <MenuLink move="intro" value="정보 보기" />
+        <MenuLink move="protect" value="보호 동물" />
+        <MenuLink move="volunteer" value="봉사 신청" />
+        <MenuLink move="consulting" value="상담 신청" />
+      </Navbar>
       <Outlet />
     </div>
   );

@@ -5,6 +5,7 @@ import ConsultingImg from 'assets/images/consulting.png';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setConsulting } from 'redux/consulting';
+import { useMutation } from '@tanstack/react-query';
 
 export default function ConsultingItem({ item }) {
   const { consultingId, stateCode, registDate, userId, userName, timeCode } = item.item;
@@ -12,11 +13,20 @@ export default function ConsultingItem({ item }) {
   const shelterName = item.shelterName;
   const [click, setClick] = useState(false);
   const [btnState, setBtnState] = useState(stateCode);
-
+  const { mutate } = useMutation((consultingId, data) => updateConsultant(consultingId, data), {
+    onSuccess: data => {
+      console.log(btnState);
+      console.log(data);
+      dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
+      navigate('/consulting/meeting');
+    },
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const startConsulting = () => {
+    setBtnState(8);
+    mutate(consultingId, { stateCode: 8 });
     dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
     navigate('/consulting/meeting');
   };
