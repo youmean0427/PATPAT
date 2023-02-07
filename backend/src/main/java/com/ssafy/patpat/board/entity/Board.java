@@ -19,7 +19,7 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int boardId;
-    private int userId;
+    private Long userId;
     private String nickName;
     private String title;
     private String content;

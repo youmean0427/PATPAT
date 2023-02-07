@@ -1,5 +1,6 @@
 package com.ssafy.patpat.report.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 @Data
 @AllArgsConstructor
@@ -23,8 +25,8 @@ public class PersonalProtectedDog {
     private int breedId;
     private LocalDate missingDate;
     private String title;
-    private String latitude;
-    private String longitude;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private double weight;
     private int gender;
     private int neutered;
