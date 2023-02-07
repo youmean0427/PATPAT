@@ -1,11 +1,24 @@
 @import 'assets/styles/variable.scss';
+@import 'assets/styles/variable.scss';
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+  @include breakpoint(md) {
+    padding: 0 $spacing-md;
+  }
+
+  @include breakpoint(sm) {
+    padding: 0 $spacing-sm;
+  }
+}
+
 .header {
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: $white-color;
-  z-index: 999;
-  transition: all 0.4s;
+  z-index: 3;
+  transition: all $response-transition-time;
   &.scroll {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   }
@@ -14,15 +27,19 @@
 .nav {
   position: relative;
   width: 100%;
+  background-color: $white-color;
 }
 
 .container-inner {
   position: relative;
+  left: 0;
+  top: 0;
   height: $header-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 1.7rem;
+  transition: all $response-transition-time;
 }
 
 // responsive css
@@ -35,7 +52,4 @@
 
 // 0 ~ 640
 @include breakpoint(sm) {
-  .menu-box {
-    display: none;
-  }
 }
