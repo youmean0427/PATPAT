@@ -1,0 +1,52 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  margin: auto;
+  padding-top: 10rem;
+}
+.top-content {
+  display: flex;
+  flex-flow: wrap;
+  margin: auto;
+  justify-content: center;
+}
+.dog-img {
+  height: 20rem;
+}
+.dog-img img {
+  width: 15rem;
+  height: 15rem;
+  border-radius: 50%;
+}
+.comment {
+  padding: 3rem;
+}
+.comment p {
+  font-size: 1.5rem;
+  text-align: center;
+}
+.comment p span {
+  font-size: 2rem;
+  font-weight: 900;
+  color: $map-hover-color;
+}
+.line {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  opacity: 50%;
+}
+.botton-content {
+  margin: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .comment p {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .comment p span {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: $map-hover-color;
+  }
+}

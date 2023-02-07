@@ -7,7 +7,7 @@ import MissingDogItem from '../Items/MissingDogItem';
 export default function MissingDog({ userId }) {
   const { data, isLoading } = useQuery({
     queryKey: ['myMissingDogList'],
-    queryFn: () => getMissingDogListOfUser(20, userId),
+    queryFn: () => getMissingDogListOfUser(userId, 20),
   });
 
   if (isLoading) return;

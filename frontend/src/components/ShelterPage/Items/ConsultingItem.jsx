@@ -26,9 +26,9 @@ export default function ConsultingItem({ item }) {
 
   const startConsulting = () => {
     setBtnState(8);
-    console.log(btnState);
-    const data = { stateCode: btnState };
     mutate(consultingId, { stateCode: 8 });
+    dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
+    navigate('/consulting/meeting');
   };
 
   return (

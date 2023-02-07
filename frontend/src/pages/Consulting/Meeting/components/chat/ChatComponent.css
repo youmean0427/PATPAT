@@ -7,7 +7,7 @@
 
 #chatToolbar {
   height: 25px;
-  background-color: #5d6dbe;
+  background-color: #f39c12;
   box-sizing: border-box;
   font-weight: bold;
   font-size: 14px;
@@ -136,11 +136,11 @@ span.triangle {
 }
 
 .message.right .msg-detail .msg-content {
-  background-color: #b3bdf0;
+  background-color: #eae0da;
   float: right;
 }
 .message.right .msg-detail .msg-content span.triangle {
-  background-color: #b3bdf0;
+  background-color: #eae0da;
   border-bottom-width: 0;
   border-left-width: 0;
   right: -5px;
@@ -171,13 +171,13 @@ span.triangle {
 }
 
 #sendButton {
-  background-color: #5d6dbe;
+  background-color: #f39c12;
   position: absolute;
   right: 10px;
   top: 0;
   bottom: 0;
   margin-top: 5px;
-  border: 1px solid #5d6dbe;
+  border: 1px solid #f39c12;
   box-shadow: none !important;
 }
 #sendButton {
@@ -190,7 +190,7 @@ span.triangle {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #6b6b6b;
+  background-color: #795548;
 }
 
 .chatComponentLight ::-webkit-scrollbar-thumb {
