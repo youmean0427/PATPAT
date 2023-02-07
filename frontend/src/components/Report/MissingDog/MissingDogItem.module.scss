@@ -3,6 +3,8 @@
 .description {
   padding: 0 1rem 1rem 1rem;
 }
+.title {
+  font-weight: 900;
 .name {
   font-weight: 700;
   font-size: 1.7rem;
@@ -14,7 +16,7 @@
   white-space: nowrap;
 }
 
-.kind,
+.breedName,
 .gender,
 .content {
   font-size: 1.2rem;

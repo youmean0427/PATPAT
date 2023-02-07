@@ -6,29 +6,29 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Button from '@mui/material/Button';
+import { getBreedsList } from 'apis/api/shelter';
+import { changeBreedList } from 'utils/changeSelectTemplate';
 
 export default function MissingDogList() {
-  const [selectedGender, setSelectedGender] = useState(0);
-  const [selectedBreed, setSelectedBreed] = useState(0);
-  const { isLoading, data } = useQuery({
-    queryKey: ['missingDogList'],
-    queryFn: () => getMissingDogList(selectedBreed, selectedGender.value, 10, 0),
+  const breedData = useQuery({
+    queryKey: ['getBreedsList'],
+    queryFn: () => getBreedsList(),
   });
+  const breedList = breedData.data;
 
-  // Data
-  const breed = [
-    { value: 0, label: '견종' },
-    { value: 1, label: '웰시코기' },
-    { value: 2, label: '푸들' },
-  ];
+  const breed = [{ value: 0, label: '견종' }];
   const gender = [
     { value: 0, label: '성별' },
     { value: 1, label: '수컷' },
     { value: 2, label: '암컷' },
   ];
+  const [selectedGender, setSelectedGender] = useState(gender[0]);
+  const [selectedBreed, setSelectedBreed] = useState(breed[0]);
 
-  // console.log(selectedBreed);
-  // console.log(selectedGender);
+  const { isLoading, data } = useQuery({
+    queryKey: ['missingDogList'],
+    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, 1, 0),
+  });
 
   if (isLoading) return;
 
@@ -38,7 +38,7 @@ export default function MissingDogList() {
         <div className={styles['container-search-inner']}>
           <span>
             <Select
-              options={breed}
+              options={changeBreedList(breedList)}
               className={styles['select-breed']}
               onChange={setSelectedBreed}
               defaultValue={breed[0]}

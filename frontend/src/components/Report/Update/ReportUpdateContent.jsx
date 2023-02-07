@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createReport } from 'apis/api/report';
+import { updateReport } from 'apis/api/report';
 import React, { useEffect, useState } from 'react';
-import styles from './ReportCreateContent.module.scss';
+import styles from './ReportUpdateContent.module.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select';
@@ -23,26 +23,28 @@ import Ear6 from 'assets/images/ear6.png';
 import Ear7 from 'assets/images/ear7.png';
 import Ear8 from 'assets/images/ear8.png';
 
-export default function ReportCreateContent() {
-  const [title, setTitle] = useState('');
-  const [name, setName] = useState('');
+export default function ReportUpdateContent(items) {
+  const item = items.items;
+  const [title, setTitle] = useState(item.title);
+  const [name, setName] = useState(item.name);
   const [age, setAge] = useState(0);
-  const [typeCode, setTypeCode] = useState({ value: 0 });
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  const [typeCode, setTypeCode] = useState({ value: item.typeCode });
+  // const [position, setPosition] = useState({ lat: item.lat, lng: item.lng });
+  const [position, setPosition] = useState({ lat: 38, lng: 122 });
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  const [genderCode, setGenderCode] = useState(3);
-  const [breedId, setBreedId] = useState({ value: 0 });
-  const [kg, setKg] = useState(0);
-  const [neutered, setNeutered] = useState({ value: 0 });
+  const [genderCode, setGenderCode] = useState(item.genderCode);
+  const [breedId, setBreedId] = useState({ value: item.breedId });
+  const [kg, setKg] = useState(item.kg);
+  const [neutered, setNeutered] = useState({ value: item.neutered });
 
-  const [content, setContent] = useState('');
-  const [categoryEar, setCategoryEar] = useState({ value: 0 });
-  const [categoryColor, setCategoryColor] = useState({ value: 0 });
-  const [categoryPattern, setCategoryPattern] = useState({ value: 0 });
-  const [categoryTail, setCategoryTail] = useState({ value: 0 });
-  const [categoryCloth, setCategoryCloth] = useState({ value: 0 });
-  const [categoryClothColor, setCategoryClothColor] = useState({ value: 0 });
+  const [content, setContent] = useState(item.content);
+  const [categoryEar, setCategoryEar] = useState({ value: item.categoryEar });
+  const [categoryColor, setCategoryColor] = useState({ value: item.categoryColor });
+  const [categoryPattern, setCategoryPattern] = useState({ value: item.categoryPattern });
+  const [categoryTail, setCategoryTail] = useState({ value: item.categoryTail });
+  const [categoryCloth, setCategoryCloth] = useState({ value: item.categoryCloth });
+  const [categoryClothColor, setCategoryClothColor] = useState({ value: item.categoryClothColor });
   const [uploadFile, setUploadFile] = useState([]);
   const [fileUrl, setfileUrl] = useState([]);
   const [modal, setModal] = useState(false);
@@ -55,23 +57,20 @@ export default function ReportCreateContent() {
   }, [position]);
 
   // Picture
+
   const handleAddImages = event => {
-    const imageUrl = event.target.files;
+    const imageLists = event.target.files;
+    let imageUrlLists = [...uploadFile];
 
-    let imageLists = [...uploadFile];
-    imageLists.push(event.target.files[0]);
-
-    if (imageLists.length > 3) {
-      imageLists = imageLists.slice(0, 3);
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
     }
-    setUploadFile(imageLists);
 
-    let imageUrlList = [...fileUrl];
-    for (let i = 0; i < imageUrl.length; i++) {
-      const url = URL.createObjectURL(imageUrl[i]);
-      imageUrlList.push(url);
-      setfileUrl(imageUrlList);
+    if (imageUrlLists.length > 3) {
+      imageUrlLists = imageUrlLists.slice(0, 3);
     }
+    setUploadFile(imageUrlLists);
   };
 
   const handleDeleteImage = id => {
@@ -102,7 +101,7 @@ export default function ReportCreateContent() {
   // POST (등록)
 
   const { mutate: mutation } = useMutation(['createReport'], () => {
-    return createReport(formData);
+    return updateReport(formData);
   });
 
   // GET (견종 리스트)
@@ -143,7 +142,6 @@ export default function ReportCreateContent() {
     { value: 1, label: '말려있음' },
     { value: 2, label: '펴져있음' },
   ];
-
   const categoryPatternOpt = [
     { value: 0, label: '모름' },
     { value: 1, label: '솔리드' },
@@ -176,9 +174,10 @@ export default function ReportCreateContent() {
   const closeModal = () => {
     setModal(false);
   };
+
   // Console
 
-  // console.log(categoryColor);
+  // console.log(changeBreedList(breedData));
 
   return (
     <div>
@@ -191,7 +190,7 @@ export default function ReportCreateContent() {
       >
         <div className={styles.container}>
           <div className={styles.title}>
-            <input type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <input type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} value={title} />
           </div>
           <div className={styles['container-info']}>
             <div className={styles['container-info-picture']}>
@@ -206,7 +205,7 @@ export default function ReportCreateContent() {
                           Delete
                         </button>
                       </div>
-                      <img className={styles.thumbnail} src={fileUrl[0]} alt="" />
+                      <img className={styles.thumbnail} src={uploadFile[0]} alt="" />
                     </div>
                   )}
 
@@ -219,7 +218,7 @@ export default function ReportCreateContent() {
                           Delete
                         </button>
 
-                        <img className={styles.subPicture} src={fileUrl[1]} alt={1} />
+                        <img className={styles.subPicture} src={uploadFile[1]} alt={1} />
                       </div>
                     )}
                     {uploadFile.length === 0 || uploadFile.length === 1 || uploadFile.length === 2 ? (
@@ -230,7 +229,7 @@ export default function ReportCreateContent() {
                           Delete
                         </button>
 
-                        <img className={styles.subPicture} src={fileUrl[2]} alt={2} />
+                        <img className={styles.subPicture} src={uploadFile[2]} alt={2} />
                       </div>
                     )}
                   </div>
@@ -253,16 +252,26 @@ export default function ReportCreateContent() {
             <div className={styles['container-info-content']}>
               <div>
                 <div>
-                  <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                  <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} value={name} />
                 </div>
                 <div>
-                  <Select options={stateOpt} onChange={setTypeCode} placeholder="상태" />
+                  <Select
+                    options={stateOpt}
+                    onChange={setTypeCode}
+                    placeholder="상태"
+                    defaultValue={stateOpt[typeCode.value]}
+                  />
                 </div>
               </div>
 
               <div>
                 <div>
-                  <Select options={changeBreedList(breedData)} onChange={setBreedId} placeholder="견종" />
+                  <Select
+                    options={changeBreedList(breedData)}
+                    onChange={setBreedId}
+                    placeholder="견종"
+                    defaultValue={changeBreedList(breedData)[breedId.value]}
+                  />
                 </div>
               </div>
 
@@ -274,23 +283,23 @@ export default function ReportCreateContent() {
                       <div>
                         <input
                           type="radio"
-                          value={1}
-                          checked={genderCode === 1}
-                          onChange={e => setGenderCode(parseInt(e.target.value))}
+                          value="1"
+                          checked={genderCode === '1'}
+                          onChange={e => setGenderCode(e.target.value)}
                         />
                         수컷
                         <input
                           type="radio"
-                          value={parseInt(2)}
-                          checked={genderCode === 2}
-                          onChange={e => setGenderCode(parseInt(e.target.value))}
+                          value="2"
+                          checked={genderCode === '2'}
+                          onChange={e => setGenderCode(e.target.value)}
                         />
                         암컷
                         <input
                           type="radio"
-                          value={parseInt(3)}
-                          checked={genderCode === 3}
-                          onChange={e => setGenderCode(parseInt(e.target.value))}
+                          value="3"
+                          checked={genderCode === '3'}
+                          onChange={e => setGenderCode(e.target.value)}
                         />
                         모름
                       </div>
@@ -298,17 +307,20 @@ export default function ReportCreateContent() {
                   </div>
                 </div>
                 <div>
-                  <input type="number" placeholder="추정나이" onChange={e => setAge(e.target.value)} />
+                  <input type="number" placeholder="추정나이" onChange={e => setAge(e.target.value)} value={age} />
                 </div>
               </div>
               <div>
                 <div>
-                  <input type="number" placeholder="몸무게" onChange={e => setKg(e.target.value)} />
+                  <input type="number" placeholder="몸무게" onChange={e => setKg(e.target.value)} value={kg} />
                 </div>
                 <div>
-                  <div>
-                    <Select options={neuteredOpt} onChange={setNeutered} placeholder="중성화" />
-                  </div>
+                  <Select
+                    options={neuteredOpt}
+                    onChange={setNeutered}
+                    placeholder="중성화"
+                    defaultValue={neuteredOpt[neutered.value]}
+                  />
                 </div>
               </div>
             </div>
@@ -316,7 +328,6 @@ export default function ReportCreateContent() {
         </div>
 
         <div className={styles.subTitle}>카테고리 등록 (선택사항)</div>
-
         <hr />
         <div className={styles.container}>
           <div className={styles['container-character']}>
@@ -412,16 +423,15 @@ export default function ReportCreateContent() {
         <hr />
         <div className={styles.map}>
           <Map // 지도를 표시할 Container
-            center={{
+            center={
               // 지도의 중심좌표
-              lat: 35.95,
-              lng: 128.25,
-            }}
+              position
+            }
             style={{
               width: '100%',
               height: '100%',
             }}
-            level={13} // 지도의 확대 레벨
+            level={4} // 지도의 확대 레벨
             onClick={(_t, mouseEvent) =>
               setPosition({
                 lat: mouseEvent.latLng.getLat(),
@@ -429,7 +439,7 @@ export default function ReportCreateContent() {
               })
             }
           >
-            {position && (
+            {
               <MapMarker
                 position={position}
                 image={{
@@ -446,7 +456,7 @@ export default function ReportCreateContent() {
                   },
                 }}
               />
-            )}
+            }
           </Map>
         </div>
         <div className={styles.subTitle}>상세특징</div>
@@ -454,6 +464,7 @@ export default function ReportCreateContent() {
         <div>
           <div className={styles.ckEditor}>
             <CKEditor
+              data={item.content}
               editor={ClassicEditor}
               onReady={editor => {
                 // You can store the "editor" and use when it is needed.
@@ -469,11 +480,8 @@ export default function ReportCreateContent() {
               }}
             />
           </div>
-        </div>
-        <hr />
-        <div>
           <Navbar>
-            <button type="submit">등록</button>
+            <button type="submit">수정</button>
             <MenuLink move="/report/" value="취소" />
           </Navbar>
         </div>

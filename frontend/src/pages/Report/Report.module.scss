@@ -16,7 +16,7 @@
     border-color: $main-color !important;
     background-color: $main-color !important;
     &:hover {
-      background-color: #4d5996 !important;
+      background-color: $main-accent-color !important;
     }
   }
   &-unselected {
@@ -29,8 +29,8 @@
     background-color: $white-color !important;
     color: $main-color !important;
     &:hover {
-      background-color: #eef0fd !important;
-      border-color: #4d5996 !important;
+      background-color: $white-color !important;
+      border-color: $main-accent-color !important;
     }
   }
 }
