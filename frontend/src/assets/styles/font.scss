@@ -69,25 +69,18 @@
 }
 
 @font-face {
-  font-family: 'Seoul';
-  font-weight: 100;
-  src: url('../fonts/Seoul/SeoulNamsanL.ttf');
+  font-family: 'Noto';
+  font-weight: 500;
+  src: url('../fonts/Noto/NotoSansKR-Medium.otf');
 }
 
 @font-face {
-  font-family: 'Seoul';
-  font-weight: 400;
-  src: url('../fonts/Seoul/SeoulNamsanM.ttf');
-}
-
-@font-face {
-  font-family: 'Seoul';
+  font-family: 'Noto';
   font-weight: 700;
-  src: url('../fonts/Seoul/SeoulNamsanB.ttf');
+  src: url('../fonts/Noto/NotoSansKR-Bold.otf');
 }
-
 @font-face {
-  font-family: 'Seoul';
+  font-family: 'Noto';
   font-weight: 900;
-  src: url('../fonts/Seoul/SeoulNamsanEB.ttf');
+  src: url('../fonts/Noto/NotoSansKR-Black.otf');
 }

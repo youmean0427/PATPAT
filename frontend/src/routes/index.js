@@ -46,7 +46,6 @@ const router = createBrowserRouter([
     errorElement: <NotFound />, // 라우터에 없는 경로로 이동시 NotFound 컴포넌트 화면에 띄운다.
     children: [
       { index: true, path: '/', element: <Home /> },
-      { path: 'home', element: <Home /> },
       { path: 'intro', element: <Intro /> },
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },

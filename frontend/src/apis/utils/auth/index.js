@@ -1,6 +1,4 @@
 import { authInstance, defaultInstance } from 'apis/utils/index';
-import { useRecoilState } from 'recoil';
-import { isLoginState } from 'recoil/atoms/user';
 
 export const login = async (provider, code) => {
   try {
@@ -36,7 +34,7 @@ export const logout = async () => {
     },
   });
   console.log(res);
-  if (res.data.message === 'success') {
+  if (res.data.message === 'SUCCESS') {
     localStorage.removeItem('isLogin');
     localStorage.removeItem('user');
     localStorage.removeItem('refreshToken');

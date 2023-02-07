@@ -2,7 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 import styles from './Header.module.scss';
 import Container from 'containers/Container';
 import Navbar from './Navbar/Navbar';
+import { FaDog } from 'react-icons/fa';
+import { useState } from 'react';
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
   const handleScroll = useCallback(() => {
     const header = document.querySelector(`.${styles.header}`);
     if (window.scrollY === 0) {
@@ -21,12 +24,11 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
-        <Container>
+        <div className={styles.container}>
           <div className={styles['container-inner']}>
             <Navbar />
           </div>
-        </Container>
-        <div id={styles['mobile-menu']}>{/* 모바일 크기가 되었을 때 햄버거 클릭시 나올 메뉴 */}</div>
+        </div>
       </nav>
     </header>
   );

@@ -1,37 +1,14 @@
 @import 'assets/styles/variable.scss';
-.left {
-  display: flex;
-  height: 100%;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
+.logo-link {
+  flex-shrink: 0;
 
-  & > .logo-link {
-    flex-shrink: 0;
-
-    & img {
-      width: 120px;
-    }
+  & img {
+    width: 120px;
   }
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.login {
-  background-color: $main-color;
-  color: $white-color;
-  padding: 0.4rem;
-  border-radius: 0.4rem;
-  margin-left: 1rem;
-  cursor: pointer;
 }
 
 @include breakpoint(md) {
-  .login {
-    font-size: 1.6rem;
-  }
+}
+
+@include breakpoint(sm) {
 }

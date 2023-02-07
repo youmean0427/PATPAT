@@ -34,7 +34,7 @@
 }
 .title {
   font-size: 4rem;
-  font-weight: 900;
+  font-weight: 700;
   &:after {
     content: '';
     display: block;
@@ -49,10 +49,10 @@
   }
   & > div {
     font-size: 2rem;
-    font-weight: 900;
+    font-weight: 700;
     & > span {
       font-size: 2.2rem;
-      font-weight: 900;
+      font-weight: 700;
       color: $main-color;
     }
   }
