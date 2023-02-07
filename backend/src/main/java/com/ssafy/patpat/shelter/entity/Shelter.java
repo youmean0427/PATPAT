@@ -5,6 +5,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonValueInstantiator;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.user.entity.Owner;
@@ -47,15 +49,12 @@ public class Shelter {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinTable(
             name = "shelter_image",
             joinColumns = {@JoinColumn(name = "shelter_id")},
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
+    @JsonIgnore
     private Set<Image> images;
-
-    @OneToMany
-    @JoinColumn(name = "shelter_id")
-    private List<Time> timeList;
 
 }

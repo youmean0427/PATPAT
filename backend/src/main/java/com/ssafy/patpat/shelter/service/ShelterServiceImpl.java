@@ -294,13 +294,13 @@ public class ShelterServiceImpl implements ShelterService{
 //            list.get(0).setRegNumber(LocalDateTime.now().toString());
 //            Shelter shelter = shelterRepository.save(list.get(0));
             //보호소 시간 생성 (디폴트 올 트루)
-            for(int i=0; i<4; i++){
-                Time time = Time.builder()
-                        .timeCode(i)
-                        .state(0)
-                        .build();
-                timeRepository.save(time);
-            }
+//            for(int i=0; i<4; i++){
+//                Time time = Time.builder()
+//                        .timeCode(i)
+//                        .state(0)
+//                        .build();
+//                timeRepository.save(time);
+//            }
 //            rd.close();
 //            conn.disconnect();
             System.out.println(shelterNm+" "+shelterCode);

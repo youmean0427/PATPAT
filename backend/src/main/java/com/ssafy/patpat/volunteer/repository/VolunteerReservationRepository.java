@@ -2,6 +2,7 @@ package com.ssafy.patpat.volunteer.repository;
 
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface VolunteerReservationRepository extends JpaRepository<VolunteerReservation,Long> {
-    List<VolunteerReservation> findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCode(Long scheduleId, Reservation reservation);
+    Page<VolunteerReservation> findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(Long scheduleId, Reservation reservation, PageRequest pageRequest);
 
     @Query(nativeQuery = true, value = "select * from volunteer_reservation" +
             " where user_id=:userId" +
@@ -23,5 +24,6 @@ public interface VolunteerReservationRepository extends JpaRepository<VolunteerR
     /**
      * 3, 0, 1, 5 중에서만
      * */
-    Optional<Integer> countWithUserByUserUserIdAndReservationStateCodeIn(Long userId, List<Reservation> reservations);
+    Optional<Long> countWithUserByUserUserIdAndReservationStateCodeIn(Long userId, List<Reservation> reservations);
+
 }

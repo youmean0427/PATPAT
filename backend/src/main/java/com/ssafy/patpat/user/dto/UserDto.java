@@ -27,7 +27,7 @@ public class UserDto {
 
     private String providerId;
 
-    private int shelterId;
+    private Integer shelterId;
 
 
 }

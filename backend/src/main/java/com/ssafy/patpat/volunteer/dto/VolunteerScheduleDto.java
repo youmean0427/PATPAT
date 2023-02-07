@@ -2,11 +2,13 @@ package com.ssafy.patpat.volunteer.dto;
 
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.shelter.entity.Shelter;
+import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +18,8 @@ import java.time.LocalDateTime;
 public class VolunteerScheduleDto {
 
     private Long scheduleId;
+
+    private Long noticeId;
 
     private LocalDateTime startTime;
 
@@ -30,5 +34,7 @@ public class VolunteerScheduleDto {
     private Integer reservationStateCode;
 
     private String reservationState;
+
+    private ResponseVolunteerDto responseVolunteerDto;
 
 }

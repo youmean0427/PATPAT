@@ -3,6 +3,8 @@ package com.ssafy.patpat.volunteer.dto;
 import com.ssafy.patpat.common.code.Reservation;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,6 +16,7 @@ public class VolunteerNoticeDto {
     private Integer shelterId;
     private String volunteerDate;
     private String title;
+    private List<Long> scheduleId;
     private String state;
     private int stateCode;
 }

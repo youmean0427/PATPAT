@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 public class ReservationDto {
-    private int noticeId;
-    private int shelterId;
+    private Long scheduleId;
+
     private String shelterName;
-    private String adress;
-    private int reservationId;
-    private int userId;
+    private String volunteerDate;
+    private Long reservationId;
+    private Long userId;
     private String userName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private int capacity;
+    private Integer capacity;
     @Schema(example = "대기중,수락,거절,불참,완료")
-    private int stateCode;
+    private Integer stateCode;
 }
