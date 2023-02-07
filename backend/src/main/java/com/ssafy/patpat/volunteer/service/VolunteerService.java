@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.service;
 
 import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.user.service.UserService;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,7 +78,7 @@ public class VolunteerService {
 
     @Transactional
     public List<VolunteerNoticeDto> selectNoticeListByMonth(VolunteerMonthDto volunteerMonthDto){
-        List<VolunteerNotice> volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(volunteerMonthDto.getShelterId(), volunteerMonthDto.getYear()+"-"+volunteerMonthDto.getMonth());
+        List<VolunteerNotice> volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(volunteerMonthDto.getShelterId(), volunteerMonthDto.getYear()+"-"+volunteerMonthDto.getMonth()+"%");
         if(volunteerNotices.isEmpty()){
             LOGGER.info("봉사 공고가 비었습니다.");
             return null;
@@ -220,7 +222,7 @@ public class VolunteerService {
     }
 
     @Transactional
-    public boolean deleeteNotice(Long noticeId){
+    public boolean deleeteNotice(Long noticeId) throws VolunteerException {
         if(noticeId == null){
             LOGGER.info("공고 ID가 비었습니다.");
             return false;
@@ -231,14 +233,84 @@ public class VolunteerService {
             LOGGER.info("잘못된 공고 ID 입니다.");
             return false;
         }
-        //schedule 정보 먼저 삭제
-        volunteerScheduleRepository.deleteAll(vn.get().getVolunteerSchedules());
+        List<VolunteerSchedule> volunteerSchedules = vn.get().getVolunteerSchedules();
 
+        for (VolunteerSchedule vs:
+             volunteerSchedules) {
+            List<VolunteerReservation> volunteerReservations = vs.getVolunteerReservations();
+            for (VolunteerReservation vr:
+                 volunteerReservations) {
+                if(vr.getReservationStateCode() == Reservation.수락){
+                    throw new VolunteerException("승인된 예약이 있습니다.");
+                }
+            }
+            volunteerReservationRepository.deleteAll(volunteerReservations);
+            // schedule 정보 삭제
+            volunteerScheduleRepository.delete(vs);
+        }
         // notice 정보 삭제
         volunteerNoticeRepository.delete(vn.get());
 
         return true;
+    }
 
+    @Transactional
+    public boolean deleteSchedule(Long scheduleId) throws VolunteerException{
+        Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(scheduleId);
+        if(!volunteerSchedule.isPresent()){
+            LOGGER.info("잘못된 일정 ID입니다.");
+            return false;
+        }
+        List<VolunteerReservation> volunteerReservations = volunteerSchedule.get().getVolunteerReservations();
+        for (VolunteerReservation vr:
+                volunteerReservations) {
+            if(vr.getReservationStateCode() == Reservation.수락){
+                throw new VolunteerException("승인된 예약이 있습니다.");
+            }
+        }
+        volunteerReservationRepository.deleteAll(volunteerReservations);
+        return true;
+    }
+    /**
+     * 봉사 지원서 조회(개인)
+     * 우선 순위
+     * 미완료(3), 수락(1), 대기(0), 완료(5)
+     */
+    @Transactional
+    public ResponseVolunteerDto selectReservationList(RequestVolunteerDto requestVolunteerDto){
+
+        List<Reservation> reservations = new ArrayList<>();
+        reservations.add(Reservation.미완료);
+        reservations.add(Reservation.수락);
+        reservations.add(Reservation.대기중);
+        reservations.add(Reservation.완료);
+        Optional<Integer> totalCount = volunteerReservationRepository
+                .countWithUserByUserUserIdAndReservationStateCodeIn(requestVolunteerDto.getUserId(), reservations);
+        if(!totalCount.isPresent()){
+            LOGGER.info("목록이 없습니다.");
+            return null;
+        }
+        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithUserByUserUserIdAndReservationStateCode(requestVolunteerDto.getUserId(), requestVolunteerDto.getOffset(), requestVolunteerDto.getLimit());
+
+        List<VolunteerReservationDto> list = new ArrayList<>();
+        for (VolunteerReservation vr:
+             volunteerReservations) {
+            list.add(VolunteerReservationDto.builder()
+                    .reservationId(vr.getReservationId())
+                    .scheduleId(vr.getVolunteerSchedule().getScheduleId())
+                    .capacity(vr.getCapacity())
+                    .shelterName(vr.getShelterName())
+                    .reservationState(vr.getReservationStateCode().name())
+                    .reservationStateCode(vr.getReservationStateCode().getCode())
+                    .build());
+        }
+
+        ResponseVolunteerDto responseVolunteerDto = ResponseVolunteerDto.builder()
+                .totalCount(totalCount.get())
+                .list(Collections.singletonList((list)))
+                .build();
+
+        return responseVolunteerDto;
     }
 
 

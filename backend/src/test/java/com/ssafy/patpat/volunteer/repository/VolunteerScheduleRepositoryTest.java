@@ -70,11 +70,12 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(v.getNoticeId());
 //        }
 
-        Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(4L);
-        List<VolunteerSchedule> vs = vn.get().getVolunteerSchedules();
-        for (VolunteerSchedule v:
-             vs) {
-            System.out.println(v.getScheduleId());
+        PageRequest pageRequest = PageRequest.of(1,2);
+        List<VolunteerNotice> vn = volunteerNoticeRepository.findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThanOrderByVolunteerDate("11110", Reservation.대기중, LocalDate.now().toString(), pageRequest);
+//        List<VolunteerSchedule> vs = vn.get().getVolunteerSchedules();
+        for (VolunteerNotice v:
+                vn) {
+            System.out.println(v.getVolunteerDate() + v.getShelter().getShelterId());
         }
 
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
