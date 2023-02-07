@@ -24,9 +24,10 @@ export default function MissingDogList() {
   ];
   const [selectedGender, setSelectedGender] = useState(gender[0]);
   const [selectedBreed, setSelectedBreed] = useState(breed[0]);
+
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogList'],
-    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, 3, 0),
+    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, 1, 0),
   });
 
   if (isLoading) return;

@@ -10,6 +10,8 @@
 
   &-info {
     width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -131,14 +133,6 @@
       }
     }
   }
-
-  &-button {
-    display: flex;
-    justify-content: center;
-    font-size: 1.6rem;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
 }
 
 .thumbnail {
@@ -171,7 +165,7 @@
 
 .subTitle {
   font-size: 25px;
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 10px;
   font-weight: 700;
 }
@@ -234,7 +228,28 @@
   margin-top: 30px;
   margin-bottom: 30px;
 }
+.map {
+  width: 100%;
+  height: 500px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
 
+.modal-detail {
+  padding: 10px;
+}
+.modal-detail p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 2px;
+}
+.modal-detail img {
+  width: 100px;
+}
+.modal-detail p span {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
 /* desktop 규격 */
 @media screen and (min-width: 1024px) {
 }

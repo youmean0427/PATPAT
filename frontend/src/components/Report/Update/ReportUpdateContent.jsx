@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createReport, updateReport } from 'apis/api/report';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ReportUpdateContent.module.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -10,13 +10,19 @@ import Button from '@mui/material/Button';
 import Test from '../../../assets/images/volunteer.png';
 import { getBreedsList } from 'apis/api/shelter';
 import { changeBreedList } from 'utils/changeSelectTemplate';
+import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
+import { MapMarker, Map } from 'react-kakao-maps-sdk';
 
 export default function ReportUpdateContent(items) {
   const item = items.items;
   const [title, setTitle] = useState(item.title);
   const [name, setName] = useState(item.name);
   const [typeCode, setTypeCode] = useState({ value: item.typeCode });
-  const [place, setPlace] = useState('');
+  // 장소수정
+  const [position, setPosition] = useState('');
+  const [lat, setLat] = useState(position.getLat);
+  const [lng, setLng] = useState(position.getLng);
+  // 성별수정
   const [genderCode, setGenderCode] = useState('1');
   const [breedId, setBreedId] = useState({ value: item.breedId });
   const [kg, setKg] = useState(item.kg);
@@ -30,6 +36,13 @@ export default function ReportUpdateContent(items) {
   const [categoryCloth, setCategoryCloth] = useState({ value: item.categoryCloth });
   const [categoryClothColor, setCategoryClothColor] = useState({ value: item.categoryClothColor });
   const [uploadFile, setUploadFile] = useState([]);
+
+  // useEffect
+
+  useEffect(() => {
+    setLat(position.lat);
+    setLng(position.lng);
+  }, [position]);
 
   // Picture
 
@@ -69,6 +82,8 @@ export default function ReportUpdateContent(items) {
   formData.append('categoryClothColor', categoryClothColor.value);
   formData.append('typeCode', typeCode.value);
   formData.append('uploadFile', uploadFile);
+  formData.append('latitude', lat);
+  formData.append('longitude', lng);
 
   // POST (등록)
 
@@ -287,12 +302,49 @@ export default function ReportUpdateContent(items) {
                   </div>
                 </div>
               </div>
-              <div>
-                <Select options={placeOpt} onChange={setPlace} placeholder="장소" />
-              </div>
-              <div>장소 넣을 공간</div>
             </div>
           </div>
+        </div>
+        <div className={styles.subTitle}>실종/발견 장소</div>
+        <hr />
+        <div style={{ width: '100%', height: '500px', marginTop: '30px' }}>
+          <Map // 지도를 표시할 Container
+            center={{
+              // 지도의 중심좌표
+              lat: 35.95,
+              lng: 128.25,
+            }}
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+            level={13} // 지도의 확대 레벨
+            onClick={(_t, mouseEvent) =>
+              setPosition({
+                lat: mouseEvent.latLng.getLat(),
+                lng: mouseEvent.latLng.getLng(),
+              })
+            }
+          >
+            {position && (
+              <MapMarker
+                position={position}
+                image={{
+                  src: 'https://i.ibb.co/z42FXX4/002-2.png', // 마커이미지의 주소입니다
+                  size: {
+                    width: 64,
+                    height: 64,
+                  }, // 마커이미지의 크기입니다
+                  options: {
+                    offset: {
+                      x: 27,
+                      y: 69,
+                    }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                  },
+                }}
+              />
+            )}
+          </Map>
         </div>
         <div className={styles.subTitle}>카테고리 등록 (선택사항)</div>
         <hr />

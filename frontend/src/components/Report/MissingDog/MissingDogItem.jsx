@@ -4,7 +4,7 @@ import styles from './MissingDogItem.module.scss';
 import { Link } from 'react-router-dom';
 export default function MissingDogItem({ item }) {
   const { missingId, title, fileUrlList, breedName, content } = item;
-
+  console.log(item);
   return (
     <div>
       <Link to={`missing/${missingId}`} state={{ missingId }}>
