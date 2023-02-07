@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from './DogDetailContent.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import { getMissingDogDetail } from 'apis/api/report';
@@ -8,18 +8,12 @@ import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
 
 export default function DogDetailContent({ item, state }) {
-  const [position, setPosition] = useState({ lat: 33.450701, lng: 126.570667 });
-  const [lat, setLat] = useState(position.getLat);
-  const [lng, setLng] = useState(position.getLng);
+  const [position] = useState({ lat: 33.450701, lng: 126.570667 });
 
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
   });
-  useEffect(() => {
-    setLat(position.lat);
-    setLng(position.lng);
-  }, [position]);
 
   if (isLoading) return;
 
@@ -70,22 +64,25 @@ export default function DogDetailContent({ item, state }) {
             </div>
             <hr />
             <div className={styles['container-content-info']}>
-              <div className={styles['container-content-info-inner']}>
-                <div className={styles['container-content-info-inner-list']}>
-                  <div>견종</div>
-                  <div>성별</div>
-                  <div>추정나이</div>
-                  <div>몸무게</div>
-                  <div>중성화</div>
-                </div>
-
-                <div className={styles['container-content-info-inner-content']}>
-                  <div>{data.breedName}</div>
-                  <div>{data.genderCode}</div>
-                  <div>{data.age}</div>
-                  <div>{data.kg}</div>
-                  <div>{data.neutered}</div>
-                </div>
+              <div>
+                <div>견종</div>
+                <span>{data.breedName}</span>
+              </div>
+              <div>
+                <div>성별</div>
+                <span>{data.genderCode}</span>
+              </div>
+              <div>
+                <div>추정나이</div>
+                <span>{data.age}</span>
+              </div>
+              <div>
+                <div>몸무게</div>
+                <span>{data.kg}</span>
+              </div>
+              <div>
+                <div>중성화</div>
+                <span>{data.neutered}</span>
               </div>
             </div>
           </div>
@@ -96,24 +93,32 @@ export default function DogDetailContent({ item, state }) {
       <hr />
       <div className={styles['container-content-character']}>
         <div className={styles['container-content-character-list']}>
-          <div>귀</div>
-          <div>털색</div>
-          <div>무늬색</div>
-        </div>
-        <div className={styles['container-content-character-content']}>
-          <div>{data.categoryEar}</div>
-          <div>{data.categoryColor}</div>
-          <div>{data.categoryPattern}</div>
+          <div>
+            <div>귀</div>
+            <span>{data.categoryEar}</span>
+          </div>
+          <div>
+            <div>털색</div>
+            <span>{data.categoryColor}</span>
+          </div>
+          <div>
+            <div>무늬색</div>
+            <span>{data.categoryPattern}</span>
+          </div>
         </div>
         <div className={styles['container-content-character-list']}>
-          <div>꼬리</div>
-          <div>옷착용</div>
-          <div>옷색</div>
-        </div>
-        <div className={styles['container-content-character-content']}>
-          <div>{data.categoryTail}</div>
-          <div>{data.categoryCloth}</div>
-          <div>{data.categoryClothColor}</div>
+          <div>
+            <div>꼬리</div>
+            <span>{data.categoryTail}</span>
+          </div>
+          <div>
+            <div>옷착용</div>
+            <span>{data.categoryCloth}</span>
+          </div>
+          <div>
+            <div>옷색</div>
+            <span>{data.categoryClothColor}</span>
+          </div>
         </div>
       </div>
       <div className={styles.subTitle}>실종 장소</div>

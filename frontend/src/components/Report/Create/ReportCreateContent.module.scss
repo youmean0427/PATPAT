@@ -277,3 +277,21 @@
 .file {
   display: none;
 }
+
+.colorPicker {
+  height: 38px;
+  width: 100%;
+  &Half {
+    height: 38px;
+    width: 50%;
+  }
+}
+
+.categoryIndex {
+  &Ear {
+    z-index: 3;
+  }
+  &Pat {
+    z-index: 2;
+  }
+}

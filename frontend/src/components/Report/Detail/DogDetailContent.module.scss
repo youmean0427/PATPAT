@@ -2,7 +2,7 @@
 
 .container {
   display: flex;
-  font-size: 20px;
+  font-size: 16px;
   flex-direction: column;
   align-items: center;
 
@@ -45,6 +45,7 @@
     flex-direction: column;
     margin-right: 30px;
   }
+
   &-subpicture {
     display: flex;
     justify-content: center;
@@ -69,49 +70,30 @@
     flex-grow: 1;
     &-info {
       display: flex;
-
-      &-inner {
-        display: flex;
-
-        &-list {
-          // text-align: center;
-          & > div {
-            margin: 20px;
-            text-align: center;
-            padding: 10px;
-            font-size: 15px;
-            border-color: $main-color;
-            border-radius: 4px;
-            border: 1px solid;
-            color: $main-color;
-          }
-        }
-
-        &-content {
-          text-align: left;
-          font-weight: 700;
-          & > div {
-            font-size: 15px;
-            margin: 20px;
-            padding: 10px;
-          }
-        }
-      }
-    }
-
-    &-character {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin: 5px;
-      padding: 5px;
-      font-size: 20px;
+      flex-direction: column;
+      margin: 10px;
       & > div {
-        margin: 10px;
-
+        display: flex;
         & > div {
-          margin: 5px;
-          // text-align: center
+          width: 100px;
+          text-align: center;
+          margin: {
+            top: 10px;
+            bottom: 10px;
+          }
+          padding: 10px;
+          border: 1px solid $main-color;
+          border-radius: 4px;
+          color: $main-color;
+        }
+        & > span {
+          margin: {
+            top: 11px;
+            bottom: 11px;
+            left: 10px;
+          }
+          padding: 10px;
+          font-weight: 1000;
         }
       }
     }
@@ -120,6 +102,33 @@
       justify-content: space-between;
       align-items: center;
       margin: 10px;
+    }
+
+    &-character {
+      display: flex;
+      font-size: 16px;
+      margin: 20px;
+      &-list {
+        width: 100%;
+
+        & > div {
+          display: flex;
+          justify-content: center;
+
+          & > div {
+            width: 20%;
+            text-align: center;
+            margin: 10px;
+            color: $main-color;
+          }
+
+          & > span {
+            width: 20%;
+            text-align: center;
+            margin: 10px;
+          }
+        }
+      }
     }
   }
 }
@@ -134,7 +143,7 @@
   }
 }
 .title {
-  font-size: 30px;
+  font-size: 40px;
   margin: 20px;
   font-weight: 700;
 }
@@ -153,7 +162,7 @@
 
 .name {
   font-size: 30px;
-  color: $main-color;
+  color: $main-accent-color;
   font-weight: 700;
 }
 .button {
@@ -171,11 +180,12 @@
 .stateButton {
   &Red {
     width: 100px;
-    font-size: 20px;
+    font-size: 15px;
     text-align: center;
     padding: 10px;
     background-color: red;
     color: $white-color;
+    border-radius: 4px;
   }
   &Orange {
     width: 100px;
@@ -184,6 +194,7 @@
     padding: 10px;
     background-color: orange;
     color: $white-color;
+    border-radius: 4px;
   }
 }
 .subTitle {

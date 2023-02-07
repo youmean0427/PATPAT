@@ -1,29 +1,39 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createReport, updateReport } from 'apis/api/report';
+import { updateReport } from 'apis/api/report';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './ReportUpdateContent.module.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select';
-import Button from '@mui/material/Button';
 import Test from '../../../assets/images/volunteer.png';
 import { getBreedsList } from 'apis/api/shelter';
 import { changeBreedList } from 'utils/changeSelectTemplate';
+import './ckeditor.scss';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
+import Navbar from 'components/ShelterPage/Navbar/Navbar';
+import infoIcon from 'assets/images/forpaw-info.png';
+import DetailModal from 'components/Common/DetailModal';
+import Ear1 from 'assets/images/ear1.png';
+import Ear2 from 'assets/images/ear2.png';
+import Ear3 from 'assets/images/ear3.png';
+import Ear4 from 'assets/images/ear4.png';
+import Ear5 from 'assets/images/ear5.png';
+import Ear6 from 'assets/images/ear6.png';
+import Ear7 from 'assets/images/ear7.png';
+import Ear8 from 'assets/images/ear8.png';
 
 export default function ReportUpdateContent(items) {
   const item = items.items;
   const [title, setTitle] = useState(item.title);
   const [name, setName] = useState(item.name);
+  const [age, setAge] = useState(0);
   const [typeCode, setTypeCode] = useState({ value: item.typeCode });
-  // 장소수정
-  const [position, setPosition] = useState('');
-  const [lat, setLat] = useState(position.getLat);
-  const [lng, setLng] = useState(position.getLng);
-  // 성별수정
-  const [genderCode, setGenderCode] = useState('1');
+  // const [position, setPosition] = useState({ lat: item.lat, lng: item.lng });
+  const [position, setPosition] = useState({ lat: 38, lng: 122 });
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+  const [genderCode, setGenderCode] = useState(item.genderCode);
   const [breedId, setBreedId] = useState({ value: item.breedId });
   const [kg, setKg] = useState(item.kg);
   const [neutered, setNeutered] = useState({ value: item.neutered });
@@ -36,6 +46,8 @@ export default function ReportUpdateContent(items) {
   const [categoryCloth, setCategoryCloth] = useState({ value: item.categoryCloth });
   const [categoryClothColor, setCategoryClothColor] = useState({ value: item.categoryClothColor });
   const [uploadFile, setUploadFile] = useState([]);
+  const [fileUrl, setfileUrl] = useState([]);
+  const [modal, setModal] = useState(false);
 
   // useEffect
 
@@ -69,6 +81,7 @@ export default function ReportUpdateContent(items) {
   let formData = new FormData();
   formData.append('title', title);
   formData.append('name', name);
+  formData.append('age', age);
   formData.append('genderCode', genderCode);
   formData.append('breedId', breedId.value);
   formData.append('kg', kg);
@@ -88,7 +101,7 @@ export default function ReportUpdateContent(items) {
   // POST (등록)
 
   const { mutate: mutation } = useMutation(['createReport'], () => {
-    return createReport(formData);
+    return updateReport(formData);
   });
 
   // GET (견종 리스트)
@@ -105,12 +118,6 @@ export default function ReportUpdateContent(items) {
     { value: 1, label: '실종' },
     { value: 2, label: '임시보호' },
     { value: 3, label: '완료' },
-  ];
-
-  const placeOpt = [
-    { value: 1, label: '부산' },
-    { value: 2, label: '서울' },
-    { value: 3, label: '대구' },
   ];
 
   const neuteredOpt = [
@@ -135,17 +142,18 @@ export default function ReportUpdateContent(items) {
     { value: 1, label: '말려있음' },
     { value: 2, label: '펴져있음' },
   ];
-
-  const categoryColorOpt = [
-    { value: 0, label: '모름' },
-    { value: 1, label: '검정색' },
-    { value: 2, label: '갈색' },
-    { value: 3, label: '흰색' },
-  ];
   const categoryPatternOpt = [
     { value: 0, label: '모름' },
-    { value: 1, label: '얼룩무늬' },
-    { value: 2, label: '민무늬' },
+    { value: 1, label: '솔리드' },
+    { value: 2, label: '탄' },
+    { value: 3, label: '바이컬러' },
+    { value: 4, label: '트라이컬러' },
+    { value: 5, label: '턱시도' },
+    { value: 6, label: '할리퀸/스팟' },
+    { value: 7, label: '브린들' },
+    { value: 8, label: '새들' },
+    { value: 9, label: '세이블' },
+    { value: 10, label: '멀' },
   ];
   const categoryClothOpt = [
     { value: 0, label: '모름' },
@@ -159,6 +167,14 @@ export default function ReportUpdateContent(items) {
     { value: 2, label: '파랑' },
   ];
 
+  const openModal = () => {
+    setModal(true);
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
+
   // Console
 
   // console.log(changeBreedList(breedData));
@@ -169,7 +185,7 @@ export default function ReportUpdateContent(items) {
         onSubmit={e => {
           e.preventDefault();
           mutation();
-          console.log('POST');
+          // console.log('POST');
         }}
       >
         <div className={styles.container}>
@@ -189,7 +205,7 @@ export default function ReportUpdateContent(items) {
                           Delete
                         </button>
                       </div>
-                      <img className={styles.thumbnail} src={uploadFile[0]} alt={0} />
+                      <img className={styles.thumbnail} src={uploadFile[0]} alt="" />
                     </div>
                   )}
 
@@ -249,34 +265,6 @@ export default function ReportUpdateContent(items) {
               </div>
 
               <div>
-                <div className={styles['container-gender']}>
-                  <div className={styles['container-radio']}>
-                    <span>성별</span>
-                    <div>
-                      <input
-                        type="radio"
-                        value="1"
-                        checked={genderCode === '1'}
-                        onChange={e => setGenderCode(e.target.value)}
-                      />
-                      수컷
-                      <input
-                        type="radio"
-                        value="2"
-                        checked={genderCode === '2'}
-                        onChange={e => setGenderCode(e.target.value)}
-                      />
-                      암컷
-                      <input
-                        type="radio"
-                        value="3"
-                        checked={genderCode === '3'}
-                        onChange={e => setGenderCode(e.target.value)}
-                      />
-                      모름
-                    </div>
-                  </div>
-                </div>
                 <div>
                   <Select
                     options={changeBreedList(breedData)}
@@ -289,17 +277,143 @@ export default function ReportUpdateContent(items) {
 
               <div>
                 <div>
+                  <div className={styles['container-gender']}>
+                    <div className={styles['container-radio']}>
+                      <span>성별</span>
+                      <div>
+                        <input
+                          type="radio"
+                          value="1"
+                          checked={genderCode === '1'}
+                          onChange={e => setGenderCode(e.target.value)}
+                        />
+                        수컷
+                        <input
+                          type="radio"
+                          value="2"
+                          checked={genderCode === '2'}
+                          onChange={e => setGenderCode(e.target.value)}
+                        />
+                        암컷
+                        <input
+                          type="radio"
+                          value="3"
+                          checked={genderCode === '3'}
+                          onChange={e => setGenderCode(e.target.value)}
+                        />
+                        모름
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <input type="number" placeholder="추정나이" onChange={e => setAge(e.target.value)} value={age} />
+                </div>
+              </div>
+              <div>
+                <div>
                   <input type="number" placeholder="몸무게" onChange={e => setKg(e.target.value)} value={kg} />
                 </div>
                 <div>
-                  <div>
-                    <Select
-                      options={neuteredOpt}
-                      onChange={setNeutered}
-                      placeholder="중성화"
-                      defaultValue={neuteredOpt[neutered.value]}
+                  <Select
+                    options={neuteredOpt}
+                    onChange={setNeutered}
+                    placeholder="중성화"
+                    defaultValue={neuteredOpt[neutered.value]}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.subTitle}>카테고리 등록 (선택사항)</div>
+        <hr />
+        <div className={styles.container}>
+          <div className={styles['container-character']}>
+            <div>
+              <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} onClick={openModal} />
+                <span>귀</span>
+                <div className={styles.categoryIndexEar}>
+                  <Select
+                    options={categoryEarOpt}
+                    onChange={setCategoryEar}
+                    defaultValue={categoryEarOpt[categoryEar.value]}
+                  />
+                </div>
+              </div>
+              <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <span>털색</span>
+                <div>
+                  {categoryPattern.value > 1 ? (
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
                     />
-                  </div>
+                  ) : (
+                    <input
+                      className={styles.colorPicker}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  )}
+                  {categoryPattern.value > 1 ? (
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <span>무늬</span>
+                <div className={styles.categoryIndexPat}>
+                  <Select
+                    options={categoryPatternOpt}
+                    onChange={setCategoryPattern}
+                    defaultValue={categoryPatternOpt[categoryPattern.value]}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <span>꼬리</span>
+                <div>
+                  <Select
+                    options={categoryTailOpt}
+                    onChange={setCategoryTail}
+                    defaultValue={categoryTailOpt[categoryTail.value]}
+                  />
+                </div>
+              </div>
+              <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <span>옷착용</span>
+                <div>
+                  <Select
+                    options={categoryClothOpt}
+                    onChange={setCategoryCloth}
+                    defaultValue={categoryClothOpt[categoryCloth.value]}
+                  />
+                </div>
+              </div>
+              <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <span>옷색</span>
+                <div>
+                  <Select
+                    options={categoryClothColorOpt}
+                    onChange={setCategoryClothColor}
+                    defaultValue={categoryClothColorOpt[categoryClothColor.value]}
+                  />
                 </div>
               </div>
             </div>
@@ -307,18 +421,17 @@ export default function ReportUpdateContent(items) {
         </div>
         <div className={styles.subTitle}>실종/발견 장소</div>
         <hr />
-        <div style={{ width: '100%', height: '500px', marginTop: '30px' }}>
+        <div className={styles.map}>
           <Map // 지도를 표시할 Container
-            center={{
+            center={
               // 지도의 중심좌표
-              lat: 35.95,
-              lng: 128.25,
-            }}
+              position
+            }
             style={{
               width: '100%',
               height: '100%',
             }}
-            level={13} // 지도의 확대 레벨
+            level={4} // 지도의 확대 레벨
             onClick={(_t, mouseEvent) =>
               setPosition({
                 lat: mouseEvent.latLng.getLat(),
@@ -326,7 +439,7 @@ export default function ReportUpdateContent(items) {
               })
             }
           >
-            {position && (
+            {
               <MapMarker
                 position={position}
                 image={{
@@ -343,80 +456,8 @@ export default function ReportUpdateContent(items) {
                   },
                 }}
               />
-            )}
+            }
           </Map>
-        </div>
-        <div className={styles.subTitle}>카테고리 등록 (선택사항)</div>
-        <hr />
-        <div className={styles.container}>
-          <div className={styles['container-character']}>
-            <div>
-              <div>
-                <span>귀</span>
-                <div>
-                  <Select
-                    options={categoryEarOpt}
-                    onChange={setCategoryEar}
-                    defaultValue={categoryEarOpt[categoryEar.value]}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <span>털색</span>
-                <div>
-                  <Select
-                    options={categoryColorOpt}
-                    onChange={setCategoryColor}
-                    defaultValue={categoryColorOpt[categoryColor.value]}
-                  />
-                </div>
-              </div>
-              <div>
-                <span>무늬</span>
-                <div>
-                  <Select
-                    options={categoryPatternOpt}
-                    onChange={setCategoryPattern}
-                    defaultValue={categoryPatternOpt[categoryPattern.value]}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div>
-                <span>꼬리</span>
-                <div>
-                  <Select
-                    options={categoryTailOpt}
-                    onChange={setCategoryTail}
-                    defaultValue={categoryTailOpt[categoryTail.value]}
-                  />
-                </div>
-              </div>
-              <div>
-                <span>옷착용</span>
-                <div>
-                  <Select
-                    options={categoryClothOpt}
-                    onChange={setCategoryCloth}
-                    defaultValue={categoryClothOpt[categoryCloth.value]}
-                  />
-                </div>
-              </div>
-              <div>
-                <span>옷색</span>
-                <div>
-                  <Select
-                    options={categoryClothColorOpt}
-                    onChange={setCategoryCloth}
-                    defaultValue={categoryClothColorOpt[categoryClothColor.value]}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <div className={styles.subTitle}>상세특징</div>
         <hr />
@@ -439,19 +480,65 @@ export default function ReportUpdateContent(items) {
               }}
             />
           </div>
-          <div className={styles['container-button']}>
-            <Button variant="contained" type="submit" className={styles.button}>
-              등록
-            </Button>
-
-            <Link to="/report">
-              <Button variant="contained" className={styles.button}>
-                취소
-              </Button>
-            </Link>
-          </div>
+          <Navbar>
+            <button type="submit">수정</button>
+            <MenuLink move="/report/" value="취소" />
+          </Navbar>
         </div>
       </form>
+      {/* Modal  */}
+      <DetailModal open={modal} close={closeModal} title="귀 모양 상세">
+        <div className={styles['modal-content']}>
+          <div className={styles['modal-detail']}>
+            <p>
+              1. <span>직립 귀</span> : 귀가 쫑긋 서 있고, 귀 끝이 둥글거나 뾰족한 귀
+            </p>
+            <img src={Ear1} alt="" />
+          </div>
+          <div className={styles['modal-detail']}>
+            <p>
+              2. <span>박쥐 귀</span> : 귀 사이 큰 V자형 공간이 있어 귀가 바깥으로 펼쳐진 귀
+            </p>
+            <img src={Ear2} alt="" />
+          </div>
+          <div className={styles['modal-detail']}>
+            <p>
+              3. <span>반직립 귀</span> : 귀 끝의 1/4 정도가 앞으로 구부러져 있는 귀
+            </p>
+            <img src={Ear3} alt="" />
+          </div>
+          <div className={styles['modal-detail']}>
+            <p>
+              4. <span>버튼 귀</span> : 귓볼이 반으로 접혀 귓구멍을 감춘 귀
+            </p>
+            <img src={Ear4} alt="" />
+          </div>
+          <div className={styles['modal-detail']}>
+            <p>
+              5. <span>장미 귀</span> : 귀가 뒤로 젖혀져 귀 끝이 옆으로 떨어진 귀
+            </p>
+            <img src={Ear5} alt="" />
+          </div>
+          <div className={styles['modal-detail']}>
+            <p>
+              6. <span>처진 귀</span> : 귀가 시작되는 머리 옆에서부터 그대로 아래로 축 처진 귀
+            </p>
+            <img src={Ear6} alt="" />
+          </div>
+          <div className={styles['modal-detail']}>
+            <p>
+              7. <span>접힌 귀</span> : 귀의 시작이 머리 윗부분이면서 아래로 축 처진 귀
+            </p>
+            <img src={Ear7} alt="" />
+          </div>
+          <div className={styles['modal-detail']}>
+            <p>
+              8. <span>V자 귀</span> : 앞에서 봤을 때 접힌 귀 모양이 V자인 귀
+            </p>
+            <img src={Ear8} alt="" />
+          </div>
+        </div>
+      </DetailModal>
     </div>
   );
 }

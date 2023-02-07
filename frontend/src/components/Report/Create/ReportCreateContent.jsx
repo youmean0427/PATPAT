@@ -1,19 +1,16 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createReport, updateReport } from 'apis/api/report';
+import { createReport } from 'apis/api/report';
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
 import styles from './ReportCreateContent.module.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select';
-import Button from '@mui/material/Button';
 import Test from '../../../assets/images/volunteer.png';
 import { getBreedsList } from 'apis/api/shelter';
 import { changeBreedList } from 'utils/changeSelectTemplate';
 import './ckeditor.scss';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
-import { MarginRounded } from '@mui/icons-material';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import infoIcon from 'assets/images/forpaw-info.png';
 import DetailModal from 'components/Common/DetailModal';
@@ -34,8 +31,7 @@ export default function ReportCreateContent() {
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  // number? string?
-  const [genderCode, setGenderCode] = useState(1);
+  const [genderCode, setGenderCode] = useState(3);
   const [breedId, setBreedId] = useState({ value: 0 });
   const [kg, setKg] = useState(0);
   const [neutered, setNeutered] = useState({ value: 0 });
@@ -50,7 +46,6 @@ export default function ReportCreateContent() {
   const [uploadFile, setUploadFile] = useState([]);
   const [fileUrl, setfileUrl] = useState([]);
   const [modal, setModal] = useState(false);
-  // console.log(lat, lng);
 
   // useEffect
 
@@ -60,7 +55,6 @@ export default function ReportCreateContent() {
   }, [position]);
 
   // Picture
-
   const handleAddImages = event => {
     const imageUrl = event.target.files;
 
@@ -127,12 +121,6 @@ export default function ReportCreateContent() {
     { value: 3, label: '완료' },
   ];
 
-  const placeOpt = [
-    { value: 1, label: '부산' },
-    { value: 2, label: '서울' },
-    { value: 3, label: '대구' },
-  ];
-
   const neuteredOpt = [
     { value: 1, label: '유' },
     { value: 2, label: '무' },
@@ -156,16 +144,18 @@ export default function ReportCreateContent() {
     { value: 2, label: '펴져있음' },
   ];
 
-  const categoryColorOpt = [
-    { value: 0, label: '모름' },
-    { value: 1, label: '검정색' },
-    { value: 2, label: '갈색' },
-    { value: 3, label: '흰색' },
-  ];
   const categoryPatternOpt = [
     { value: 0, label: '모름' },
-    { value: 1, label: '얼룩무늬' },
-    { value: 2, label: '민무늬' },
+    { value: 1, label: '솔리드' },
+    { value: 2, label: '탄' },
+    { value: 3, label: '바이컬러' },
+    { value: 4, label: '트라이컬러' },
+    { value: 5, label: '턱시도' },
+    { value: 6, label: '할리퀸/스팟' },
+    { value: 7, label: '브린들' },
+    { value: 8, label: '새들' },
+    { value: 9, label: '세이블' },
+    { value: 10, label: '멀' },
   ];
   const categoryClothOpt = [
     { value: 0, label: '모름' },
@@ -188,7 +178,7 @@ export default function ReportCreateContent() {
   };
   // Console
 
-  // console.log(changeBreedList(breedData));
+  // console.log(categoryColor);
 
   return (
     <div>
@@ -196,7 +186,7 @@ export default function ReportCreateContent() {
         onSubmit={e => {
           e.preventDefault();
           mutation();
-          console.log('POST');
+          // console.log('POST');
         }}
       >
         <div className={styles.container}>
@@ -216,7 +206,7 @@ export default function ReportCreateContent() {
                           Delete
                         </button>
                       </div>
-                      <img className={styles.thumbnail} src={fileUrl[0]} alt={0} />
+                      <img className={styles.thumbnail} src={fileUrl[0]} alt="" />
                     </div>
                   )}
 
@@ -284,23 +274,23 @@ export default function ReportCreateContent() {
                       <div>
                         <input
                           type="radio"
-                          value="1"
-                          checked={genderCode === '1'}
-                          onChange={e => setGenderCode(e.target.value)}
+                          value={1}
+                          checked={genderCode === 1}
+                          onChange={e => setGenderCode(parseInt(e.target.value))}
                         />
                         수컷
                         <input
                           type="radio"
-                          value="2"
-                          checked={genderCode === '2'}
-                          onChange={e => setGenderCode(e.target.value)}
+                          value={parseInt(2)}
+                          checked={genderCode === 2}
+                          onChange={e => setGenderCode(parseInt(e.target.value))}
                         />
                         암컷
                         <input
                           type="radio"
-                          value="3"
-                          checked={genderCode === '3'}
-                          onChange={e => setGenderCode(e.target.value)}
+                          value={parseInt(3)}
+                          checked={genderCode === 3}
+                          onChange={e => setGenderCode(parseInt(e.target.value))}
                         />
                         모름
                       </div>
@@ -334,7 +324,7 @@ export default function ReportCreateContent() {
               <div>
                 <img src={infoIcon} alt="" className={styles['info-icon']} onClick={openModal} />
                 <span>귀</span>
-                <div>
+                <div className={styles.categoryIndexEar}>
                   <Select
                     options={categoryEarOpt}
                     onChange={setCategoryEar}
@@ -346,17 +336,32 @@ export default function ReportCreateContent() {
                 <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
                 <span>털색</span>
                 <div>
-                  <Select
-                    options={categoryColorOpt}
-                    onChange={setCategoryColor}
-                    defaultValue={categoryColorOpt[categoryColor.value]}
-                  />
+                  {categoryPattern.value > 1 ? (
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : (
+                    <input
+                      className={styles.colorPicker}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  )}
+                  {categoryPattern.value > 1 ? (
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : null}
                 </div>
               </div>
               <div>
                 <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
                 <span>무늬</span>
-                <div>
+                <div className={styles.categoryIndexPat}>
                   <Select
                     options={categoryPatternOpt}
                     onChange={setCategoryPattern}
@@ -368,6 +373,7 @@ export default function ReportCreateContent() {
 
             <div>
               <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
                 <span>꼬리</span>
                 <div>
                   <Select
@@ -378,6 +384,7 @@ export default function ReportCreateContent() {
                 </div>
               </div>
               <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
                 <span>옷착용</span>
                 <div>
                   <Select
@@ -388,11 +395,12 @@ export default function ReportCreateContent() {
                 </div>
               </div>
               <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
                 <span>옷색</span>
                 <div>
                   <Select
                     options={categoryClothColorOpt}
-                    onChange={setCategoryCloth}
+                    onChange={setCategoryClothColor}
                     defaultValue={categoryClothColorOpt[categoryClothColor.value]}
                   />
                 </div>
@@ -464,11 +472,9 @@ export default function ReportCreateContent() {
         </div>
         <hr />
         <div>
-          <Button variant="contained" type="submit">
-            등록
-          </Button>
           <Navbar>
-            <MenuLink move="/report" value="취소" />
+            <button type="submit">등록</button>
+            <MenuLink move="/report/" value="취소" />
           </Navbar>
         </div>
       </form>

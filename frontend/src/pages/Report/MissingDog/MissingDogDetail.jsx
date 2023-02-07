@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import styles from './MissingDogDetail.module.scss';
-import Button from '@mui/material/Button';
 import DogDetailContent from 'components/Report/Detail/DogDetailContent';
+import Navbar from 'components/ShelterPage/Navbar/Navbar';
+import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 export default function MissingDogDetail() {
   const location = useLocation();
   const item = location.state.missingId;
@@ -13,19 +13,9 @@ export default function MissingDogDetail() {
       <DogDetailContent item={item} state={state} />
       <hr />
       <div className={styles['container-button']}>
-        <Button variant="contained" className={styles.button}>
-          이전
-        </Button>
-
-        <Link to="/report">
-          <Button variant="contained" className={styles.button}>
-            목록
-          </Button>
-        </Link>
-
-        <Button variant="contained" className={styles.button}>
-          다음
-        </Button>
+        <Navbar>
+          <MenuLink move="/report/" value="목록" />
+        </Navbar>
       </div>
     </div>
   );
