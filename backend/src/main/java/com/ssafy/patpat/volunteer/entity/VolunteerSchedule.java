@@ -48,8 +48,8 @@ public class VolunteerSchedule {
     @JoinColumn(name = "notice_id")
     private VolunteerNotice volunteerNotice;
 
-//    @OneToMany(mappedBy = "volunteerSchedule")
-//    private List<VolunteerReservation> volunteerReservations;
+    @OneToMany(mappedBy = "volunteerSchedule")
+    private List<VolunteerReservation> volunteerReservations;
 
     @PrePersist
     public void prePersist() {

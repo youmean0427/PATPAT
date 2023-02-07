@@ -11,10 +11,11 @@ import lombok.*;
 @AllArgsConstructor
 public class RequestVolunteerDto {
     private Integer shelterId;
-    private int offset;
-    private int limit;
+    private Integer offset;
+    private Integer limit;
     private String keyword;
     private String volunteerDate;
     private String gugunCode;
+    private Long userId;
 
 }
