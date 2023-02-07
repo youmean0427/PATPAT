@@ -12,12 +12,14 @@ export default function FavoriteList() {
 
   if (isLoading) return;
 
+  console.log(data);
+
   return (
     <div className={styles.container}>
       {data.length === 0 ? (
         <div className={styles['no-data']}>등록된 '꾹' 정보가 없습니다.</div>
       ) : (
-        data.map(item => <FavoriteItem key={item.dogId} item={item} />)
+        data.map(item => <FavoriteItem key={item.spDogId} item={item} />)
       )}
     </div>
   );

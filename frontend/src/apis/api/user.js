@@ -41,7 +41,7 @@ export const modifyUserInfo = async formData => {
  * @returns 성공 , 실패 여부
  */
 export const insertFavProtect = async protectId => {
-  const res = await authInstance.post(`/user/favs/${protectId}`);
+  const res = await authInstance.post(`/user/favorite/${protectId}`);
   return res;
 };
 
@@ -53,6 +53,6 @@ export const insertFavProtect = async protectId => {
  * @returns
  */
 export const deleteFavProtect = async protectId => {
-  const res = await authInstance.delete(`/user/favs/${protectId}`);
+  const res = await authInstance.delete(`/user/favorite/${protectId}`);
   return res;
 };

@@ -17,6 +17,7 @@ import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
 import Address from 'pages/Volunteer/Address';
 import MyPage from 'pages/MyPage/MyPage';
+import MyMissing from 'components/MyPage/MyMissing';
 import Report from 'pages/Report/Report';
 import MoreInfo from 'pages/Mbti/MoreInfo';
 import InfoMain from 'pages/Community/InfoMain';
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'mypage', element: <MyPage /> },
+      { path: 'mypage/mymissing/:id', element: <MyMissing /> },
       { path: 'volunteer/address', element: <Address /> },
       { path: 'report', element: <Report /> },
       { path: 'shelter/search', element: <SearchShelter /> },
@@ -67,7 +69,7 @@ const router = createBrowserRouter([
       { path: 'community/info', element: <InfoMain /> },
       { path: 'community/infodetail/:id', element: <InfoDetail /> },
       { path: 'community/adoptionreview', element: <AdoptionReviewMain /> },
-      { path: 'community/freeshare', element: <FreeShareMain /> },
+      { path: 'communitzy/freeshare', element: <FreeShareMain /> },
       { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
       { path: 'report/missing/:id', element: <MissingDogDetail /> },
       { path: 'report/personal/:id', element: <PersonalDogDetail /> },
@@ -104,7 +106,6 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: 'meeting', element: <VideoRoomComponent /> },
-      { path: 'meeting/:id', element: <VideoRoomComponent /> },
       { path: 'waiting', element: <Waiting /> },
     ],
   },
