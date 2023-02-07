@@ -319,6 +319,6 @@ class PatpatApplicationTests {
 		System.out.println(test);
 
 		System.out.println(passwordEncoder.matches("175","$2a$10$VOy/116s7ztl6fcGsh.C7.pYAinRybRqy4B8Q9OSm5fHQnvwNwH2G"));
-		
+
 	}
 }
