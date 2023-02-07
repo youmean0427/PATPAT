@@ -187,9 +187,9 @@ public class VolunteerController {
         }
     }
     /**
-     * 봉사 지원서 조회(보호소)
+     * 봉사 지원서 조회(보호소) 이건 위에 스케쥴과 함께
      * @return
-     */
+     *
     @GetMapping("/reservations")
     @ApiOperation(value = "봉사 지원서 조회", notes = "특정 보호소에 지원된 봉사 지원서 조회 parameter: shelterId, limit, offset")
     public ResponseEntity<Object> selectReservationListByShelter(RequestVolunteerDto requestVolunteerDto){
@@ -202,6 +202,7 @@ public class VolunteerController {
                     .body(new ResponseMessage("FAIL"));
         }
     }
+    */
     /**
      * 봉사 지원서 등록
      * @return
@@ -210,7 +211,7 @@ public class VolunteerController {
     @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록")
     public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto){
         //서비스 호출 코드
-        if(true){
+        if(volunteerService.insertReservation(reservationDto)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{

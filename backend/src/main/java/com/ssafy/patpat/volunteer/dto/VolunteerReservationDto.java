@@ -16,6 +16,7 @@ public class VolunteerReservationDto {
     private Integer capacity;
 
     private String shelterName;
+
     private String volunteerDate;
 
     private String reservationState;

@@ -4,6 +4,8 @@ import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 import com.ssafy.patpat.volunteer.dto.*;
 import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
@@ -33,7 +35,7 @@ public class VolunteerService {
     private final VolunteerNoticeRepository volunteerNoticeRepository;
     private final VolunteerScheduleRepository volunteerScheduleRepository;
     private final VolunteerReservationRepository volunteerReservationRepository;
-
+    private final UserRepository userRepository;
     private final ShelterRepository shelterRepository;
 
     /**
@@ -231,17 +233,28 @@ public class VolunteerService {
         int capacity = 0;
         PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit());
         Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
+        List<VolunteerReservationDto> list = new ArrayList<>();
         if(!volunteerReservations.isEmpty()){
             for (VolunteerReservation vr:
                     volunteerReservations.toList()) {
                 if(vr.getReservationStateCode() == Reservation.수락) {
                     capacity += vr.getCapacity();
                 }
+                list.add(VolunteerReservationDto.builder()
+                        .reservationId(vr.getReservationId())
+                        .scheduleId(vs.getScheduleId())
+                        .capacity(vr.getCapacity())
+                        .shelterName(vr.getShelterName())
+                        .volunteerDate(vr.getVolunteerDate())
+                        .reservationState(vr.getReservationStateCode().name())
+                        .reservationStateCode(vr.getReservationStateCode().getCode())
+                        .build());
             }
         }
+
         ResponseVolunteerDto responseVolunteerDto = new ResponseVolunteerDto();
 
-        responseVolunteerDto.setList(Collections.singletonList(volunteerReservations.toList()));
+        responseVolunteerDto.setList(Collections.singletonList(list));
         responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
         responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
         VolunteerScheduleDto volunteerScheduleDto = VolunteerScheduleDto.builder()
@@ -383,9 +396,32 @@ public class VolunteerService {
         return responseVolunteerDto;
     }
 
+    /** 예약 등록 */
     @Transactional
-    public ResponseVolunteerDto selectReservationListByShelter(RequestVolunteerDto requestVolunteerDto){
-        return null;
+    public boolean insertReservation(ReservationDto reservationDto){
+        /** 봉사 일정 조회 */
+        Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(reservationDto.getScheduleId());
+        if(!volunteerSchedule.isPresent()){
+            LOGGER.info("등록된 공고가 아닙니다.");
+            return false;
+        }
+        /** user 조회 */
+        Optional<User> user = userRepository.findById(reservationDto.getUserId());
+        if(!user.isPresent()){
+            LOGGER.info("등록된 유저가 아닙니다.");
+            return false;
+        }
+        VolunteerReservation volunteerReservation =
+                VolunteerReservation.builder()
+                        .capacity(reservationDto.getCapacity())
+                        .user(user.get())
+                        .volunteerSchedule(volunteerSchedule.get())
+                        .shelterName(reservationDto.getShelterName())
+                        .volunteerDate(reservationDto.getVolunteerDate())
+                        .build();
+        volunteerReservationRepository.save(volunteerReservation);
+
+        return true;
     }
 
 }
