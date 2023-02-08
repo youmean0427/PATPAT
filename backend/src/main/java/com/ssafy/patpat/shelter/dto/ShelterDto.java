@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Builder
 public class ShelterDto {
-    private Integer shelterId;
+    private Long shelterId;
     private String name;
     private String address;
 //    @Schema(example = "fileUrl:.png")

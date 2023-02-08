@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.service;
 
 import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
@@ -45,8 +46,8 @@ public class VolunteerService {
      * @return
      */
     @Transactional
-    public ResponseVolunteerDto selectNoticeList(RequestVolunteerDto requestVolunteerDto){
-        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
+    public ResponseListDto selectNoticeList(RequestVolunteerDto requestVolunteerDto){
+        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
         Page<VolunteerNotice> volunteerNotices;
         if(requestVolunteerDto.getGugunCode() != null){
             volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThan(requestVolunteerDto.getGugunCode(), Reservation.대기중, LocalDate.now().toString(), pageRequest);
@@ -80,10 +81,10 @@ public class VolunteerService {
                     .volunteerDate(vn.getVolunteerDate())
                     .build());
         }
-        ResponseVolunteerDto responseVolunteerDto = new ResponseVolunteerDto();
+        ResponseListDto responseVolunteerDto = new ResponseListDto();
         responseVolunteerDto.setTotalCount(volunteerNotices.getTotalElements());
         responseVolunteerDto.setTotalPage(volunteerNotices.getTotalPages());
-        responseVolunteerDto.setList(Collections.singletonList(list));
+        responseVolunteerDto.setList(list);
 
         return responseVolunteerDto;
     }
@@ -221,7 +222,7 @@ public class VolunteerService {
      * 특정 봉사일정을 보고 싶을 때
      * */
     @Transactional
-    public VolunteerScheduleDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
+    public ResponseListDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
 
         Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(requestVolunteerDto.getScheduleId());
         if(!volunteerSchedule.isPresent()){
@@ -231,7 +232,7 @@ public class VolunteerService {
 
         VolunteerSchedule vs = volunteerSchedule.get();
         int capacity = 0;
-        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit());
+        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
         Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
         List<VolunteerReservationDto> list = new ArrayList<>();
         if(!volunteerReservations.isEmpty()){
@@ -252,13 +253,14 @@ public class VolunteerService {
             }
         }
 
-        ResponseVolunteerDto responseVolunteerDto = new ResponseVolunteerDto();
+        ResponseListDto responseVolunteerDto = new ResponseListDto();
 
-        responseVolunteerDto.setList(Collections.singletonList(list));
+        responseVolunteerDto.setList(list);
         responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
         responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
         VolunteerScheduleDto volunteerScheduleDto = VolunteerScheduleDto.builder()
                 .scheduleId(vs.getScheduleId())
+                .noticeId(vs.getVolunteerNotice().getNoticeId())
                 .startTime(vs.getStartTime())
                 .endTime(vs.getEndTime())
                 .totalCapacity(vs.getCapacity())
@@ -266,10 +268,10 @@ public class VolunteerService {
                 .guideLine(vs.getGuideLine())
                 .reservationState(vs.getReservationStateCode().name())
                 .reservationStateCode(vs.getReservationStateCode().getCode())
-                .responseVolunteerDto(responseVolunteerDto)
+                .responseListDto(responseVolunteerDto)
                 .build();
 
-        return volunteerScheduleDto;
+        return responseVolunteerDto;
     }
 
     @Transactional
@@ -352,7 +354,7 @@ public class VolunteerService {
      * 미완료(3), 수락(1), 대기(0), 완료(5)
      */
     @Transactional
-    public ResponseVolunteerDto selectReservationList(RequestVolunteerDto requestVolunteerDto){
+    public ResponseListDto selectReservationList(RequestVolunteerDto requestVolunteerDto){
 
         List<Reservation> reservations = new ArrayList<>();
         reservations.add(Reservation.미완료);
@@ -367,7 +369,7 @@ public class VolunteerService {
         }
 
 //        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
-        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithUserByUserUserIdAndReservationStateCode(requestVolunteerDto.getUserId(), requestVolunteerDto.getOffset(), requestVolunteerDto.getLimit());
+        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithUserByUserUserIdAndReservationStateCode(requestVolunteerDto.getUserId(), requestVolunteerDto.getOffSet(), requestVolunteerDto.getLimit());
 
         List<VolunteerReservationDto> list = new ArrayList<>();
         for (VolunteerReservation vr:
@@ -387,10 +389,10 @@ public class VolunteerService {
         Long totalPage = totalCount.get() % requestVolunteerDto.getLimit() == 0 ? totalCount.get() / requestVolunteerDto.getLimit()
                 : (totalCount.get() / requestVolunteerDto.getLimit()) +1;
 
-        ResponseVolunteerDto responseVolunteerDto = ResponseVolunteerDto.builder()
+        ResponseListDto responseVolunteerDto = ResponseListDto.builder()
                 .totalCount(totalCount.get())
                 .totalPage(Math.toIntExact(totalPage))
-                .list(Collections.singletonList((list)))
+                .list(list)
                 .build();
 
         return responseVolunteerDto;

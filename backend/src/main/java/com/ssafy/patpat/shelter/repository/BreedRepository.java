@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface BreedRepository extends JpaRepository<Breed,String> {
-    Breed findByBreedId(int breedId);
+public interface BreedRepository extends JpaRepository<Breed,Long> {
+    Breed findByBreedId(Long breedId);
     List<Breed> findByBreedIdIn(Set<Integer> breedIdList);
     Breed findByName(String breedName);
 }

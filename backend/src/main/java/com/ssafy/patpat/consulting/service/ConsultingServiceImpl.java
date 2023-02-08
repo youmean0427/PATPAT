@@ -1,6 +1,7 @@
 package com.ssafy.patpat.consulting.service;
 
 import com.ssafy.patpat.common.code.TimeCode;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
 import com.ssafy.patpat.consulting.dto.RequestConsultingDto;
@@ -12,8 +13,11 @@ import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.service.UserService;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -35,16 +39,20 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Autowired
     ShelterRepository shelterRepository;
 
+    @Autowired
+    UserService userService;
+
     @Override
-    public List<ConsultingDto> selectConsultingList(RequestConsultingDto requestConsultingDto) {
+    public ResponseListDto selectConsultingList(RequestConsultingDto requestConsultingDto) {
+        ResponseListDto responseListDto = new ResponseListDto();
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
-        System.out.println(requestConsultingDto);
+//        System.out.println(requestConsultingDto);
         try{
             PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
-            System.out.println(requestConsultingDto);
-            List<Consulting> consultingList = consultingRepository.findByUserIdAndRegistDateGreaterThanEqual(requestConsultingDto.getUserId(),LocalDate.now(),pageRequest);
-            System.out.println(consultingList);
-            for(Consulting c : consultingList){
+//            System.out.println(requestConsultingDto);
+            Page<Consulting> consultingList = consultingRepository.findByUserIdAndRegistDateGreaterThanEqual(requestConsultingDto.getUserId(),LocalDate.now(),pageRequest);
+//            System.out.println(consultingList);
+            for(Consulting c : consultingList.toList()){
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
@@ -68,20 +76,25 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .build()
                 );
             }
+            responseListDto.setList(consultingDtoList);
+            responseListDto.setTotalCount(consultingList.getTotalElements());
+            responseListDto.setTotalPage(consultingList.getTotalPages());
         }catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return consultingDtoList;
+        return responseListDto;
     }
 
     @Override
-    public List<ConsultingDto> selectConsultingListByShelter(RequestConsultingDto requestConsultingDto) {
+    public ResponseListDto selectConsultingListByShelter(RequestConsultingDto requestConsultingDto) {
+        ResponseListDto responseListDto = new ResponseListDto();
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
+        UserDto userDto = userService.getUserWithAuthorities();
         try{
             PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
-            List<Consulting> consultingList = consultingRepository.findByShelterIdAndRegistDateGreaterThanEqual(requestConsultingDto.getShelterId(), LocalDate.now(),pageRequest);
-            for(Consulting c : consultingList){
+            Page<Consulting> consultingList = consultingRepository.findByShelterIdAndRegistDateGreaterThanEqual(requestConsultingDto.getShelterId(), LocalDate.now(),pageRequest);
+            for(Consulting c : consultingList.toList()){
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
@@ -96,17 +109,20 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 //임시값
                                 .shelterId(c.getShelterId())
                                 .userId(requestConsultingDto.getUserId())
-                                .userName("유저아이디로 이름 가져오기")
+                                .userName(userDto.getUsername())
                                 .timeCode(c.getTimeCode())
                                 .build()
                 );
 
             }
+            responseListDto.setList(consultingDtoList);
+            responseListDto.setTotalPage(consultingList.getTotalPages());
+            responseListDto.setTotalCount(consultingList.getTotalElements());
         }catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return consultingDtoList;
+        return responseListDto;
     }
     @Override
     public ResponseMessage insertConsulting(ConsultingDto consultingDto) {
@@ -130,7 +146,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     }
 
     @Override
-    public ResponseMessage updateConsulting(int consultingId, ConsultingDto consultingDto) {
+    public ResponseMessage updateConsulting(Long consultingId, ConsultingDto consultingDto) {
         ResponseMessage responseMessage = new ResponseMessage();
         System.out.println(consultingDto);
         try{
@@ -147,7 +163,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     }
 
     @Override
-    public List<TimeDto> selectTimeList(int shelterId, LocalDate date) {
+    public List<TimeDto> selectTimeList(Long shelterId, LocalDate date) {
 //        List<Integer> t = new ArrayList<>();
 //        t.add(2);
 //        t.add(3);
@@ -258,12 +274,13 @@ public class ConsultingServiceImpl implements ConsultingService{
     }
 
     @Override
-    public RoomDto selectRoomDto(int shelterId,int consultingId) {
+    public RoomDto selectRoomDto(Long shelterId,Long consultingId) {
         Shelter shelter = shelterRepository.findByShelterId(shelterId);
         //유저이름 보내주기
+        UserDto userDto = userService.getUserWithAuthorities();
         RoomDto roomDto = RoomDto.builder()
                 .shelterName(shelter.getName())
-                .userName("경훈")
+                .userName(userDto.getUsername())
                 .shelterId(shelterId)
                 .consultingId(consultingId)
                 .build();

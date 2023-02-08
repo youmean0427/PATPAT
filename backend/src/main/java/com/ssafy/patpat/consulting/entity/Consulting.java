@@ -21,13 +21,13 @@ import java.util.List;
 @Builder
 public class Consulting {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int consultingId;
-    private int shelterId;
-    private int userId;
-    private int stateCode;
+    private Long consultingId;
+    private Long shelterId;
+    private Long userId;
+    private Integer stateCode;
     private LocalDate registDate;
-    private int timeCode;
-    private int spDogId;
+    private Integer timeCode;
+    private Long spDogId;
     public void updateConsulting(int stateCode){
         this.stateCode = stateCode;
     }

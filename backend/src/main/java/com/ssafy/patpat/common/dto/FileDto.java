@@ -10,7 +10,7 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Builder
 public class FileDto {
-    private Integer id;
+    private Long id;
     private String origFilename;
     private String filename;
     private String filePath;

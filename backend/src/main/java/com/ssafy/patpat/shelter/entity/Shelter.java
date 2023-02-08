@@ -13,6 +13,7 @@ import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -35,7 +36,7 @@ public class Shelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shelter_id")
-    private Integer shelterId;
+    private Long shelterId;
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;
@@ -43,18 +44,19 @@ public class Shelter {
     private String regNumber;
     private String sidoCode;
     private String gugunCode;
+
+    @ColumnDefault("소개글을 작성해 주세요.")
     private String info;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "shelter_image",
             joinColumns = {@JoinColumn(name = "shelter_id")},
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
-    @JsonIgnore
     private List<Image> images;
 
 }

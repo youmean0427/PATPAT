@@ -24,34 +24,34 @@ public class ShelterProtectedDog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sp_dog_id")
-    private int spDogId;
+    private Long spDogId;
 
     @Column(name = "shelter_id")
-    private int shelterId;//
+    private Long shelterId;//
     @Column(name = "breed_id")
-    private int breedId;//
+    private Long breedId;//
     private LocalDate findingDate;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private double weight;//
+    private Double weight;//
     private Gender gender;//
-    private int neutered;//
+    private Integer neutered;//
     private LocalDate registDate;//
     private String feature;//
-    private int categoryEar;//
-    private int categoryTail;//
-    private int categoryColor;//
-    private int categoryPattern;//
-    private int categoryCloth;//
-    private int categoryClothColor;//
+    private Integer categoryEar;//
+    private Integer categoryTail;//
+    private Integer categoryColor;//
+    private Integer categoryPattern;//
+    private Integer categoryCloth;//
+    private Integer categoryClothColor;//
     private String name;//
-    private int age;//
+    private Integer age;//
     private String sidoCode;//
     private String gugunCode;//
 
     private ProtectState stateCode;//
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "shelter_dog_image",
             joinColumns = {@JoinColumn(name = "sp_dog_id")},

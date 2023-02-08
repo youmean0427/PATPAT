@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.dto;
 
 import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
 import com.sun.istack.NotNull;
@@ -35,6 +36,6 @@ public class VolunteerScheduleDto {
 
     private String reservationState;
 
-    private ResponseVolunteerDto responseVolunteerDto;
+    private ResponseListDto responseListDto;
 
 }

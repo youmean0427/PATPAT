@@ -2,6 +2,7 @@ package com.ssafy.patpat.board.controller;
 
 import com.ssafy.patpat.board.dto.*;
 import com.ssafy.patpat.board.service.BoardService;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,16 +36,11 @@ public class BoardController {
     @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트를 조회한다.")
     public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
-        System.out.println(requestBoardDto);
-        List<BoardDto> boardDtoList = service.selectBoardList(requestBoardDto);
+//        System.out.println(requestBoardDto);
+        ResponseListDto boardDtoList = service.selectBoardList(requestBoardDto);
 
-        if(boardDtoList!=null) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(boardDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(boardDtoList);
+
     }
 
     /**
@@ -55,15 +51,9 @@ public class BoardController {
     @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트")
     public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
         //service 호출
-        List<BoardDto> boardDtoList = service.selectUserBoardList(requestBoardDto);
-
-        if(boardDtoList!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(boardDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        ResponseListDto boardDtoList = service.selectUserBoardList(requestBoardDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(boardDtoList);
     }
     /**
      * 게시판 상세 화면 (카테고리별)
@@ -71,7 +61,7 @@ public class BoardController {
      */
     @GetMapping("/{boardId}")
     @ApiOperation(value = "게시판 상세", notes = "게시판 상세를 조회한다.")
-    public ResponseEntity<Object> detailBoard(@PathVariable int boardId){
+    public ResponseEntity<Object> detailBoard(@PathVariable Long boardId){
         //service 호출
         BoardDto boardDto = service.detailBoard(boardId);
         if(boardDto!=null){
@@ -107,7 +97,7 @@ public class BoardController {
      */
     @PostMapping("/{boardId}")
     @ApiOperation(value = "게시판 수정", notes = "게시판 수정한다.")
-    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, @RequestPart(required = false)  List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable Long boardId, BoardDto boardDto, @RequestPart(required = false)  List<MultipartFile> uploadFile){
         //service 호출
         ResponseMessage responseMessage = service.updateBoard(boardId,boardDto,uploadFile);
 
@@ -125,7 +115,7 @@ public class BoardController {
      */
     @DeleteMapping("/{boardId}")
     @ApiOperation(value = "게시판 삭제", notes = "게시판 삭제한다.")
-    public ResponseEntity<ResponseMessage> deleteBoard(@PathVariable int boardId){
+    public ResponseEntity<ResponseMessage> deleteBoard(@PathVariable Long boardId){
         //service 호출
         ResponseMessage responseMessage = service.deleteBoard(boardId);
 
@@ -161,7 +151,7 @@ public class BoardController {
      */
     @PutMapping("/comments/{commentId}")
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
-    public ResponseEntity<ResponseMessage> updateComment(@PathVariable int commentId, @RequestBody CommentDto commentDto){
+    public ResponseEntity<ResponseMessage> updateComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto){
         //service 호출
         ResponseMessage responseMessage = service.updateComment(commentId,commentDto);
 
@@ -179,7 +169,7 @@ public class BoardController {
      */
     @DeleteMapping("/comments/{commentId}")
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
-    public ResponseEntity<ResponseMessage> deleteComment(@PathVariable int commentId){
+    public ResponseEntity<ResponseMessage> deleteComment(@PathVariable Long commentId){
         //service 호출
         ResponseMessage responseMessage = service.deleteComment(commentId);
 
@@ -215,7 +205,7 @@ public class BoardController {
      */
     @PutMapping("/replies/{replyId}")
     @ApiOperation(value = "대댓글 수정", notes = "대댓글을 수정한다.")
-    public ResponseEntity<ResponseMessage> updateReply(@PathVariable int replyId,@RequestBody ReplyDto replyDto){
+    public ResponseEntity<ResponseMessage> updateReply(@PathVariable Long replyId,@RequestBody ReplyDto replyDto){
         //service 호출
         ResponseMessage responseMessage = service.updateReply(replyId,replyDto);
 
@@ -233,7 +223,7 @@ public class BoardController {
      */
     @DeleteMapping("/replies/{replyId}")
     @ApiOperation(value = "대댓글 삭제", notes = "대댓글을 삭제한다.")
-    public ResponseEntity<ResponseMessage> deleteReply(@PathVariable int replyId){
+    public ResponseEntity<ResponseMessage> deleteReply(@PathVariable Long replyId){
         //service 호출
         ResponseMessage responseMessage = service.deleteReply(replyId);
         if(responseMessage.getMessage().equals("SUCCESS")){
