@@ -1,3 +1,5 @@
+@import 'assets/styles/variable.scss';
+
 .items td {
   font-size: 1.3vw;
   white-space: nowrap;
@@ -10,6 +12,10 @@
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 30vw;
+  cursor: pointer;
+}
+.title:hover {
+  background-color: #bcaaa46b;
 }
 .type,
 .author,

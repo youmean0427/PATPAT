@@ -54,8 +54,10 @@ export const getVolNoticePerMonth = async (shelterId, month) => {
  * @param {int} userId
  * @returns
  */
-export const getVolReservationOfUser = async userId => {
-  const { data } = await defaultInstance.get(`/volunteers/reservations/users?userId=${userId}`);
+export const getVolReservationOfUser = async (userId, limit, offset) => {
+  const { data } = await authInstance.get(
+    `/volunteers/reservations/users?userId=${userId}&limit=${limit}&offset=${offset}`
+  );
   return data;
 };
 

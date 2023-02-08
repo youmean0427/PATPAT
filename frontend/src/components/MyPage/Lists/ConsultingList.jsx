@@ -11,7 +11,6 @@ export default function ConsultingList({ userId }) {
   });
 
   if (isLoading) return;
-
   return (
     <div className={styles.container}>
       {data.length === 0 ? (
