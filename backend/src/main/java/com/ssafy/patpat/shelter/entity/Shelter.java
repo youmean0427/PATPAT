@@ -49,7 +49,7 @@ public class Shelter {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "shelter_image",
             joinColumns = {@JoinColumn(name = "shelter_id")},
