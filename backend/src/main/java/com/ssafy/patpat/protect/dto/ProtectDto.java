@@ -17,9 +17,9 @@ import java.util.List;
 @Builder
 public class ProtectDto {
     @Schema(example = "보호소id")
-    private int shelterId;
+    private Long shelterId;
     @Schema(example = "보호동물id")
-    private int protectId;
+    private Long protectId;
     @Schema(example = "보호동물이름")
     private String protectName;
     @Schema(description = "발견날짜")
@@ -29,31 +29,31 @@ public class ProtectDto {
     @Schema(description = "성별 코드")
     private Integer genderCode;
     @Schema(example = "견종")
-    private int breedId;
+    private Long breedId;
     @Schema(example = "견종이름")
     private String breedName;
     @Schema(example = "나이")
-    private int age;
+    private Integer age;
     @Schema(example = "무게")
-    private double kg;
+    private Double kg;
     @Schema(description = "중성화=0,아니면=1")
     private String neutered;
     @Schema(description = "중성화=0,아니면=1")
-    private int neuteredCode;
+    private Integer neuteredCode;
     @Schema(example = "귀모양")
-    private int categoryEar;
+    private Integer categoryEar;
     @Schema(example = "꼬리모양")
-    private int categoryTail;
+    private Integer categoryTail;
     @Schema(example = "털색")
-    private int categoryColor;
+    private Integer categoryColor;
     @Schema(example = "패턴")
-    private int categoryPattern;
+    private Integer categoryPattern;
     @Schema(example = "옷입은여부")
-    private int categoryCloth;
+    private Integer categoryCloth;
     @Schema(example = "옷색")
-    private int categoryClothColor;
+    private Integer categoryClothColor;
     @Schema(example = "상태코드")
-    private int stateCode;
+    private Integer stateCode;
     @Schema(description = "입양대기,보호중, 입양예정")
     private String state;
     @Schema(example = "내용")

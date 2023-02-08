@@ -13,7 +13,7 @@ import java.util.List;
 public class VolunteerNoticeDto {
     private String name;
     private Long noticeId;
-    private Integer shelterId;
+    private Long shelterId;
     private String volunteerDate;
     private String title;
     private List<Long> scheduleId;

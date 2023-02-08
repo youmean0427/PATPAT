@@ -19,11 +19,11 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int commentId;
+    private Long commentId;
     private String content;
     private LocalDateTime regTime;
-    private int boardId;
-    private int userId;
+    private Long boardId;
+    private Long userId;
     private String nickName;
 
     public void updateComment(String content){

@@ -10,8 +10,8 @@ import lombok.*;
 @Getter
 @ToString
 public class RequestProtectDto {
-    private int shelterId;
-    private int code;
-    private int offSet;
-    private int limit;
+    private Long shelterId;
+    private Integer code;
+    private Integer offSet;
+    private Integer limit;
 }

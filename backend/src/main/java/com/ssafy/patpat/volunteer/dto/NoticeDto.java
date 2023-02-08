@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 public class NoticeDto {
     private Long noticeId;
-    private Integer shelterId;
+    private Long shelterId;
     private String title;
     private List<VolunteerScheduleDto> list;
 }

@@ -13,5 +13,5 @@ public class VolunteerMonthDto {
 
     private String year;
     private String month;
-    private Integer shelterId;
+    private Long shelterId;
 }

@@ -1,9 +1,7 @@
 package com.ssafy.patpat.board.service;
 
-import com.ssafy.patpat.board.dto.BoardDto;
-import com.ssafy.patpat.board.dto.CommentDto;
-import com.ssafy.patpat.board.dto.ReplyDto;
-import com.ssafy.patpat.board.dto.RequestBoardDto;
+import com.ssafy.patpat.board.dto.*;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,27 +9,27 @@ import java.util.List;
 
 public interface BoardService {
 
-    List<BoardDto> selectUserBoardList(RequestBoardDto requestBoardDto);
+    ResponseListDto selectUserBoardList(RequestBoardDto requestBoardDto);
 
-    List<BoardDto> selectBoardList(RequestBoardDto requestBoardDto);
+    ResponseListDto selectBoardList(RequestBoardDto requestBoardDto);
 
-    BoardDto detailBoard(int boardId);
+    BoardDto detailBoard(Long boardId);
 
     ResponseMessage insertBoard(BoardDto boardDto, List<MultipartFile> uploadFile);
 
-    ResponseMessage updateBoard(int boardId, BoardDto boardDto, List<MultipartFile> uploadFile);
+    ResponseMessage updateBoard(Long boardId, BoardDto boardDto, List<MultipartFile> uploadFile);
 
-    ResponseMessage deleteBoard(int boardId);
+    ResponseMessage deleteBoard(Long boardId);
 
     ResponseMessage insertComment(CommentDto commentDto);
 
-    ResponseMessage updateComment(int commentId, CommentDto commentDto);
+    ResponseMessage updateComment(Long commentId, CommentDto commentDto);
 
-    ResponseMessage deleteComment(int commentId);
+    ResponseMessage deleteComment(Long commentId);
 
     ResponseMessage insertReply(ReplyDto replyDto);
 
-    ResponseMessage updateReply(int replyId, ReplyDto replyDto);
+    ResponseMessage updateReply(Long replyId, ReplyDto replyDto);
 
-    ResponseMessage deleteReply(int replyId);
+    ResponseMessage deleteReply(Long replyId);
 }

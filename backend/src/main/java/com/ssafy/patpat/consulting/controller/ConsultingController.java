@@ -1,5 +1,6 @@
 package com.ssafy.patpat.consulting.controller;
 
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
 import com.ssafy.patpat.consulting.dto.RequestConsultingDto;
@@ -36,15 +37,10 @@ public class ConsultingController {
     @ApiOperation(value = "상담 조회", notes = "내가 예약한 상담을 조회한다.")
     public ResponseEntity<Object> selectConsultingList(RequestConsultingDto requestConsultingDto){
         //service 호출
-        System.out.println(requestConsultingDto);
-        List<ConsultingDto> consultingDtoList = service.selectConsultingList(requestConsultingDto);
-        if(consultingDtoList!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(consultingDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+//        System.out.println(requestConsultingDto);
+        ResponseListDto consultingDtoList = service.selectConsultingList(requestConsultingDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(consultingDtoList);
     }
     /**
      * 보호소 입장에서 예약된 상담 리스트
@@ -55,14 +51,9 @@ public class ConsultingController {
     @ApiOperation(value = "상담 조회", notes = "해당 보호소에서 예약된 상담을 조회한다.")
     public ResponseEntity<Object> selectConsultingListByShelter(RequestConsultingDto requestConsultingDto){
         //service 호출
-        List<ConsultingDto> consultingDtoList = service.selectConsultingListByShelter(requestConsultingDto);
-        if(consultingDtoList!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(consultingDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        ResponseListDto consultingDtoList = service.selectConsultingListByShelter(requestConsultingDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(consultingDtoList);
     }
     /**
      * 상담 등록시 예약가능 한 시간 리스트
@@ -71,20 +62,15 @@ public class ConsultingController {
      */
     @GetMapping("/shelters/{shelterId}")
     @ApiOperation(value = "예약 가능한 시간 리스트", notes = "예약 가능한 시간 리스트")
-    public ResponseEntity<Object> selectTimeList(@PathVariable int shelterId,
+    public ResponseEntity<Object> selectTimeList(@PathVariable Long shelterId,
                                                  @RequestParam("date")
                                                 @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date){
         //service 호출
-        System.out.println(date);
+//        System.out.println(date);
         List<TimeDto> timeDtoList = service.selectTimeList(shelterId,date);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(timeDtoList);
 
-        if(timeDtoList!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(timeDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("예약가능한 날짜가 없거나 요청이 잘못됨"));
-        }
 
     }
     /**
@@ -94,17 +80,12 @@ public class ConsultingController {
      */
     @GetMapping("/rooms")
     @ApiOperation(value = "상담 방 생성코드 및 유저정보 주기", notes = "방 생성 , 참가")
-    public ResponseEntity<Object> selectTimeList(@RequestParam int shelterId, @RequestParam int consultingId){
+    public ResponseEntity<Object> selectTimeList(@RequestParam Long shelterId, @RequestParam Long consultingId){
         //service 호출
         RoomDto roomDto = service.selectRoomDto(shelterId,consultingId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(roomDto);
 
-        if(roomDto!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(roomDto);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("방 생성 실패"));
-        }
     }
     /**
      * 상담 등록하기
@@ -116,13 +97,8 @@ public class ConsultingController {
     public ResponseEntity<Object> insertConsulting(@RequestBody ConsultingDto consultingDto){
         //service 호출
         ResponseMessage responseMessage = service.insertConsulting(consultingDto);
-        if(responseMessage!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(responseMessage);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(responseMessage);
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(responseMessage);
     }
 
     /**
@@ -132,16 +108,11 @@ public class ConsultingController {
      */
     @PutMapping("/{consultingId}")
     @ApiOperation(value = "상담 수정", notes = "상담을 수정한다.")
-    public ResponseEntity<Object> updateConsulting(@PathVariable int consultingId, @RequestBody ConsultingDto consultingDto){
+    public ResponseEntity<Object> updateConsulting(@PathVariable Long consultingId, @RequestBody ConsultingDto consultingDto){
         //service 호출
         ResponseMessage responseMessage = service.updateConsulting(consultingId,consultingDto);
-        if(responseMessage!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(responseMessage);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(responseMessage);
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(responseMessage);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.consulting.service;
 
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
 import com.ssafy.patpat.consulting.dto.RequestConsultingDto;
@@ -14,13 +15,13 @@ import java.util.List;
 
 public interface ConsultingService {
 
-    List<ConsultingDto> selectConsultingList(RequestConsultingDto requestConsultingDto);
-    List<ConsultingDto> selectConsultingListByShelter(RequestConsultingDto requestConsultingDto);
+    ResponseListDto selectConsultingList(RequestConsultingDto requestConsultingDto);
+    ResponseListDto selectConsultingListByShelter(RequestConsultingDto requestConsultingDto);
     ResponseMessage insertConsulting(ConsultingDto consultingDto);
-    ResponseMessage updateConsulting(int consultingId, ConsultingDto consultingDto);
+    ResponseMessage updateConsulting(Long consultingId, ConsultingDto consultingDto);
 
-    List<TimeDto> selectTimeList(int shelterId, LocalDate date);
+    List<TimeDto> selectTimeList(Long shelterId, LocalDate date);
 
-    RoomDto selectRoomDto(int shelterId,int consultingId);
+    RoomDto selectRoomDto(Long shelterId,Long consultingId);
 
 }

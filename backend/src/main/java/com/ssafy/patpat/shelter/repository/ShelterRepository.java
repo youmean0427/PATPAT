@@ -1,6 +1,7 @@
 package com.ssafy.patpat.shelter.repository;
 
 import com.ssafy.patpat.shelter.entity.Shelter;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,14 +12,14 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface ShelterRepository extends JpaRepository<Shelter,Integer> {
+public interface ShelterRepository extends JpaRepository<Shelter,Long> {
 
     List<Shelter> findByGugunCode(String gugunCode);
-    List<Shelter> findByShelterIdIn(Set<Integer> list);
-    List<Shelter> findByShelterIdIn(List<Integer> list,PageRequest pageRequest);
-    List<Shelter> findBySidoCodeAndGugunCode(String sidoCode, String gugunCode, PageRequest pageRequest);
-    List<Shelter>  findBySidoCode(String sidoCode,PageRequest pageRequest);
-    Shelter findByShelterId(int shelterId);
+    List<Shelter> findByShelterIdIn(List<Long> list);
+    Page<Shelter> findByShelterIdIn(List<Long> list, PageRequest pageRequest);
+    Page<Shelter> findBySidoCodeAndGugunCode(String sidoCode, String gugunCode, PageRequest pageRequest);
+    Page<Shelter>  findBySidoCode(String sidoCode,PageRequest pageRequest);
+    Shelter findByShelterId(Long shelterId);
     Shelter findByNameAndRegNumber(String name, String regNumber);
 
 }

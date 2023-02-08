@@ -63,7 +63,7 @@ public class UserController {
     @GetMapping("/favorite/{protectId}")
     @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "찜 등록", notes = "찜 동물 등록")
-    public ResponseEntity<Object> insertFavorite(@PathVariable int protectId){
+    public ResponseEntity<Object> insertFavorite(@PathVariable Long protectId){
         //서비스 호출 코드
         UserDto user = userService.getUserWithAuthorities();
         if(userService.insertFavoriteDogs(user.getUserId(), protectId)){
@@ -80,7 +80,7 @@ public class UserController {
      */
     @DeleteMapping("/favorite/{protectId}")
     @ApiOperation(value = "찜 해제", notes = "찜 동물 해제")
-    public ResponseEntity<Object> deleteFavorite(@PathVariable int protectId){
+    public ResponseEntity<Object> deleteFavorite(@PathVariable Long protectId){
         //서비스 호출 코드
         UserDto user = userService.getUserWithAuthorities();
         if(userService.deleteFavoriteDogs(user.getUserId(), protectId)){
@@ -214,13 +214,9 @@ public class UserController {
     public ResponseEntity<Object> insertImage(@RequestPart List<MultipartFile> profileFile) throws Exception{
         //서비스 호출 코드
         userService.insertImage(profileFile);
-        if(true){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("SUCCESS"));
+
     }
 
 }
