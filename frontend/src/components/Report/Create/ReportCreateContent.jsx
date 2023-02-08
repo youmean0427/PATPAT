@@ -17,8 +17,12 @@ import DetailModal from 'components/Common/DetailModal';
 import EarDetail from './EarDetail';
 import PatternDetail from './PatternDetail';
 import TailDetail from './TailDetail';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import { useRef } from 'react';
 
 export default function ReportCreateContent() {
+  // info
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [age, setAge] = useState(0);
@@ -30,22 +34,44 @@ export default function ReportCreateContent() {
   const [breedId, setBreedId] = useState({ value: 0 });
   const [kg, setKg] = useState(0);
   const [neuteredCode, setNeuteredCode] = useState({ value: 0 });
-
   const [content, setContent] = useState('');
+
+  // category
   const [categoryEar, setCategoryEar] = useState({ value: 0 });
   const [categoryColor, setCategoryColor] = useState(0);
   const [categoryPattern, setCategoryPattern] = useState({ value: 0 });
   const [categoryTail, setCategoryTail] = useState({ value: 0 });
   const [categoryCloth, setCategoryCloth] = useState({ value: 0 });
   const [categoryClothColor, setCategoryClothColor] = useState({ value: 0 });
-
-  const [modal, setModal] = useState(false);
   const [color1, setColor1] = useState('#000000');
   const [color2, setColor2] = useState('#000000');
+
+  // Picture
   const [preFile, setPreFile] = useState([]);
   const [fileList, setFileList] = useState([]);
+
+  // Modal
+  const [modal, setModal] = useState(false);
   const [modalNum, setModalNum] = useState();
   const reader = new FileReader();
+
+  // Alert
+  const [titleAlertOpen, setTitleAlertOpen] = useState(0);
+  const [fileListAlertOpen, setFileListAlertOpen] = useState(0);
+  const [nameAlertOpen, setNameAlertOpen] = useState(0);
+  const [typeCodeAlertOpen, setTypeCodeAlertOpen] = useState(0);
+  const [breedAlertOpen, setBreedAlertOpen] = useState(0);
+  const [positionAlertOpen, setPositionAlertOpen] = useState(0);
+  const [contentAlertOpen, setContentAlertOpen] = useState(0);
+
+  const titleInput = useRef();
+  const fileListInput = useRef();
+  const nameInput = useRef();
+  const typeCodeInput = useRef();
+  const breedInput = useRef();
+  const positionInput = useRef();
+  const contentInput = useRef();
+
   // useEffect
 
   useEffect(() => {
@@ -119,7 +145,7 @@ export default function ReportCreateContent() {
   if (isLoading) return;
 
   // Select Data
-  console.log(fileList);
+  // console.log(fileList);
 
   const stateOpt = [
     { value: 1, label: '실종' },
@@ -184,19 +210,35 @@ export default function ReportCreateContent() {
     setModal(false);
   };
   // Console
-
   return (
     <div>
       <form
         onSubmit={e => {
           e.preventDefault();
+          if (title === '') {
+            setTitleAlertOpen(1);
+            titleInput.current.focus();
+          }
+
           mutation();
+
           // console.log('POST');
         }}
       >
         <div className={styles.container}>
           <div className={styles.title}>
-            <input type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <input ref={titleInput} type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <div>
+              {titleAlertOpen === 0 ? null : (
+                <div>
+                  <Stack sx={{ width: '100%' }} spacing={2}>
+                    <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                      제목을 작성해주세요.
+                    </Alert>
+                  </Stack>
+                </div>
+              )}
+            </div>
           </div>
           <div className={styles['container-info']}>
             <div className={styles['container-info-picture']}>
@@ -245,11 +287,27 @@ export default function ReportCreateContent() {
                     <label htmlFor="file" onChange={handleAddImages}>
                       <div className={styles.pictureButton}>
                         사진추가
-                        <input type="file" id="file" accept="image/*" className={styles.file} multiple />
+                        <input
+                          ref={fileListInput}
+                          type="file"
+                          id="file"
+                          accept="image/*"
+                          className={styles.file}
+                          multiple
+                        />
                       </div>
                     </label>
                   ) : (
                     <div> 3장까지 업로드 가능합니다. </div>
+                  )}{' '}
+                  {fileListAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          사진을 1장 이상 추가해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
                   )}
                 </div>
               </div>
@@ -258,16 +316,43 @@ export default function ReportCreateContent() {
             <div className={styles['container-info-content']}>
               <div>
                 <div>
-                  <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                  <input ref={nameInput} type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                  {nameAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          이름을 작성해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <Select options={stateOpt} onChange={setTypeCode} placeholder="상태" />
+                  {titleAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          상태를 선택해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
+                  )}
                 </div>
               </div>
 
               <div>
                 <div>
                   <Select options={changeBreedList(breedData)} onChange={setBreedId} placeholder="견종" />
+                  {titleAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          견종을 선택해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -415,6 +500,15 @@ export default function ReportCreateContent() {
         </div>
         <div className={styles.subTitle}>실종/발견 장소</div>
         <hr />
+        {titleAlertOpen === 0 ? null : (
+          <div>
+            <Stack sx={{ width: '100%' }} spacing={2}>
+              <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                장소를 선택해주세요.
+              </Alert>
+            </Stack>
+          </div>
+        )}
         <div className={styles.map}>
           <Map // 지도를 표시할 Container
             center={{
@@ -454,9 +548,19 @@ export default function ReportCreateContent() {
             )}
           </Map>
         </div>
+
         <div className={styles.subTitle}>상세특징</div>
         <hr />
         <div>
+          {titleAlertOpen === 0 ? null : (
+            <div>
+              <Stack sx={{ width: '100%' }} spacing={2}>
+                <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                  상세특징을 입력해주세요.
+                </Alert>
+              </Stack>
+            </div>
+          )}
           <div className={styles.ckEditor}>
             <CKEditor
               editor={ClassicEditor}

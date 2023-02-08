@@ -8,21 +8,22 @@
   font-size: 1.7rem;
   margin-bottom: 0.6rem;
 
-  width: 100%;
-  overflow: hidden;
+  display: block;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
+  width: 161px;
 }
 
-.breedName,
-.gender,
-.name,
 .content {
   font-size: 1.2rem;
   color: $gray-color;
-  overflow: hidden;
+
+  display: block;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
+  width: 161px;
 }
 
 .card {

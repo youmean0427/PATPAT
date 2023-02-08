@@ -90,7 +90,7 @@
           margin: {
             top: 11px;
             bottom: 11px;
-            left: 10px;
+            left: 20px;
           }
           padding: 10px;
           font-weight: 700;
@@ -156,6 +156,9 @@
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+
+  display: flex;
+  justify-content: center;
 }
 
 .name {
