@@ -326,7 +326,7 @@ public class ShelterServiceImpl implements ShelterService{
     }
     @Override
     @Transactional
-    public ResponseMessage updateShelter(List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
+    public ResponseMessage updateShelter(ShelterDto shelterDto, List<MultipartFile> uploadFile) throws Exception {
         LOGGER.info("{}",shelterDto.getShelterId());
 
         Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterDto.getShelterId()));
@@ -345,24 +345,25 @@ public class ShelterServiceImpl implements ShelterService{
         // 이미지 우선 삭제
         List<Image> shelterImageList = shelter.getImages();
 
-        List<Image> newImageList = new ArrayList<>();
 
-        for (MultipartFile partFile:
-             uploadFile) {
-            newImageList.add(fileService.insertFile(partFile));
+
+        if(uploadFile != null){
+            List<Image> newImageList = new ArrayList<>();
+            for (MultipartFile partFile:
+                    uploadFile) {
+                newImageList.add(fileService.insertFile(partFile));
+                shelter.setImages(newImageList);
+            }
         }
+
+        shelter.setInfo(shelterDto.getInfoContent());
+        shelter.setName(shelterDto.getName());
 
         owner.get().setPhoneNumber(shelterDto.getPhoneNumber());
         owner.get().setName(shelterDto.getOwnerName());
 
+        shelter.setOwner(owner.get());
 
-        shelter = Shelter.builder()
-                .shelterId(shelterDto.getShelterId())
-                .images(newImageList)
-                .name(shelterDto.getName())
-                .info(shelterDto.getInfoContent())
-                .owner(owner.get())
-                .build();
 //        if(shelterDto.getName() != null){
 //            shelter.setName(shelterDto.getName());
 //        }
@@ -390,9 +391,11 @@ public class ShelterServiceImpl implements ShelterService{
 //        }
         shelterRepository.save(shelter);
 
-        for (Image i:
-                shelterImageList) {
-            fileService.deleteFile(i);
+        if(uploadFile != null){
+            for (Image i:
+                    shelterImageList) {
+                fileService.deleteFile(i);
+            }
         }
         return new ResponseMessage("SUCCESS");
     }

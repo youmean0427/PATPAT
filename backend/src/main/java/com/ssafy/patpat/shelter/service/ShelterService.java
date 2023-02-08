@@ -18,7 +18,7 @@ public interface ShelterService {
     BreedDto selectBreedByMbti(String mbtiId);
     AuthCodeDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto);
 
-    ResponseMessage updateShelter(List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception;
+    ResponseMessage updateShelter(ShelterDto shelterDto, List<MultipartFile> uploadFile) throws Exception;
 
     ResponseMessage AuthShelter(int shelterId, String authCode);
 
