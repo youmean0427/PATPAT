@@ -250,11 +250,11 @@ public class VolunteerController {
     }
 
     /** 수락 및 거절 상태 변경 */
-    @GetMapping("/reservation/state")
+    @GetMapping("/reservations/state")
     @ApiOperation(value = "수락 거절 상태", notes = "봉사 예약 수락 / 거절 인즈엉 파라미터 : reservationId, userId, stateCode(수락 : 1, 거절 : 2)")
-    public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto){
+    public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto) throws VolunteerException {
         //서비스 호출 코드
-        if(true){
+        if(volunteerService.changeReservationState(reservationDto)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
@@ -264,11 +264,11 @@ public class VolunteerController {
     }
 
     /** 완료 변경 */
-    @GetMapping("/reservation/complete")
+    @GetMapping("/reservations/complete")
     @ApiOperation(value = "완료", notes = "봉사 완료 파라미터 : reservationId 무적권 완료")
-    public ResponseEntity<Object> completeReservationState(ReservationDto reservationDto){
+    public ResponseEntity<Object> completeReservationState(ReservationDto reservationDto) throws VolunteerException {
         //서비스 호출 코드
-        if(true){
+        if(volunteerService.completeReservationState(reservationDto)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
