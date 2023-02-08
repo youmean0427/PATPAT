@@ -254,7 +254,6 @@ public class ConsultingServiceImpl implements ConsultingService{
 //
 //        return timeDtoList;
         return null;
->>>>>>> backend/src/main/java/com/ssafy/patpat/consulting/service/ConsultingServiceImpl.java
 
     }
 
