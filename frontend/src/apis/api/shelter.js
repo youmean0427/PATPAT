@@ -10,7 +10,7 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @returns 보호소 리스트
  */
 export const getShelterList = async (sidoCode, gugunCode, breedId, limit, offset) => {
-  const { data } = await defaultInstance('/shelters', { params: { breedId, gugunCode, sidoCode, limit, offset } });
+  const { data } = await defaultInstance.get('/shelters', { params: { breedId, gugunCode, sidoCode, limit, offset } });
   return data;
 };
 
@@ -20,7 +20,7 @@ export const getShelterList = async (sidoCode, gugunCode, breedId, limit, offset
  * @returns 보호소 상세 정보 데이터
  */
 export const getShelterDetail = async shelterId => {
-  const { data } = await defaultInstance(`/shelters/${shelterId}`);
+  const { data } = await defaultInstance.get(`/shelters/${shelterId}`);
   return data;
 };
 
@@ -29,7 +29,7 @@ export const getShelterDetail = async shelterId => {
  * @returns [] : 시도 데이터 리스트
  */
 export const getSidoList = async () => {
-  const { data } = await defaultInstance('/shelters/sidos');
+  const { data } = await defaultInstance.get('/shelters/sidos');
   return data;
 };
 
@@ -39,7 +39,7 @@ export const getSidoList = async () => {
  * @returns [] : 구군 데이터 리스트
  */
 export const getGugunList = async sidoCode => {
-  const { data } = await defaultInstance(`/shelters/guguns?sidoCode=${sidoCode}`);
+  const { data } = await defaultInstance.get(`/shelters/guguns?sidoCode=${sidoCode}`);
   return data;
 };
 
@@ -48,7 +48,7 @@ export const getGugunList = async sidoCode => {
  * @returns [] : 견종 데이터 리스트
  */
 export const getBreedsList = async () => {
-  const { data } = await defaultInstance(`/shelters/breeds`);
+  const { data } = await defaultInstance.get(`/shelters/breeds`);
   return data;
 };
 
@@ -58,7 +58,7 @@ export const getBreedsList = async () => {
  * @returns 견종 결과 테이터 -> breedName,files,desc,title,mbti
  */
 export const getMbtiBreedInfo = async mbtiId => {
-  const { data } = await defaultInstance(`/shelters/mbti/${mbtiId}`);
+  const { data } = await defaultInstance.get(`/shelters/mbti/${mbtiId}`);
   return data;
 };
 
@@ -68,7 +68,7 @@ export const getMbtiBreedInfo = async mbtiId => {
  * @returns
  */
 export const getCountShelterByBreed = async breedId => {
-  const { data } = await defaultInstance(`/shelters/mbti/count/${breedId}`);
+  const { data } = await defaultInstance.get(`/shelters/mbti/count/${breedId}`);
   return data;
 };
 
@@ -81,7 +81,7 @@ export const getCountShelterByBreed = async breedId => {
  * @returns
  */
 export const createShelter = async (code, name) => {
-  const res = await authInstance(`/shelters?code=${code}&name=${name}`);
+  const res = await authInstance.post(`/shelters?code=${code}&name=${name}`);
   return res;
 };
 
@@ -91,8 +91,8 @@ export const createShelter = async (code, name) => {
  * @param {int} shelterId
  * @returns
  */
-export const updateShelter = async (formdata, shelterId) => {
-  const res = await authInstance(`/shelters/${shelterId}`, formdata, {
+export const updateShelter = async formdata => {
+  const res = await authInstance.post(`/shelters/update`, formdata, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return res;
