@@ -7,14 +7,14 @@ import VolunteerItem from '../Items/VolunteerItem';
 export default function VolunteerList({ userId }) {
   const { data, isLoading } = useQuery({
     queryKey: ['myVolunteerList'],
-    queryFn: () => getVolReservationOfUser(userId),
+    queryFn: () => getVolReservationOfUser(userId, 20, 0),
   });
 
   if (isLoading) return;
 
   return (
     <div className={styles.container}>
-      {data.length === 0 ? (
+      {data['list'].length === 1 && data['list'][0].length === 0 ? (
         <div className={styles['no-data']}>신청한 봉사 정보가 없습니다.</div>
       ) : (
         data.map(item => <VolunteerItem key={item.reservationId} item={item} />)

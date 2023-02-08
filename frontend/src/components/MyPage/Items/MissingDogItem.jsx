@@ -34,7 +34,6 @@ export default function MissingDogItem({ item }) {
     neutered,
   } = item;
 
-  console.log(name);
   return (
     <div
       className={styles.card}

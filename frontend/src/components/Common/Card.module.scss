@@ -1,7 +1,8 @@
 @import 'assets/styles/variable.scss';
 
 .card {
-  width: 25%;
+  margin-bottom: 8px;
+  min-width: 20rem;
   border-radius: 0.4rem;
   display: flex;
   flex-direction: column;

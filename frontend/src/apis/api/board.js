@@ -22,7 +22,7 @@ export const getBoardList = async (typeCode, limit, offset) => {
  * @returns [] : typeCode에 따른 Item을 가진 배열
  */
 export const getBoardListByMe = async (limit, offset, typecode) => {
-  const { data } = await authInstance.get(`/boards/me?limit=${limit}&offSet=${offset}&typecode=${typecode}`);
+  const { data } = await authInstance.get(`/boards/me?limit=${limit}&offset=${offset}&typeCode=${typecode}`);
   return data;
 };
 

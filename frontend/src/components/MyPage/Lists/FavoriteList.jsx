@@ -12,8 +12,6 @@ export default function FavoriteList() {
 
   if (isLoading) return;
 
-  console.log(data);
-
   return (
     <div className={styles.container}>
       {data.length === 0 ? (

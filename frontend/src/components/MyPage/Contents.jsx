@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import styles from './Contents.module.scss';
-import BoardsList from './Lists/BoardsList';
+import Boards from './Boards';
 import MissingDogList from './Lists/MissingDogList';
 import FavoriteList from './Lists/FavoriteList';
 import VolunteerList from './Lists/VolunteerList';
 import ConsultingList from './Lists/ConsultingList';
-import { NavLink } from 'react-router-dom';
 
 export default function Contents({ data }) {
   const [click, setClick] = useState([true, false, false, false, false]);
@@ -47,7 +46,7 @@ export default function Contents({ data }) {
       <div className={styles.contents}>
         {click[0] ? <MissingDogList userId={data.userId} /> : null}
         {click[1] ? <FavoriteList /> : null}
-        {click[2] ? <BoardsList /> : null}
+        {click[2] ? <Boards /> : null}
         {click[3] ? <VolunteerList userId={data.userId} /> : null}
         {click[4] ? <ConsultingList userId={data.userId} /> : null}
       </div>
