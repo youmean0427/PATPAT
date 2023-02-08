@@ -22,7 +22,10 @@ import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
+import com.ssafy.patpat.volunteer.service.VolunteerService;
 import io.swagger.models.auth.In;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +38,8 @@ import java.util.*;
 
 @Service
 public class ShelterServiceImpl implements ShelterService{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShelterServiceImpl.class);
     @Autowired
     ShelterRepository shelterRepository;
     @Autowired
@@ -195,7 +200,7 @@ public class ShelterServiceImpl implements ShelterService{
         List<ShelterDto> shelterDtoList = new ArrayList<>();
         System.out.println(shelterList);
         for(Shelter s : shelterList){
-            Set<Image> shelterImage = s.getImages();
+            List<Image> shelterImage = s.getImages();
             List<FileDto> imageList = new ArrayList<>();
             for(Image i : shelterImage){
                 imageList.add(FileDto.builder()
@@ -321,57 +326,77 @@ public class ShelterServiceImpl implements ShelterService{
     }
     @Override
     @Transactional
-    public ResponseMessage updateShelter(int shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
-        Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterId));
-        if(!s.isPresent()){
-            return null;
-        }
-        Shelter shelter = s.get();
-        // 이미지 우선 삭제
-        Set<Image> shelterImageList = shelter.getImages();
-        for (Image i:
-                shelterImageList) {
-            fileService.deleteFile(i);
-        }
-        Set<Image> newImageList = new HashSet<>();
-        Optional<Owner> owner = Optional.ofNullable(shelter.getOwner());
+    public ResponseMessage updateShelter(ShelterDto shelterDto, List<MultipartFile> uploadFile) throws Exception {
+        LOGGER.info("{}",shelterDto.getShelterId());
 
+        Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterDto.getShelterId()));
+        if(!s.isPresent()){
+            return new ResponseMessage("FAIL");
+        }
+
+        Shelter shelter = s.get();
+        LOGGER.info("sdfsdfsdf{}",shelter.getOwner().getName());
+        Optional<Owner> owner = Optional.ofNullable(shelter.getOwner());
         if(!owner.isPresent()){
             return new ResponseMessage("FAIL");
         }
 
-        for (MultipartFile partFile:
-             uploadFile) {
-            newImageList.add(fileService.insertFile(partFile));
-        }
-        shelter.setImages(newImageList);
-        if(shelterDto.getName() != null){
-            shelter.setName(shelterDto.getName());
-        }
-        if(shelterDto.getInfoContent() != null){
-            shelter.setInfo(shelterDto.getInfoContent());
-        }
-        if(shelterDto.getPhoneNumber() != null){
-            shelter.getOwner().setPhoneNumber(shelterDto.getPhoneNumber());
-        }
-        if(shelterDto.getOwnerName() != null){
-            shelter.getOwner().setName(shelterDto.getOwnerName());
-        }
-        if(shelterDto.getOwnerId() != null){
-            // 직원인지 체크
-            Optional<User> user = userRepository.findById(shelterDto.getOwnerId());
-            if(user.isPresent()){
-                if(user.get().getShelter().getShelterId() == shelter.getShelterId()){
-                    Owner newOwner = new Owner();
-                    newOwner.setUser(user.get());
-                    newOwner.setName(shelterDto.getName());
-                    newOwner.setPhoneNumber(shelterDto.getPhoneNumber());
-                    shelter.setOwner(newOwner);
-                }
+        LOGGER.info("나의 오우너{}",owner.get().getName());
+        // 이미지 우선 삭제
+        List<Image> shelterImageList = shelter.getImages();
+
+
+
+        if(uploadFile != null){
+            List<Image> newImageList = new ArrayList<>();
+            for (MultipartFile partFile:
+                    uploadFile) {
+                newImageList.add(fileService.insertFile(partFile));
+                shelter.setImages(newImageList);
             }
         }
+
+        shelter.setInfo(shelterDto.getInfoContent());
+        shelter.setName(shelterDto.getName());
+
+        owner.get().setPhoneNumber(shelterDto.getPhoneNumber());
+        owner.get().setName(shelterDto.getOwnerName());
+
+        shelter.setOwner(owner.get());
+
+//        if(shelterDto.getName() != null){
+//            shelter.setName(shelterDto.getName());
+//        }
+//        if(shelterDto.getInfoContent() != null){
+//            shelter.setInfo(shelterDto.getInfoContent());
+//        }
+//        if(shelterDto.getPhoneNumber() != null){
+//            shelter.getOwner().setPhoneNumber(shelterDto.getPhoneNumber());
+//        }
+//        if(shelterDto.getOwnerName() != null){
+//            shelter.getOwner().setName(shelterDto.getOwnerName());
+//        }
+//        if(shelterDto.getOwnerId() != null){
+//            // 직원인지 체크
+//            Optional<User> user = userRepository.findById(shelterDto.getOwnerId());
+//            if(user.isPresent()){
+//                if(user.get().getShelter().getShelterId() == shelter.getShelterId()){
+//                    Owner newOwner = new Owner();
+//                    newOwner.setUser(user.get());
+//                    newOwner.setName(shelterDto.getName());
+//                    newOwner.setPhoneNumber(shelterDto.getPhoneNumber());
+//                    shelter.setOwner(newOwner);
+//                }
+//            }
+//        }
         shelterRepository.save(shelter);
 
+        if(uploadFile != null){
+            for (Image i:
+                    shelterImageList) {
+                fileService.deleteFile(i);
+            }
+        }
         return new ResponseMessage("SUCCESS");
     }
 
@@ -396,7 +421,7 @@ public class ShelterServiceImpl implements ShelterService{
     @Transactional
     public ShelterDto detailShelter(int shelterId) {
         Shelter s = shelterRepository.findByShelterId(shelterId);
-        Set<Image> shelterImageList = s.getImages();
+        List<Image> shelterImageList = s.getImages();
         List<FileDto> imageList = new ArrayList<>();
 
         Optional<Owner> owner = Optional.ofNullable(s.getOwner());

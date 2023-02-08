@@ -71,6 +71,8 @@ class PatpatApplicationTests {
 	PostImageRepository postImageRepository;
 	@Autowired
 	ImageRepository imageRepository;
+//	@Autowired
+//	ShelterDogImageRepository shelterDogImageRepository;
 
 	@Test
 	void contextLoads() {

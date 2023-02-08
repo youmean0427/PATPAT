@@ -49,12 +49,12 @@ public class Shelter {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "shelter_image",
             joinColumns = {@JoinColumn(name = "shelter_id")},
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     @JsonIgnore
-    private Set<Image> images;
+    private List<Image> images;
 
 }
