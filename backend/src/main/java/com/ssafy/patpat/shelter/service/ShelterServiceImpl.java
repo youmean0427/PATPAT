@@ -160,17 +160,17 @@ public class ShelterServiceImpl implements ShelterService{
     @Override
     public ResponseListDto shelterList(RequestShelterDto dto) {
         ResponseListDto responseListDto = new ResponseListDto();
-        long breedId = dto.getBreedId();
+        Long breedId = dto.getBreedId();
         String sidoCode = dto.getSidoCode();
         String gugunCode = dto.getGugunCode();
-        int offSet = dto.getOffSet();
-        int limit = dto.getLimit();
+        Integer offSet = dto.getOffSet();
+        Integer limit = dto.getLimit();
 
         PageRequest pageRequest = PageRequest.of(offSet,limit);
 
         Page<Shelter> shelterList = null;
         List<Long> longList = new ArrayList<>();
-        if(breedId==0 && sidoCode==null && gugunCode==null){
+        if(breedId==null && sidoCode==null && gugunCode==null){
             shelterList = shelterRepository.findAll(pageRequest);
 //            shelterList = pages.toList();
         }
@@ -182,11 +182,11 @@ public class ShelterServiceImpl implements ShelterService{
             }
             shelterList = shelterRepository.findByShelterIdIn(longList,pageRequest);
         }
-        else if(breedId==0 && sidoCode!=null && gugunCode == null){
+        else if(breedId==null && sidoCode!=null && gugunCode == null){
             //시도만
             shelterList = shelterRepository.findBySidoCode(sidoCode,pageRequest);
         }
-        else if(breedId==0 && sidoCode!=null && gugunCode != null){
+        else if(breedId==null && sidoCode!=null && gugunCode != null){
             shelterList = shelterRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode,pageRequest);
         }
         else if(breedId>0 && sidoCode != null && gugunCode==null){
