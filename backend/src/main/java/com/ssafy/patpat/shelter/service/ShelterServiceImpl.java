@@ -195,7 +195,7 @@ public class ShelterServiceImpl implements ShelterService{
         List<ShelterDto> shelterDtoList = new ArrayList<>();
         System.out.println(shelterList);
         for(Shelter s : shelterList){
-            Set<Image> shelterImage = s.getImages();
+            List<Image> shelterImage = s.getImages();
             List<FileDto> imageList = new ArrayList<>();
             for(Image i : shelterImage){
                 imageList.add(FileDto.builder()
@@ -328,12 +328,12 @@ public class ShelterServiceImpl implements ShelterService{
         }
         Shelter shelter = s.get();
         // 이미지 우선 삭제
-        Set<Image> shelterImageList = shelter.getImages();
+        List<Image> shelterImageList = shelter.getImages();
         for (Image i:
                 shelterImageList) {
             fileService.deleteFile(i);
         }
-        Set<Image> newImageList = new HashSet<>();
+        List<Image> newImageList = new ArrayList<>();
         Optional<Owner> owner = Optional.ofNullable(shelter.getOwner());
 
         if(!owner.isPresent()){
@@ -396,7 +396,7 @@ public class ShelterServiceImpl implements ShelterService{
     @Transactional
     public ShelterDto detailShelter(int shelterId) {
         Shelter s = shelterRepository.findByShelterId(shelterId);
-        Set<Image> shelterImageList = s.getImages();
+        List<Image> shelterImageList = s.getImages();
         List<FileDto> imageList = new ArrayList<>();
 
         Optional<Owner> owner = Optional.ofNullable(s.getOwner());

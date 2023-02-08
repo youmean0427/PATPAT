@@ -14,9 +14,9 @@ import com.ssafy.patpat.consulting.dto.TimeDto;
 import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
-import com.ssafy.patpat.protect.entity.ShelterDogImage;
+//import com.ssafy.patpat.protect.entity.ShelterDogImage;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
-import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
+//import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -71,8 +71,8 @@ class PatpatApplicationTests {
 	PostImageRepository postImageRepository;
 	@Autowired
 	ImageRepository imageRepository;
-	@Autowired
-	ShelterDogImageRepository shelterDogImageRepository;
+//	@Autowired
+//	ShelterDogImageRepository shelterDogImageRepository;
 
 	@Test
 	void contextLoads() {

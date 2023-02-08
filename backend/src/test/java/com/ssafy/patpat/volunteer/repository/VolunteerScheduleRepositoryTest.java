@@ -2,6 +2,8 @@ package com.ssafy.patpat.volunteer.repository;
 
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.code.TimeCode;
+import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
@@ -27,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,6 +53,9 @@ class VolunteerScheduleRepositoryTest {
 
     @Autowired
     private TimeRepository timeRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Test
     @Transactional
@@ -88,15 +94,46 @@ class VolunteerScheduleRepositoryTest {
 //                vr.toList()) {
 //            System.out.println(v.getVolunteerDate() +" "+ v.getReservationId());
 //        }
-        List<Integer> t = new ArrayList<>();
-        t.add(2);
-        t.add(3);
-        int hour = LocalDateTime.now().getHour();
-        List<Time> time = timeRepository.findWithShelterByShelterShelterIdAndTimeCodeGreaterThanEqualAndStateNotIn(5, hour, t);
+//        List<Integer> t = new ArrayList<>();
+//        t.add(2);
+//        t.add(3);
+//        int hour = LocalDateTime.now().getHour();
+//        List<Time> time = timeRepository.findWithShelterByShelterShelterIdAndTimeCodeGreaterThanEqualAndStateNotIn(5, hour, t);
+//
+//        for (Time ti:
+//             time) {
+//            System.out.println(ti.getTimeCode());
+//        }
+        Optional<Shelter> s = shelterRepository.findById(291);
+        List<Image> images = s.get().getImages();
 
-        for (Time ti:
-             time) {
-            System.out.println(ti.getTimeCode());
+        for (Image i:
+                images) {
+            System.out.println(i.getImageId());
+//            imageRepository.delete(i);
+        }
+
+        List<Image> imageList = new ArrayList<>();
+        for (Image image:
+             images) {
+            Image i = Image.builder()
+                    .filename("d")
+                    .fileSize(2)
+                    .origFilename("d")
+                    .filePath("d")
+                    .build();
+            i = imageRepository.save(i);
+
+            imageList.add(i);
+        }
+        s.get().setImages(imageList);
+        Shelter shelter = shelterRepository.save(s.get());
+        imageList = shelter.getImages();
+
+        for (Image i:
+             imageList) {
+            System.out.println(i.getImageId());
+//            imageRepository.delete(i);
         }
 
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
