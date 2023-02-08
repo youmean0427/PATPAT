@@ -321,8 +321,8 @@ public class ShelterServiceImpl implements ShelterService{
     }
     @Override
     @Transactional
-    public ResponseMessage updateShelter(int shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
-        Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterId));
+    public ResponseMessage updateShelter(List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
+        Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterDto.getShelterId()));
         if(!s.isPresent()){
             return new ResponseMessage("FAIL");
         }
@@ -351,7 +351,7 @@ public class ShelterServiceImpl implements ShelterService{
 
         owner.get().setPhoneNumber(shelterDto.getPhoneNumber());
         owner.get().setName(shelterDto.getOwnerName());
-        
+
 
         shelter = Shelter.builder()
                 .images(newImageList)
