@@ -28,7 +28,7 @@ export const getMissingDogList = async (breedId, gender, limit, offset) => {
  * @returns
  */
 export const getMissingDogListOfUser = async (userId, limit, offset) => {
-  const { data } = await authInstance.get(`/reports/missings/${userId}?limit=${limit}?offSet=${offset}`);
+  const { data } = await authInstance.get(`/reports/missings/${userId}?limit=${limit}&offSet=${offset}`);
   return data;
 };
 

@@ -14,7 +14,6 @@
   color: $gray-color;
   transition-duration: 0.3s;
   &:hover {
-    font-size: 1.3rem;
     color: $black-color;
   }
 }
@@ -74,6 +73,7 @@
   bottom: -50px;
   width: 0;
   height: 0;
+  z-index: -3;
   border-bottom: 300px solid $main-color;
   border-top: 200px solid transparent;
   border-left: 200px solid transparent;
