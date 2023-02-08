@@ -24,3 +24,8 @@ export const searchSelterListState = atom({
   key: 'recoilShelterListState',
   default: [],
 });
+
+export const searchShelterPageState = atom({
+  key: 'recoilShelterPageState',
+  default: 1,
+});

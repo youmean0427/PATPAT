@@ -1,32 +1,45 @@
 import { useQuery } from '@tanstack/react-query';
 import { getShelterList } from 'apis/api/shelter';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { selectBreedState, selectGugunState, selectSidoState } from 'recoil/atoms/shelter';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { searchShelterPageState, selectBreedState, selectGugunState, selectSidoState } from 'recoil/atoms/shelter';
 import ShelterItem from './ShelterItem';
 import styles from './ShelterList.module.scss';
-
+import Pagination from 'react-js-pagination';
+import Loading from 'components/Common/Loading';
 function ShelterList() {
   const sido = useRecoilValue(selectSidoState);
   const gugun = useRecoilValue(selectGugunState);
   const breed = useRecoilValue(selectBreedState);
-  const { data, isLoading } = useQuery(
-    ['shelterList', sido.sidoCode, gugun.gugunCode, breed.breedId],
+  const [page, setPage] = useRecoilState(searchShelterPageState);
+  const LIMIT = 10;
+  const { data, isLoading, isFetching } = useQuery(
+    ['shelterList', sido.sidoCode, gugun.gugunCode, breed.breedId, page],
     () => {
-      return getShelterList(sido.sidoCode, gugun.gugunCode, breed.breedId, 12, 0);
+      return getShelterList(sido.sidoCode, gugun.gugunCode, breed.breedId, LIMIT, page - 1);
     },
     { staleTime: 1000 * 60 * 5 }
   );
-  if (isLoading) return;
+  const handlePageChange = pageNumber => {
+    setPage(pageNumber);
+  };
+  if (isLoading || isFetching) return <Loading></Loading>;
   return (
     <div className={styles.container}>
-      {data.length !== 0 ? (
-        data.map((item, index) => {
+      {data.totalCount !== 0 ? (
+        data.list.map((item, index) => {
           return <ShelterItem key={index} item={item} />;
         })
       ) : (
         <span>검색 결과가 없습니다.</span>
       )}
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={10}
+        totalItemsCount={data.totalCount}
+        pageRangeDisplayed={5}
+        onChange={handlePageChange}
+      />
     </div>
   );
 }

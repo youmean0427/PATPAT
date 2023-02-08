@@ -11,7 +11,7 @@ export default function Shelter() {
   const params = useParams();
   const shelterId = params.shelterId;
   const { data, isLoading } = useQuery({
-    queryKey: ['getShelterDetail'],
+    queryKey: ['getShelterDetailInfo', shelterId],
     queryFn: () => getShelterDetail(shelterId),
   });
 
