@@ -10,7 +10,6 @@ import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 export default function Shelter() {
   const params = useParams();
   const shelterId = params.shelterId;
-  console.log(shelterId);
   const { data, isLoading } = useQuery({
     queryKey: ['getShelterDetail'],
     queryFn: () => getShelterDetail(shelterId),
