@@ -206,50 +206,51 @@ public class ConsultingServiceImpl implements ConsultingService{
 //        return null;
 
         //해당 보호소 가져오기
-        Shelter shelter = shelterRepository.findByShelterId(shelterId);
-        List<Integer> list = new ArrayList<>();
-
-        for(Time t : shelter.getTimeList()){
-            if(t.getState() == 1){
-                list.add(t.timeCode);
-            }
-        }
-        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
-
-        for(Consulting c : consultings){
-            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
-                list.remove(Integer.valueOf(c.getTimeCode()));
-            }
-        }
-
-        if(date.equals(LocalDate.now())){
-            int hour = LocalDateTime.now().getHour();
-
-            System.out.println(list);
-
-            for(int i=0; i<list.size(); i++){
-                if(list.get(i)==0){
-                    if(list.get(i)+10 <= hour) {
-                        list.remove(Integer.valueOf(list.get(i)));
-                        i--;
-                    }
-                }
-                else{
-                    if(list.get(i)+13 <= hour){
-                        list.remove(Integer.valueOf(list.get(i)));
-                        i--;
-                    }
-                }
-            }
-        }
-
-        System.out.println(list);
-        List<TimeDto> timeDtoList = new ArrayList<>();
-        for(Integer i : list){
-            timeDtoList.add(new TimeDto(i));
-        }
-
-        return timeDtoList;
+//        Shelter shelter = shelterRepository.findByShelterId(shelterId);
+//        List<Integer> list = new ArrayList<>();
+//
+//        for(Time t : shelter.getTimeList()){
+//            if(t.getState() == 1){
+//                list.add(t.timeCode);
+//            }
+//        }
+//        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
+//
+//        for(Consulting c : consultings){
+//            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
+//                list.remove(Integer.valueOf(c.getTimeCode()));
+//            }
+//        }
+//
+//        if(date.equals(LocalDate.now())){
+//            int hour = LocalDateTime.now().getHour();
+//
+//            System.out.println(list);
+//
+//            for(int i=0; i<list.size(); i++){
+//                if(list.get(i)==0){
+//                    if(list.get(i)+10 <= hour) {
+//                        list.remove(Integer.valueOf(list.get(i)));
+//                        i--;
+//                    }
+//                }
+//                else{
+//                    if(list.get(i)+13 <= hour){
+//                        list.remove(Integer.valueOf(list.get(i)));
+//                        i--;
+//                    }
+//                }
+//            }
+//        }
+//
+//        System.out.println(list);
+//        List<TimeDto> timeDtoList = new ArrayList<>();
+//        for(Integer i : list){
+//            timeDtoList.add(new TimeDto(i));
+//        }
+//
+//        return timeDtoList;
+        return null;
 
     }
 
