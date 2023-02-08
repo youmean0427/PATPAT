@@ -10,7 +10,7 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @returns
  */
 export const getVolNoticeList = async (keyword, limit, offset) => {
-  const { data } = await defaultInstance.get(`/volunteers/notices?keyword=${keyword}&limit=${limit}&offset=${offset}`);
+  const { data } = await defaultInstance.get(`/volunteers/notices?keyword=${keyword}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -33,7 +33,7 @@ export const getVolNoticeDetail = async noticeId => {
  */
 export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
   const { data } = await authInstance.get(
-    `/volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offset=${offset}`
+    `/volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };

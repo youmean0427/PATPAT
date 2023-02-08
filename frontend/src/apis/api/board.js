@@ -10,7 +10,7 @@ import { defaultInstance, authInstance } from 'apis/utils';
  * @returns [] : typeCode에 따른 Item을 가진 배열
  */
 export const getBoardList = async (typeCode, limit, offset) => {
-  const { data } = await defaultInstance.get(`/boards?typeCode=${typeCode}&limit=${limit}&offset=${offset}`);
+  const { data } = await defaultInstance.get(`/boards?typeCode=${typeCode}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -107,7 +107,7 @@ export const CreateReply = async data => {
 /**
  * PUT : 게시글 댓글 수정
  * @param {int} commentId 댓글 id
- * @param {json} data 
+ * @param {json} data
  * {
     "content": "본문",
   }
@@ -121,7 +121,7 @@ export const UpdateComment = async (commentId, data) => {
 };
 
 /**
- * PUT : 게시글 대댓글 수정 
+ * PUT : 게시글 대댓글 수정
  * @param {int} replyId
  * @param {json} data
  * {
