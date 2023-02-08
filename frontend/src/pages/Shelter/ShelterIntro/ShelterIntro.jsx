@@ -10,7 +10,6 @@ import EditInfoModal from 'components/Common/Modal/shelters/EditInfoModal';
 import { checkMyShelter } from 'utils/checkMyShelter';
 import OpenModalBtn from 'components/Common/Button/OpenModalBtn';
 import ImageSlide from 'components/ShelterPage/ImageSlide';
-import ImageItem from 'components/ShelterPage/ImageItem';
 
 export default function ShelterIntro() {
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();

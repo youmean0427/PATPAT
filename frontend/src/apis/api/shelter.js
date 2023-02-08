@@ -9,8 +9,8 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @param {*} sidoCode 시도 코드
  * @returns 보호소 리스트
  */
-export const getShelterList = async (sidoCode, gugunCode, breedId, limit, offset) => {
-  const { data } = await defaultInstance.get('/shelters', { params: { breedId, gugunCode, sidoCode, limit, offset } });
+export const getShelterList = async (sidoCode, gugunCode, breedId, limit, offSet) => {
+  const { data } = await defaultInstance.get('/shelters', { params: { breedId, gugunCode, sidoCode, limit, offSet } });
   return data;
 };
 

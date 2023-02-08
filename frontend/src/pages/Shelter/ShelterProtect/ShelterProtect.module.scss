@@ -1,0 +1,17 @@
+@import 'assets/styles/variable.scss';
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2.4rem;
+  & > .button {
+    color: $main-accent-color;
+  }
+  & > .button.disabled {
+    color: $gray-color;
+  }
+}
