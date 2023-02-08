@@ -1,25 +1,23 @@
 package com.ssafy.patpat.board.service;
 
-import com.ssafy.patpat.board.dto.BoardDto;
-import com.ssafy.patpat.board.dto.CommentDto;
-import com.ssafy.patpat.board.dto.ReplyDto;
-import com.ssafy.patpat.board.dto.RequestBoardDto;
+import com.ssafy.patpat.board.dto.*;
 import com.ssafy.patpat.board.entity.*;
 import com.ssafy.patpat.board.repository.*;
 import com.ssafy.patpat.common.dto.FileDto;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
+import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -29,6 +27,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -41,8 +40,11 @@ public class BoardServiceImpl implements BoardService{
     ImageRepository imageRepository;
     @Autowired
     NestedCommentRepository nestedCommentRepository;
+//    @Autowired
+//    PostImageRepository postImageRepository;
+
     @Autowired
-    PostImageRepository postImageRepository;
+    FileService fileService;
     @Autowired
     UserService userService;
 
@@ -57,20 +59,21 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
-    public List<BoardDto> selectUserBoardList(RequestBoardDto requestBoardDto) {
+    public ResponseListDto selectUserBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(), Sort.by("boardId").descending());
         /**
          * JWT  구현되면 유저 정보 가져오는거 수정해야함
          */
+        ResponseListDto boardDto = new ResponseListDto();
         UserDto userDto = userService.getUserWithAuthorities();
         Long userId = userDto.getUserId();
-        System.out.println(requestBoardDto);
-        List<Board> entityList = boardRepository.findByUserIdAndPostCode(userId,requestBoardDto.getTypeCode(),pageRequest);
-        System.out.println(entityList);
-        System.out.println(requestBoardDto);
+//        System.out.println(requestBoardDto);
+        Page<Board> entityList = boardRepository.findByUserIdAndPostCode(userId,requestBoardDto.getTypeCode(),pageRequest);
+//        System.out.println(entityList);
+//        System.out.println(requestBoardDto);
 
         List<BoardDto> dtoList = new ArrayList<>();
-        for(Board entity : entityList){
+        for(Board entity : entityList.toList()){
             dtoList.add(
                     BoardDto.builder()
                             .boardId(entity.getBoardId())
@@ -82,7 +85,10 @@ public class BoardServiceImpl implements BoardService{
                             .build()
             );
         }
-        return dtoList;
+        boardDto.setList(dtoList);
+        boardDto.setTotalCount(entityList.getTotalElements());
+        boardDto.setTotalPage(entityList.getTotalPages());
+        return boardDto;
     }
 
     /**
@@ -90,26 +96,33 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
-    public List<BoardDto> selectBoardList(RequestBoardDto requestBoardDto) {
+    public ResponseListDto selectBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(),Sort.by("boardId").descending());
-        List<Board> entityList = boardRepository.findByPostCode(requestBoardDto.getTypeCode(),pageRequest);
-        System.out.println(entityList);
+        Page<Board> entityList = boardRepository.findByPostCode(requestBoardDto.getTypeCode(),pageRequest);
+//        System.out.println(entityList);
 
+        ResponseListDto boardDto = new ResponseListDto();
         List<BoardDto> dtoList = new ArrayList<>();
         //보드 하나 골라서
-        for(Board board : entityList){
+        for(Board board : entityList.toList()){
             //0번 상태인 경우 썸네일을 넣는다.
             FileDto thumbnail = null;
             if(requestBoardDto.getTypeCode() == 0){
-                List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
+//                List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
+                List<Image> postImageList = board.getImages();
                 List<Image> imageList = new ArrayList<>();
-                for(PostImage post : postImageList){
-                    imageList.add(imageRepository.findByImageId(post.getImageId()));
-                }
+//                for(Image post : postImageList){
+//                    imageList.add(imageRepository.findByImageId(post.getImageId()));
+//                }
 
+                if(imageList.isEmpty()){
+                    thumbnail = FileDto.builder()
+                            .filePath(fileService.getFileUrl(fileService.getDefaultImage()))
+                            .build();
+                }
                 if(imageList.size()!=0){
                     thumbnail = FileDto.builder()
-                            .filePath(imageList.get(0).getFilePath())
+                            .filePath(fileService.getFileUrl(imageList.get(0)))
                             .build();
                 }
             }
@@ -126,14 +139,17 @@ public class BoardServiceImpl implements BoardService{
                             .build()
             );
         }
-        return dtoList;
+        boardDto.setList(dtoList);
+        boardDto.setTotalPage(entityList.getTotalPages());
+        boardDto.setTotalCount(entityList.getTotalElements());
+        return boardDto;
     }
     /**
      * 게시판 상세 화면
      * @return
      */
     @Override
-    public BoardDto detailBoard(int boardId) {
+    public BoardDto detailBoard(Long boardId) {
         Board board = boardRepository.findByBoardId(boardId);
         List<Comment> commentList = commentRepository.findByboardId(boardId);
         List<CommentDto> commentDtoList = new ArrayList<>();
@@ -161,16 +177,23 @@ public class BoardServiceImpl implements BoardService{
                             .build()
             );
         }
-        List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
-        List<Image> imageList = new ArrayList<>();
-        for(PostImage entity : postImageList){
-            imageList.add(imageRepository.findByImageId(entity.getImageId()));
-        }
+//        List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
+        List<Image> postImageList =board.getImages();
+//        List<Image> imageList = new ArrayList<>();
+//
+//        for(PostImage entity : postImageList){
+//            imageList.add(imageRepository.findByImageId(entity.getImageId()));
+//        }
         List<FileDto> fileDtoList = new ArrayList<>();
-        for(Image entity : imageList){
+        if(postImageList.isEmpty()){
+            fileDtoList.add(FileDto.builder()
+                    .filePath(fileService.getFileUrl(fileService.getDefaultImage()))
+                    .build());
+        }
+        for(Image entity : postImageList){
             fileDtoList.add(
                     FileDto.builder()
-                            .filePath(entity.getFilePath())
+                            .filePath(fileService.getFileUrl(entity))
                             .build()
             );
         }
@@ -184,7 +207,7 @@ public class BoardServiceImpl implements BoardService{
                 .commentList(commentDtoList)
                 .fileUrlList(fileDtoList)
                 .build();
-        System.out.println(boardDto);
+//        System.out.println(boardDto);
         return boardDto;
     }
 
@@ -197,57 +220,65 @@ public class BoardServiceImpl implements BoardService{
     public ResponseMessage insertBoard(BoardDto boardDto, List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         /**
-         * 유저 정보 들어오는거 생기면 다시하기
+         * 유저 정보 들어오는거 생기면 다시하기 - 했음
          */
+        UserDto userDto = userService.getUserWithAuthorities();
+        List<Image> images = new ArrayList<>();
         try{
+            if(uploadFile!=null) {
+                for (MultipartFile partFile : uploadFile) {
+                    images.add(fileService.insertFile(partFile, "board"));
+                }
+            }
             Board board = Board.builder()
                     .title(boardDto.getTitle())
                     .content(boardDto.getContent())
                     .postCode(boardDto.getTypeCode())
-                    .userId(0L)
-                    .nickName("dd")
+                    .userId(userDto.getUserId())
+                    .nickName(userDto.getUsername())
                     .dateTime(LocalDateTime.now())
+                    .images(images)
                     .build();
             boardRepository.save(board);
 
-            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
-            if(!uploadDir.exists()) uploadDir.mkdir();
-            if(uploadFile!=null) {
-                for (MultipartFile partFile : uploadFile) {
-                    int boardId = board.getBoardId();
-                    String fileName = partFile.getOriginalFilename();
-
-                    UUID uuid = UUID.randomUUID();
-
-                    String extension = FilenameUtils.getExtension(fileName);
-
-                    String savingFileName = uuid + "." + extension;
-
-//                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-
-                    String FilePath = uploadPath + File.separator + uploadFolder + File.separator + savingFileName;
-                    Path path = Paths.get(FilePath).toAbsolutePath();
-
-                    partFile.transferTo(path.toFile());
-
-                    Image image = Image.builder()
-                            .origFilename(fileName)
-                            .fileSize((int) partFile.getSize())
-                            .filename(fileName)
-                            .filePath(uploadFolder + "/" + savingFileName)
-                            .build();
-
-                    imageRepository.save(image);
-
-                    PostImage postImage = PostImage.builder()
-                            .imageId(image.getImageId())
-                            .boardId(board.getBoardId())
-                            .build();
-
-                    postImageRepository.save(postImage);
-
-                }
-            }
+//            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
+//            if(!uploadDir.exists()) uploadDir.mkdir();
+//            if(uploadFile!=null) {
+//                for (MultipartFile partFile : uploadFile) {
+//                    Long boardId = board.getBoardId();
+//                    String fileName = partFile.getOriginalFilename();
+//
+//                    UUID uuid = UUID.randomUUID();
+//
+//                    String extension = FilenameUtils.getExtension(fileName);
+//
+//                    String savingFileName = uuid + "." + extension;
+//
+////                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//
+//                    String FilePath = uploadPath + File.separator + uploadFolder + File.separator + savingFileName;
+//                    Path path = Paths.get(FilePath).toAbsolutePath();
+//
+//                    partFile.transferTo(path.toFile());
+//
+//                    Image image = Image.builder()
+//                            .origFilename(fileName)
+//                            .fileSize((int) partFile.getSize())
+//                            .filename(fileName)
+//                            .filePath(uploadFolder + "/" + savingFileName)
+//                            .build();
+//
+//                    imageRepository.save(image);
+//
+//                    PostImage postImage = PostImage.builder()
+//                            .imageId(image.getImageId())
+//                            .boardId(board.getBoardId())
+//                            .build();
+//
+//                    postImageRepository.save(postImage);
+//
+//                }
+//            }
             responseMessage.setMessage("SUCCESS");
         }catch (Exception e){
             e.printStackTrace();
@@ -262,7 +293,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage updateBoard(int boardId, BoardDto boardDto,  List<MultipartFile> uploadFile) {
+    public ResponseMessage updateBoard(Long boardId, BoardDto boardDto,  List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         /**
          * 유저 정보 들어오는거 생기면 다시하기
@@ -271,54 +302,69 @@ public class BoardServiceImpl implements BoardService{
             Board board = boardRepository.findByBoardId(boardId);
             board.update(boardDto.getTitle(),boardDto.getContent());
 
-
-            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
-            if(!uploadDir.exists()) uploadDir.mkdir();
-
-            List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
-            List<Integer> list = new ArrayList<>();
-            for(PostImage i : postImageList){
-                list.add(i.getImageId());
+            List<Image> images = board.getImages();
+            for(Image image : images){
+                fileService.deleteFile(image);
             }
-            List<Image> imageList = imageRepository.findByImageIdIn(list);
-            for(Image i : imageList){
-                File file = new File(uploadPath+File.separator+i.getFilePath());
-                if(file.exists()) file.delete();
+            images.removeAll(images);
+
+            List<Image> newImages = new ArrayList<>();
+            if(uploadFile!=null) {
+                for(MultipartFile partFile : uploadFile){
+                    newImages.add(fileService.insertFile(partFile, "board"));
+                }
             }
+            board.setImages(newImages);
+            boardRepository.save(board);
 
-            imageRepository.deleteByImageIdIn(list);
-            postImageRepository.deleteByBoardId(boardId);
+//            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
+//            if(!uploadDir.exists()) uploadDir.mkdir();
+//
+//            List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
+//            List<Integer> list = new ArrayList<>();
+//            for(PostImage i : postImageList){
+//                list.add(i.getImageId());
+//            }
+//            List<Image> imageList = imageRepository.findByImageIdIn(list);
+//            for(Image i : imageList){
+//                File file = new File(uploadPath+File.separator+i.getFilePath());
+//                if(file.exists()) file.delete();
+//            }
+//
+//            imageRepository.deleteByImageIdIn(list);
+//            postImageRepository.deleteByBoardId(boardId);
 
-            for(MultipartFile partFile : uploadFile){
-                String fileName = partFile.getOriginalFilename();
+//            for(MultipartFile partFile : uploadFile){
+//                String fileName = partFile.getOriginalFilename();
+//
+//                UUID uuid = UUID.randomUUID();
+//
+//                String extension = FilenameUtils.getExtension(fileName);
+//
+//                String savingFileName = uuid+"."+extension;
+//
+//                File destFile = new File(uploadPath+File.separator+uploadFolder+File.separator+savingFileName);
+//
+//                partFile.transferTo(destFile);
+//
+//                Image image = Image.builder()
+//                        .origFilename(fileName)
+//                        .fileSize((int) partFile.getSize())
+//                        .filename(fileName)
+//                        .filePath(uploadFolder+"/"+savingFileName)
+//                        .build();
+//
+//                imageRepository.save(image);
+//
+//                PostImage postImage = PostImage.builder()
+//                        .imageId(image.getImageId())
+//                        .boardId(board.getBoardId())
+//                        .build();
+//
+//                postImageRepository.save(postImage);
+//
+//            }
 
-                UUID uuid = UUID.randomUUID();
-
-                String extension = FilenameUtils.getExtension(fileName);
-
-                String savingFileName = uuid+"."+extension;
-
-                File destFile = new File(uploadPath+File.separator+uploadFolder+File.separator+savingFileName);
-
-                partFile.transferTo(destFile);
-
-                Image image = Image.builder()
-                        .origFilename(fileName)
-                        .fileSize((int) partFile.getSize())
-                        .filename(fileName)
-                        .filePath(uploadFolder+"/"+savingFileName)
-                        .build();
-
-                imageRepository.save(image);
-
-                PostImage postImage = PostImage.builder()
-                        .imageId(image.getImageId())
-                        .boardId(board.getBoardId())
-                        .build();
-
-                postImageRepository.save(postImage);
-
-            }
             responseMessage.setMessage("SUCCESS");
         }catch (Exception e){
             e.printStackTrace();
@@ -333,31 +379,40 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage deleteBoard(int boardId) {
+    public ResponseMessage deleteBoard(Long boardId) {
         ResponseMessage responseMessage = new ResponseMessage();
         try{
+            Optional<Board> board = boardRepository.findById(boardId);
+            if(!board.isPresent()){
+                return new ResponseMessage("FAIL");
+            }
+            List<Image> images = board.get().getImages();
+            for(Image image : images){
+                fileService.deleteFile(image);
+            }
+            images.removeAll(images);
             boardRepository.deleteByBoardId(boardId);
             List<Comment> commentList = commentRepository.findByboardId(boardId);
-            List<Integer> integerList = new ArrayList<>();
+            List<Long> integerList = new ArrayList<>();
             for(Comment c : commentList){
                 integerList.add(c.getCommentId());
             }
             nestedCommentRepository.deleteByCommentIdIn(integerList);
             commentRepository.deleteByBoardId(boardId);
 
-            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
-            if(!uploadDir.exists()) uploadDir.mkdir();
-
-            List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
-            List<Integer> list = new ArrayList<>();
-            for(PostImage i : postImageList){
-                list.add(i.getImageId());
-            }
-            List<Image> imageList = imageRepository.findByImageIdIn(list);
-            for(Image i : imageList){
-                File file = new File(uploadPath+File.separator+i.getFilePath());
-                if(file.exists()) file.delete();
-            }
+//            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
+//            if(!uploadDir.exists()) uploadDir.mkdir();
+//
+//            List<PostImage> postImageList = postImageRepository.findByBoardId(boardId);
+//            List<Integer> list = new ArrayList<>();
+//            for(PostImage i : postImageList){
+//                list.add(i.getImageId());
+//            }
+//            List<Image> imageList = imageRepository.findByImageIdIn(list);
+//            for(Image i : imageList){
+//                File file = new File(uploadPath+File.separator+i.getFilePath());
+//                if(file.exists()) file.delete();
+//            }
             responseMessage.setMessage("SUCCESS");
         }catch(Exception e){
             e.printStackTrace();
@@ -373,13 +428,14 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public ResponseMessage insertComment(CommentDto commentDto) {
         ResponseMessage responseMessage = new ResponseMessage();
+        UserDto userDto = userService.getUserWithAuthorities();
         try{
             Comment comment = Comment.builder()
                     .content(commentDto.getContent())
                     .regTime(commentDto.getRegDt())
                     .boardId(commentDto.getBoardId())
-                    .userId(0)
-                    .nickName("aa")
+                    .userId(userDto.getUserId())
+                    .nickName(userDto.getUsername())
                     .userId(commentDto.getUserId())
                     .build();
             Comment save = commentRepository.save(comment);
@@ -401,7 +457,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage updateComment(int commentId, CommentDto commentDto) {
+    public ResponseMessage updateComment(Long commentId, CommentDto commentDto) {
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             Comment comment = commentRepository.findByCommentId(commentId);
@@ -427,7 +483,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage deleteComment(int commentId) {
+    public ResponseMessage deleteComment(Long commentId) {
         ResponseMessage responseMessage = new ResponseMessage();
         try{
             nestedCommentRepository.deleteByCommentId(commentId);
@@ -446,12 +502,13 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public ResponseMessage insertReply(ReplyDto replyDto) {
         ResponseMessage responseMessage = new ResponseMessage();
+        UserDto userDto = userService.getUserWithAuthorities();
         NestedComment nestedComment = NestedComment.builder()
                 .content(replyDto.getContent())
                 .regTime(replyDto.getRegDt())
                 .commentId(replyDto.getCommentId())
-                .userId(0)
-                .nickName("aa")
+                .userId(userDto.getUserId())
+                .nickName(userDto.getUsername())
                 .build();
         NestedComment save = nestedCommentRepository.save(nestedComment);
         if(save==null){
@@ -468,7 +525,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
-    public ResponseMessage updateReply(int replyId, ReplyDto replyDto) {
+    public ResponseMessage updateReply(Long replyId, ReplyDto replyDto) {
         ResponseMessage responseMessage = new ResponseMessage();
 
         NestedComment nestedComment = nestedCommentRepository.findByNestedCommentId(replyId);
@@ -491,7 +548,7 @@ public class BoardServiceImpl implements BoardService{
      */
     @Override
     @Transactional
-    public ResponseMessage deleteReply(int replyId) {
+    public ResponseMessage deleteReply(Long replyId) {
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             nestedCommentRepository.deleteByNestedCommentId(replyId);

@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 public class NestedComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int nestedCommentId;
+    private Long nestedCommentId;
     private String content;
     private String nickName;
     private LocalDateTime regTime;
-    private int commentId;
-    private int userId;
+    private Long commentId;
+    private Long userId;
 
     public void updateNestedComment(String content){
         this.content = content;

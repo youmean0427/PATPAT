@@ -12,14 +12,16 @@ import java.util.List;
 @AllArgsConstructor
 //@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Data
+@Setter
+@Getter
 @Builder
 public class ReportDto {
     @Schema(example = "타입")
-    private int typeCode;
-    private int missingId;
-    private int personalProtectionId;
-    private int userId;
-    private int genderCode;
+    private Integer typeCode;
+    private Long missingId;
+    private Long personalProtectionId;
+    private Long userId;
+    private Integer genderCode;
     private String gender;
     @Schema(example = "위도")
     private String latitude;
@@ -30,31 +32,31 @@ public class ReportDto {
     @Schema(example = "본문")
     private String content;
     @Schema(example = "견종아이디")
-    private int breedId;
+    private Long breedId;
     @Schema(example = "견종")
     private String breedName;
     @Schema(example = "이름")
     private String name;
     @Schema(example = "무게")
-    private double kg;
+    private Double kg;
     @Schema(example = "중성화 여부")
-    private int neuteredCode;
+    private Integer neuteredCode;
     @Schema(example = "중성화 여부 스트링")
     private String neutered;
     @Schema(example = "나이")
-    private int age;
+    private Integer age;
     @Schema(example = "귀모양")
-    private int categoryEar;
+    private Integer categoryEar;
     @Schema(example = "꼬리모양")
-    private int categoryTail;
+    private Integer categoryTail;
     @Schema(example = "털색")
-    private int categoryColor;
+    private Integer categoryColor;
     @Schema(example = "패턴")
-    private int categoryPattern;
+    private Integer categoryPattern;
     @Schema(example = "옷여부")
-    private int categoryCloth;
+    private Integer categoryCloth;
     @Schema(example = "옷색깔")
-    private int categoryClothColor;
+    private Integer categoryClothColor;
     @Schema(example = "fileurl:.png")
     private List<FileDto> fileUrlList;
     @Schema(example = "filePath: ")
@@ -62,5 +64,5 @@ public class ReportDto {
     @Schema(example = "발견날짜")
     private LocalDate findDate;
     @Schema(example = "상태코드")
-    private int stateCode;
+    private Integer stateCode;
 }

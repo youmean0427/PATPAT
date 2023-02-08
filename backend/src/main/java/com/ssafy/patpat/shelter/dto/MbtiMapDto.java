@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MbtiMapDto {
-    int totalCount;
+    Integer totalCount;
     List<SidoCountDto> list;
 }
