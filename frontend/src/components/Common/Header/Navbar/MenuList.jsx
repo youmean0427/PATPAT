@@ -1,16 +1,15 @@
 import useAuth from 'hooks/useAuth';
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import MenuItem from './MenuItem';
 import styles from './MenuList.module.scss';
 import { FaDog } from 'react-icons/fa';
 import { GiSittingDog } from 'react-icons/gi';
 import { useRecoilState } from 'recoil';
 import { isMobileMenuOpenState } from 'recoil/atoms/header';
-import AuthButton from './AuthButton';
 
 export default function MenuList() {
-  const [isLogin, setIsLogin, handleClickLogout, handleClickLogin] = useAuth();
+  const [isLogin, setIsLogin] = useAuth();
   const [isOpen, setIsOpen] = useRecoilState(isMobileMenuOpenState);
   const handleClickMobileMenu = () => {
     setIsOpen(prev => !prev);
