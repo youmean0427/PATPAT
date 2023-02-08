@@ -328,19 +328,20 @@ public class ShelterServiceImpl implements ShelterService{
     @Transactional
     public ResponseMessage updateShelter(List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
         LOGGER.info("{}",shelterDto.getShelterId());
-        
+
         Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterDto.getShelterId()));
         if(!s.isPresent()){
             return new ResponseMessage("FAIL");
         }
 
         Shelter shelter = s.get();
-
+        LOGGER.info("sdfsdfsdf{}",shelter.getOwner().getName());
         Optional<Owner> owner = Optional.ofNullable(shelter.getOwner());
         if(!owner.isPresent()){
             return new ResponseMessage("FAIL");
         }
 
+        LOGGER.info("나의 오우너{}",owner.get().getName());
         // 이미지 우선 삭제
         List<Image> shelterImageList = shelter.getImages();
 
