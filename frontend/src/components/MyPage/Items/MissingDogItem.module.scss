@@ -5,6 +5,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   row-gap: 1.5rem;
   column-gap: 1.5rem;
+  width: 100%;
 }
 @include breakpoint(md) {
   .list {
