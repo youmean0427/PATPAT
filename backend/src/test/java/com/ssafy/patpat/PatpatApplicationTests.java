@@ -14,9 +14,9 @@ import com.ssafy.patpat.consulting.dto.TimeDto;
 import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
-import com.ssafy.patpat.protect.entity.ShelterDogImage;
+//import com.ssafy.patpat.protect.entity.ShelterDogImage;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
-import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
+//import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -71,8 +71,6 @@ class PatpatApplicationTests {
 	PostImageRepository postImageRepository;
 	@Autowired
 	ImageRepository imageRepository;
-	@Autowired
-	ShelterDogImageRepository shelterDogImageRepository;
 
 	@Test
 	void contextLoads() {
@@ -345,7 +343,7 @@ class PatpatApplicationTests {
 	@Test
 	public void excelTest() throws Exception{
 		try {
-			FileInputStream inputStream = new FileInputStream("C:\\test\\test.xlsx");
+			FileInputStream inputStream = new FileInputStream("C:\\test\\PATPAT_일괄등록_양식_폼.xlsx");
 			System.out.println(inputStream);
 			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 			//0번 시트 열기
@@ -360,7 +358,7 @@ class PatpatApplicationTests {
 			//로우마다
 			for(Row row : sheet){
 				//실제 값이 들어있는 로우
-				if(row.getRowNum() > 4){
+				if(row.getRowNum() > 7){
 					Iterator<Cell> cellIterator =row.cellIterator();
 					int col = 0;
 					ShelterProtectedDog shelterProtectedDog = new ShelterProtectedDog();
@@ -389,22 +387,24 @@ class PatpatApplicationTests {
 								shelterProtectedDog.setFeature(cell.getStringCellValue());
 								break;
 						}
-						shelterProtectedDog.setSidoCode(shelter.getSidoCode());
-						shelterProtectedDog.setGugunCode(shelter.getGugunCode());
-						shelterProtectedDog.setLatitude(lat);
-						shelterProtectedDog.setLongitude(log);
-						shelterProtectedDog.setShelterId(shelterId);
-						shelterProtectedDog.setStateCode(ProtectState.공고중);
-						list.add(shelterProtectedDog);
+						//System.out.println(shelterProtectedDog);
 						col++;
 					}
+					shelterProtectedDog.setSidoCode(shelter.getSidoCode());
+					shelterProtectedDog.setGugunCode(shelter.getGugunCode());
+					shelterProtectedDog.setLatitude(lat);
+					shelterProtectedDog.setLongitude(log);
+					shelterProtectedDog.setShelterId(shelterId);
+					shelterProtectedDog.setStateCode(ProtectState.공고중);
+					list.add(shelterProtectedDog);
 				}
 			}
 
 			for(ShelterProtectedDog dog : list){
-				shelterProtectedDogRepository.save(dog);
+				//shelterProtectedDogRepository.save(dog);
+				System.out.println(dog);
 			}
-			int startIdx = list.get(0).getSpDogId();
+//			int startIdx = list.get(0).getSpDogId();
 			XSSFDrawing drawing = sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
 			for (XSSFShape shape : drawing.getShapes()) {
 				System.out.println("dd");
@@ -425,7 +425,7 @@ class PatpatApplicationTests {
 					System.out.println("Column1: " + col1 + " Column2: " + col2);
 
 					//보호동물 id
-					int protectId = startIdx+row1-5;
+					//int protectId = startIdx+row1-5;
 					//Image image = Image.builder();
 
 

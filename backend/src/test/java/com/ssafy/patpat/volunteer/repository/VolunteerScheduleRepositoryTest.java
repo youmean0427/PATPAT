@@ -88,16 +88,16 @@ class VolunteerScheduleRepositoryTest {
 //                vr.toList()) {
 //            System.out.println(v.getVolunteerDate() +" "+ v.getReservationId());
 //        }
-        List<Integer> t = new ArrayList<>();
-        t.add(2);
-        t.add(3);
-        int hour = LocalDateTime.now().getHour();
-        List<Time> time = timeRepository.findWithShelterByShelterShelterIdAndTimeCodeGreaterThanEqualAndStateNotIn(5, hour, t);
-
-        for (Time ti:
-             time) {
-            System.out.println(ti.getTimeCode());
-        }
+//        List<Integer> t = new ArrayList<>();
+//        t.add(2);
+//        t.add(3);
+//        int hour = LocalDateTime.now().getHour();
+//        List<Time> time = timeRepository.findWithShelterByShelterShelterIdAndTimeCodeGreaterThanEqualAndStateNotIn(5, hour, t);
+//
+//        for (Time ti:
+//             time) {
+//            System.out.println(ti.getTimeCode());
+//        }
 
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
 //        List<ShelterProtectedDog> list = user.get().getFavoriteDogs();

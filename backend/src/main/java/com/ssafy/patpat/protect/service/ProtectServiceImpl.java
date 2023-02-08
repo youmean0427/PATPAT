@@ -232,7 +232,7 @@ public class ProtectServiceImpl implements ProtectService{
 
     @Override
     @Transactional
-    public ResponseMessage insertProtect(ProtectDto protectDto, @RequestPart()  List<MultipartFile> uploadFile) {
+    public ResponseMessage insertProtect(ProtectDto protectDto,List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         Shelter shelter = shelterRepository.findByShelterId(protectDto.getShelterId());
         System.out.println(protectDto);

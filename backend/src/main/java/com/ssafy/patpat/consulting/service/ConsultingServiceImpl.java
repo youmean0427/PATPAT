@@ -209,11 +209,11 @@ public class ConsultingServiceImpl implements ConsultingService{
         Shelter shelter = shelterRepository.findByShelterId(shelterId);
         List<Integer> list = new ArrayList<>();
 
-        for(Time t : shelter.getTimeList()){
-            if(t.getState() == 1){
-                list.add(t.timeCode);
-            }
-        }
+//        for(Time t : shelter.getTimeList()){
+//            if(t.getState() == 1){
+//                list.add(t.timeCode);
+//            }
+//        }`
         List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
 
         for(Consulting c : consultings){
