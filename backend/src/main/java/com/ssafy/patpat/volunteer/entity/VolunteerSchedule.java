@@ -35,6 +35,9 @@ public class VolunteerSchedule {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Column(name = "totalCapacity")
+    private Integer totaclCapacity;
+
     @Column(name = "capacity")
     private Integer capacity;
 
