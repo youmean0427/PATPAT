@@ -38,8 +38,6 @@ class VideoRoomComponent extends Component {
       currentVideoDevice: undefined,
     };
 
-    console.log('!!!!!!!!!!!!!!', this.state);
-
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);

@@ -11,7 +11,6 @@ export default function InfoList({ code }) {
   });
 
   if (isLoading) return;
-  console.log(code, data);
   return (
     <Table>
       {data.map(item => (
