@@ -173,7 +173,7 @@ public class VolunteerController {
      * 봉사 지원서 조회(개인)
      * @return
      */
-    @GetMapping("/reservations/users")
+    @GetMapping("/reservations")
     @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회 parameter: userId, limit, offset")
     public ResponseEntity<Object> selectReservationList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
@@ -209,7 +209,7 @@ public class VolunteerController {
      */
     @PostMapping("/reservations")
     @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록")
-    public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto){
+    public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto) throws VolunteerException {
         //서비스 호출 코드
         if(volunteerService.insertReservation(reservationDto)){
             return ResponseEntity.status(HttpStatus.OK)
@@ -224,8 +224,49 @@ public class VolunteerController {
      * @return
      */
     @PutMapping("/reservations")
-    @ApiOperation(value = "봉사 지원서 수정", notes = "봉사 지원서 수정")
-    public ResponseEntity<Object> updateReservation(@RequestBody ReservationDto reservationDto){
+    @ApiOperation(value = "봉사 지원서 수정", notes = "봉사 지원서 수정 reservationId, userId, capacity")
+    public ResponseEntity<Object> updateReservation(@RequestBody ReservationDto reservationDto) throws VolunteerException {
+        //서비스 호출 코드
+        if(volunteerService.updateReservation(reservationDto)){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+
+    @DeleteMapping("/reservations")
+    @ApiOperation(value = "봉사 지원서 수정", notes = "봉사 지원서 수정 reservationId, userId")
+    public ResponseEntity<Object> deleteReservation(@RequestBody ReservationDto reservationDto) throws VolunteerException {
+        //서비스 호출 코드
+        if(volunteerService.deleteReservation(reservationDto)){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+
+    /** 수락 및 거절 상태 변경 */
+    @GetMapping("/reservation/state")
+    @ApiOperation(value = "수락 거절 상태", notes = "봉사 예약 수락 / 거절 인즈엉 파라미터 : reservationId, userId, stateCode(수락 : 1, 거절 : 2)")
+    public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto){
+        //서비스 호출 코드
+        if(true){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+    }
+
+    /** 완료 변경 */
+    @GetMapping("/reservation/complete")
+    @ApiOperation(value = "완료", notes = "봉사 완료 파라미터 : reservationId 무적권 완료")
+    public ResponseEntity<Object> completeReservationState(ReservationDto reservationDto){
         //서비스 호출 코드
         if(true){
             return ResponseEntity.status(HttpStatus.OK)
