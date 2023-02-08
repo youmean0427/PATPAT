@@ -13,16 +13,16 @@ public interface ShelterService {
     List<Sido> sidoList();
     List<Gugun> gugunList(String sidoCode);
     List<ShelterDto> shelterList(RequestShelterDto dto);
-    List<ShelterDto> shelterListInVolunteer(String sidoCode, String gugunCode);
+    List<ShelterDto> shelterListInVolunteer(String gugunCode);
     ShelterDto detailShelter(int shelterId);
     BreedDto selectBreedByMbti(String mbtiId);
     AuthCodeDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto);
 
-    ResponseMessage updateShelter(String shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto);
+    ResponseMessage updateShelter(int shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception;
 
-    ResponseMessage AuthShelter(String authCode);
+    ResponseMessage AuthShelter(int shelterId, String authCode);
 
     List<BreedDto> selectBreedList();
 
-    List<SidoCountDto> selectBreedCountByMbti(int breedId);
+    MbtiMapDto selectBreedCountByMbti(int breedId);
 }

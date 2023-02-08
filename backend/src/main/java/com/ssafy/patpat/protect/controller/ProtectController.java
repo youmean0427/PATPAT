@@ -80,7 +80,7 @@ public class ProtectController {
      */
     @PostMapping
     @ApiOperation(value = "보호동물 등록", notes = "보호동물 개별 등록")
-    public ResponseEntity<ResponseMessage> insertProtect(ProtectDto protectDto, @RequestPart List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> insertProtect(ProtectDto protectDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
         //서비스 호출 코드
         ResponseMessage responseMessage = service.insertProtect(protectDto,uploadFile);
 
@@ -99,7 +99,7 @@ public class ProtectController {
      */
     @PostMapping("/{protectId}")
     @ApiOperation(value = "보호동물 수정", notes = "보호동물 수정")
-    public ResponseEntity<ResponseMessage> updateProtect(@PathVariable int protectId, @RequestPart List<MultipartFile> uploadFile, ProtectDto protectDto){
+    public ResponseEntity<ResponseMessage> updateProtect(@PathVariable int protectId, @RequestPart(required = false) List<MultipartFile> uploadFile, ProtectDto protectDto){
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateProtect(protectId,uploadFile,protectDto);
 

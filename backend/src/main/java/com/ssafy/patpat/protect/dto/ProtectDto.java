@@ -1,6 +1,7 @@
 package com.ssafy.patpat.protect.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.dto.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -10,7 +11,6 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Getter
 @Setter
 @ToString
@@ -25,17 +25,21 @@ public class ProtectDto {
     @Schema(description = "발견날짜")
     private LocalDate findingDate;
     @Schema(description = "수컷,암컷")
-    private int gender;
+    private String gender;
+    @Schema(description = "성별 코드")
+    private Integer genderCode;
     @Schema(example = "견종")
     private int breedId;
     @Schema(example = "견종이름")
-    private String breed;
+    private String breedName;
     @Schema(example = "나이")
     private int age;
     @Schema(example = "무게")
     private double kg;
     @Schema(description = "중성화=0,아니면=1")
-    private boolean isNeutered;
+    private String neutered;
+    @Schema(description = "중성화=0,아니면=1")
+    private int neuteredCode;
     @Schema(example = "귀모양")
     private int categoryEar;
     @Schema(example = "꼬리모양")
@@ -48,8 +52,10 @@ public class ProtectDto {
     private int categoryCloth;
     @Schema(example = "옷색")
     private int categoryClothColor;
-    @Schema(description = "입양대기,보호중, 입양예정")
+    @Schema(example = "상태코드")
     private int stateCode;
+    @Schema(description = "입양대기,보호중, 입양예정")
+    private String state;
     @Schema(example = "내용")
     private String infoContent;
     @Schema(example = "파일 url 리스트")

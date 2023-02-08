@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TimeRepository extends JpaRepository<Time, String> {
+public interface TimeRepository extends JpaRepository<Time, Long> {
     //List<Time> findbyShelterId(int findbyShelterId);
 }

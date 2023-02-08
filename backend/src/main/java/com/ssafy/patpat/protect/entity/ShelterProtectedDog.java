@@ -1,35 +1,43 @@
 package com.ssafy.patpat.protect.entity;
 
+import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.code.category.Gender;
+import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class ShelterProtectedDog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sp_dog_id")
     private int spDogId;
+
+    @Column(name = "shelter_id")
     private int shelterId;//
+    @Column(name = "breed_id")
     private int breedId;//
     private LocalDate findingDate;
-    private String latitude;//
-    private String longitude;//
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private double weight;//
-    private int gender;//
+    private Gender gender;//
     private int neutered;//
     private LocalDate registDate;//
     private String feature;//
-    private int stateCode;//
     private int categoryEar;//
     private int categoryTail;//
     private int categoryColor;//
@@ -41,8 +49,16 @@ public class ShelterProtectedDog {
     private String sidoCode;//
     private String gugunCode;//
 
-    public void updateShelterProtectedDog(double weight,String feature){
-        this.weight = weight;
-        this.feature =feature;
-    }
+    private ProtectState stateCode;//
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "shelter_dog_image",
+            joinColumns = {@JoinColumn(name = "sp_dog_id")},
+            inverseJoinColumns = {@JoinColumn(name = "image_id")})
+    private List<Image> images;
+
+    @ManyToMany(mappedBy = "favoriteDogs")
+    private List<User> users;
+
 }

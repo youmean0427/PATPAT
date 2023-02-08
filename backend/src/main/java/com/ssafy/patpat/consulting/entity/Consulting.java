@@ -28,9 +28,7 @@ public class Consulting {
     private LocalDate registDate;
     private int timeCode;
     private int spDogId;
-
     public void updateConsulting(int stateCode){
         this.stateCode = stateCode;
     }
-
 }

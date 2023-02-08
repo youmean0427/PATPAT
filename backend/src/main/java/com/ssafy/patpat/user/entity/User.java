@@ -1,12 +1,17 @@
 package com.ssafy.patpat.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.shelter.entity.Shelter;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
+@DynamicUpdate
 @Entity
 public class User {
     @Id
@@ -43,11 +49,12 @@ public class User {
     @Column(name = "provider_id")
     private String providerId;
 
-    @Column(name = "profile_image")
-    private String profileImage;
-
     @Column(name = "password")
     private String password;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @ManyToMany
     @JoinTable(
@@ -56,9 +63,24 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private List<Authority> authorities;
 
-    public void setPassword(String password){
-        this.password = password;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "sp_dog_id")}
+    )
+    private Set<ShelterProtectedDog> favoriteDogs;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_shelter",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "shelter_id")}
+    )
+    private Shelter shelter;
+
+    @OneToOne(mappedBy = "user")
+    private Owner owner;
 
     @PrePersist
     public void prePersist() {

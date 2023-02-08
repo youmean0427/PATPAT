@@ -10,6 +10,5 @@ import lombok.*;
 @NoArgsConstructor
 public class UserResponseDto {
     private TokenDto tokenDto;
-    private User userDto;
-    private String result;
+    private UserDto userDto;
 }

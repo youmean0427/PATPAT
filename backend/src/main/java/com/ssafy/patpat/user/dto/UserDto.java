@@ -7,9 +7,9 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDto {
 
     private long userId;
@@ -26,6 +26,8 @@ public class UserDto {
     private String profileImageUrl;
 
     private String providerId;
+
+    private Integer shelterId;
 
 
 }

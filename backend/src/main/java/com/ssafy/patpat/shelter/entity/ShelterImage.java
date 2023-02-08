@@ -10,15 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-@Builder
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class ShelterImage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int shelterImageId;
-    private int shelterId;
-    private int imageId;
-}
+//@Builder
+//@Getter
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class ShelterImage {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int shelterImageId;
+//    private int shelterId;
+//    private int imageId;
+//}

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.consulting.service;
 
+import com.ssafy.patpat.common.code.TimeCode;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
 import com.ssafy.patpat.consulting.dto.RequestConsultingDto;
@@ -21,10 +22,7 @@ import javax.persistence.Table;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ConsultingServiceImpl implements ConsultingService{
@@ -33,18 +31,25 @@ public class ConsultingServiceImpl implements ConsultingService{
     ConsultingRepository consultingRepository;
 
     @Autowired
+    TimeRepository timeRepository;
+    @Autowired
     ShelterRepository shelterRepository;
 
     @Override
     public List<ConsultingDto> selectConsultingList(RequestConsultingDto requestConsultingDto) {
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
+        System.out.println(requestConsultingDto);
         try{
             PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
+            System.out.println(requestConsultingDto);
             List<Consulting> consultingList = consultingRepository.findByUserIdAndRegistDateGreaterThanEqual(requestConsultingDto.getUserId(),LocalDate.now(),pageRequest);
+            System.out.println(consultingList);
             for(Consulting c : consultingList){
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
+                    c.updateConsulting(transferStateCode);
+                    consultingRepository.save(c);
                 }
                 else{
                     transferStateCode  = c.getStateCode();
@@ -58,6 +63,8 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .registDate(c.getRegistDate())
                                 .shelterName(shelter.getName())
                                 .address(shelter.getAddress())
+                                .timeCode(c.getTimeCode())
+                                .shelterId(c.getShelterId())
                                 .build()
                 );
             }
@@ -78,19 +85,22 @@ public class ConsultingServiceImpl implements ConsultingService{
                 int transferStateCode = 0;
                 if(c.getStateCode() == 2 && c.getRegistDate().equals(LocalDate.now())){
                     transferStateCode = 5;
-                }
-                else{
-                    transferStateCode  = c.getStateCode();
+                    c.updateConsulting(transferStateCode);
+                    consultingRepository.save(c);
                 }
                 consultingDtoList.add(
                         ConsultingDto.builder()
                                 .consultingId(c.getConsultingId())
-                                .stateCode(transferStateCode)
+                                .stateCode(c.getStateCode())
                                 .registDate(c.getRegistDate())
                                 //임시값
+                                .shelterId(c.getShelterId())
+                                .userId(requestConsultingDto.getUserId())
                                 .userName("유저아이디로 이름 가져오기")
+                                .timeCode(c.getTimeCode())
                                 .build()
                 );
+
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -122,11 +132,13 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Override
     public ResponseMessage updateConsulting(int consultingId, ConsultingDto consultingDto) {
         ResponseMessage responseMessage = new ResponseMessage();
+        System.out.println(consultingDto);
         try{
             Consulting consulting = consultingRepository.findByConsultingId(consultingId);
             consulting.updateConsulting(consultingDto.getStateCode());
             consultingRepository.save(consulting);
             responseMessage.setMessage("SUCCESS");
+
         }catch (Exception e){
             e.printStackTrace();
             responseMessage.setMessage("FAIL");
@@ -136,50 +148,110 @@ public class ConsultingServiceImpl implements ConsultingService{
 
     @Override
     public List<TimeDto> selectTimeList(int shelterId, LocalDate date) {
-        Shelter shelter = shelterRepository.findByShelterId(5);
-        List<Integer> list = new ArrayList<>();
+//        List<Integer> t = new ArrayList<>();
+//        t.add(2);
+//        t.add(3);
+//        int hour = LocalDateTime.now().getHour();
+//        timeRepository.findWithShelterByShelterShelterIdAndTimeCodeGreaterThanEqualAndStateNotIn(5, hour, t);
+//        Shelter shelter = shelterRepository.findByShelterId(5);
+//        List<TimeCode> list = new ArrayList<>();
+//
+//        for(Time t : shelter.getTimes()){
+//            if(t.getState() == 1){
+//                list.add(t.getTimeCode());
+//            }
+//        }
+//        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
+//
+//        for(Consulting c : consultings){
+//            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
+//                list.remove(TimeCode.of(c.getTimeCode()));
+//            }
+//        }
+//
+//        if(date.equals(LocalDate.now())){
+//            int hour = LocalDateTime.now().getHour();
+//
+//            System.out.println(list);
+//
+//            for (TimeCode time:
+//                 list) {
+//                if(time.getCode() <= hour ){
+//                    list.re
+//                }
+//            }
+//            for(int i=0; i<list.size(); i++){
+//                if(list.get(i).getCode()==10){
+//                    if(list.get(i)+10 <= hour) {
+//                        list.remove(Integer.valueOf(list.get(i)));
+//                        i--;
+//                    }
+//                }
+//                else{
+//                    if(list.get(i)+13 <= hour){
+//                        list.remove(Integer.valueOf(list.get(i)));
+//                        i--;
+//                    }
+//                }
+//            }
+//        }
+//
+//        System.out.println(list);
+//        List<TimeDto> timeDtoList = new ArrayList<>();
+//        for(Integer i : list){
+//            timeDtoList.add(new TimeDto(i));
+//        }
 
-        for(Time t : shelter.getTimeList()){
-            if(t.getState() == 1){
-                list.add(t.timeCode);
-            }
-        }
-        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
+//        return timeDtoList;
+//        return null;
 
-        for(Consulting c : consultings){
-            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
-                list.remove(Integer.valueOf(c.getTimeCode()));
-            }
-        }
+        //해당 보호소 가져오기
+//        Shelter shelter = shelterRepository.findByShelterId(shelterId);
+//        List<Integer> list = new ArrayList<>();
+//
+//        for(Time t : shelter.getTimeList()){
+//            if(t.getState() == 1){
+//                list.add(t.timeCode);
+//            }
+//        }
+//        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
+//
+//        for(Consulting c : consultings){
+//            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
+//                list.remove(Integer.valueOf(c.getTimeCode()));
+//            }
+//        }
+//
+//        if(date.equals(LocalDate.now())){
+//            int hour = LocalDateTime.now().getHour();
+//
+//            System.out.println(list);
+//
+//            for(int i=0; i<list.size(); i++){
+//                if(list.get(i)==0){
+//                    if(list.get(i)+10 <= hour) {
+//                        list.remove(Integer.valueOf(list.get(i)));
+//                        i--;
+//                    }
+//                }
+//                else{
+//                    if(list.get(i)+13 <= hour){
+//                        list.remove(Integer.valueOf(list.get(i)));
+//                        i--;
+//                    }
+//                }
+//            }
+//        }
+//
+//        System.out.println(list);
+//        List<TimeDto> timeDtoList = new ArrayList<>();
+//        for(Integer i : list){
+//            timeDtoList.add(new TimeDto(i));
+//        }
+//
+//        return timeDtoList;
+        return null;
 
-        if(date.equals(LocalDate.now())){
-            int hour = LocalDateTime.now().getHour();
-
-            System.out.println(list);
-
-            for(int i=0; i<list.size(); i++){
-                if(list.get(i)==0){
-                    if(list.get(i)+10 <= hour) {
-                        list.remove(Integer.valueOf(list.get(i)));
-                        i--;
-                    }
-                }
-                else{
-                    if(list.get(i)+13 <= hour){
-                        list.remove(Integer.valueOf(list.get(i)));
-                        i--;
-                    }
-                }
-            }
-        }
-
-        System.out.println(list);
-        List<TimeDto> timeDtoList = new ArrayList<>();
-        for(Integer i : list){
-            timeDtoList.add(new TimeDto(i));
-        }
-
-        return timeDtoList;
     }
 
     @Override

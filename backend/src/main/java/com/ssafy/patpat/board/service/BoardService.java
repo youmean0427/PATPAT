@@ -15,7 +15,7 @@ public interface BoardService {
 
     List<BoardDto> selectBoardList(RequestBoardDto requestBoardDto);
 
-    BoardDto deatilBoard(int boardId);
+    BoardDto detailBoard(int boardId);
 
     ResponseMessage insertBoard(BoardDto boardDto, List<MultipartFile> uploadFile);
 

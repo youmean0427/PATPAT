@@ -35,6 +35,7 @@ public class BoardController {
     @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트를 조회한다.")
     public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
+        System.out.println(requestBoardDto);
         List<BoardDto> boardDtoList = service.selectBoardList(requestBoardDto);
 
         if(boardDtoList!=null) {
@@ -72,7 +73,7 @@ public class BoardController {
     @ApiOperation(value = "게시판 상세", notes = "게시판 상세를 조회한다.")
     public ResponseEntity<Object> detailBoard(@PathVariable int boardId){
         //service 호출
-        BoardDto boardDto = service.deatilBoard(boardId);
+        BoardDto boardDto = service.detailBoard(boardId);
         if(boardDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(boardDto);
@@ -87,8 +88,9 @@ public class BoardController {
      */
     @PostMapping()
     @ApiOperation(value = "게시판 등록", notes = "게시판 등록.")
-    public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, @RequestPart(required = false)  List<MultipartFile> uploadFile){
         //service 호출
+        System.out.println(boardDto);
         ResponseMessage responseMessage = service.insertBoard(boardDto,uploadFile);
 
         if(responseMessage.getMessage().equals("SUCCESS")){
@@ -105,7 +107,7 @@ public class BoardController {
      */
     @PostMapping("/{boardId}")
     @ApiOperation(value = "게시판 수정", notes = "게시판 수정한다.")
-    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, @RequestPart List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> updateBoard(@PathVariable int boardId, BoardDto boardDto, @RequestPart(required = false)  List<MultipartFile> uploadFile){
         //service 호출
         ResponseMessage responseMessage = service.updateBoard(boardId,boardDto,uploadFile);
 

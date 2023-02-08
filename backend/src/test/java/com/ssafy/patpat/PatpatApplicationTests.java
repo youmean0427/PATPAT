@@ -1,16 +1,38 @@
 package com.ssafy.patpat;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.patpat.board.entity.PostImage;
+import com.ssafy.patpat.board.repository.PostImageRepository;
+import com.ssafy.patpat.common.code.Neutered;
+import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.code.category.Gender;
+import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
 import com.ssafy.patpat.consulting.dto.TimeDto;
 import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
+import com.ssafy.patpat.protect.entity.ShelterDogImage;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
+import com.ssafy.patpat.shelter.entity.Sido;
+import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.GugunRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.shelter.repository.SidoRepository;
+import com.ssafy.patpat.test.TestDistance;
+import com.ssafy.patpat.test.TestRepository;
+import com.ssafy.patpat.user.dto.ResultDto;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,12 +40,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
+import java.io.*;
+import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @SpringBootTest
 class PatpatApplicationTests {
@@ -39,6 +63,16 @@ class PatpatApplicationTests {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	ConsultingRepository consultingRepository;
+	@Autowired
+	TestRepository testRepository;
+	@Autowired
+	BreedRepository breedRepository;
+	@Autowired
+	PostImageRepository postImageRepository;
+	@Autowired
+	ImageRepository imageRepository;
+	@Autowired
+	ShelterDogImageRepository shelterDogImageRepository;
 
 	@Test
 	void contextLoads() {
@@ -109,12 +143,12 @@ class PatpatApplicationTests {
 //		}
 
 		//보호소 등록 샘플
-//		String shelterNm ="(사)하얀비둘기";
+		//String shelterNm ="(사)하얀비둘기";
 //		ResultDto dto = new ResultDto();
 //		try{
 //			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo");
 //			urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=4YzbaAQ76Mr8ENklHJNGymdysODMSkne%2Bmi9616VcdzI4KuXMA7ugRh5rvN7HLAgjV1qetFWKEHGzR7XhH4mEA%3D%3D");
-//			urlBuilder.append("&" + URLEncoder.encode("care_nm","UTF-8") + "=" + URLEncoder.encode(shelterNm, "UTF-8"));
+//			urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("300", "UTF-8"));
 //			urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
 //			URL url = new URL(urlBuilder.toString());
 //			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -125,7 +159,7 @@ class PatpatApplicationTests {
 //			if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 //				rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 //			} else {
-//				dto.setResult(0);
+//				dto.setResult("ㅇ");
 //			}
 //			StringBuilder sb = new StringBuilder();
 //			String line;
@@ -142,6 +176,7 @@ class PatpatApplicationTests {
 //			List<Shelter> list = new ArrayList<>();
 //			String str = null;
 //			for(Map<String,Object> item:itemList){
+//				System.out.println(item);
 //				Shelter s = Shelter.builder()
 //						.address(item.get("careAddr").toString())
 //						.latitude(item.get("lat").toString())
@@ -163,16 +198,16 @@ class PatpatApplicationTests {
 //			rd.close();
 //			conn.disconnect();
 //			if(shelter.equals(null)){
-//				dto.setResult(0);
+//				//dto.setResult(0);
 //			}
 //			else{
-//				dto.setResult(0);
-//				dto.setAuthCode(passwordEncoder.encode(list.get(0).getRegNumber()));
+//				dto.setResult("0");
+//				//dto.setAuthCode(passwordEncoder.encode(list.get(0).getRegNumber()));
 //			}
 //		}catch (Exception e){
-//			dto.setResult(0);
+//			e.printStackTrace();
+//			dto.setResult("0");
 //		}
-
 		//랜덤뽑기
 //		Breed[] arr = Breed.values();
 //		System.out.println(Arrays.toString(arr));
@@ -298,5 +333,115 @@ class PatpatApplicationTests {
 //			timeDtoList.add(new TimeDto(i));
 //		}
 //		System.out.println(timeDtoList);
+		BigDecimal a = new BigDecimal(37.5152937);
+		BigDecimal b = new BigDecimal(126.9013676);
+		List<TestDistance> test = testRepository.selectAllSQL(a,b,a);
+		System.out.println("here");
+		System.out.println(test);
+
+		System.out.println(passwordEncoder.matches("175","$2a$10$VOy/116s7ztl6fcGsh.C7.pYAinRybRqy4B8Q9OSm5fHQnvwNwH2G"));
+
 	}
+	@Test
+	public void excelTest() throws Exception{
+		try {
+			FileInputStream inputStream = new FileInputStream("C:\\test\\test.xlsx");
+			System.out.println(inputStream);
+			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+			//0번 시트 열기
+			XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
+			//보호견 리스트 생성
+			List<ShelterProtectedDog> list = new ArrayList<>();
+			//보호소 불러오기
+			Shelter shelter = shelterRepository.findByShelterId(299);
+			int shelterId = shelter.getShelterId();
+			BigDecimal lat = shelter.getLatitude();
+			BigDecimal log = shelter.getLongitude();
+			//로우마다
+			for(Row row : sheet){
+				//실제 값이 들어있는 로우
+				if(row.getRowNum() > 4){
+					Iterator<Cell> cellIterator =row.cellIterator();
+					int col = 0;
+					ShelterProtectedDog shelterProtectedDog = new ShelterProtectedDog();
+					while(cellIterator.hasNext()){
+						Cell cell = cellIterator.next();
+						switch (col){
+							case 0 :
+								shelterProtectedDog.setBreedId(breedRepository.findByName(cell.getStringCellValue()).getBreedId());
+								break;
+							case 1 :
+								shelterProtectedDog.setName(cell.getStringCellValue());
+								break;
+							case 2 :
+								shelterProtectedDog.setAge((int)cell.getNumericCellValue());
+								break;
+							case 3 :
+								shelterProtectedDog.setGender(Gender.valueOf(cell.getStringCellValue()));
+								break;
+							case 4 :
+								shelterProtectedDog.setWeight(cell.getNumericCellValue());
+								break;
+							case 5 :
+								shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()).ordinal());
+								break;
+							case 11 :
+								shelterProtectedDog.setFeature(cell.getStringCellValue());
+								break;
+						}
+						shelterProtectedDog.setSidoCode(shelter.getSidoCode());
+						shelterProtectedDog.setGugunCode(shelter.getGugunCode());
+						shelterProtectedDog.setLatitude(lat);
+						shelterProtectedDog.setLongitude(log);
+						shelterProtectedDog.setShelterId(shelterId);
+						shelterProtectedDog.setStateCode(ProtectState.공고중);
+						list.add(shelterProtectedDog);
+						col++;
+					}
+				}
+			}
+
+			for(ShelterProtectedDog dog : list){
+				shelterProtectedDogRepository.save(dog);
+			}
+			int startIdx = list.get(0).getSpDogId();
+			XSSFDrawing drawing = sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
+			for (XSSFShape shape : drawing.getShapes()) {
+				System.out.println("dd");
+				if (shape instanceof XSSFPicture) {
+					XSSFPicture picture = (XSSFPicture) shape;
+
+					if (picture.getPictureData() == null) {
+						System.out.println("사진 Path 사용");
+						continue;
+					}
+					XSSFPictureData xssfPictureData = picture.getPictureData();
+					ClientAnchor anchor = picture.getPreferredSize();
+					int row1 = anchor.getRow1();
+					int row2 = anchor.getRow2();
+					int col1 = anchor.getCol1();
+					int col2 = anchor.getCol2();
+					System.out.println("Row1: " + row1 + " Row2: " + row2);
+					System.out.println("Column1: " + col1 + " Column2: " + col2);
+
+					//보호동물 id
+					int protectId = startIdx+row1-5;
+					//Image image = Image.builder();
+
+
+					// Saving the file
+					String ext = xssfPictureData.suggestFileExtension();
+					byte[] data = xssfPictureData.getData();
+
+					FileOutputStream out = new FileOutputStream(String.format("%s\\%s_%d_%d.%s", "C:\\test", sheet.getSheetName(), row1, col1, ext));
+					out.write(data);
+					out.close();
+				}
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
 }

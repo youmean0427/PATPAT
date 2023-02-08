@@ -1,15 +1,22 @@
 package com.ssafy.patpat.volunteer.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@Getter
+@Setter
+@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestVolunteerDto {
-    private int shelterId;
-    private int offset;
-    private int limit;
+    private Integer shelterId;
+    private Integer offset;
+    private Integer limit;
     private String keyword;
+    private String volunteerDate;
+    private String gugunCode;
+    private Long userId;
+    private Long scheduleId;
+
 }

@@ -5,8 +5,7 @@ import com.ssafy.patpat.common.dto.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-@ToString
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

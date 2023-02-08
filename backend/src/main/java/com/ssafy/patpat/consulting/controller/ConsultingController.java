@@ -36,6 +36,7 @@ public class ConsultingController {
     @ApiOperation(value = "상담 조회", notes = "내가 예약한 상담을 조회한다.")
     public ResponseEntity<Object> selectConsultingList(RequestConsultingDto requestConsultingDto){
         //service 호출
+        System.out.println(requestConsultingDto);
         List<ConsultingDto> consultingDtoList = service.selectConsultingList(requestConsultingDto);
         if(consultingDtoList!=null){
             return ResponseEntity.status(HttpStatus.OK)
@@ -142,4 +143,5 @@ public class ConsultingController {
                     .body(responseMessage);
         }
     }
+
 }

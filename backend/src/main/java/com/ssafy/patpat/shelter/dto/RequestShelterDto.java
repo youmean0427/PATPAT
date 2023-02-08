@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestShelterDto {
-    String breedName;
-    String sidoCode;
-    String gugunCode;
+    private int breedId;
+    private String sidoCode;
+    private String gugunCode;
+    private int offSet;
+    private int limit;
 }

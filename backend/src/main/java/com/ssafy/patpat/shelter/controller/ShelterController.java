@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -104,10 +105,10 @@ public class ShelterController {
     @ApiOperation(value = "견종 정보 반환", notes = "견종 정보 반환(이미지, 견종)")
     public ResponseEntity<Object> selectBreedCountByMbti(@PathVariable int breedId){
         //service 호출
-        List<SidoCountDto> sidoCountDtoList = service.selectBreedCountByMbti(breedId);
-        if(sidoCountDtoList!=null){
+        MbtiMapDto mbtiMapDto = service.selectBreedCountByMbti(breedId);
+        if(mbtiMapDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(sidoCountDtoList);
+                    .body(mbtiMapDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
@@ -121,14 +122,21 @@ public class ShelterController {
     @ApiOperation(value = "보호소 조회", notes = "보호소 리스트 조회")
     public ResponseEntity<Object> selectShelterList(RequestShelterDto requestShelterDto){
         //service 호출
-        List<ShelterDto> shelterDtoList = service.shelterList(requestShelterDto);
-        if(shelterDtoList!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(shelterDtoList);
-        }else{
+        try{
+            List<ShelterDto> shelterDtoList = service.shelterList(requestShelterDto);
+            if(shelterDtoList!=null){
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(shelterDtoList);
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ResponseMessage("FAIL"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
         }
+
     }
     /**
      * 보호소 상세 조회
@@ -152,11 +160,12 @@ public class ShelterController {
      */
     @PostMapping
     @ApiOperation(value = "보호소 등록", notes = "보호소 등록")
-    public ResponseEntity<ResponseMessage> insertShelter(RequestShelterInsertDto requestShelterInsertDto){
-        //ResponseMessage responseMessage = service.insertS
-        if(true){
+    public ResponseEntity<Object> insertShelter(@RequestBody RequestParamShelterInsertDto requestParamShelterInsertDto){
+        System.out.println(requestParamShelterInsertDto);
+        AuthCodeDto authCodeDto = service.insertShelter(requestParamShelterInsertDto);
+        if(authCodeDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(authCodeDto);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));
@@ -168,7 +177,7 @@ public class ShelterController {
      */
     @PostMapping("/{shelterId}")
     @ApiOperation(value = "보호소 수정", notes = "보호소 수정")
-    public ResponseEntity<ResponseMessage> updateShelter(@PathVariable String shelterId, @RequestPart List<MultipartFile> uploadFile, ShelterDto shelterDto){
+    public ResponseEntity<ResponseMessage> updateShelter(@PathVariable int shelterId, @RequestPart List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception{
         ResponseMessage responseMessage = service.updateShelter(shelterId,uploadFile,shelterDto);
         if(responseMessage.getMessage()=="SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)
@@ -183,10 +192,11 @@ public class ShelterController {
      * 보호소 인증
      * @return
      */
-    @GetMapping("/auth/{authCode}")
+    @GetMapping("/auth")
+    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "보호소 인증", notes = "보호소 인증")
-    public ResponseEntity<ResponseMessage> authShelter(@PathVariable String authCode){
-        ResponseMessage responseMessage = service.AuthShelter(authCode);
+    public ResponseEntity<ResponseMessage> authShelter(@RequestParam("shelterId") int shelterId, @RequestParam("authCode") String authCode){
+        ResponseMessage responseMessage = service.AuthShelter(shelterId, authCode);
         if(responseMessage.getMessage()=="SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
