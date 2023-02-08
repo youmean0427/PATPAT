@@ -15,17 +15,21 @@
 }
 
 .list {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  column-gap: 1rem;
-  transition: all $response-transition-time;
-  overflow-x: auto;
-  white-space: nowrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 1.5rem;
+  column-gap: 1.5rem;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: $main-color !important;
-  border-radius: 30px;
-  cursor: pointer;
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    row-gap: 1rem;
+  }
 }
