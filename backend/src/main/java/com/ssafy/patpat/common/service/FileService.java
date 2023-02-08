@@ -85,7 +85,7 @@ public class FileService {
 
     @Transactional
     public Image getDefaultImage(){
-        return imageRepository.findById(11).get();
+        return imageRepository.findById(1L).get();
     }
 
     @Transactional
