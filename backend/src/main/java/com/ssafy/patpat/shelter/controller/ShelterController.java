@@ -177,7 +177,7 @@ public class ShelterController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "보호소 수정", notes = "보호소 수정")
-    public ResponseEntity<ResponseMessage> updateShelter(@RequestPart List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception{
+    public ResponseEntity<ResponseMessage> updateShelter(@RequestPart(required = false) List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception{
         ResponseMessage responseMessage = service.updateShelter(uploadFile,shelterDto);
         if(responseMessage.getMessage()=="SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)

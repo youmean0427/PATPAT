@@ -96,7 +96,7 @@ public class FileService {
             if(file.exists()) file.delete();
         }
 
-//        imageRepository.delete(image);
+        imageRepository.delete(image);
         return true;
     }
 

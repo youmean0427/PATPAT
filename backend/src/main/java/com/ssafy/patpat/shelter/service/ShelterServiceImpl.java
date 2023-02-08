@@ -336,10 +336,7 @@ public class ShelterServiceImpl implements ShelterService{
 
         // 이미지 우선 삭제
         List<Image> shelterImageList = shelter.getImages();
-        for (Image i:
-                shelterImageList) {
-            fileService.deleteFile(i);
-        }
+
         List<Image> newImageList = new ArrayList<>();
 
         for (MultipartFile partFile:
@@ -384,6 +381,10 @@ public class ShelterServiceImpl implements ShelterService{
 //        }
         shelterRepository.save(shelter);
 
+        for (Image i:
+                shelterImageList) {
+            fileService.deleteFile(i);
+        }
         return new ResponseMessage("SUCCESS");
     }
 
