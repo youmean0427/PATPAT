@@ -206,6 +206,7 @@ public class ConsultingServiceImpl implements ConsultingService{
 //        return null;
 
         //해당 보호소 가져오기
+
 //        Shelter shelter = shelterRepository.findByShelterId(shelterId);
 //        List<Integer> list = new ArrayList<>();
 //
@@ -213,6 +214,8 @@ public class ConsultingServiceImpl implements ConsultingService{
 //            if(t.getState() == 1){
 //                list.add(t.timeCode);
 //            }
+//        }`
+        
 //        }
 //        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
 //
@@ -251,6 +254,7 @@ public class ConsultingServiceImpl implements ConsultingService{
 //
 //        return timeDtoList;
         return null;
+>>>>>>> backend/src/main/java/com/ssafy/patpat/consulting/service/ConsultingServiceImpl.java
 
     }
 
