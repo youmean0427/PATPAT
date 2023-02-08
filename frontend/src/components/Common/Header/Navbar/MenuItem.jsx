@@ -16,25 +16,23 @@ export default function MenuItem({ move, value, dropdown }) {
     }
   };
   return (
-    <>
-      <li onClick={() => handleClickMenuItem()} className={styles['menu-item']}>
-        <Link to={move} className={styles['nav-link']}>
-          {value}
-        </Link>
-        {dropdown && (
-          <ul className={styles.submenu}>
-            {dropdown.map((item, index) => {
-              return (
-                <li key={index} className={styles.subitem}>
-                  <Link className={styles.sublink} to={item.path}>
-                    {item.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </li>
-    </>
+    <li onClick={() => handleClickMenuItem()} className={styles['menu-item']}>
+      <Link to={move} className={styles['nav-link']}>
+        {value}
+      </Link>
+      {dropdown && (
+        <ul className={styles.submenu}>
+          {dropdown.map((item, index) => {
+            return (
+              <li key={index} className={styles.subitem}>
+                <Link className={styles.sublink} to={item.path}>
+                  {item.title}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </li>
   );
 }
