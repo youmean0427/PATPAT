@@ -22,7 +22,10 @@ import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
+import com.ssafy.patpat.volunteer.service.VolunteerService;
 import io.swagger.models.auth.In;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +38,8 @@ import java.util.*;
 
 @Service
 public class ShelterServiceImpl implements ShelterService{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShelterServiceImpl.class);
     @Autowired
     ShelterRepository shelterRepository;
     @Autowired
@@ -322,6 +327,8 @@ public class ShelterServiceImpl implements ShelterService{
     @Override
     @Transactional
     public ResponseMessage updateShelter(List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
+        LOGGER.info("{}",shelterDto.getShelterId());
+        
         Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterDto.getShelterId()));
         if(!s.isPresent()){
             return new ResponseMessage("FAIL");
