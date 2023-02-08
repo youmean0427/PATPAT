@@ -5,13 +5,15 @@ import MenuItem from './MenuItem';
 import styles from './MenuList.module.scss';
 import { FaDog } from 'react-icons/fa';
 import { GiSittingDog } from 'react-icons/gi';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isMobileMenuOpenState } from 'recoil/atoms/header';
 import { isHaveShelter } from 'utils/checkMyShelter';
 import MyProfileMenuItem from './MyProfileMenuItem';
+import { myShelterIdState } from 'recoil/atoms/user';
 export default function MenuList() {
   const [isLogin, setIsLogin] = useAuth();
   const [isOpen, setIsOpen] = useRecoilState(isMobileMenuOpenState);
+  const [myShelterId, setMyShelterId] = useRecoilState(myShelterIdState);
   const handleClickMobileMenu = () => {
     setIsOpen(prev => !prev);
   };
@@ -21,7 +23,37 @@ export default function MenuList() {
     } else {
       setIsLogin(false);
     }
+    if (localStorage.getItem('user')) {
+      const shelterId = JSON.parse(localStorage.getItem('user')).shelterId;
+      setMyShelterId(shelterId);
+    } else {
+      setMyShelterId(null);
+    }
   }, []);
+
+  const intro = [
+    { title: 'PATPAT은', path: 'intro' },
+    { title: '미션 & 비전', path: 'vision' },
+    { title: '통계', path: 'statistics' },
+  ];
+
+  const shelter = [
+    { title: '보호소 찾기', path: 'shelter/search' },
+    { title: '보호소 등록', path: 'shelter/enroll' },
+  ];
+
+  const shelterUser = [
+    { title: '마이페이지', path: 'mypage' },
+    { title: '나의 보호소', path: `shelter/${myShelterId}/intro` },
+    { title: '로그아웃', path: '/' },
+  ];
+
+  const normalUser = [
+    { title: '마이페이지', path: 'mypage' },
+    { title: '보호소 등록', path: 'shelter/enroll' },
+    { title: '로그아웃', path: '/' },
+  ];
+
   return (
     <>
       <div onClick={handleClickMobileMenu} className={styles['mobile-menu']}>
@@ -44,25 +76,3 @@ export default function MenuList() {
     </>
   );
 }
-const intro = [
-  { title: 'PATPAT은', path: 'intro' },
-  { title: '미션 & 비전', path: 'vision' },
-  { title: '통계', path: 'statistics' },
-];
-
-const shelter = [
-  { title: '보호소 찾기', path: 'shelter/search' },
-  { title: '보호소 등록', path: 'shelter/enroll' },
-];
-
-const shelterUser = [
-  { title: '마이페이지', path: 'mypage' },
-  { title: '나의 보호소', path: `shelter/${JSON.parse(localStorage.getItem('user')).shelterId}/intro` },
-  { title: '로그아웃', path: '/' },
-];
-
-const normalUser = [
-  { title: '마이페이지', path: 'mypage' },
-  { title: '보호소 등록', path: 'shelter/enroll' },
-  { title: '로그아웃', path: '/' },
-];

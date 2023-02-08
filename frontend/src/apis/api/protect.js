@@ -10,7 +10,7 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @returns [] : code에 따른 Item을 가진 배열
  */
 export const getProtectList = async (code, limit, offset) => {
-  const { data } = await defaultInstance.get(`/protects?code=${code}&limit=${limit}&offset=${offset}`);
+  const { data } = await defaultInstance.get(`/protects?code=${code}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -33,7 +33,7 @@ export const getProtectDetail = async protectId => {
  */
 export const getProtectListOfShelter = async (shelterId, limit, offset) => {
   const { data } = await defaultInstance.get(
-    `/protects/shelters?shelterId=${shelterId}&limit=${limit}&offset=${offset}`
+    `/protects/shelters?shelterId=${shelterId}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };
