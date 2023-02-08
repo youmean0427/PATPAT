@@ -174,7 +174,7 @@ public class ShelterServiceImpl implements ShelterService{
             shelterList = shelterRepository.findAll(pageRequest);
 //            shelterList = pages.toList();
         }
-        else if(breedId>0 && sidoCode==null && gugunCode == null){
+        else if(breedId!=null && sidoCode==null && gugunCode == null){
             //견종만
             List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdByBreedId(breedId);
             for(ShelterProtectedDog s : list){
@@ -189,7 +189,7 @@ public class ShelterServiceImpl implements ShelterService{
         else if(breedId==null && sidoCode!=null && gugunCode != null){
             shelterList = shelterRepository.findBySidoCodeAndGugunCode(sidoCode,gugunCode,pageRequest);
         }
-        else if(breedId>0 && sidoCode != null && gugunCode==null){
+        else if(breedId!=null && sidoCode != null && gugunCode==null){
             //시도, 견종
             List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCodeAndBreedId(sidoCode,breedId);
             for(ShelterProtectedDog s : list){
