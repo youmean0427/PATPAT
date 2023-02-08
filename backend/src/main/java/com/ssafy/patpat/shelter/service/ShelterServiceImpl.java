@@ -357,6 +357,7 @@ public class ShelterServiceImpl implements ShelterService{
 
 
         shelter = Shelter.builder()
+                .shelterId(shelterDto.getShelterId())
                 .images(newImageList)
                 .name(shelterDto.getName())
                 .info(shelterDto.getInfoContent())
