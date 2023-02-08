@@ -9,7 +9,7 @@ export default function PersonalDogItem({ item }) {
     <div>
       <Link to={`personal/${personalProtectionId}`} state={{ personalProtectionId }}>
         <Card>
-          <img src={fileUrlList[0]} alt={fileUrlList[0]} />
+          {/* <img src={fileUrlList[0]} alt={fileUrlList[0]} /> */}
           <div className={styles.description}>
             <div className={styles.name}>{title}</div>
             <div className={styles.kind}>{breedName}</div>

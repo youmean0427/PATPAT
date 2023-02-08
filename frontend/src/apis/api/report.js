@@ -97,7 +97,7 @@ export const getTotalSimiralCount = async breedId => {
  * @param {FormData} formData
  */
 export const createReport = async formData => {
-  const res = await authInstance.post(`/reports`, formData, {
+  const res = await defaultInstance.post(`/reports`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return res;

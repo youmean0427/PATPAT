@@ -7,7 +7,6 @@ import { FaDog } from 'react-icons/fa';
 import { GiSittingDog } from 'react-icons/gi';
 import { useRecoilState } from 'recoil';
 import { isMobileMenuOpenState } from 'recoil/atoms/header';
-import AuthButton from './AuthButton';
 
 export default function MenuList() {
   const [isLogin, setIsLogin, handleClickLogout, handleClickLogin] = useAuth();

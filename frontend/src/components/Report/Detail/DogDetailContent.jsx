@@ -8,8 +8,7 @@ import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
 
 export default function DogDetailContent({ item, state }) {
-  const [position] = useState({ lat: 33.450701, lng: 126.570667 });
-
+  const [position] = useState({ lat: item.latitude, lng: item.longitude });
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
@@ -155,6 +154,7 @@ export default function DogDetailContent({ item, state }) {
       </div>
       <div className={styles.subTitle}>상세정보</div>
       <hr />
+      {/* HTMl null 값 못받음 */}
       <div className={styles.content}>{HtmlReactParser(data.content)}</div>
     </div>
   );

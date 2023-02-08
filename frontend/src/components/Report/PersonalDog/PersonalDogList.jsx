@@ -10,12 +10,18 @@ import { getBreedsList } from 'apis/api/shelter';
 import { changeBreedList } from 'utils/changeSelectTemplate';
 
 export default function PersonalDogList() {
+  const breed = [{ value: 0, label: '견종' }];
+  const gender = [
+    { value: 0, label: '성별' },
+    { value: 1, label: '수컷' },
+    { value: 2, label: '암컷' },
+  ];
   const [selectedGender, setSelectedGender] = useState(gender[0]);
   const [selectedBreed, setSelectedBreed] = useState(breed[0]);
 
   const { isLoading, data } = useQuery({
     queryKey: ['personalDogList'],
-    queryFn: () => getPersonalDogList(selectedBreed.value, selectedGender.value, 1, 0),
+    queryFn: () => getPersonalDogList(selectedBreed.value, selectedGender.value, 100, 0),
   });
 
   const breedData = useQuery({
@@ -23,13 +29,6 @@ export default function PersonalDogList() {
     queryFn: () => getBreedsList(),
   });
   const breedList = breedData.data;
-
-  const breed = [{ value: 0, label: '견종' }];
-  const gender = [
-    { value: 0, label: '성별' },
-    { value: 1, label: '수컷' },
-    { value: 2, label: '암컷' },
-  ];
 
   if (isLoading) return;
 
