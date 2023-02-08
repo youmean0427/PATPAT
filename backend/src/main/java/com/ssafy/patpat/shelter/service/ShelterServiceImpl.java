@@ -324,52 +324,66 @@ public class ShelterServiceImpl implements ShelterService{
     public ResponseMessage updateShelter(int shelterId, List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception {
         Optional<Shelter> s =Optional.ofNullable(shelterRepository.findByShelterId(shelterId));
         if(!s.isPresent()){
-            return null;
+            return new ResponseMessage("FAIL");
         }
+
         Shelter shelter = s.get();
+
+        Optional<Owner> owner = Optional.ofNullable(shelter.getOwner());
+        if(!owner.isPresent()){
+            return new ResponseMessage("FAIL");
+        }
+
         // 이미지 우선 삭제
         Set<Image> shelterImageList = shelter.getImages();
         for (Image i:
                 shelterImageList) {
             fileService.deleteFile(i);
         }
-        Set<Image> newImageList = new HashSet<>();
-        Optional<Owner> owner = Optional.ofNullable(shelter.getOwner());
 
-        if(!owner.isPresent()){
-            return new ResponseMessage("FAIL");
-        }
+
+        Set<Image> newImageList = new HashSet<>();
 
         for (MultipartFile partFile:
              uploadFile) {
             newImageList.add(fileService.insertFile(partFile));
         }
-        shelter.setImages(newImageList);
-        if(shelterDto.getName() != null){
-            shelter.setName(shelterDto.getName());
-        }
-        if(shelterDto.getInfoContent() != null){
-            shelter.setInfo(shelterDto.getInfoContent());
-        }
-        if(shelterDto.getPhoneNumber() != null){
-            shelter.getOwner().setPhoneNumber(shelterDto.getPhoneNumber());
-        }
-        if(shelterDto.getOwnerName() != null){
-            shelter.getOwner().setName(shelterDto.getOwnerName());
-        }
-        if(shelterDto.getOwnerId() != null){
-            // 직원인지 체크
-            Optional<User> user = userRepository.findById(shelterDto.getOwnerId());
-            if(user.isPresent()){
-                if(user.get().getShelter().getShelterId() == shelter.getShelterId()){
-                    Owner newOwner = new Owner();
-                    newOwner.setUser(user.get());
-                    newOwner.setName(shelterDto.getName());
-                    newOwner.setPhoneNumber(shelterDto.getPhoneNumber());
-                    shelter.setOwner(newOwner);
-                }
-            }
-        }
+
+        owner.get().setPhoneNumber(shelterDto.getPhoneNumber());
+        owner.get().setName(shelterDto.getOwnerName());
+        
+
+        shelter = Shelter.builder()
+                .images(newImageList)
+                .name(shelterDto.getName())
+                .info(shelterDto.getInfoContent())
+                .owner(owner.get())
+                .build();
+//        if(shelterDto.getName() != null){
+//            shelter.setName(shelterDto.getName());
+//        }
+//        if(shelterDto.getInfoContent() != null){
+//            shelter.setInfo(shelterDto.getInfoContent());
+//        }
+//        if(shelterDto.getPhoneNumber() != null){
+//            shelter.getOwner().setPhoneNumber(shelterDto.getPhoneNumber());
+//        }
+//        if(shelterDto.getOwnerName() != null){
+//            shelter.getOwner().setName(shelterDto.getOwnerName());
+//        }
+//        if(shelterDto.getOwnerId() != null){
+//            // 직원인지 체크
+//            Optional<User> user = userRepository.findById(shelterDto.getOwnerId());
+//            if(user.isPresent()){
+//                if(user.get().getShelter().getShelterId() == shelter.getShelterId()){
+//                    Owner newOwner = new Owner();
+//                    newOwner.setUser(user.get());
+//                    newOwner.setName(shelterDto.getName());
+//                    newOwner.setPhoneNumber(shelterDto.getPhoneNumber());
+//                    shelter.setOwner(newOwner);
+//                }
+//            }
+//        }
         shelterRepository.save(shelter);
 
         return new ResponseMessage("SUCCESS");

@@ -17,7 +17,7 @@ public interface VolunteerReservationRepository extends JpaRepository<VolunteerR
 
     @Query(nativeQuery = true, value = "select * from volunteer_reservation" +
             " where user_id=:userId" +
-            " order by field(reservation_state_code, 3, 0, 1, 5)," +
+            " order by field(reservation_state_code, 3, 0, 1, 2, 5, 4)," +
             " volunteer_date asc limit :offset, :limit")
     List<VolunteerReservation> findWithUserByUserUserIdAndReservationStateCode(Long userId, Integer offset, Integer limit);
 

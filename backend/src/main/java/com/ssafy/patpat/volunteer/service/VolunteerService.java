@@ -398,7 +398,7 @@ public class VolunteerService {
 
     /** 예약 등록 */
     @Transactional
-    public boolean insertReservation(ReservationDto reservationDto){
+    public boolean insertReservation(ReservationDto reservationDto) throws VolunteerException {
         /** 봉사 일정 조회 */
         Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(reservationDto.getScheduleId());
         if(!volunteerSchedule.isPresent()){
@@ -411,6 +411,10 @@ public class VolunteerService {
             LOGGER.info("등록된 유저가 아닙니다.");
             return false;
         }
+        if(volunteerSchedule.get().getTotaclCapacity() < volunteerSchedule.get().getCapacity() + reservationDto.getCapacity()){
+            throw new VolunteerException("인원이 맞지 않습니다.");
+        }
+
         VolunteerReservation volunteerReservation =
                 VolunteerReservation.builder()
                         .capacity(reservationDto.getCapacity())
@@ -424,4 +428,224 @@ public class VolunteerService {
         return true;
     }
 
+    @Transactional
+    public boolean updateReservation(ReservationDto reservationDto) throws VolunteerException {
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            return false;
+        }
+        if(volunteerReservation.get().getUser().getUserId() != reservationDto.getUserId()){
+            LOGGER.info("등록된 회원이 아닙니다.");
+            return false;
+        }
+        if(volunteerReservation.get().getReservationStateCode() == Reservation.수락){
+            throw new VolunteerException("이미 승인된 예약입니다.");
+        }
+
+        VolunteerReservation vr = volunteerReservation.get();
+        vr.setCapacity(reservationDto.getCapacity());
+        volunteerReservationRepository.save(vr);
+
+        return true;
+    }
+
+    @Transactional
+    public boolean deleteReservation(ReservationDto reservationDto) throws VolunteerException {
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            return false;
+        }
+        VolunteerReservation vr = volunteerReservation.get();
+        if(vr.getUser().getUserId() != reservationDto.getUserId()){
+            LOGGER.info("등록된 회원이 아닙니다.");
+            return false;
+        }
+        if(vr.getReservationStateCode() != Reservation.대기중){
+            LOGGER.info("이미 처리된 예약입니다.");
+            return false;
+        }
+
+        volunteerReservationRepository.delete(volunteerReservation.get());
+        return true;
+    }
+
+    @Transactional
+    public boolean changeReservationState(ReservationDto reservationDto){
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            return false;
+        }
+        VolunteerReservation vr = volunteerReservation.get();
+        if(vr.getUser().getUserId() != reservationDto.getUserId()){
+            LOGGER.info("등록된 회원이 아닙니다.");
+            return false;
+        }
+        if(vr.getReservationStateCode() == Reservation.완료 || vr.getReservationStateCode() == Reservation.미완료){
+            LOGGER.info("이미 처리된 예약입니다.");
+            return false;
+        }
+
+        // 수락시
+        if(reservationDto.getStateCode() == 1){
+            vr.setReservationStateCode(Reservation.수락);
+            volunteerReservationRepository.save(vr);
+
+            // 전체 봉사 일정 체크 필요
+            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
+            int totalCapacity = volunteerSchedule.getTotaclCapacity();
+            int capacity = volunteerSchedule.getCapacity();
+            if(totalCapacity == capacity + vr.getCapacity()){
+                volunteerSchedule.setReservationStateCode(Reservation.수락);
+                volunteerScheduleRepository.save(volunteerSchedule);
+
+                // 전체 공고 체크 필요
+                VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
+                boolean ok = true;
+                for (VolunteerSchedule vs:
+                        volunteerNotice.getVolunteerSchedules()) {
+                    if(vs.getReservationStateCode() != Reservation.수락){
+                        ok = false;
+                    }
+                }
+                if(ok){
+                    volunteerNotice.setReservationStateCode(Reservation.수락);
+                }
+            }
+
+            // 나머지 예약들 거절 시키기
+            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+            for (VolunteerReservation vrs:
+                 volunteerReservations) {
+                if(vrs.getReservationId() != vr.getReservationId()){
+                    vrs.setReservationStateCode(Reservation.거절);
+                    volunteerReservationRepository.save(vrs);
+                }
+            }
+        }
+
+        // 거절시
+        if(reservationDto.getStateCode() == 2){
+            vr.setReservationStateCode(Reservation.거절);
+            volunteerReservationRepository.save(vr);
+            // 전체 봉사 일정 체크 필요
+            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
+            if(volunteerSchedule.getReservationStateCode() == Reservation.수락){
+                int capacity = volunteerSchedule.getCapacity();
+                volunteerSchedule.setCapacity(capacity-vr.getCapacity());
+                volunteerSchedule.setReservationStateCode(Reservation.대기중);
+                volunteerScheduleRepository.save(volunteerSchedule);
+
+                // 전체 공고 체크 필요
+                VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
+                if(volunteerNotice.getReservationStateCode() == Reservation.수락){
+                    volunteerNotice.setReservationStateCode(Reservation.대기중);
+                    volunteerNoticeRepository.save(volunteerNotice);
+                }
+            }
+            // 나머지 예약들 대기중 바꾸기
+            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+            for (VolunteerReservation vrs:
+                    volunteerReservations) {
+                if(vrs.getReservationId() != vr.getReservationId()){
+                    vrs.setReservationStateCode(Reservation.대기중);
+                    volunteerReservationRepository.save(vrs);
+                }
+            }
+
+        }
+
+        return true;
+    }
+
+    @Transactional
+    public boolean completeReservationState(ReservationDto reservationDto){
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            return false;
+        }
+        VolunteerReservation vr = volunteerReservation.get();
+//        if(vr.getUser().getUserId() != reservationDto.getUserId()){
+//            LOGGER.info("등록된 회원이 아닙니다.");
+//            return false;
+//        }
+        if(vr.getReservationStateCode() == Reservation.완료 || vr.getReservationStateCode() == Reservation.미완료){
+            LOGGER.info("이미 처리된 예약입니다.");
+            return false;
+        }
+
+        // 수락시
+        if(reservationDto.getStateCode() == 1){
+            vr.setReservationStateCode(Reservation.수락);
+            volunteerReservationRepository.save(vr);
+
+            // 전체 봉사 일정 체크 필요
+            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
+            int totalCapacity = volunteerSchedule.getTotaclCapacity();
+            int capacity = volunteerSchedule.getCapacity();
+            if(totalCapacity == capacity + vr.getCapacity()){
+                volunteerSchedule.setReservationStateCode(Reservation.수락);
+                volunteerScheduleRepository.save(volunteerSchedule);
+
+                // 전체 공고 체크 필요
+                VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
+                boolean ok = true;
+                for (VolunteerSchedule vs:
+                        volunteerNotice.getVolunteerSchedules()) {
+                    if(vs.getReservationStateCode() != Reservation.수락){
+                        ok = false;
+                    }
+                }
+                if(ok){
+                    volunteerNotice.setReservationStateCode(Reservation.수락);
+                }
+            }
+
+            // 나머지 예약들 거절 시키기
+            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+            for (VolunteerReservation vrs:
+                    volunteerReservations) {
+                if(vrs.getReservationId() != vr.getReservationId()){
+                    vrs.setReservationStateCode(Reservation.거절);
+                    volunteerReservationRepository.save(vrs);
+                }
+            }
+        }
+
+        // 거절시
+        if(reservationDto.getStateCode() == 2){
+            vr.setReservationStateCode(Reservation.거절);
+            volunteerReservationRepository.save(vr);
+            // 전체 봉사 일정 체크 필요
+            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
+            if(volunteerSchedule.getReservationStateCode() == Reservation.수락){
+                int capacity = volunteerSchedule.getCapacity();
+                volunteerSchedule.setCapacity(capacity-vr.getCapacity());
+                volunteerSchedule.setReservationStateCode(Reservation.대기중);
+                volunteerScheduleRepository.save(volunteerSchedule);
+
+                // 전체 공고 체크 필요
+                VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
+                if(volunteerNotice.getReservationStateCode() == Reservation.수락){
+                    volunteerNotice.setReservationStateCode(Reservation.대기중);
+                    volunteerNoticeRepository.save(volunteerNotice);
+                }
+            }
+            // 나머지 예약들 대기중 바꾸기
+            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+            for (VolunteerReservation vrs:
+                    volunteerReservations) {
+                if(vrs.getReservationId() != vr.getReservationId()){
+                    vrs.setReservationStateCode(Reservation.대기중);
+                    volunteerReservationRepository.save(vrs);
+                }
+            }
+
+        }
+
+        return true;
+    }
 }
