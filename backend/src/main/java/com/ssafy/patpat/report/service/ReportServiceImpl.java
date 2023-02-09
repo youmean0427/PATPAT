@@ -308,8 +308,6 @@ public class ReportServiceImpl implements ReportService{
                 .latitude(missingDog.getLatitude().toString())
                 .longitude(missingDog.getLongitude().toString())
                 .build();
-
-
         return reportDto;
     }
 

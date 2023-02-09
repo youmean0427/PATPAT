@@ -6,6 +6,7 @@ import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,11 +20,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 @ToString
 public class ShelterProtectedDog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sp_dog_id")
     private Long spDogId;
 
     @Column(name = "shelter_id")

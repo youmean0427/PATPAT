@@ -2,8 +2,7 @@ package com.ssafy.patpat;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.patpat.board.entity.PostImage;
-import com.ssafy.patpat.board.repository.PostImageRepository;
+
 import com.ssafy.patpat.common.code.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -364,8 +363,8 @@ class PatpatApplicationTests {
 			//보호견 리스트 생성
 			List<ShelterProtectedDog> list = new ArrayList<>();
 			//보호소 불러오기
-			Shelter shelter = shelterRepository.findByShelterId(299);
-			int shelterId = shelter.getShelterId();
+			Shelter shelter = shelterRepository.findByShelterId(299L);
+			long shelterId = shelter.getShelterId();
 			BigDecimal lat = shelter.getLatitude();
 			BigDecimal log = shelter.getLongitude();
 			//로우마다
@@ -461,7 +460,7 @@ class PatpatApplicationTests {
 			for(ShelterProtectedDog dog : list){
 				shelterProtectedDogRepository.save(dog);
 			}
-			int startIdx = list.get(0).getSpDogId();
+			long startIdx = list.get(0).getSpDogId();
 			XSSFDrawing drawing = sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
 			for (XSSFShape shape : drawing.getShapes()) {
 				System.out.println("dd");
@@ -498,5 +497,20 @@ class PatpatApplicationTests {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+
+		String ext = xssfPictureData.suggestFileExtension();
+		byte[] data = xssfPictureData.getData();
+		int size = data.length;
+
+
+		String s = String.format("\\%s\\%s_%d_%d.%s", uploadPath,uploadFolder, sheet.getSheetName(), row1, col1, ext);
+		FileOutputStream out = new FileOutputStream(s);
+		out.write(data);
+		out.close();
+		Image image = Image.builder()
+				.filename(sheet.getSheetName())
+				.fileSize(size)
+				.filePath(s)
+				.build();
 	}
 }
