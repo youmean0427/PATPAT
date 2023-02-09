@@ -357,7 +357,6 @@ public class ProtectServiceImpl implements ProtectService{
             long shelterId = shelter.getShelterId();
             BigDecimal lat = shelter.getLatitude();
             BigDecimal log = shelter.getLongitude();
-            System.out.println(shelter);
             String extension = FilenameUtils.getExtension(uploadFile.getOriginalFilename()); // 3
             if (!extension.equals("xlsx") && !extension.equals("xls")) {
                 return new ResponseMessage("엑셀파일만 업로드 해주세요");
@@ -496,7 +495,8 @@ public class ProtectServiceImpl implements ProtectService{
                     String savingFileName = uuid+"."+ext;
                     String source = "protect";
                     String pathName = uploadPath + File.separator + uploadFolder + File.separator + source;
-
+                    File uploadDir = new File(pathName);
+                    if (!uploadDir.exists()) uploadDir.mkdir();
                     String filePath = pathName + File.separator + savingFileName;
                     FileOutputStream out = new FileOutputStream(filePath);
                     out.write(data);
