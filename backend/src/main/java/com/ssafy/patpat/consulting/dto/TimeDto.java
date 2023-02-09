@@ -12,5 +12,6 @@ import lombok.*;
 @Builder
 //@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class TimeDto {
-    public Integer timeCode;
+    private Integer timeCode;
+    private String time;
 }

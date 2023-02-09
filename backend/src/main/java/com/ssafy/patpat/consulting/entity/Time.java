@@ -23,8 +23,8 @@ public class Time {
     private Long timeId;
     private TimeCode timeCode;
 
-    // 0 대기 1 승인 2 취소 3 거절
-    private TimeState timeState;
+    // 0 비활성화 1 활성화
+    private Boolean active;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shelter_id")

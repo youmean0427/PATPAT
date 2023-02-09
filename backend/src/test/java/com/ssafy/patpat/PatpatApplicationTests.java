@@ -315,185 +315,185 @@ class PatpatApplicationTests {
 //			timeDtoList.add(new TimeDto(i));
 //		}
 //		System.out.println(timeDtoList);
-		BigDecimal a = new BigDecimal(37.5152937);
-		BigDecimal b = new BigDecimal(126.9013676);
-		List<TestDistance> test = testRepository.selectAllSQL(a,b,a);
-		System.out.println("here");
-		System.out.println(test);
-
-		System.out.println(passwordEncoder.matches("175","$2a$10$VOy/116s7ztl6fcGsh.C7.pYAinRybRqy4B8Q9OSm5fHQnvwNwH2G"));
-
-	}
-
-	@Test
-	public void excelTest() throws Exception{
-		HashMap<String,String> map = new HashMap<>();
-		map.put("적색","R");
-		map.put("녹색","G");
-		map.put("청색","B");
-		map.put("자색","V");
-		map.put("황색","Y");
-		map.put("청록","E");
-		map.put("흰색","W");
-		map.put("회색","H");
-		map.put("검정","K");
-		try {
-			FileInputStream inputStream = new FileInputStream("C:\\test\\PATPAT_일괄등록_양식_폼.xlsx");
-			System.out.println(inputStream);
-			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-			//0번 시트 열기
-			XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
-			//보호견 리스트 생성
-			List<ShelterProtectedDog> list = new ArrayList<>();
-			//보호소 불러오기
-			Shelter shelter = shelterRepository.findByShelterId(299L);
-			long shelterId = shelter.getShelterId();
-			BigDecimal lat = shelter.getLatitude();
-			BigDecimal log = shelter.getLongitude();
-			//로우마다
-			for(Row row : sheet){
-				//실제 값이 들어있는 로우
-				if(row.getRowNum() > 7){
-					Iterator<Cell> cellIterator =row.cellIterator();
-					int col = 0;
-					ShelterProtectedDog shelterProtectedDog = new ShelterProtectedDog();
-					ArrayList<String> strList = new ArrayList<>();
-					while(cellIterator.hasNext()){
-						Cell cell = cellIterator.next();
-						switch (col){
-							case 0 :
-								System.out.println(cell.getStringCellValue());
-								shelterProtectedDog.setBreedId(breedRepository.findByName(cell.getStringCellValue()).getBreedId());
-								break;
-							case 1 :
-								shelterProtectedDog.setName(cell.getStringCellValue());
-								break;
-							case 2 :
-								shelterProtectedDog.setAge((int)cell.getNumericCellValue());
-								break;
-							case 3 :
-								shelterProtectedDog.setGender(Gender.valueOf(cell.getStringCellValue()));
-								break;
-							case 4 :
-								shelterProtectedDog.setWeight(cell.getNumericCellValue());
-								break;
-							case 5 :
-								shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()).ordinal());
-								break;
-							case 6 :
-								if(cell.getStringCellValue().equals("없음")){
-									break;
-								}
-								else{
-									strList.add(map.get(cell.getStringCellValue()));
-								}
-								break;
-							case 7 :
-								if(cell.getStringCellValue().equals("없음")){
-									break;
-								}
-								else{
-									strList.add(map.get(cell.getStringCellValue()));
-								}
-								break;
-							case 8 :
-								if(cell.getStringCellValue().equals("없음")){
-									break;
-								}
-								else{
-									strList.add(map.get(cell.getStringCellValue()));
-								}
-								break;
-							case 9 :
-								shelterProtectedDog.setCategoryPattern(Pattern.valueOf(cell.getStringCellValue()).ordinal());
-								System.out.println(shelterProtectedDog.getCategoryPattern());
-								break;
-							case 10 :
-								shelterProtectedDog.setCategoryEar(Ear.valueOf(cell.getStringCellValue()).ordinal());
-								break;
-							case 11 :
-								shelterProtectedDog.setCategoryTail(Tail.valueOf(cell.getStringCellValue()).ordinal());
-								break;
-							case 12 :
-								shelterProtectedDog.setCategoryCloth(Cloth.valueOf(cell.getStringCellValue()).ordinal());
-								break;
-							case 13 :
-								shelterProtectedDog.setFeature(cell.getStringCellValue());
-								break;
-						}
-						col++;
-					}
-					shelterProtectedDog.setSidoCode(shelter.getSidoCode());
-					shelterProtectedDog.setGugunCode(shelter.getGugunCode());
-					shelterProtectedDog.setLatitude(lat);
-					shelterProtectedDog.setLongitude(log);
-//					shelterProtectedDog.setShelterId(shelterId);
-					shelterProtectedDog.setStateCode(ProtectState.공고중);
-					Collections.sort(strList);
-					StringBuilder sb = new StringBuilder();
-					for(int i=0; i<strList.size(); i++){
-						sb.append(strList.get(i));
-					}
-					int code = Color.valueOf(sb.toString()).getCode();
-					shelterProtectedDog.setCategoryColor(code);
-					list.add(shelterProtectedDog);
-				}
-			}
-			System.out.println(list.size());
-			for(ShelterProtectedDog dog : list){
-				shelterProtectedDogRepository.save(dog);
-			}
-			long startIdx = list.get(0).getSpDogId();
-			XSSFDrawing drawing = sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
-			for (XSSFShape shape : drawing.getShapes()) {
-				System.out.println("dd");
-				if (shape instanceof XSSFPicture) {
-					XSSFPicture picture = (XSSFPicture) shape;
-
-					if (picture.getPictureData() == null) {
-						System.out.println("사진 Path 사용");
-						continue;
-					}
-					XSSFPictureData xssfPictureData = picture.getPictureData();
-					ClientAnchor anchor = picture.getPreferredSize();
-					int row1 = anchor.getRow1();
-					int row2 = anchor.getRow2();
-					int col1 = anchor.getCol1();
-					int col2 = anchor.getCol2();
-					System.out.println("Row1: " + row1 + " Row2: " + row2);
-					System.out.println("Column1: " + col1 + " Column2: " + col2);
-
-					//보호동물 id
-					//int protectId = startIdx+row1-5;
-					//Image image = Image.builder();
-
-
-					// Saving the file
-					String ext = xssfPictureData.suggestFileExtension();
-					byte[] data = xssfPictureData.getData();
-
-					FileOutputStream out = new FileOutputStream(String.format("%s\\%s_%d_%d.%s", "C:\\test", sheet.getSheetName(), row1, col1, ext));
-					out.write(data);
-					out.close();
-				}
-			}
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-
-		String ext = xssfPictureData.suggestFileExtension();
-		byte[] data = xssfPictureData.getData();
-		int size = data.length;
-
-
-		String s = String.format("\\%s\\%s_%d_%d.%s", uploadPath,uploadFolder, sheet.getSheetName(), row1, col1, ext);
-		FileOutputStream out = new FileOutputStream(s);
-		out.write(data);
-		out.close();
-		Image image = Image.builder()
-				.filename(sheet.getSheetName())
-				.fileSize(size)
-				.filePath(s)
-				.build();
+//		BigDecimal a = new BigDecimal(37.5152937);
+//		BigDecimal b = new BigDecimal(126.9013676);
+//		List<TestDistance> test = testRepository.selectAllSQL(a,b,a);
+//		System.out.println("here");
+//		System.out.println(test);
+//
+//		System.out.println(passwordEncoder.matches("175","$2a$10$VOy/116s7ztl6fcGsh.C7.pYAinRybRqy4B8Q9OSm5fHQnvwNwH2G"));
+//
+//	}
+//
+//	@Test
+//	public void excelTest() throws Exception{
+//		HashMap<String,String> map = new HashMap<>();
+//		map.put("적색","R");
+//		map.put("녹색","G");
+//		map.put("청색","B");
+//		map.put("자색","V");
+//		map.put("황색","Y");
+//		map.put("청록","E");
+//		map.put("흰색","W");
+//		map.put("회색","H");
+//		map.put("검정","K");
+//		try {
+//			FileInputStream inputStream = new FileInputStream("C:\\test\\PATPAT_일괄등록_양식_폼.xlsx");
+//			System.out.println(inputStream);
+//			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+//			//0번 시트 열기
+//			XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
+//			//보호견 리스트 생성
+//			List<ShelterProtectedDog> list = new ArrayList<>();
+//			//보호소 불러오기
+//			Shelter shelter = shelterRepository.findByShelterId(299L);
+//			long shelterId = shelter.getShelterId();
+//			BigDecimal lat = shelter.getLatitude();
+//			BigDecimal log = shelter.getLongitude();
+//			//로우마다
+//			for(Row row : sheet){
+//				//실제 값이 들어있는 로우
+//				if(row.getRowNum() > 7){
+//					Iterator<Cell> cellIterator =row.cellIterator();
+//					int col = 0;
+//					ShelterProtectedDog shelterProtectedDog = new ShelterProtectedDog();
+//					ArrayList<String> strList = new ArrayList<>();
+//					while(cellIterator.hasNext()){
+//						Cell cell = cellIterator.next();
+//						switch (col){
+//							case 0 :
+//								System.out.println(cell.getStringCellValue());
+//								shelterProtectedDog.setBreedId(breedRepository.findByName(cell.getStringCellValue()).getBreedId());
+//								break;
+//							case 1 :
+//								shelterProtectedDog.setName(cell.getStringCellValue());
+//								break;
+//							case 2 :
+//								shelterProtectedDog.setAge((int)cell.getNumericCellValue());
+//								break;
+//							case 3 :
+//								shelterProtectedDog.setGender(Gender.valueOf(cell.getStringCellValue()));
+//								break;
+//							case 4 :
+//								shelterProtectedDog.setWeight(cell.getNumericCellValue());
+//								break;
+//							case 5 :
+//								shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()).ordinal());
+//								break;
+//							case 6 :
+//								if(cell.getStringCellValue().equals("없음")){
+//									break;
+//								}
+//								else{
+//									strList.add(map.get(cell.getStringCellValue()));
+//								}
+//								break;
+//							case 7 :
+//								if(cell.getStringCellValue().equals("없음")){
+//									break;
+//								}
+//								else{
+//									strList.add(map.get(cell.getStringCellValue()));
+//								}
+//								break;
+//							case 8 :
+//								if(cell.getStringCellValue().equals("없음")){
+//									break;
+//								}
+//								else{
+//									strList.add(map.get(cell.getStringCellValue()));
+//								}
+//								break;
+//							case 9 :
+//								shelterProtectedDog.setCategoryPattern(Pattern.valueOf(cell.getStringCellValue()).ordinal());
+//								System.out.println(shelterProtectedDog.getCategoryPattern());
+//								break;
+//							case 10 :
+//								shelterProtectedDog.setCategoryEar(Ear.valueOf(cell.getStringCellValue()).ordinal());
+//								break;
+//							case 11 :
+//								shelterProtectedDog.setCategoryTail(Tail.valueOf(cell.getStringCellValue()).ordinal());
+//								break;
+//							case 12 :
+//								shelterProtectedDog.setCategoryCloth(Cloth.valueOf(cell.getStringCellValue()).ordinal());
+//								break;
+//							case 13 :
+//								shelterProtectedDog.setFeature(cell.getStringCellValue());
+//								break;
+//						}
+//						col++;
+//					}
+//					shelterProtectedDog.setSidoCode(shelter.getSidoCode());
+//					shelterProtectedDog.setGugunCode(shelter.getGugunCode());
+//					shelterProtectedDog.setLatitude(lat);
+//					shelterProtectedDog.setLongitude(log);
+////					shelterProtectedDog.setShelterId(shelterId);
+//					shelterProtectedDog.setStateCode(ProtectState.공고중);
+//					Collections.sort(strList);
+//					StringBuilder sb = new StringBuilder();
+//					for(int i=0; i<strList.size(); i++){
+//						sb.append(strList.get(i));
+//					}
+//					int code = Color.valueOf(sb.toString()).getCode();
+//					shelterProtectedDog.setCategoryColor(code);
+//					list.add(shelterProtectedDog);
+//				}
+//			}
+//			System.out.println(list.size());
+//			for(ShelterProtectedDog dog : list){
+//				shelterProtectedDogRepository.save(dog);
+//			}
+//			long startIdx = list.get(0).getSpDogId();
+//			XSSFDrawing drawing = sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
+//			for (XSSFShape shape : drawing.getShapes()) {
+//				System.out.println("dd");
+//				if (shape instanceof XSSFPicture) {
+//					XSSFPicture picture = (XSSFPicture) shape;
+//
+//					if (picture.getPictureData() == null) {
+//						System.out.println("사진 Path 사용");
+//						continue;
+//					}
+//					XSSFPictureData xssfPictureData = picture.getPictureData();
+//					ClientAnchor anchor = picture.getPreferredSize();
+//					int row1 = anchor.getRow1();
+//					int row2 = anchor.getRow2();
+//					int col1 = anchor.getCol1();
+//					int col2 = anchor.getCol2();
+//					System.out.println("Row1: " + row1 + " Row2: " + row2);
+//					System.out.println("Column1: " + col1 + " Column2: " + col2);
+//
+//					//보호동물 id
+//					//int protectId = startIdx+row1-5;
+//					//Image image = Image.builder();
+//
+//
+//					// Saving the file
+//					String ext = xssfPictureData.suggestFileExtension();
+//					byte[] data = xssfPictureData.getData();
+//
+//					FileOutputStream out = new FileOutputStream(String.format("%s\\%s_%d_%d.%s", "C:\\test", sheet.getSheetName(), row1, col1, ext));
+//					out.write(data);
+//					out.close();
+//				}
+//			}
+//		} catch (Exception e){
+//			e.printStackTrace();
+//		}
+//
+//		String ext = xssfPictureData.suggestFileExtension();
+//		byte[] data = xssfPictureData.getData();
+//		int size = data.length;
+//
+//
+//		String s = String.format("\\%s\\%s_%d_%d.%s", uploadPath,uploadFolder, sheet.getSheetName(), row1, col1, ext);
+//		FileOutputStream out = new FileOutputStream(s);
+//		out.write(data);
+//		out.close();
+//		Image image = Image.builder()
+//				.filename(sheet.getSheetName())
+//				.fileSize(size)
+//				.filePath(s)
+//				.build();
 	}
 }

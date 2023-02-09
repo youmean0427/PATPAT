@@ -3,6 +3,7 @@ package com.ssafy.patpat.consulting.service;
 import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.TimeCode;
+import com.ssafy.patpat.common.code.TimeState;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.util.SecurityUtil;
@@ -12,6 +13,7 @@ import com.ssafy.patpat.consulting.dto.RoomDto;
 import com.ssafy.patpat.consulting.dto.TimeDto;
 import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.consulting.entity.Time;
+import com.ssafy.patpat.consulting.mapping.TimeCodeMapping;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
@@ -196,12 +198,62 @@ public class ConsultingServiceImpl implements ConsultingService{
     }
 
     @Override
+    @Transactional
     public List<TimeDto> selectTimeList(Long shelterId, LocalDate date) {
-//        List<Integer> t = new ArrayList<>();
-//        t.add(2);
-//        t.add(3);
-//        int hour = LocalDateTime.now().getHour();
-//        timeRepository.findWithShelterByShelterShelterIdAndTimeCodeGreaterThanEqualAndStateNotIn(5, hour, t);
+
+        List<Time> times = timeRepository.findByShelterShelterIdAndActive(shelterId, true);
+        List<ConsultingState> consultingStates = new ArrayList<>();
+        consultingStates.add(ConsultingState.미완료);
+        consultingStates.add(ConsultingState.승인);
+        List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(shelterId, date, consultingStates);
+        List<TimeDto> timeDtoList = new ArrayList<>();
+        // 당일이면?
+        if(date == LocalDate.now()){
+            int hour = LocalDateTime.now().getHour();
+
+            for (Time time:
+                    times) {
+                boolean ok = true;
+                for (TimeCodeMapping t:
+                     timeCodes) {
+                    if(t.getTimeCode() == time.getTimeCode()){
+                        ok = false;
+                        break;
+                    }
+                }
+                if(!ok) continue;
+                if(hour+1 < time.getTimeCode().getCode()){
+                    timeDtoList.add(
+                            TimeDto.builder()
+                                    .timeCode(time.getTimeCode().getCode())
+                                    .time(time.getTimeCode().name())
+                                    .build()
+                    );
+                }
+            }
+        }
+        else{
+
+            for (Time time:
+                    times) {
+                boolean ok = true;
+                for (TimeCodeMapping t:
+                        timeCodes) {
+                    if(t.getTimeCode() == time.getTimeCode()){
+                        ok = false;
+                        break;
+                    }
+                }
+                if(!ok) continue;
+                timeDtoList.add(
+                        TimeDto.builder()
+                                .timeCode(time.getTimeCode().getCode())
+                                .time(time.getTimeCode().name())
+                                .build()
+                );
+            }
+        }
+
 //        Shelter shelter = shelterRepository.findByShelterId(5);
 //        List<TimeCode> list = new ArrayList<>();
 //
@@ -254,55 +306,8 @@ public class ConsultingServiceImpl implements ConsultingService{
 //        return timeDtoList;
 //        return null;
 
-        //해당 보호소 가져오기
 
-//        Shelter shelter = shelterRepository.findByShelterId(shelterId);
-//        List<Integer> list = new ArrayList<>();
-//
-//        for(Time t : shelter.getTimeList()){
-//            if(t.getState() == 1){
-//                list.add(t.timeCode);
-//            }
-//        }`
-        
-//        }
-//        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
-//
-//        for(Consulting c : consultings){
-//            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
-//                list.remove(Integer.valueOf(c.getTimeCode()));
-//            }
-//        }
-//
-//        if(date.equals(LocalDate.now())){
-//            int hour = LocalDateTime.now().getHour();
-//
-//            System.out.println(list);
-//
-//            for(int i=0; i<list.size(); i++){
-//                if(list.get(i)==0){
-//                    if(list.get(i)+10 <= hour) {
-//                        list.remove(Integer.valueOf(list.get(i)));
-//                        i--;
-//                    }
-//                }
-//                else{
-//                    if(list.get(i)+13 <= hour){
-//                        list.remove(Integer.valueOf(list.get(i)));
-//                        i--;
-//                    }
-//                }
-//            }
-//        }
-//
-//        System.out.println(list);
-//        List<TimeDto> timeDtoList = new ArrayList<>();
-//        for(Integer i : list){
-//            timeDtoList.add(new TimeDto(i));
-//        }
-//
-//        return timeDtoList;
-        return null;
+        return timeDtoList;
 
     }
 
