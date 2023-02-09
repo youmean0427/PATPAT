@@ -22,7 +22,8 @@
 
   & > span {
     font-weight: 700;
-    background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
+    background-color: white;
+    // background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
   }
@@ -33,7 +34,9 @@
   text-align: center;
   line-height: 40px;
   & > span {
-    font-weight: 700;
+    font-weight: 900;
+    font-size: larger;
+    font-family: Sunflower;
     user-select: none;
   }
   & > span:first-child {
@@ -61,7 +64,7 @@
 }
 
 .btn-box {
-  margin-top: 0.4rem;
+  margin-top: 5rem;
   & > a {
     font-size: 1.4rem;
   }
