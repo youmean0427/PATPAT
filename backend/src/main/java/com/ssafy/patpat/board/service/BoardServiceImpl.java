@@ -225,8 +225,8 @@ public class BoardServiceImpl implements BoardService{
          * 유저 정보 들어오는거 생기면 다시하기 - 했음
          */
 //        UserDto userDto = userService.getUserWithAuthorities();
-//        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
-        Optional<User> user = userRepository.findById(boardDto.getUserId());
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+//        Optional<User> user = userRepository.findById(boardDto.getUserId());
         List<Image> images = new ArrayList<>();
         try{
             if(uploadFile!=null) {
@@ -437,17 +437,12 @@ public class BoardServiceImpl implements BoardService{
         try{
             Comment comment = Comment.builder()
                     .content(commentDto.getContent())
-                    .regTime(commentDto.getRegDt())
+                    .regTime(LocalDateTime.now())
                     .board(board)
                     .user(user.get())
                     .build();
-            Comment save = commentRepository.save(comment);
-            if(save==null){
-                responseMessage.setMessage("FAIL");
-            }
-            else{
-                responseMessage.setMessage("SUCCESS");
-            }
+            commentRepository.save(comment);
+            responseMessage.setMessage("SUCCESS");
         }catch (Exception e ){
             responseMessage.setMessage("FAIL");
         }
@@ -510,7 +505,7 @@ public class BoardServiceImpl implements BoardService{
         Comment comment = commentRepository.findByCommentId(replyDto.getCommentId());
         NestedComment nestedComment = NestedComment.builder()
                 .content(replyDto.getContent())
-                .regTime(replyDto.getRegDt())
+                .regTime(LocalDateTime.now())
                 .comment(comment)
                 .user(user.get())
                 .build();
