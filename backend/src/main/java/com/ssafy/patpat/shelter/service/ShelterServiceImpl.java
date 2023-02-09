@@ -24,9 +24,7 @@ import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.OwnerRepository;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
-import com.ssafy.patpat.volunteer.service.VolunteerService;
-import io.swagger.models.auth.In;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
