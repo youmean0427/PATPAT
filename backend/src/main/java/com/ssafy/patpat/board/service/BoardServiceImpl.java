@@ -80,8 +80,8 @@ public class BoardServiceImpl implements BoardService{
                             .title(entity.getTitle())
                             .author(entity.getUser().getNickname())
                             .registDate(entity.getDateTime().toLocalDate())
-                            .boardTypeCode(entity.getBoardCode().getCode())
-                            .boardType(entity.getBoardCode().name())
+                            .typeCode(entity.getBoardCode().getCode())
+                            .type(entity.getBoardCode().name())
                             .count(entity.getCount())
                             .build()
             );
@@ -136,8 +136,8 @@ public class BoardServiceImpl implements BoardService{
                             .count(board.getCount())
                             .content(board.getContent())
                             .thumbnail(thumbnail)
-                            .boardTypeCode(board.getBoardCode().getCode())
-                            .boardType(board.getBoardCode().name())
+                            .typeCode(board.getBoardCode().getCode())
+                            .type(board.getBoardCode().name())
                             .build()
             );
         }
@@ -236,7 +236,7 @@ public class BoardServiceImpl implements BoardService{
             Board board = Board.builder()
                     .title(boardDto.getTitle())
                     .content(boardDto.getContent())
-                    .boardCode(BoardCode.of(boardDto.getBoardTypeCode()))
+                    .boardCode(BoardCode.of(boardDto.getTypeCode()))
                     .user(user.get())
                     .dateTime(LocalDateTime.now())
                     .images(images)
