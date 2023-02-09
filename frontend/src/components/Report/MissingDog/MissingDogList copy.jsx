@@ -13,31 +13,60 @@ import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
-export default function MissingDogList({ genderCode, breedCode, pages, totalPageFunction }) {
-  // const [page, setPage] = useState(1);
-  const LIMIT = 8;
+export default function MissingDogList() {
+  const breedData = useQuery({
+    queryKey: ['getBreedsList'],
+    queryFn: () => getBreedsList(),
+  });
+  const breedList = breedData.data;
+
+  const breed = [{ value: 0, label: '견종' }];
+  const gender = [
+    { value: 0, label: '성별' },
+    { value: 1, label: '수컷' },
+    { value: 2, label: '암컷' },
+  ];
+  const [selectedGender, setSelectedGender] = useState(gender[0]);
+  const [selectedBreed, setSelectedBreed] = useState(breed[0]);
+
+  const [page, setPage] = useState(1);
+  const LIMIT = 4;
 
   const { isLoading, data } = useQuery({
-    queryKey: ['missingDogList', breedCode.value, genderCode.value, pages],
-    queryFn: () => getMissingDogList(breedCode.value, genderCode.value, LIMIT, pages - 1),
+    queryKey: ['missingDogList', selectedBreed, selectedGender, page],
+    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, LIMIT, page - 1),
   });
+  const handleClickPrev = () => {
+    setPage(prev => prev - 1);
+  };
 
-  // const handleClickPrev = () => {
-  //   setPage(prev => prev - 1);
-  // };
-
-  // const handleClickNext = () => {
-  //   setPage(prev => prev + 1);
-  // };
-
-  // console.log(data);
+  const handleClickNext = () => {
+    setPage(prev => prev + 1);
+  };
+  console.log(data);
   if (isLoading) return;
-  totalPageFunction(data.totalPage);
+
   return (
     <div>
       <div className={styles['container-search']}>
         <div className={styles['container-search-inner']}>
-          {/* <div className={styles.pagination}>
+          <span>
+            <Select
+              options={changeBreedList(breedList)}
+              className={styles['select-breed']}
+              onChange={setSelectedBreed}
+              defaultValue={breed[0]}
+            />
+          </span>
+          <span>
+            <Select
+              options={gender}
+              className={styles['select-gender']}
+              onChange={setSelectedGender}
+              defaultValue={gender[0]}
+            />
+          </span>
+          <div className={styles.pagination}>
             <button
               onClick={handleClickPrev}
               className={page === 1 ? `${styles.button} ${styles.disabled}` : styles.button}
@@ -52,7 +81,7 @@ export default function MissingDogList({ genderCode, breedCode, pages, totalPage
             >
               <MdArrowForwardIos />
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
       <div className={styles.container}>

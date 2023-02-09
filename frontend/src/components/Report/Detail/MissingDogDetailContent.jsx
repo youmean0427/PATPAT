@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import styles from './DogDetailContent.module.scss';
+import styles from './MissingDogDetailContent.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import { getMissingDogDetail } from 'apis/api/report';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
+import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
+import Navbar from 'components/ShelterPage/Navbar/Navbar';
 
-export default function DogDetailContent({ item, state }) {
+export default function MissingDogDetailContent({ item, state }) {
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
   });
 
   if (isLoading) return;
-  // console.log(data.latitude);
+  console.log(data.fileUrlList[0].filePath);
   return (
     <div>
       <header className={styles['container-title']}>
@@ -22,8 +24,8 @@ export default function DogDetailContent({ item, state }) {
         <div>
           <div className={styles['container-title-inner']}>
             <div className={styles['container-title-inner-user']}>
-              <span className={styles.writer}>{data.userId}</span>
-              <span className={styles.date}>23.02.03</span>
+              {/* <span className={styles.writer}>{data.userId}</span>
+              <span className={styles.date}>23.02.03</span> */}
             </div>
             <div>
               <Link to="update" state={{ data, state }}>
@@ -37,51 +39,48 @@ export default function DogDetailContent({ item, state }) {
         <hr />
       </header>
       <div className={styles.container}>
-        <div className={styles['container-inner']}>
-          <div className={styles['container-picture']}>
+        <div className={styles['container-info-picture']}>
+          <div className={styles['container-info-picture-inner']}>
             <div className={styles.thumbnail}>
-              <img src={data.fileUrlList[0]} alt="" />
+              <img src={data.fileUrlList[0].filePath} alt="" />
             </div>
-            <div className={styles['container-subpicture']}>
-              <div className={styles['container-subpicture-inner']}>
-                <div>
-                  <img src={data.fileUrlList[1]} alt="" />
-                </div>
-                <div>
-                  <img src={data.fileUrlList[2]} alt="" />
-                </div>
+
+            <div className={styles['container-info-picture-inner-sub']}>
+              <div>
+                <img src={data.fileUrlList[0].filePath} alt="" />
+              </div>
+              <div>
+                <img src={data.fileUrlList[0].filePath} alt="" />
               </div>
             </div>
           </div>
-
-          <div className={styles['container-content']}>
-            <div className={styles['container-content-title']}>
-              <div className={styles.name}>{data.name}</div>
-              {state === 0 ? <div className={styles.stateButtonRed}>실종</div> : null}
-              {state === 1 ? <div className={styles.stateButtonOrange}>임시보호</div> : null}
+        </div>
+        <div className={styles['container-content']}>
+          <div className={styles['container-content-title']}>
+            <div className={styles.name}>{data.name}</div>
+            <div className={styles.stateButtonRed}>실종</div>
+          </div>
+          <hr />
+          <div className={styles['container-content-info']}>
+            <div>
+              <div>견종</div>
+              <span>{data.breedName}</span>
             </div>
-            <hr />
-            <div className={styles['container-content-info']}>
-              <div>
-                <div>견종</div>
-                <span>{data.breedName}</span>
-              </div>
-              <div>
-                <div>성별</div>
-                <span>{data.gender}</span>
-              </div>
-              <div>
-                <div>추정나이</div>
-                <span>{data.age}</span>
-              </div>
-              <div>
-                <div>몸무게</div>
-                <span>{data.kg}</span>
-              </div>
-              <div>
-                <div>중성화</div>
-                <span>{data.neutered}</span>
-              </div>
+            <div>
+              <div>성별</div>
+              <span>{data.gender}</span>
+            </div>
+            <div>
+              <div>추정나이</div>
+              <span>{data.age}</span>
+            </div>
+            <div>
+              <div>몸무게</div>
+              <span>{data.kg}</span>
+            </div>
+            <div>
+              <div>중성화</div>
+              <span>{data.neutered}</span>
             </div>
           </div>
         </div>
@@ -152,9 +151,9 @@ export default function DogDetailContent({ item, state }) {
       </div>
       <div className={styles.subTitle}>상세정보</div>
       <hr />
-      {/* HTMl null 값 못받음 */}
+
       <div className={styles.content}>
-        <div>{HtmlReactParser(data.content)}</div>
+        <div>{data.content === null ? null : HtmlReactParser(data.content)}</div>
       </div>
     </div>
   );
