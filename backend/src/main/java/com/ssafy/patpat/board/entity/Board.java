@@ -38,7 +38,7 @@ public class Board {
     private List<Comment> comments;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "board_image",
             joinColumns = {@JoinColumn(name = "board_id")},
