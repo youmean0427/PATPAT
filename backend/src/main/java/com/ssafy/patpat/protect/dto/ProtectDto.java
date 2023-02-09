@@ -6,6 +6,7 @@ import com.ssafy.patpat.common.dto.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -62,4 +63,8 @@ public class ProtectDto {
     private List<FileDto> fileUrlList;
     @Schema(example = "파일 url 리스트")
     private String thumbnail;
+    private String sidoCode;
+    private String gugunCode;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 }

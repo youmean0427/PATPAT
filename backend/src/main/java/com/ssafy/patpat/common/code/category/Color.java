@@ -5,50 +5,24 @@ import com.ssafy.patpat.common.code.ProtectState;
 import java.util.Arrays;
 
 public enum Color {
-    R(0),G(1),B(2),Y(3),V(4),E(5),H(6),K(7),W(8),
-    RG(9), RB(10), RY(11), RV(12), RE(13), RH(14), RK(15), RW(16),
-    GB(17), GY(18), GV(19), GE(20), GH(21), GK(22), GW(23),
-    BY(24), BV(25), BE(26), BH(27), BK(28), BW(29),
-    YV(30), YE(31), YH(32), YK(33), YW(34),
-    VE(35), VH(36), VK(37), VW(38),
-    EH(39), EK(40), EW(41),
-    HK(42), HW(43),
-    KW(44),
-    RGB(45), RGY(46), RGV(47), RGE(48), RGH(49), RGK(50), RGW(51),
-    RBY(52), RBV(53), RBE(54), RBH(55), RBK(56), RBW(57),
-    RYV(58), RYE(59), RYH(60), RYK(61), RYW(62),
-    RVE(63), RVH(64), RVK(65), RVW(66),
-    REH(67), REK(68), REW(69),
-    RHK(70), RHW(71),
-    RKW(72),
-
-    GBY(73), GBV(74), GBE(75), GBH(76), GBK(77), GBW(78),
-    GYV(79), GYE(80), GYH(81), GYK(82), GYW(83),
-    GVE(84), GVH(85), GVK(86), GVW(87),
-    GEH(88), GEK(89), GEW(90),
-    GHK(91), GHW(92),
-    GKW(93),
-
-    BYV(94), BYE(95), BYH(96), BYK(97), BYW(98),
-    BVE(99), BVH(100), BVK(101), BVW(102),
-    BEH(103), BEK(104), BEW(105),
-    BHK(106), BHW(107),
-    BKW(108),
-
-    YVE(109), YVH(110), YVK(111), YVW(112),
-    YEH(113), YEK(114), YEW(115),
-    YHK(116), YHW(117),
-    YKW(118),
-
-    VEH(119), VEK(120), VEW(121),
-    VHK(122), VHW(123),
-    VKW(124),
-
-    EHK(125), EHW(126),
-    EKW(127),
-
-    HKW(128),;
-
+    B(0),E(1),G(2),H(3),K(4),R(5),V(6),W(7),Y(8),
+    BE(9),BG(10),BH(11),BK(12),BR(13),BV(14),BW(15),
+    BY(16),EG(17),EH(18),EK(19),ER(20),EV(21),EW(22),
+    EY(23),GH(24),GK(25),GR(26),GV(27),GW(28),GY(29),
+    HK(30),HR(31),HV(32),HW(33),HY(34),KR(35),KV(36),
+    KW(37),KY(38),RV(39),RW(40),RY(41),VW(42),VY(43),WY(44),
+    BEG(45),BEH(46),BEK(47),BER(48),BEV(49),BEW(50),BEY(51),
+    BGH(52),BGK(53),BGR(54),BGV(55),BGW(56),BGY(57),BHK(58),
+    BHR(59),BHV(60),BHW(61),BHY(62),BKR(63),BKV(64),BKW(65),
+    BKY(66),BRV(67),BRW(68),BRY(69),BVW(70),BVY(71),BWY(72),
+    EGH(73),EGK(74),EGR(75),EGV(76),EGW(77),EGY(78),EHK(79),
+    EHR(80),EHV(81),EHW(82),EHY(83),EKR(84),EKV(85),EKW(86),
+    EKY(87),ERV(88),ERW(89),ERY(90),EVW(91),EVY(92),EWY(93),
+    GHK(94),GHR(95),GHV(96),GHW(97),GHY(98),GKR(99),GKV(100),
+    GKW(101),GKY(102),GRV(103),GRW(104),GRY(105),GVW(106),GVY(107),
+    GWY(108),HKR(109),HKV(110),HKW(111),HKY(112),HRV(113),HRW(114),
+    HRY(115),HVW(116),HVY(117),HWY(118),KRV(119),KRW(120),KRY(121),
+    KVW(122),KVY(123),KWY(124),RVW(125),RVY(126),RWY(127),VWY(128);
     private int code;
 
     private Color(int code){

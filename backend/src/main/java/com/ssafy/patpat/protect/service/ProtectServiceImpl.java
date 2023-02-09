@@ -3,7 +3,8 @@ package com.ssafy.patpat.protect.service;
 //import com.ssafy.patpat.board.entity.PostImage;
 import com.ssafy.patpat.common.code.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
-import com.ssafy.patpat.common.code.category.Gender;
+import com.ssafy.patpat.common.code.category.*;
+import com.ssafy.patpat.common.code.category.Color;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.entity.Image;
@@ -15,12 +16,15 @@ import com.ssafy.patpat.protect.dto.RequestProtectDto;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 //import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+import com.ssafy.patpat.shelter.dto.ShelterDto;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.user.service.UserService;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +36,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
 public class ProtectServiceImpl implements ProtectService{
+    @Value("${app.fileupload.uploadPath}")
+    String uploadPath;
+
+    @Value("${app.fileupload.uploadDir}")
+    String uploadFolder;
+
+    @Value("${app.filecall.url}")
+    String callUrl;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ProtectServiceImpl.class);
     @Autowired
     ImageRepository imageRepository;
@@ -59,13 +74,6 @@ public class ProtectServiceImpl implements ProtectService{
 
     @Autowired
     FileService fileService;
-
-    @Value("${app.fileupload.uploadPath}")
-    String uploadPath;
-
-    @Value("${app.fileupload.uploadDir}")
-    String uploadFolder;
-
     @Override
     public ResponseListDto selectProtectList(RequestProtectDto requestProtectDto) {
         try{
@@ -199,7 +207,6 @@ public class ProtectServiceImpl implements ProtectService{
         }
 
     }
-
     @Override
     public ProtectDto detailProtect(Long protectId) {
         try{
@@ -330,8 +337,198 @@ public class ProtectServiceImpl implements ProtectService{
         }
         return responseMessage;
     }
-
     @Override
+    public ResponseMessage insertBatchesProtect(ShelterDto shelterDto, MultipartFile uploadFile) throws IOException {
+        ResponseMessage responseMessage = new ResponseMessage();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("적색", "R");
+        map.put("녹색", "G");
+        map.put("청색", "B");
+        map.put("자색", "V");
+        map.put("황색", "Y");
+        map.put("청록", "E");
+        map.put("흰색", "W");
+        map.put("회색", "H");
+        map.put("검정", "K");
+        Workbook workbook = null;
+        try {
+            //보호소 정보 불러오기
+            Shelter shelter = shelterRepository.findByShelterId(shelterDto.getShelterId());
+            long shelterId = shelter.getShelterId();
+            BigDecimal lat = shelter.getLatitude();
+            BigDecimal log = shelter.getLongitude();
+            System.out.println(shelter);
+            String extension = FilenameUtils.getExtension(uploadFile.getOriginalFilename()); // 3
+            if (!extension.equals("xlsx") && !extension.equals("xls")) {
+                return new ResponseMessage("엑셀파일만 업로드 해주세요");
+            }
+
+            if (extension.equals("xlsx")) {
+                workbook = new XSSFWorkbook(uploadFile.getInputStream());
+                System.out.println("xlsx");
+            } else if (extension.equals("xls")) {
+                workbook = new XSSFWorkbook(uploadFile.getInputStream());
+                System.out.println("xls");
+            }
+
+            Sheet sheet = workbook.getSheetAt(0);
+            List<ShelterProtectedDog> list = new ArrayList<>();
+            for(Row row : sheet){
+                //실제 값이 들어있는 로우
+                if(row.getRowNum() > 7){
+                    Iterator<Cell> cellIterator =row.cellIterator();
+                    int col = 0;
+                    ShelterProtectedDog shelterProtectedDog = new ShelterProtectedDog();
+                    ProtectDto protectDto = new ProtectDto();
+                    ArrayList<String> strList = new ArrayList<>();
+                    while(cellIterator.hasNext()){
+                        Cell cell = cellIterator.next();
+                        switch (col){
+                            case 0 :
+                                shelterProtectedDog.setBreedId(breedRepository.findByName(cell.getStringCellValue()).getBreedId());
+                                break;
+                            case 1 :
+                                shelterProtectedDog.setName(cell.getStringCellValue());
+                                break;
+                            case 2 :
+                                shelterProtectedDog.setAge((int)cell.getNumericCellValue());
+                                break;
+                            case 3 :
+                                shelterProtectedDog.setGender(Gender.valueOf(cell.getStringCellValue()));
+                                break;
+                            case 4 :
+                                shelterProtectedDog.setWeight(cell.getNumericCellValue());
+                                break;
+                            case 5 :
+                                shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()).ordinal());
+                                break;
+                            case 6 :
+                                if(cell.getStringCellValue().equals("없음")){
+                                    break;
+                                }
+                                else{
+                                    strList.add(map.get(cell.getStringCellValue()));
+                                }
+                                break;
+                            case 7 :
+                                if(cell.getStringCellValue().equals("없음")){
+                                    break;
+                                }
+                                else{
+                                    strList.add(map.get(cell.getStringCellValue()));
+                                }
+                                break;
+                            case 8 :
+                                if(cell.getStringCellValue().equals("없음")){
+                                    break;
+                                }
+                                else{
+                                    strList.add(map.get(cell.getStringCellValue()));
+                                }
+                                break;
+                            case 9 :
+                                shelterProtectedDog.setCategoryPattern(Pattern.valueOf(cell.getStringCellValue()).ordinal());
+                                break;
+                            case 10 :
+                                shelterProtectedDog.setCategoryEar(Ear.valueOf(cell.getStringCellValue()).ordinal());
+                                break;
+                            case 11 :
+                                shelterProtectedDog.setCategoryTail(Tail.valueOf(cell.getStringCellValue()).ordinal());
+                                break;
+                            case 12 :
+                                shelterProtectedDog.setCategoryCloth(Cloth.valueOf(cell.getStringCellValue()).ordinal());
+                                break;
+                            case 13 :
+                                shelterProtectedDog.setFeature(cell.getStringCellValue());
+                                break;
+                        }
+                        col++;
+                    }
+                    List<Image> images = new ArrayList<>();
+                    shelterProtectedDog.setSidoCode(shelter.getSidoCode());
+                    shelterProtectedDog.setGugunCode(shelter.getGugunCode());
+                    shelterProtectedDog.setLatitude(lat);
+                    shelterProtectedDog.setLongitude(log);
+                    shelterProtectedDog.setShelterId(shelterId);
+                    shelterProtectedDog.setStateCode(ProtectState.공고중);
+                    shelterProtectedDog.setRegistDate(LocalDate.now());
+                    shelterProtectedDog.setImages(images);
+                    Collections.sort(strList);
+                    StringBuilder sb = new StringBuilder();
+                    for(int i=0; i<strList.size(); i++){
+                        sb.append(strList.get(i));
+                    }
+                    int code = Color.valueOf(sb.toString()).getCode();
+                    shelterProtectedDog.setCategoryColor(code);
+                    list.add(shelterProtectedDog);
+                }
+            }
+            //리스트에 동물이 들어간 이후 등록
+            for(ShelterProtectedDog dog : list){
+                shelterProtectedDogRepository.save(dog);
+            }
+            //만약 10번에 등록된 강아지다 ~ 8개 등록되어있는 상황이면 18번까지있음
+            long startIdx = list.get(0).getSpDogId();
+            XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch(); // I know it is ugly, actually you get the actual instance here
+
+            for (XSSFShape shape : drawing.getShapes()) {
+                if (shape instanceof XSSFPicture) {
+                    XSSFPicture picture = (XSSFPicture) shape;
+
+                    if (picture.getPictureData() == null) {
+                        System.out.println("사진 Path 사용");
+                        continue;
+                    }
+                    XSSFPictureData xssfPictureData = picture.getPictureData();
+                    ClientAnchor anchor = picture.getPreferredSize();
+                    int row1 = anchor.getRow1();
+                    int row2 = anchor.getRow2();
+                    int col1 = anchor.getCol1();
+                    int col2 = anchor.getCol2();
+
+                    long dogId = startIdx+row1-8;
+                    String ext = xssfPictureData.suggestFileExtension();
+                    byte[] data = xssfPictureData.getData();
+                    int size = data.length;
+
+                    UUID uuid = UUID.randomUUID();
+
+                    String savingFileName = uuid+"."+ext;
+                    String source = "protect";
+                    String pathName = uploadPath + File.separator + uploadFolder + File.separator + source;
+
+                    String filePath = pathName + File.separator + savingFileName;
+                    FileOutputStream out = new FileOutputStream(filePath);
+                    out.write(data);
+                    out.close();
+                    Image image = Image.builder()
+                            .filename(sheet.getSheetName())
+                            .fileSize(size)
+                            .filePath(uploadFolder + "/" + source + "/" + savingFileName)
+                            .origFilename(sheet.getSheetName()+row1+col1)
+                            .build();
+                    imageRepository.save(image);
+                    Optional<ShelterProtectedDog> shelterProtectedDog = shelterProtectedDogRepository.findById(dogId);
+                    if(shelterProtectedDog.isPresent()){
+                        List<Image> images = shelterProtectedDog.get().getImages();
+                        images.add(image);
+                        shelterProtectedDogRepository.save(shelterProtectedDog.get());
+                    }
+                }
+            }
+            workbook.close();
+            responseMessage.setMessage("SUCCESS");
+
+            return responseMessage;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            workbook.close();
+            return responseMessage;
+        }
+    }
+
+        @Override
     @Transactional
     public ResponseMessage updateProtect(Long protectId, List<MultipartFile> uploadFile,ProtectDto protectDto) {
         ResponseMessage responseMessage = new ResponseMessage();

@@ -6,6 +6,7 @@ import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.protect.dto.ProtectDto;
 import com.ssafy.patpat.protect.dto.RequestProtectDto;
 import com.ssafy.patpat.protect.service.ProtectService;
+import com.ssafy.patpat.shelter.dto.ShelterDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,24 @@ public class ProtectController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseMessage);
+    }
+    /**
+     * 보호동물 일괄등록
+     * @return
+     */
+    @PostMapping("/batches")
+    @ApiOperation(value = "보호동물 일괄등록", notes = "보호동물 일괄등록")
+    public ResponseEntity<ResponseMessage> insertBachProtect(ShelterDto shelterDto, @RequestPart(required = false) MultipartFile uploadFile){
+        //서비스 호출 코드
+        try{
+            ResponseMessage responseMessage = service.insertBatchesProtect(shelterDto,uploadFile);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(responseMessage);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseMessage("FAIL"));
+        }
+
     }
     /**
      * 보호동물 수정
