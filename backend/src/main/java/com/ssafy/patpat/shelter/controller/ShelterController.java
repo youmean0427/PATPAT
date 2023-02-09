@@ -142,13 +142,9 @@ public class ShelterController {
     @ApiOperation(value = "보호소 상세 조회", notes = "보호소 상세 조회")
     public ResponseEntity<Object> detailShelter(@PathVariable Long shelterId){
         ShelterDto shelterDto = service.detailShelter(shelterId);
-        if(shelterDto!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(shelterDto);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(shelterDto);
+
     }
     /**
      * 보호소 등록

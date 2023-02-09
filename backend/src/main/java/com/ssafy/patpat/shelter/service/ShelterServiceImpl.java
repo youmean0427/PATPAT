@@ -26,9 +26,11 @@ import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 import com.ssafy.patpat.volunteer.service.VolunteerService;
 import io.swagger.models.auth.In;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.*;
 
 @Service
@@ -444,8 +447,10 @@ public class ShelterServiceImpl implements ShelterService{
 
         Optional<Owner> owner = Optional.ofNullable(s.getOwner());
         if(!owner.isPresent()){
+            LOGGER.info("오너가 없다.");
             return null;
         }
+        List<FileSystemResource> resources = new ArrayList<>();
         for(Image i : shelterImageList){
             imageList.add(FileDto.builder()
                     .id(i.getImageId())
@@ -453,6 +458,12 @@ public class ShelterServiceImpl implements ShelterService{
                     .filename(i.getFilename())
                     .filePath(fileService.getFileUrl(i))
                     .build());
+
+            FileSystemResource resource = new FileSystemResource("static" + File.separator + i.getFilePath());
+            if(!resource.exists()){
+                LOGGER.info("파일이 없다.");
+                return null;
+            }
         }
 
         ShelterDto shelterDto = ShelterDto.builder()
@@ -464,6 +475,7 @@ public class ShelterServiceImpl implements ShelterService{
                 .imageList(imageList)
                 .ownerId(s.getOwner().getOwnerId())
                 .ownerName(s.getOwner().getName())
+                .resources(resources)
                 .build();
         return shelterDto;
     }
