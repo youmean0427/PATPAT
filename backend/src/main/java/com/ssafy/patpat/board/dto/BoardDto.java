@@ -31,7 +31,10 @@ public class BoardDto {
     @Schema(example = "본문")
     private String content;
     @Schema(example = "타입코드")
-    private Integer typeCode;
+    private Integer boardTypeCode;
+
+    @Schema(example = "타입코드")
+    private String boardType;
     @Schema(example = "댓글 리스트(" +
             "    댓글 id = commentId" +
             "    댓글 작성자 = author" +

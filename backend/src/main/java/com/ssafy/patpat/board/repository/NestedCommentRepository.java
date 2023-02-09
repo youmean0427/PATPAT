@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface NestedCommentRepository extends JpaRepository<NestedComment,Long> {
-    List<NestedComment> findByCommentId(long commentId);
-    void deleteByCommentIdIn(List<Long> list);
-    void deleteByCommentId(long commentId);
+    List<NestedComment> findByCommentCommentId(long commentId);
+    void deleteByCommentCommentIdIn(List<Long> list);
+    void deleteByCommentCommentId(long commentId);
     void deleteByNestedCommentId(long nestedCommentId);
     NestedComment findByNestedCommentId(long nestedCommentId);
 }

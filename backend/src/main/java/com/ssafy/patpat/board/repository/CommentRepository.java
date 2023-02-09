@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    List<Comment> findByboardId(long boardId);
-    void deleteByBoardId(long boardId);
+    List<Comment> findByBoardBoardId(long boardId);
+    void deleteByBoardBoardId(long boardId);
     Comment findByCommentId(long commentId);
     void deleteByCommentId(long commentId);
 }

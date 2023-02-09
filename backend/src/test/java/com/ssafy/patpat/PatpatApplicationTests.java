@@ -2,8 +2,8 @@ package com.ssafy.patpat;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.patpat.board.entity.PostImage;
-import com.ssafy.patpat.board.repository.PostImageRepository;
+//import com.ssafy.patpat.board.entity.PostImage;
+//import com.ssafy.patpat.board.repository.PostImageRepository;
 import com.ssafy.patpat.common.code.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.Gender;
@@ -67,8 +67,8 @@ class PatpatApplicationTests {
 	TestRepository testRepository;
 	@Autowired
 	BreedRepository breedRepository;
-	@Autowired
-	PostImageRepository postImageRepository;
+//	@Autowired
+//	PostImageRepository postImageRepository;
 	@Autowired
 	ImageRepository imageRepository;
 //	@Autowired
@@ -353,8 +353,8 @@ class PatpatApplicationTests {
 			//보호견 리스트 생성
 			List<ShelterProtectedDog> list = new ArrayList<>();
 			//보호소 불러오기
-			Shelter shelter = shelterRepository.findByShelterId(299);
-			int shelterId = shelter.getShelterId();
+			Shelter shelter = shelterRepository.findByShelterId(299L);
+//			int shelterId = shelter.getShelterId();
 			BigDecimal lat = shelter.getLatitude();
 			BigDecimal log = shelter.getLongitude();
 			//로우마다
@@ -396,7 +396,7 @@ class PatpatApplicationTests {
 					shelterProtectedDog.setGugunCode(shelter.getGugunCode());
 					shelterProtectedDog.setLatitude(lat);
 					shelterProtectedDog.setLongitude(log);
-					shelterProtectedDog.setShelterId(shelterId);
+//					shelterProtectedDog.setShelterId(shelterId);
 					shelterProtectedDog.setStateCode(ProtectState.공고중);
 					list.add(shelterProtectedDog);
 				}
