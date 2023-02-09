@@ -29,17 +29,18 @@ export default function ShelterIntro() {
             <span>{data.name}</span>
             {checkMyShelter(shelterId, userShelterId) && <OpenModalBtn handleClickModalOpen={handleClickModalOpen} />}
           </div>
-          <div className={styles['info-item']}>
-            <div className={styles['info-label']}>담당자</div>
-            <div className={styles['info-value']}>{data.ownerName}</div>
-          </div>
-          <div className={styles['info-item']}>
-            <div className={styles['info-label']}>전화번호 : </div>
-            <div className={styles['info-value']}>{data.phoneNumber}</div>
-          </div>
-          <div className={styles['info-item']}>
-            <div className={styles['info-label']}>소개글 : </div>
-            <div className={styles['info-value']}>{data.infoContent}</div>
+          <div className={styles.info}>
+            <div className={styles['info-item']}>
+              <div className={styles['info-value']}>{data.infoContent}</div>
+            </div>
+            <div className={styles['info-item']}>
+              <div className={styles['info-label']}>담당자</div>
+              <div className={styles['info-value']}>{data.ownerName}</div>
+            </div>
+            <div className={styles['info-item']}>
+              <div className={styles['info-label']}>전화번호 : </div>
+              <div className={styles['info-value']}>{data.phoneNumber}</div>
+            </div>
           </div>
         </div>
       </main>

@@ -11,7 +11,7 @@ export default function ReviewList() {
   if (isLoading) return;
   return (
     <div className={styles.list}>
-      {data.map(item => (
+      {data?.list?.map(item => (
         <ReviewItem key={item.boardId} item={item} />
       ))}
     </div>

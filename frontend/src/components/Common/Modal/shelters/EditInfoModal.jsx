@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ModalFrame from '../ModalFrame';
-import Images from './Images';
 import { updateShelter } from 'apis/api/shelter';
 import styles from './EditInfoModal.module.scss';
+import { encodeFileToBase64 } from 'utils/image';
+import { AiFillCloseCircle } from 'react-icons/ai';
+import { BsFillCameraFill } from 'react-icons/bs';
 
 const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   const {
@@ -30,68 +32,83 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
     },
   });
 
-  const [previewImages, setPreviewImages] = useState(() => {
-    return data.imageList.map(item => item.filePath);
-  });
+  const [files, setFiles] = useState([]);
+  const [Base64s, setBase64s] = useState([]);
+  const [count, setCount] = useState(0);
+  const LIMIT_UPLOAD_IMAGE_FILE = 4;
+  useEffect(() => {
+    if (files) {
+      let count = 0;
+      setBase64s([]);
+      Array.from(files).forEach(image => {
+        count++;
+        if (count > LIMIT_UPLOAD_IMAGE_FILE) return;
+        encodeFileToBase64(image).then(data => setBase64s(prev => [...prev, { image: image, url: data }]));
+      });
+      setCount(files.length > LIMIT_UPLOAD_IMAGE_FILE ? LIMIT_UPLOAD_IMAGE_FILE : files.length);
+    }
+  }, [files]);
 
-  const onSubmit = data => {
+  const onSubmit = nData => {
     const formData = new FormData();
-
-    formData.append('name', data.name);
-    formData.append('ownerName', data.ownerName);
-    formData.append('phoneNumber', data.phoneNumber);
-    Array.from(data.uploadImages).forEach(item => {
+    formData.append('name', nData.name);
+    formData.append('ownerName', nData.ownerName);
+    formData.append('phoneNumber', nData.phoneNumber);
+    formData.append('infoContent', nData.infoContent);
+    formData.append('shelterId', shelterId);
+    let count = 0;
+    Array.from(files).forEach(item => {
+      count++;
+      if (count > LIMIT_UPLOAD_IMAGE_FILE) return;
       formData.append('uploadFile', item);
     });
-    formData.append('infoContent', data.infoContent);
-    formData.append('shelterId', shelterId);
-
     mutate(formData);
   };
 
   const handleImagePreview = e => {
     const fileArr = e.target.files;
-    console.log(fileArr);
-    let fileURLs = [];
-    let file;
-    let filesLength = fileArr.length > 6 ? 6 : fileArr.length;
-    for (let i = 0; i < filesLength; i++) {
-      file = fileArr[i];
-      let reader = new FileReader();
-      reader.onload = () => {
-        fileURLs[i] = reader.result;
-        setPreviewImages([...fileURLs]);
-      };
-      reader.readAsDataURL(file);
+    setFiles(fileArr);
+  };
+
+  const handleClickDelete = e => {
+    const deleteIndex = e.target.parentNode.parentNode.dataset.index;
+    const dataTranster = new DataTransfer();
+    for (let i = 0; i < files.length; i++) {
+      if (i !== parseInt(deleteIndex)) {
+        dataTranster.items.add(files[i]);
+      }
     }
+    setFiles(dataTranster.files);
   };
 
   return (
     <ModalFrame isOpen={isOpen} handleClickModalClose={handleClickModalClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles['file-box']}>
-          <label className={styles['file-label']} htmlFor="upload-file">
-            이미지
-          </label>
+      <div className={styles.title}>보호소 정보 수정</div>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles['input-box']}>
+          <label>보호소 이름</label>
           <input
-            style={{ display: 'none' }}
-            id="upload-file"
-            type="file"
-            accept="image/*"
-            multiple
-            {...register('uploadImages', { onChange: handleImagePreview })}
+            className={styles.input}
+            type="text"
+            placeholder="보호소 이름"
+            defaultValue={data?.name}
+            {...register('name')}
           />
         </div>
-        <div>
-          <input type="text" placeholder="보호소 이름" defaultValue={data?.name} {...register('name')} />
-          <div>{errors.name && <span>{errors.name.message}</span>}</div>
-        </div>
-        <div>
-          <input type="text" placeholder="담당자 이름" defaultValue={data?.ownerName} {...register('ownerName')} />
-          <div>{errors.ownerName && <span>{errors.ownerName.message}</span>}</div>
-        </div>
-        <div>
+        <div className={`${styles['input-box']} ${styles.ownerName}`}>
+          <label>담당자 이름</label>
           <input
+            className={styles.input}
+            type="text"
+            placeholder="담당자 이름"
+            defaultValue={data?.ownerName}
+            {...register('ownerName')}
+          />
+        </div>
+        <div className={styles['input-box']}>
+          <label>담당자 번호</label>
+          <input
+            className={styles.input}
             type="tel"
             placeholder="담당자 전화번호"
             defaultValue={data?.phoneNumber}
@@ -102,18 +119,46 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
               },
             })}
           />
-          <div>{errors.phoneNumber && <span>{errors.phoneNumber.message}</span>}</div>
         </div>
-        <div>
-          <input type="textarea" placeholder="소개글" defaultValue={data?.infoContent} {...register('infoContent')} />
-          <div>{errors.infoContent && <span>{errors.infoContent.message}</span>}</div>
-        </div>
-        {previewImages.length > 0 && (
-          <div className={styles['preview-images']}>
-            <Images previewImages={previewImages} />
+        <div className={styles['file-box']}>
+          <label className={styles['file-label']} htmlFor="upload-file">
+            <BsFillCameraFill className={styles.camera} />
+            <span>{count}/4</span>
+          </label>
+          <input
+            style={{ display: 'none' }}
+            id="upload-file"
+            type="file"
+            accept="image/*"
+            multiple
+            {...register('uploadImages', { onChange: handleImagePreview })}
+          />
+          <div className={styles.preview}>
+            {Base64s.map((item, index) => (
+              <div
+                style={{ background: `no-repeat center/100% url("${item.url}")`, backgroundSize: 'cover' }}
+                className={styles['preview-item']}
+                key={index}
+                data-index={index}
+              >
+                <AiFillCloseCircle onClick={handleClickDelete} className={styles.close} />
+              </div>
+            ))}
           </div>
-        )}
-        <button type="submit">정보 수정</button>
+        </div>
+        <div className={`${styles['input-box']} ${styles.info}`}>
+          <label>소개글</label>
+          <textarea
+            className={`${styles.input} ${styles.info}`}
+            type="textarea"
+            placeholder="소개글"
+            defaultValue={data?.infoContent}
+            {...register('infoContent')}
+          />
+        </div>
+        <button className={styles.button} type="submit">
+          정보 수정
+        </button>
       </form>
     </ModalFrame>
   );

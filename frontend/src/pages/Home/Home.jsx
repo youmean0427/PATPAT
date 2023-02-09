@@ -6,6 +6,7 @@ import Section from 'components/Home/Section';
 import { Link } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
 import ReviewList from 'components/Home/ReviewList';
+import Loading from 'components/Common/Loading';
 export default function Home() {
   return (
     <div className={styles.wrap}>

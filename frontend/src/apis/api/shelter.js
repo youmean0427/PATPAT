@@ -92,6 +92,15 @@ export const createShelter = async (code, name) => {
  * @returns
  */
 export const updateShelter = async formdata => {
+  /* key 확인하기 */
+  for (let key of formdata.keys()) {
+    console.log(key);
+  }
+
+  /* value 확인하기 */
+  for (let value of formdata.values()) {
+    console.log(value);
+  }
   const res = await authInstance.post(`/shelters/update`, formdata, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });

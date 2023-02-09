@@ -21,7 +21,7 @@ import { authInstance } from 'apis/utils';
   ]
  */
 export const getMyConsultations = async (limit, offset, userId) => {
-  const { data } = await authInstance.get(`/consultations?limit=${limit}&offSet=${offset}&userId=${userId}`);
+  const { data } = await authInstance.get(`/consultations?userId=${userId}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 
