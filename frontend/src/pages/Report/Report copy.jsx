@@ -12,7 +12,7 @@ import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { useEffect } from 'react';
 
-export default function ReportBack() {
+export default function Report() {
   const [selected, setSelected] = useState('실종');
   const handleClick = value => {
     setSelected(value);

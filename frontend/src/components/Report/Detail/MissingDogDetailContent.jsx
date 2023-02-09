@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
+import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
+import Navbar from 'components/ShelterPage/Navbar/Navbar';
 
 export default function MissingDogDetailContent({ item, state }) {
   const { isLoading, data } = useQuery({
@@ -22,8 +24,8 @@ export default function MissingDogDetailContent({ item, state }) {
         <div>
           <div className={styles['container-title-inner']}>
             <div className={styles['container-title-inner-user']}>
-              <span className={styles.writer}>{data.userId}</span>
-              <span className={styles.date}>23.02.03</span>
+              {/* <span className={styles.writer}>{data.userId}</span>
+              <span className={styles.date}>23.02.03</span> */}
             </div>
             <div>
               <Link to="update" state={{ data, state }}>

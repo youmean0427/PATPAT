@@ -9,11 +9,10 @@
   &-search {
     display: flex;
     justify-content: flex-start;
-    margin-top: 20px;
-    margin-bottom: 20px;
 
     &-inner {
       display: flex;
+      position: relative;
 
       & > span {
         margin: 10px;
@@ -73,5 +72,18 @@
 @include breakpoint(sm) {
   .list {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  & > .button {
+    color: $main-accent-color;
+  }
+  & > .button.disabled {
+    color: $gray-color;
   }
 }

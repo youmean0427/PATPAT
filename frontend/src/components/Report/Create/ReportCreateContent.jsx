@@ -251,16 +251,14 @@ export default function ReportCreateContent() {
       <form
         onSubmit={e => {
           e.preventDefault();
-
-          if (lat === 0 && lng === 0) {
-            setPositionAlertOpen(1);
-            positionInput.current.focus();
-          }
           if (content === '') {
             setContentAlertOpen(1);
             contentInput.current.focus();
           }
-
+          if (lat === 0 && lng === 0) {
+            setPositionAlertOpen(1);
+            positionInput.current.focus();
+          }
           if (breedId.value === 0) {
             setBreedAlertOpen(1);
             breedInput.current.focus();
@@ -269,7 +267,6 @@ export default function ReportCreateContent() {
             setTypeCodeAlertOpen(1);
             typeCodeInput.current.focus();
           }
-
           if (name === '') {
             setNameAlertOpen(1);
             nameInput.current.focus();
@@ -278,6 +275,7 @@ export default function ReportCreateContent() {
             setTitleAlertOpen(1);
             titleInput.current.focus();
           }
+
           if (
             lat !== 0 &&
             lng !== 0 &&
@@ -364,7 +362,7 @@ export default function ReportCreateContent() {
                     </label>
                   ) : (
                     <div> 3장까지 업로드 가능합니다. </div>
-                  )}{' '}
+                  )}
                   {fileListAlertOpen === 0 ? null : (
                     <div>
                       <Stack sx={{ width: '100%' }} spacing={2}>
@@ -434,7 +432,7 @@ export default function ReportCreateContent() {
                       <div>
                         <input
                           type="radio"
-                          value={1}
+                          value={parseInt(1)}
                           checked={genderCode === 1}
                           onChange={e => setGenderCode(parseInt(e.target.value))}
                         />
@@ -594,9 +592,7 @@ export default function ReportCreateContent() {
             </div>
           </div>
         </div>
-        <div className={styles.subTitle} ref={positionInput}>
-          실종/발견 장소
-        </div>
+        <div className={styles.subTitle}>실종/발견 장소</div>
         <hr />
         {positionAlertOpen === 0 ? null : (
           <div>
@@ -607,8 +603,9 @@ export default function ReportCreateContent() {
             </Stack>
           </div>
         )}
-        <div className={styles.map}>
-          <Map // 지도를 표시할 Container
+        <div className={styles.map} ref={positionInput}>
+          <Map
+            // 지도를 표시할 Container
             center={{
               // 지도의 중심좌표
               lat: 35.95,

@@ -312,12 +312,16 @@
   border-radius: 0.5rem;
   display: block;
   text-align: center;
-  padding: 1rem 4rem;
+  // padding: 1rem 4rem;
+
   transition: all 0.2s;
   background-color: $main-color;
   color: $white-color;
   box-shadow: 0px 5px 0px 0px $main-accent-color;
   margin: 10px 0px 10px 0;
+  & > div {
+    font-size: 18px;
+  }
   &.active {
     margin-top: 15px;
     margin-bottom: 5px;

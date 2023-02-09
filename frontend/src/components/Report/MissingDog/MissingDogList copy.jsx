@@ -11,8 +11,9 @@ import { changeBreedList } from 'utils/changeSelectTemplate';
 import { useEffect } from 'react';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
+import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
-export default function MissingDogListBack() {
+export default function MissingDogList() {
   const breedData = useQuery({
     queryKey: ['getBreedsList'],
     queryFn: () => getBreedsList(),
@@ -28,10 +29,20 @@ export default function MissingDogListBack() {
   const [selectedGender, setSelectedGender] = useState(gender[0]);
   const [selectedBreed, setSelectedBreed] = useState(breed[0]);
 
+  const [page, setPage] = useState(1);
+  const LIMIT = 4;
+
   const { isLoading, data } = useQuery({
-    queryKey: ['missingDogList'],
-    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, 100, 0),
+    queryKey: ['missingDogList', selectedBreed, selectedGender, page],
+    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, LIMIT, page - 1),
   });
+  const handleClickPrev = () => {
+    setPage(prev => prev - 1);
+  };
+
+  const handleClickNext = () => {
+    setPage(prev => prev + 1);
+  };
   console.log(data);
   if (isLoading) return;
 
@@ -55,6 +66,22 @@ export default function MissingDogListBack() {
               defaultValue={gender[0]}
             />
           </span>
+          <div className={styles.pagination}>
+            <button
+              onClick={handleClickPrev}
+              className={page === 1 ? `${styles.button} ${styles.disabled}` : styles.button}
+              disabled={page === 1 ? true : false}
+            >
+              <MdArrowBackIosNew />
+            </button>
+            <button
+              onClick={handleClickNext}
+              className={page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button}
+              disabled={page === data.totalPage ? true : false}
+            >
+              <MdArrowForwardIos />
+            </button>
+          </div>
         </div>
       </div>
       <div className={styles.container}>

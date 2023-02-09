@@ -11,26 +11,14 @@ import { changeBreedList } from 'utils/changeSelectTemplate';
 import { useEffect } from 'react';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
+import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
-export default function PersonalDogList() {
-  const breedData = useQuery({
-    queryKey: ['getBreedsList'],
-    queryFn: () => getBreedsList(),
-  });
-  const breedList = breedData.data;
-
-  const breed = [{ value: 0, label: '견종' }];
-  const gender = [
-    { value: 0, label: '성별' },
-    { value: 1, label: '수컷' },
-    { value: 2, label: '암컷' },
-  ];
-  const [selectedGender, setSelectedGender] = useState(gender[0]);
-  const [selectedBreed, setSelectedBreed] = useState(breed[0]);
+export default function PersonalDogList({ genderCode, breedCode, pages, totalPageFunction }) {
+  const LIMIT = 8;
 
   const { isLoading, data } = useQuery({
-    queryKey: ['personalDogList'],
-    queryFn: () => getPersonalDogList(selectedBreed.value, selectedGender.value, 100, 0),
+    queryKey: ['personalDogList', breedCode.value, genderCode.value, pages],
+    queryFn: () => getPersonalDogList(breedCode.value, genderCode.value, LIMIT, pages - 1),
   });
   console.log(data);
   if (isLoading) return;
@@ -38,24 +26,7 @@ export default function PersonalDogList() {
   return (
     <div>
       <div className={styles['container-search']}>
-        <div className={styles['container-search-inner']}>
-          <span>
-            <Select
-              options={changeBreedList(breedList)}
-              className={styles['select-breed']}
-              onChange={setSelectedBreed}
-              defaultValue={breed[0]}
-            />
-          </span>
-          <span>
-            <Select
-              options={gender}
-              className={styles['select-gender']}
-              onChange={setSelectedGender}
-              defaultValue={gender[0]}
-            />
-          </span>
-        </div>
+        <div className={styles['container-search-inner']}></div>
       </div>
       <div className={styles.container}>
         <div className={styles.list}>

@@ -1,11 +1,46 @@
 @import 'assets/styles/variable.scss';
 
 .container {
+  // margin-top: 5rem;
   display: flex;
   justify-content: center;
   margin: 10px;
-}
 
+  &-search {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    &-inner {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px;
+      & > div {
+        display: flex;
+        > span {
+          margin: 10px;
+          > select {
+            width: auto;
+            font-size: 20px;
+            font-family: $noto-font;
+          }
+        }
+      }
+    }
+  }
+}
+.select {
+  &-breed {
+    width: 200px;
+    font-size: 15px;
+    font-family: $noto-font;
+  }
+  &-gender {
+    font-size: 15px;
+    font-family: $noto-font;
+  }
+}
 // .button {
 //   &-selected {
 //     font-size: 20px !important;
@@ -36,10 +71,11 @@
 // }
 .select-gender {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
-.button {
+.main-button {
   font-weight: 700;
+  font-size: 16px;
   border-radius: 0.5rem;
   display: block;
   text-align: center;
@@ -52,6 +88,7 @@
 
   &-active {
     font-weight: 700;
+    font-size: 16px;
     border-radius: 0.5rem;
     display: block;
     text-align: center;
@@ -71,5 +108,18 @@
     margin-bottom: 5px;
     background-color: $main-accent-color;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 2.4rem;
+  margin-right: 1rem;
+  & > .button {
+    color: $main-accent-color;
+  }
+  & > .button.disabled {
+    color: $gray-color;
   }
 }

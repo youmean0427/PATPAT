@@ -3,7 +3,7 @@
 .container {
   display: flex;
   font-size: 16px;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
 
   &-title {
@@ -68,6 +68,8 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    margin: 15px;
+    width: 100%;
     &-info {
       display: flex;
       flex-direction: column;
@@ -131,16 +133,55 @@
       }
     }
   }
+
+  &-info {
+    &-picture {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      flex-grow: 0;
+
+      & > div {
+        display: flex;
+
+        align-items: center;
+      }
+
+      &-inner {
+        display: flex;
+        flex-direction: row;
+        margin: 15px;
+        &-sub {
+          display: flex;
+          flex-direction: column;
+
+          & > div {
+            width: 190px;
+            height: 190px;
+            margin: 10px;
+          }
+          & > div > img {
+            width: 100%;
+
+            object-fit: cover;
+            border: #cccccc 1px solid;
+          }
+        }
+      }
+    }
+  }
 }
 
 .thumbnail {
   display: flex;
-
   justify-content: center;
-  & > img {
-    width: 480px;
-    margin-bottom: 10px;
-  }
+
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border: #cccccc 1px solid;
+  margin-right: 10px;
 }
 .title {
   font-size: 40px;
@@ -190,7 +231,7 @@
   }
   &Orange {
     width: 100px;
-    font-size: 20px;
+    font-size: 15px;
     text-align: center;
     padding: 10px;
     background-color: orange;
@@ -210,4 +251,27 @@
   height: 500px;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+  .container {
+    flex-direction: column;
+    &-content {
+      width: 100%;
+    }
+  }
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .container {
+    flex-direction: column;
+    & > div {
+      width: 100%;
+    }
+  }
 }
