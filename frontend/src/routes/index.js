@@ -38,6 +38,8 @@ import ShelterIntro from 'pages/Shelter/ShelterIntro/ShelterIntro';
 import ShelterProtect from 'pages/Shelter/ShelterProtect/ShelterProtect';
 import ShelterVolunteer from 'pages/Shelter/ShelterVolunteer/ShelterVolunteer';
 import ShelterConsulting from 'pages/Shelter/ShelterConsulting/ShelterConsulting';
+import ShelterEnroll from 'pages/Shelter/ShelterProtect/ShelterEnroll';
+import { getBreedsList } from 'apis/api/shelter';
 
 const router = createBrowserRouter([
   {
@@ -61,6 +63,13 @@ const router = createBrowserRouter([
         children: [
           { path: 'intro', element: <ShelterIntro /> },
           { path: 'protect', element: <ShelterProtect /> },
+          {
+            path: 'protect/enroll',
+            element: <ShelterEnroll />,
+            loader: async () => {
+              return getBreedsList();
+            },
+          },
           { path: 'volunteer', element: <ShelterVolunteer /> },
           { path: 'consulting', element: <ShelterConsulting /> },
         ],
