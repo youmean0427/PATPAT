@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getBreedsList, getGugunList } from 'apis/api/shelter';
 import ShelterSearchBadge from 'components/Common/Badge/ShelterSearchBadge';
 import React from 'react';
+import { useCallback } from 'react';
 import Select from 'react-select';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
@@ -34,14 +35,14 @@ export default React.memo(function ShelterSearchBar() {
     staleTime: 1000 * 60 * 5,
   });
 
-  const handleChangeOnGugunList = selected => {
+  const handleChangeOnGugunList = useCallback(selected => {
     setPage(1);
     setGugun({ gugunCode: selected.value, name: selected.label });
-  };
-  const handleChangeOnBreedList = selected => {
+  });
+  const handleChangeOnBreedList = useCallback(selected => {
     setPage(1);
     setBreed({ breedId: selected.value, name: selected.label });
-  };
+  });
   if (gugunLoading || breedLoading) return;
   return (
     <div className={styles.select__wrapper}>
