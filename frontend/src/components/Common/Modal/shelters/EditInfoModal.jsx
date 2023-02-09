@@ -13,13 +13,11 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   const {
     register,
     handleSubmit,
-    clearErrors,
-    setError,
-    setValue,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
   });
+
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(['updateShelter'], formData => updateShelter(formData), {
@@ -38,6 +36,7 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   const LIMIT_UPLOAD_IMAGE_FILE = 4;
   useEffect(() => {
     if (files) {
+      console.log(files);
       let count = 0;
       setBase64s([]);
       Array.from(files).forEach(image => {

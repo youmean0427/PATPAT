@@ -37,6 +37,8 @@
   height: 50px;
   padding: 0 1rem;
   font-size: 1.6rem;
+  border: 2px solid $main-color;
+  border-radius: 0.4rem;
   &.info {
     height: 100%;
     padding: 1rem;
