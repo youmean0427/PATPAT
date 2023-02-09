@@ -33,6 +33,8 @@ public class BoardDto {
     @Schema(example = "타입코드")
     private Integer typeCode;
 
+    private Long userId;
+
     @Schema(example = "타입코드")
     private String type;
     @Schema(example = "댓글 리스트(" +

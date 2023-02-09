@@ -225,7 +225,8 @@ public class BoardServiceImpl implements BoardService{
          * 유저 정보 들어오는거 생기면 다시하기 - 했음
          */
 //        UserDto userDto = userService.getUserWithAuthorities();
-        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+//        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        Optional<User> user = userRepository.findById(boardDto.getUserId());
         List<Image> images = new ArrayList<>();
         try{
             if(uploadFile!=null) {
