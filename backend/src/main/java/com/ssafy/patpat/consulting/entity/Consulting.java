@@ -28,6 +28,9 @@ public class Consulting {
     private LocalDate registDate;
     private Integer timeCode;
     private Long spDogId;
+
+
+
     public void updateConsulting(int stateCode){
         this.stateCode = stateCode;
     }
