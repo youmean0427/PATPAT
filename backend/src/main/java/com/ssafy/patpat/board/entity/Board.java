@@ -4,6 +4,7 @@ import com.ssafy.patpat.common.code.BoardCode;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.user.entity.User;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -27,6 +28,7 @@ public class Board {
     private String title;
     private String content;
     private LocalDateTime dateTime;
+    @ColumnDefault("0")
     private Integer count;
     private BoardCode boardCode;
 

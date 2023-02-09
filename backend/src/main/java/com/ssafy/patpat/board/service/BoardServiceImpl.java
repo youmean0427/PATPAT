@@ -311,13 +311,13 @@ public class BoardServiceImpl implements BoardService{
             }
             images.removeAll(images);
 
-            List<Image> newImages = new ArrayList<>();
+//            List<Image> newImages = new ArrayList<>();
             if(uploadFile!=null) {
                 for(MultipartFile partFile : uploadFile){
-                    newImages.add(fileService.insertFile(partFile, "board"));
+                    images.add(fileService.insertFile(partFile, "board"));
                 }
             }
-            board.setImages(newImages);
+            board.setImages(images);
             boardRepository.save(board);
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
