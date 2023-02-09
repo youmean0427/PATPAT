@@ -57,7 +57,7 @@ public class MissingDog {
     private Breed breed;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "missing_dog_image",
             joinColumns = {@JoinColumn(name = "missing_id")},

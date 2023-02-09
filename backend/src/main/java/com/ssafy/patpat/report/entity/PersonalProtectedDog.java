@@ -55,7 +55,7 @@ public class PersonalProtectedDog {
     @JoinColumn(name = "breed_id")
     private Breed breed;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "personal_dog_image",
             joinColumns = {@JoinColumn(name = "pp_dog_id")},

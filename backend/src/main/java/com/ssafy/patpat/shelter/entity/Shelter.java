@@ -52,7 +52,7 @@ public class Shelter {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "shelter_image",
             joinColumns = {@JoinColumn(name = "shelter_id")},
