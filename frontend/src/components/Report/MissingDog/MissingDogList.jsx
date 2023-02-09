@@ -27,9 +27,9 @@ export default function MissingDogList() {
 
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogList'],
-    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, 1, 0),
+    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, 100, 0),
   });
-
+  console.log(data);
   if (isLoading) return;
 
   return (

@@ -8,15 +8,13 @@ import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
 
 export default function DogDetailContent({ item, state }) {
-  const [position] = useState({ lat: 33.450701, lng: 126.570667 });
-
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
   });
 
   if (isLoading) return;
-
+  // console.log(data.latitude);
   return (
     <div>
       <header className={styles['container-title']}>
@@ -70,7 +68,7 @@ export default function DogDetailContent({ item, state }) {
               </div>
               <div>
                 <div>성별</div>
-                <span>{data.genderCode}</span>
+                <span>{data.gender}</span>
               </div>
               <div>
                 <div>추정나이</div>
@@ -88,7 +86,6 @@ export default function DogDetailContent({ item, state }) {
           </div>
         </div>
       </div>
-
       <div className={styles.subTitle}>카테고리</div>
       <hr />
       <div className={styles['container-content-character']}>
@@ -127,7 +124,7 @@ export default function DogDetailContent({ item, state }) {
         <Map // 지도를 표시할 Container
           center={
             // 지도의 중심좌표
-            position
+            { lat: data.latitude, lng: data.longitude }
           }
           style={{
             width: '100%',
@@ -136,7 +133,7 @@ export default function DogDetailContent({ item, state }) {
           level={4} // 지도의 확대 레벨
         >
           <MapMarker
-            position={position}
+            position={{ lat: data.latitude, lng: data.longitude }}
             image={{
               src: 'https://i.ibb.co/z42FXX4/002-2.png', // 마커이미지의 주소입니다
               size: {
@@ -155,7 +152,10 @@ export default function DogDetailContent({ item, state }) {
       </div>
       <div className={styles.subTitle}>상세정보</div>
       <hr />
-      <div className={styles.content}>{HtmlReactParser(data.content)}</div>
+      {/* HTMl null 값 못받음 */}
+      <div className={styles.content}>
+        <div>{HtmlReactParser(data.content)}</div>
+      </div>
     </div>
   );
 }

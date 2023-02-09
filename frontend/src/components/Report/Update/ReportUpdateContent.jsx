@@ -46,9 +46,12 @@ export default function ReportUpdateContent(items) {
   const [categoryCloth, setCategoryCloth] = useState({ value: item.categoryCloth });
   const [categoryClothColor, setCategoryClothColor] = useState({ value: item.categoryClothColor });
   const [uploadFile, setUploadFile] = useState([]);
-  const [fileUrl, setfileUrl] = useState([]);
-  const [modal, setModal] = useState(false);
 
+  const [modal, setModal] = useState(false);
+  const [color1, setColor1] = useState('');
+  const [color2, setColor2] = useState('');
+  const [preFile, setPreFile] = useState([]);
+  const [fileList, setFileList] = useState(item.uploadFile);
   // useEffect
 
   useEffect(() => {
@@ -56,25 +59,33 @@ export default function ReportUpdateContent(items) {
     setLng(position.lng);
   }, [position]);
 
+  useEffect(() => {
+    setCategoryColor([color1, color2]);
+  }, [color1, color2]);
+
   // Picture
 
-  const handleAddImages = event => {
-    const imageLists = event.target.files;
-    let imageUrlLists = [...uploadFile];
+  const handleAddImages = e => {
+    const imageFileList = [...fileList];
+    let imageUrlLists = [...preFile];
+    const imageLists = e.target.files;
+
+    for (let i = 0; i < imageLists.length; i++) {
+      imageFileList.push(imageLists[i]);
+    }
 
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
     }
-
-    if (imageUrlLists.length > 3) {
-      imageUrlLists = imageUrlLists.slice(0, 3);
-    }
-    setUploadFile(imageUrlLists);
+    setPreFile(imageUrlLists);
+    setFileList(imageFileList);
   };
 
+  // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = id => {
-    setUploadFile(uploadFile.filter((_, index) => index !== id));
+    setPreFile(preFile.filter((_, index) => index !== id));
+    setFileList(fileList.filter((_, index) => index !== id));
   };
 
   // FormData
@@ -94,7 +105,7 @@ export default function ReportUpdateContent(items) {
   formData.append('categoryCloth', categoryCloth.value);
   formData.append('categoryClothColor', categoryClothColor.value);
   formData.append('typeCode', typeCode.value);
-  formData.append('uploadFile', uploadFile);
+  formData.append('uploadFile', fileList);
   formData.append('latitude', lat);
   formData.append('longitude', lng);
 
@@ -196,7 +207,7 @@ export default function ReportUpdateContent(items) {
             <div className={styles['container-info-picture']}>
               <div>
                 <div className={styles['container-info-picture-inner']}>
-                  {uploadFile.length === 0 ? (
+                  {preFile.length === 0 ? (
                     <img className={styles.thumbnail} src={Test} alt="" />
                   ) : (
                     <div>
@@ -205,12 +216,12 @@ export default function ReportUpdateContent(items) {
                           Delete
                         </button>
                       </div>
-                      <img className={styles.thumbnail} src={uploadFile[0]} alt="" />
+                      <img className={styles.thumbnail} src={preFile[0]} alt="" />
                     </div>
                   )}
 
                   <div className={styles['container-info-picture-inner-sub']}>
-                    {uploadFile.length === 0 || uploadFile.length === 1 ? (
+                    {preFile.length === 0 || preFile.length === 1 ? (
                       <img className={styles.subPicture} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
@@ -218,10 +229,10 @@ export default function ReportUpdateContent(items) {
                           Delete
                         </button>
 
-                        <img className={styles.subPicture} src={uploadFile[1]} alt={1} />
+                        <img className={styles.subPicture} src={preFile[1]} alt={1} />
                       </div>
                     )}
-                    {uploadFile.length === 0 || uploadFile.length === 1 || uploadFile.length === 2 ? (
+                    {preFile.length === 0 || preFile.length === 1 || preFile.length === 2 ? (
                       <img className={styles.subPicture} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
@@ -229,7 +240,7 @@ export default function ReportUpdateContent(items) {
                           Delete
                         </button>
 
-                        <img className={styles.subPicture} src={uploadFile[2]} alt={2} />
+                        <img className={styles.subPicture} src={preFile[2]} alt={2} />
                       </div>
                     )}
                   </div>
@@ -351,20 +362,23 @@ export default function ReportUpdateContent(items) {
                     <input
                       className={styles.colorPickerHalf}
                       type="color"
-                      onChange={e => setCategoryColor(e.target.value)}
+                      onChange={e => setColor2(e.target.value)}
+                      value={color2}
                     />
                   ) : (
                     <input
                       className={styles.colorPicker}
                       type="color"
-                      onChange={e => setCategoryColor(e.target.value)}
+                      onChange={e => setColor1(e.target.value)}
+                      value={color1}
                     />
                   )}
                   {categoryPattern.value > 1 ? (
                     <input
                       className={styles.colorPickerHalf}
                       type="color"
-                      onChange={e => setCategoryColor(e.target.value)}
+                      onChange={e => setColor2(e.target.value)}
+                      value={color2}
                     />
                   ) : null}
                 </div>

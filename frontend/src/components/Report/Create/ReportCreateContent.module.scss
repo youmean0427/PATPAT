@@ -59,9 +59,9 @@
           & > input {
             width: 100%;
             font-size: 1.6rem;
-            padding: 8.5px;
+            padding: 6px;
             padding-left: 10px;
-            font-family: $seoul-font;
+            font-family: $noto-font;
             border: 1px;
             border-style: solid;
             border-color: #cccccc;
@@ -96,9 +96,9 @@
   &-radio {
     width: 100%;
     font-size: 1.6rem;
-    padding: 8.5px;
+    padding: 6px;
     padding-left: 10px;
-    font-family: $seoul-font;
+    font-family: $noto-font;
     border: 1px;
     border-style: solid;
     border-color: #cccccc;
@@ -150,7 +150,7 @@
     width: 100%;
     font-size: 20px;
     padding: 10px;
-    font-family: $seoul-font;
+    font-family: $noto-font;
     border: 1px;
     border-style: solid;
     border-color: #cccccc;
@@ -174,7 +174,7 @@
   font-size: 20px !important;
   margin: 10px !important;
   width: 100px !important;
-  font-family: $seoul-font !important;
+  font-family: $noto-font !important;
 
   background-color: $main-color !important;
   &:hover {
@@ -187,7 +187,7 @@
 }
 .pictureButton {
   width: 385px;
-  font-family: $seoul-font;
+  font-family: $noto-font;
   border: $main-color solid 2px;
   color: $main-color;
   border-radius: 4px;
