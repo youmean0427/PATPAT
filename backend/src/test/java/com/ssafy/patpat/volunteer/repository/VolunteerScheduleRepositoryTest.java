@@ -1,5 +1,7 @@
 package com.ssafy.patpat.volunteer.repository;
 
+import com.ssafy.patpat.board.entity.Board;
+import com.ssafy.patpat.board.repository.BoardRepository;
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.code.TimeCode;
 import com.ssafy.patpat.common.entity.Image;
@@ -50,6 +52,9 @@ class VolunteerScheduleRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
 
     @Autowired
     private TimeRepository timeRepository;
@@ -104,37 +109,40 @@ class VolunteerScheduleRepositoryTest {
 //             time) {
 //            System.out.println(ti.getTimeCode());
 //        }
-        Optional<Shelter> s = shelterRepository.findById(291);
-        List<Image> images = s.get().getImages();
+//        Optional<Shelter> s = shelterRepository.findById(291);
+//        List<Image> images = s.get().getImages();
+//
+//        for (Image i:
+//                images) {
+//            System.out.println(i.getImageId());
+////            imageRepository.delete(i);
+//        }
+//
+//        List<Image> imageList = new ArrayList<>();
+//        for (Image image:
+//             images) {
+//            Image i = Image.builder()
+//                    .filename("d")
+//                    .fileSize(2)
+//                    .origFilename("d")
+//                    .filePath("d")
+//                    .build();
+//            i = imageRepository.save(i);
+//
+//            imageList.add(i);
+//        }
+//        s.get().setImages(imageList);
+//        Shelter shelter = shelterRepository.save(s.get());
+//        imageList = shelter.getImages();
+//
+//        for (Image i:
+//             imageList) {
+//            System.out.println(i.getImageId());
+////            imageRepository.delete(i);
+//        }
 
-        for (Image i:
-                images) {
-            System.out.println(i.getImageId());
-//            imageRepository.delete(i);
-        }
-
-        List<Image> imageList = new ArrayList<>();
-        for (Image image:
-             images) {
-            Image i = Image.builder()
-                    .filename("d")
-                    .fileSize(2)
-                    .origFilename("d")
-                    .filePath("d")
-                    .build();
-            i = imageRepository.save(i);
-
-            imageList.add(i);
-        }
-        s.get().setImages(imageList);
-        Shelter shelter = shelterRepository.save(s.get());
-        imageList = shelter.getImages();
-
-        for (Image i:
-             imageList) {
-            System.out.println(i.getImageId());
-//            imageRepository.delete(i);
-        }
+        Board board = boardRepository.findByBoardId(10L);
+        System.out.println(board);
 
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
 //        List<ShelterProtectedDog> list = user.get().getFavoriteDogs();

@@ -52,7 +52,7 @@ public class ShelterProtectedDog {
 
     private ProtectState stateCode;//
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "shelter_dog_image",
             joinColumns = {@JoinColumn(name = "sp_dog_id")},

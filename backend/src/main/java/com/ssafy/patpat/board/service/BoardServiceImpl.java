@@ -3,13 +3,17 @@ package com.ssafy.patpat.board.service;
 import com.ssafy.patpat.board.dto.*;
 import com.ssafy.patpat.board.entity.*;
 import com.ssafy.patpat.board.repository.*;
+import com.ssafy.patpat.common.code.BoardCode;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.service.FileService;
+import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,8 @@ public class BoardServiceImpl implements BoardService{
     @Autowired
     CommentRepository commentRepository;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
     ImageRepository imageRepository;
     @Autowired
     NestedCommentRepository nestedCommentRepository;
@@ -47,12 +53,6 @@ public class BoardServiceImpl implements BoardService{
     FileService fileService;
     @Autowired
     UserService userService;
-
-    @Value("${app.fileupload.uploadPath}")
-    String uploadPath;
-
-    @Value("${app.fileupload.uploadDir}")
-    String uploadFolder;
 
     /**
      * 내가 쓴 게시판 리스트를 리턴한다.
@@ -68,7 +68,7 @@ public class BoardServiceImpl implements BoardService{
         UserDto userDto = userService.getUserWithAuthorities();
         Long userId = userDto.getUserId();
 //        System.out.println(requestBoardDto);
-        Page<Board> entityList = boardRepository.findByUserIdAndPostCode(userId,requestBoardDto.getTypeCode(),pageRequest);
+        Page<Board> entityList = boardRepository.findByUserUserIdAndBoardCode(userId,BoardCode.of(requestBoardDto.getTypeCode()),pageRequest);
 //        System.out.println(entityList);
 //        System.out.println(requestBoardDto);
 
@@ -78,9 +78,10 @@ public class BoardServiceImpl implements BoardService{
                     BoardDto.builder()
                             .boardId(entity.getBoardId())
                             .title(entity.getTitle())
-                            .author(entity.getNickName())
+                            .author(entity.getUser().getNickname())
                             .registDate(entity.getDateTime().toLocalDate())
-                            .typeCode(entity.getPostCode())
+                            .typeCode(entity.getBoardCode().getCode())
+                            .type(entity.getBoardCode().name())
                             .count(entity.getCount())
                             .build()
             );
@@ -98,7 +99,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public ResponseListDto selectBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(),Sort.by("boardId").descending());
-        Page<Board> entityList = boardRepository.findByPostCode(requestBoardDto.getTypeCode(),pageRequest);
+        Page<Board> entityList = boardRepository.findByBoardCode(BoardCode.of(requestBoardDto.getTypeCode()),pageRequest);
 //        System.out.println(entityList);
 
         ResponseListDto boardDto = new ResponseListDto();
@@ -130,12 +131,13 @@ public class BoardServiceImpl implements BoardService{
                     BoardDto.builder()
                             .boardId(board.getBoardId())
                             .title(board.getTitle())
-                            .author(board.getNickName())
+                            .author(board.getUser().getNickname())
                             .registDate(board.getDateTime().toLocalDate())
                             .count(board.getCount())
                             .content(board.getContent())
                             .thumbnail(thumbnail)
-                            .typeCode(board.getPostCode())
+                            .typeCode(board.getBoardCode().getCode())
+                            .type(board.getBoardCode().name())
                             .build()
             );
         }
@@ -151,17 +153,17 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDto detailBoard(Long boardId) {
         Board board = boardRepository.findByBoardId(boardId);
-        List<Comment> commentList = commentRepository.findByboardId(boardId);
+        List<Comment> commentList = commentRepository.findByBoardBoardId(boardId);
         List<CommentDto> commentDtoList = new ArrayList<>();
         for(Comment entity : commentList){
-            List<NestedComment> nestedComments = nestedCommentRepository.findByCommentId(entity.getCommentId());
+            List<NestedComment> nestedComments = nestedCommentRepository.findByCommentCommentId(entity.getCommentId());
             List<ReplyDto> replyDtoList = new ArrayList<>();
             for(NestedComment nc : nestedComments){
                 replyDtoList.add(
                         ReplyDto.builder()
                         .replyId(nc.getNestedCommentId())
                         .regDt(nc.getRegTime())
-                        .author(nc.getNickName())
+                        .author(nc.getUser().getNickname())
                         .content(nc.getContent())
                         .build()
                 );
@@ -172,7 +174,7 @@ public class BoardServiceImpl implements BoardService{
                             .commentId(entity.getCommentId())
                             .content(entity.getContent())
                             .regDt(entity.getRegTime())
-                            .author(entity.getNickName())
+                            .author(entity.getUser().getNickname())
                             .replyList(replyDtoList)
                             .build()
             );
@@ -199,7 +201,7 @@ public class BoardServiceImpl implements BoardService{
         }
         BoardDto boardDto = BoardDto.builder()
                 .boardId(board.getBoardId())
-                .author(board.getNickName())
+                .author(board.getUser().getNickname())
                 .registDate(board.getDateTime().toLocalDate())
                 .title(board.getTitle())
                 .count(board.getCount())
@@ -222,7 +224,9 @@ public class BoardServiceImpl implements BoardService{
         /**
          * 유저 정보 들어오는거 생기면 다시하기 - 했음
          */
-        UserDto userDto = userService.getUserWithAuthorities();
+//        UserDto userDto = userService.getUserWithAuthorities();
+//        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        Optional<User> user = userRepository.findById(boardDto.getUserId());
         List<Image> images = new ArrayList<>();
         try{
             if(uploadFile!=null) {
@@ -233,9 +237,8 @@ public class BoardServiceImpl implements BoardService{
             Board board = Board.builder()
                     .title(boardDto.getTitle())
                     .content(boardDto.getContent())
-                    .postCode(boardDto.getTypeCode())
-                    .userId(userDto.getUserId())
-                    .nickName(userDto.getUsername())
+                    .boardCode(BoardCode.of(boardDto.getTypeCode()))
+                    .user(user.get())
                     .dateTime(LocalDateTime.now())
                     .images(images)
                     .build();
@@ -308,13 +311,13 @@ public class BoardServiceImpl implements BoardService{
             }
             images.removeAll(images);
 
-            List<Image> newImages = new ArrayList<>();
+//            List<Image> newImages = new ArrayList<>();
             if(uploadFile!=null) {
                 for(MultipartFile partFile : uploadFile){
-                    newImages.add(fileService.insertFile(partFile, "board"));
+                    images.add(fileService.insertFile(partFile, "board"));
                 }
             }
-            board.setImages(newImages);
+            board.setImages(images);
             boardRepository.save(board);
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
@@ -392,13 +395,13 @@ public class BoardServiceImpl implements BoardService{
             }
             images.removeAll(images);
             boardRepository.deleteByBoardId(boardId);
-            List<Comment> commentList = commentRepository.findByboardId(boardId);
+            List<Comment> commentList = commentRepository.findByBoardBoardId(boardId);
             List<Long> integerList = new ArrayList<>();
             for(Comment c : commentList){
                 integerList.add(c.getCommentId());
             }
-            nestedCommentRepository.deleteByCommentIdIn(integerList);
-            commentRepository.deleteByBoardId(boardId);
+            nestedCommentRepository.deleteByCommentCommentIdIn(integerList);
+            commentRepository.deleteByBoardBoardId(boardId);
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
 //            if(!uploadDir.exists()) uploadDir.mkdir();
@@ -428,15 +431,15 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public ResponseMessage insertComment(CommentDto commentDto) {
         ResponseMessage responseMessage = new ResponseMessage();
-        UserDto userDto = userService.getUserWithAuthorities();
+//        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        Board board = boardRepository.findByBoardId(commentDto.getBoardId());
         try{
             Comment comment = Comment.builder()
                     .content(commentDto.getContent())
                     .regTime(commentDto.getRegDt())
-                    .boardId(commentDto.getBoardId())
-                    .userId(userDto.getUserId())
-                    .nickName(userDto.getUsername())
-                    .userId(commentDto.getUserId())
+                    .board(board)
+                    .user(user.get())
                     .build();
             Comment save = commentRepository.save(comment);
             if(save==null){
@@ -486,7 +489,7 @@ public class BoardServiceImpl implements BoardService{
     public ResponseMessage deleteComment(Long commentId) {
         ResponseMessage responseMessage = new ResponseMessage();
         try{
-            nestedCommentRepository.deleteByCommentId(commentId);
+            nestedCommentRepository.deleteByCommentCommentId(commentId);
             commentRepository.deleteByCommentId(commentId);
             responseMessage.setMessage("SUCCESS");
         }catch (Exception e ){
@@ -502,13 +505,14 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public ResponseMessage insertReply(ReplyDto replyDto) {
         ResponseMessage responseMessage = new ResponseMessage();
-        UserDto userDto = userService.getUserWithAuthorities();
+//        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        Comment comment = commentRepository.findByCommentId(replyDto.getCommentId());
         NestedComment nestedComment = NestedComment.builder()
                 .content(replyDto.getContent())
                 .regTime(replyDto.getRegDt())
-                .commentId(replyDto.getCommentId())
-                .userId(userDto.getUserId())
-                .nickName(userDto.getUsername())
+                .comment(comment)
+                .user(user.get())
                 .build();
         NestedComment save = nestedCommentRepository.save(nestedComment);
         if(save==null){

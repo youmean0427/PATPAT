@@ -221,7 +221,7 @@ public class ProtectServiceImpl implements ProtectService{
             for(Image i : shelterDogImageList){
                 fileDtoList.add(
                         FileDto.builder()
-                                .origFilename(i.getOrigFilename())
+                                .filePath(fileService.getFileUrl(i))
                                 .build()
                 );
             }
