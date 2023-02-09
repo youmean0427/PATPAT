@@ -1,13 +1,15 @@
 import { getRegionSelectList } from 'apis/utils/parsingRegionData';
 import React from 'react';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { selectGugunState, selectSidoState } from 'recoil/atoms/shelter';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { searchShelterPageState, selectGugunState, selectSidoState } from 'recoil/atoms/shelter';
 import styles from './SelectMap.module.scss';
 import SelectMapItem from './SelectMapItem';
 export default function SelectMap({ list }) {
   const [sido, setSido] = useRecoilState(selectSidoState);
   const resetGugun = useResetRecoilState(selectGugunState);
+  const setPage = useSetRecoilState(searchShelterPageState);
   const handleClickItem = (code, name) => {
+    setPage(1);
     setSido({ sidoCode: code, name });
     resetGugun();
   };

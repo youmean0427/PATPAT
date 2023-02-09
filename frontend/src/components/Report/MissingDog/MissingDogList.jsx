@@ -56,10 +56,8 @@ export default function MissingDogList() {
       </div>
       <div className={styles.container}>
         <div className={styles.list}>
-          {data.map((item, index) => (
-            <div key={index}>
-              <MissingDogItem item={item} />
-            </div>
+          {data.list.map((item, index) => (
+            <MissingDogItem key={index} item={item} />
           ))}
         </div>
       </div>

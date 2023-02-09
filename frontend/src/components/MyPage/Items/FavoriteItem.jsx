@@ -15,7 +15,7 @@ export default function FavoriteItem({ item }) {
   };
 
   return (
-    <div className={styles.card}>
+    <div className={styles.list}>
       <Card>
         <div>
           <div className={state === 0 ? styles.state0 : state === 1 ? styles.state1 : styles.state2}>

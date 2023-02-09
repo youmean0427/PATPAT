@@ -3,14 +3,16 @@
 .menu-item {
   width: 14rem;
   height: 100%;
-  transition: all 0.3s;
   cursor: pointer;
   display: flex;
   justify-content: center;
   position: relative;
   align-items: center;
+  &:hover {
+    border-bottom: 4px dashed $main-color;
+  }
   &:hover > .submenu {
-    height: 120px;
+    transform: translateY(0);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
   }
 }
@@ -29,13 +31,15 @@
   }
 }
 .submenu {
-  width: 200%;
+  width: 100%;
   position: absolute;
   background-color: $white-color;
-  height: 0px;
+  height: auto;
   overflow: hidden;
   top: 100%;
-  left: -50%;
+  left: 0;
+  z-index: -5;
+  transform: translateY(-100%);
   border-bottom-left-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem;
   transition: all 0.4s;
@@ -63,8 +67,7 @@
 
 @include breakpoint(md) {
   .submenu {
-    width: 200%;
-    left: -50%;
+    width: 100%;
   }
   .menu-item {
     width: 8rem;
@@ -73,7 +76,7 @@
     font-size: 1.4rem;
   }
   .sublink {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 }
 

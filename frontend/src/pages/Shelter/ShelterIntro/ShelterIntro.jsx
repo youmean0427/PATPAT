@@ -5,16 +5,17 @@ import { useParams } from 'react-router-dom';
 import './ShelterIntro.scss';
 import styles from './ShelterIntro.module.scss';
 import ShelterContainer from 'containers/ShelterContainer';
-import ImageGallery from 'react-image-gallery';
+import useModal from 'hooks/useModal';
+import EditInfoModal from 'components/Common/Modal/shelters/EditInfoModal';
+import { checkMyShelter } from 'utils/checkMyShelter';
+import OpenModalBtn from 'components/Common/Button/OpenModalBtn';
+import ImageSlide from 'components/ShelterPage/ImageSlide';
 
 export default function ShelterIntro() {
+  const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
   const { shelterId } = useParams();
+  const { shelterId: userShelterId } = JSON.parse(localStorage.getItem('user'));
 
-  const parsingImageList = list => {
-    return list.map(item => {
-      return { original: item.filePath, thumbnail: item.filePath };
-    });
-  };
   const { data, isLoading } = useQuery(['getShelterDetailInfo', shelterId], () => getShelterDetail(shelterId), {
     staleTime: 1000 * 60 * 5,
   });
@@ -22,22 +23,35 @@ export default function ShelterIntro() {
   return (
     <ShelterContainer title="보호소 정보">
       <main className={styles.main}>
-        <ImageGallery originalWidth="600px" items={parsingImageList(data.imageList)} />
+        <ImageSlide imageList={data.imageList} />
         <div className={styles['info-box']}>
-          <div className={styles['info-item']}>
-            <div className={styles['info-label']}>담당자 :</div>
-            <div className={styles['info-value']}>문석환</div>
+          <div className={styles['title-box']}>
+            <span>{data.name}</span>
+            {checkMyShelter(shelterId, userShelterId) && <OpenModalBtn handleClickModalOpen={handleClickModalOpen} />}
           </div>
-          <div className={styles['info-item']}>
-            <div className={styles['info-label']}>전화번호 : </div>
-            <div className={styles['info-value']}>010-9281-4031</div>
-          </div>
-          <div className={styles['info-item']}>
-            <div className={styles['info-label']}>주소 : </div>
-            <div className={styles['info-value']}>{data.address}</div>
+          <div className={styles.info}>
+            <div className={styles['info-item']}>
+              <div className={styles['info-value']}>{data.infoContent}</div>
+            </div>
+            <div className={styles['info-item']}>
+              <div className={styles['info-label']}>담당자</div>
+              <div className={styles['info-value']}>{data.ownerName}</div>
+            </div>
+            <div className={styles['info-item']}>
+              <div className={styles['info-label']}>전화번호 : </div>
+              <div className={styles['info-value']}>{data.phoneNumber}</div>
+            </div>
           </div>
         </div>
       </main>
+      {isOpen && (
+        <EditInfoModal
+          data={data}
+          isOpen={isOpen}
+          handleClickModalClose={handleClickModalClose}
+          shelterId={shelterId}
+        />
+      )}
     </ShelterContainer>
   );
 }

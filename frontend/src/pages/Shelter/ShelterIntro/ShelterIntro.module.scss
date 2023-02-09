@@ -7,6 +7,20 @@
 .info-box {
   font-size: 2rem;
   flex: 1;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  & > .title-box {
+    font-size: 2.4rem;
+    color: $white-color;
+    padding: 1rem $spacing-lg;
+    border-radius: 0.4rem;
+    background-color: $main-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.info {
+  padding: 1rem 1.5rem;
 }
 .info-item {
   display: flex;
@@ -17,9 +31,6 @@
 }
 
 @include breakpoint(md) {
-  .main {
-    flex-direction: column;
-  }
 }
 
 @include breakpoint(sm) {

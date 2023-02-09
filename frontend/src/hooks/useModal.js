@@ -5,12 +5,10 @@ export default function useModal() {
 
   const handleClickModalOpen = () => {
     setIsOpen(true);
-    console.log(isOpen);
   };
 
   const handleClickModalClose = () => {
     setIsOpen(false);
-    console.log(isOpen);
   };
 
   return [isOpen, handleClickModalOpen, handleClickModalClose];

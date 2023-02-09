@@ -34,10 +34,9 @@ export default function MissingDogItem({ item }) {
     neutered,
   } = item;
 
-  console.log(name);
   return (
     <div
-      className={styles.card}
+      className={styles.list}
       onClick={() =>
         navigate(`/mypage/mymissing/${missingId}`, {
           state: { missingId: missingId, name: name, thumbnail: thumbnail },

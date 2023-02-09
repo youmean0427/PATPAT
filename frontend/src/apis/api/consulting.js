@@ -18,10 +18,10 @@ import { authInstance } from 'apis/utils';
       "state": "대기,승인,거절,완료",
       "userName": "유저 이름"
     }
-  ] 
+  ]
  */
 export const getMyConsultations = async (limit, offset, userId) => {
-  const { data } = await authInstance.get(`/consultations?limit=${limit}&offset=${offset}&userId=${userId}`);
+  const { data } = await authInstance.get(`/consultations?userId=${userId}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -34,7 +34,7 @@ export const getMyConsultations = async (limit, offset, userId) => {
  */
 export const getShelterConsultations = async (shelterId, limit, offset) => {
   const { data } = await authInstance.get(
-    `/consultations/shelters?limit=${limit}&offset=${offset}&shelterId=${shelterId}`
+    `/consultations/shelters?limit=${limit}&offSet=${offset}&shelterId=${shelterId}`
   );
   return data;
 };
