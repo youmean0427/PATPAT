@@ -16,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-@Entity
+@Entity(name = "owner")
 public class Owner {
 
     @Id
