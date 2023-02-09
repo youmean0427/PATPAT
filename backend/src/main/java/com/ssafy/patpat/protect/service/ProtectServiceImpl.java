@@ -227,6 +227,7 @@ public class ProtectServiceImpl implements ProtectService{
             }
             Breed breed = breedRepository.findByBreedId(shelterProtectedDog.getBreedId());
             ProtectDto protectDto = ProtectDto.builder()
+                    .age(shelterProtectedDog.getAge())
                     .protectName(shelterProtectedDog.getName())
                     .protectId(shelterProtectedDog.getSpDogId())
                     .shelterId(shelterProtectedDog.getShelterId())
