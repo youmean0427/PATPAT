@@ -25,7 +25,7 @@ public class Breed {
     private String title;
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image image;
 }

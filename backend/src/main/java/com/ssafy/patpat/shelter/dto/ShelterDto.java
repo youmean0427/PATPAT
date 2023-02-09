@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.core.io.FileSystemResource;
 
 import java.util.List;
 
@@ -36,4 +37,6 @@ public class ShelterDto {
     private String gugunName;
     private String ownerName;
     private Long ownerId;
+
+    private List<FileSystemResource> resources;
 }

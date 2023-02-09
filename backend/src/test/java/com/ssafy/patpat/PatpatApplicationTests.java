@@ -2,7 +2,6 @@ package com.ssafy.patpat;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.ssafy.patpat.common.code.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -66,8 +65,8 @@ class PatpatApplicationTests {
 	TestRepository testRepository;
 	@Autowired
 	BreedRepository breedRepository;
-	@Autowired
-	PostImageRepository postImageRepository;
+//	@Autowired
+//	PostImageRepository postImageRepository;
 	@Autowired
 	ImageRepository imageRepository;
 //	@Autowired
@@ -444,7 +443,7 @@ class PatpatApplicationTests {
 					shelterProtectedDog.setGugunCode(shelter.getGugunCode());
 					shelterProtectedDog.setLatitude(lat);
 					shelterProtectedDog.setLongitude(log);
-					shelterProtectedDog.setShelterId(shelterId);
+//					shelterProtectedDog.setShelterId(shelterId);
 					shelterProtectedDog.setStateCode(ProtectState.공고중);
 					Collections.sort(strList);
 					StringBuilder sb = new StringBuilder();
