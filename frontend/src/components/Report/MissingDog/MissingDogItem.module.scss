@@ -5,9 +5,6 @@
 }
 .title {
   font-weight: 700;
-}
-.name {
-  font-weight: 700;
   font-size: 1.7rem;
   margin-bottom: 0.6rem;
 
@@ -15,7 +12,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  width: 161px;
+  // width: 161px;
 }
 
 .content {
@@ -26,7 +23,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  width: 161px;
+  // width: 161px;
 }
 
 .card {

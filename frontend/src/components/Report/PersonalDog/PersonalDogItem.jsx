@@ -1,19 +1,33 @@
+import styles from './PersonalDogItem.module.scss';
 import Card from 'components/Common/Card';
 import React from 'react';
-import styles from './PersonalDogItem.module.scss';
 import { Link } from 'react-router-dom';
+// import test from '../../../assets/images/ear8.png';
+import HtmlReactParser from 'html-react-parser';
+import { useState } from 'react';
+import test from '../../../assets/images/ear8.png';
 export default function PersonalDogItem({ item }) {
-  const { personalProtectionId, title, fileUrlList, breedName, content } = item;
+  const { personalProtectionId, title, content, thumbnail } = item;
+  // console.log(item);
 
   return (
-    <div>
+    <div className={styles.card}>
       <Link to={`personal/${personalProtectionId}`} state={{ personalProtectionId }}>
         <Card>
-          {/* <img src={fileUrlList[0]} alt={fileUrlList[0]} /> */}
+          {/* thumbnail로 변경 */}
+          <img src={test} alt="" />
           <div className={styles.description}>
-            <div className={styles.name}>{title}</div>
-            <div className={styles.kind}>{breedName}</div>
-            <div className={styles.content}>{content}</div>
+            <div className={styles.title}>{title}</div>
+            <div className={styles.content}>
+              {content === null
+                ? null
+                : content
+                    .replace(/(<([^>]+)>)/gi, ' ')
+                    .replace(/&quot;/g, ' ')
+                    .replace(/\"n/, ' ')
+                    .replace(/&amp;/g, ' ')
+                    .replace(/&nbsp;/g, ' ')}
+            </div>
           </div>
         </Card>
       </Link>

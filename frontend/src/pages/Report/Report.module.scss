@@ -6,31 +6,70 @@
   margin: 10px;
 }
 
+// .button {
+//   &-selected {
+//     font-size: 20px !important;
+//     margin: 10px !important;
+//     width: 300px !important;
+//     font-family: $seoul-font !important;
+
+//     border-color: $main-color !important;
+//     background-color: $main-color !important;
+//     &:hover {
+//       background-color: $main-accent-color !important;
+//     }
+//   }
+//   &-unselected {
+//     font-size: 20px !important;
+//     margin: 10px !important;
+//     width: 300px !important;
+//     font-family: $seoul-font !important;
+
+//     border-color: $main-color !important;
+//     background-color: $white-color !important;
+//     color: $main-color !important;
+//     &:hover {
+//       background-color: $white-color !important;
+//       border-color: $main-accent-color !important;
+//     }
+//   }
+// }
+.select-gender {
+  position: relative;
+  z-index: 2;
+}
 .button {
-  &-selected {
-    font-size: 20px !important;
-    margin: 10px !important;
-    width: 300px !important;
-    font-family: $seoul-font !important;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  display: block;
+  text-align: center;
+  padding: 1rem 4rem;
+  transition: all 0.2s;
+  background-color: $main-color;
+  color: $white-color;
+  box-shadow: 0px 5px 0px 0px $main-accent-color;
+  margin: 10px 10px 10px 10px;
 
-    border-color: $main-color !important;
-    background-color: $main-color !important;
-    &:hover {
-      background-color: $main-accent-color !important;
-    }
+  &-active {
+    font-weight: 700;
+    border-radius: 0.5rem;
+    display: block;
+    text-align: center;
+    padding: 1rem 4rem;
+    transition: all 0.2s;
+    background-color: $main-color;
+    color: $white-color;
+    box-shadow: 0px 5px 0px 0px $main-accent-color;
+    margin: 10px 10px 10px 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    background-color: $main-accent-color;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
-  &-unselected {
-    font-size: 20px !important;
-    margin: 10px !important;
-    width: 300px !important;
-    font-family: $seoul-font !important;
-
-    border-color: $main-color !important;
-    background-color: $white-color !important;
-    color: $main-color !important;
-    &:hover {
-      background-color: $white-color !important;
-      border-color: $main-accent-color !important;
-    }
+  &:hover {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    background-color: $main-accent-color;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
 }

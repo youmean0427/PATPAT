@@ -2,7 +2,7 @@
 @import 'assets/styles/font.scss';
 .container {
   // margin-top: 5rem;
-  display: flex;
+  // display: flex;
   justify-content: center;
   margin: 10px;
 
@@ -33,10 +33,10 @@
 }
 
 .list {
-  width: 100%;
-  display: flex;
-  flex-flow: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5rem;
 }
 
 .newButton {
@@ -61,5 +61,17 @@
   &-gender {
     font-size: 15px;
     font-family: $seoul-font;
+  }
+}
+
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }

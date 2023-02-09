@@ -3,20 +3,29 @@
 .description {
   padding: 0 1rem 1rem 1rem;
 }
-.name {
+.title {
   font-weight: 700;
   font-size: 1.7rem;
   margin-bottom: 0.6rem;
 
-  width: 100%;
-  overflow: hidden;
+  display: block;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
+  // width: 161px;
 }
 
-.kind,
-.gender,
 .content {
   font-size: 1.2rem;
   color: $gray-color;
+
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  // width: 161px;
+}
+
+.card {
+  margin: 10px;
 }

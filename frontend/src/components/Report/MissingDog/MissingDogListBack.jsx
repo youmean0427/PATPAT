@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getPersonalDogList } from 'apis/api/report';
-import PersonalDogItem from './PersonalDogItem';
-import styles from './PersonalDogList.module.scss';
+import { getMissingDogList } from 'apis/api/report';
+import MissingDogItem from './MissingDogItem';
+import styles from './MissingDogList.module.scss';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 
-export default function PersonalDogList() {
+export default function MissingDogListBack() {
   const breedData = useQuery({
     queryKey: ['getBreedsList'],
     queryFn: () => getBreedsList(),
@@ -29,8 +29,8 @@ export default function PersonalDogList() {
   const [selectedBreed, setSelectedBreed] = useState(breed[0]);
 
   const { isLoading, data } = useQuery({
-    queryKey: ['personalDogList'],
-    queryFn: () => getPersonalDogList(selectedBreed.value, selectedGender.value, 100, 0),
+    queryKey: ['missingDogList'],
+    queryFn: () => getMissingDogList(selectedBreed.value, selectedGender.value, 100, 0),
   });
   console.log(data);
   if (isLoading) return;
@@ -60,7 +60,7 @@ export default function PersonalDogList() {
       <div className={styles.container}>
         <div className={styles.list}>
           {data.list.map((item, index) => (
-            <PersonalDogItem key={index} item={item} />
+            <MissingDogItem key={index} item={item} />
           ))}
         </div>
       </div>

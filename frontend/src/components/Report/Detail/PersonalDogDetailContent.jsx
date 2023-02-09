@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import styles from './DogDetailContent.module.scss';
+import styles from './PersonalDogDetailContent.module.scss';
 import { useQuery } from '@tanstack/react-query';
-import { getMissingDogDetail } from 'apis/api/report';
+import { getPersonalDogDetail } from 'apis/api/report';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
 
-export default function DogDetailContent({ item, state }) {
+export default function PersonalDogDetailContent({ item, state }) {
   const { isLoading, data } = useQuery({
-    queryKey: ['missingDogDetail'],
-    queryFn: () => getMissingDogDetail(item),
+    queryKey: ['PersonalDogDetail'],
+    queryFn: () => getPersonalDogDetail(item),
   });
 
   if (isLoading) return;
@@ -57,8 +57,7 @@ export default function DogDetailContent({ item, state }) {
           <div className={styles['container-content']}>
             <div className={styles['container-content-title']}>
               <div className={styles.name}>{data.name}</div>
-              {state === 0 ? <div className={styles.stateButtonRed}>실종</div> : null}
-              {state === 1 ? <div className={styles.stateButtonOrange}>임시보호</div> : null}
+              <div className={styles.stateButtonOrange}>임시보호</div>
             </div>
             <hr />
             <div className={styles['container-content-info']}>
@@ -152,9 +151,9 @@ export default function DogDetailContent({ item, state }) {
       </div>
       <div className={styles.subTitle}>상세정보</div>
       <hr />
-      {/* HTMl null 값 못받음 */}
+
       <div className={styles.content}>
-        <div>{HtmlReactParser(data.content)}</div>
+        <div>{data.content === null ? null : HtmlReactParser(data.content)}</div>
       </div>
     </div>
   );

@@ -38,13 +38,14 @@ export default function ReportCreateContent() {
 
   // category
   const [categoryEar, setCategoryEar] = useState({ value: 0 });
-  const [categoryColor, setCategoryColor] = useState(0);
+  const [categoryColor, setCategoryColor] = useState([]);
   const [categoryPattern, setCategoryPattern] = useState({ value: 0 });
   const [categoryTail, setCategoryTail] = useState({ value: 0 });
   const [categoryCloth, setCategoryCloth] = useState({ value: 0 });
   const [categoryClothColor, setCategoryClothColor] = useState({ value: 0 });
   const [color1, setColor1] = useState('#000000');
   const [color2, setColor2] = useState('#000000');
+  const [color3, setColor3] = useState('#000000');
 
   // Picture
   const [preFile, setPreFile] = useState([]);
@@ -79,9 +80,44 @@ export default function ReportCreateContent() {
     setLng(position.lng);
   }, [position]);
 
-  // useEffect(() => {
-  //   setCategoryColor([color1, color2]);
-  // }, [color1, color2]);
+  useEffect(() => {
+    if (title !== '') {
+      setTitleAlertOpen(0);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (name !== '') {
+      setNameAlertOpen(0);
+    }
+  }, [name]);
+
+  useEffect(() => {
+    if (typeCode.value !== 0) {
+      setTypeCodeAlertOpen(0);
+    }
+  }, [typeCode]);
+
+  useEffect(() => {
+    if (breedId.value !== 0) {
+      setBreedAlertOpen(0);
+    }
+  }, [breedId]);
+  useEffect(() => {
+    if (lat !== 0 && lng !== 0) {
+      setPositionAlertOpen(0);
+    }
+  }, [lat, lng]);
+
+  useEffect(() => {
+    if (content !== '') {
+      setContentAlertOpen(0);
+    }
+  }, [content]);
+
+  useEffect(() => {
+    setCategoryColor([color1, color2, color3]);
+  }, [color1, color2, color3]);
 
   // Picture
   const handleAddImages = e => {
@@ -215,14 +251,43 @@ export default function ReportCreateContent() {
       <form
         onSubmit={e => {
           e.preventDefault();
+
+          if (lat === 0 && lng === 0) {
+            setPositionAlertOpen(1);
+            positionInput.current.focus();
+          }
+          if (content === '') {
+            setContentAlertOpen(1);
+            contentInput.current.focus();
+          }
+
+          if (breedId.value === 0) {
+            setBreedAlertOpen(1);
+            breedInput.current.focus();
+          }
+          if (typeCode.value === 0) {
+            setTypeCodeAlertOpen(1);
+            typeCodeInput.current.focus();
+          }
+
+          if (name === '') {
+            setNameAlertOpen(1);
+            nameInput.current.focus();
+          }
           if (title === '') {
             setTitleAlertOpen(1);
             titleInput.current.focus();
           }
-
-          mutation();
-
-          // console.log('POST');
+          if (
+            lat !== 0 &&
+            lng !== 0 &&
+            content !== '' &&
+            breedId.value !== 0 &&
+            typeCode.value !== 0 &&
+            (name !== '') & (title !== '')
+          ) {
+            mutation();
+          }
         }}
       >
         <div className={styles.container}>
@@ -328,8 +393,8 @@ export default function ReportCreateContent() {
                   )}
                 </div>
                 <div>
-                  <Select options={stateOpt} onChange={setTypeCode} placeholder="상태" />
-                  {titleAlertOpen === 0 ? null : (
+                  <Select options={stateOpt} ref={typeCodeInput} onChange={setTypeCode} placeholder="상태" />
+                  {typeCodeAlertOpen === 0 ? null : (
                     <div>
                       <Stack sx={{ width: '100%' }} spacing={2}>
                         <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
@@ -343,8 +408,13 @@ export default function ReportCreateContent() {
 
               <div>
                 <div>
-                  <Select options={changeBreedList(breedData)} onChange={setBreedId} placeholder="견종" />
-                  {titleAlertOpen === 0 ? null : (
+                  <Select
+                    options={changeBreedList(breedData)}
+                    ref={breedInput}
+                    onChange={setBreedId}
+                    placeholder="견종"
+                  />
+                  {breedAlertOpen === 0 ? null : (
                     <div>
                       <Stack sx={{ width: '100%' }} spacing={2}>
                         <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
@@ -462,22 +532,48 @@ export default function ReportCreateContent() {
                 <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
                 <span>털색</span>
                 <div>
-                  {categoryPattern.value > 1 ? (
+                  {categoryPattern.value === 3 ? (
                     <input
                       className={styles.colorPickerHalf}
                       type="color"
                       onChange={e => setCategoryColor(e.target.value)}
                     />
-                  ) : (
+                  ) : categoryPattern.value === 1 ? (
                     <input
                       className={styles.colorPicker}
                       type="color"
                       onChange={e => setCategoryColor(e.target.value)}
                     />
+                  ) : categoryPattern.value === 4 ? (
+                    <input
+                      className={styles.colorPickerThree}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : (
+                    <input
+                      className={styles.colorPickerDisabled}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                      disabled
+                    />
                   )}
-                  {categoryPattern.value > 1 ? (
+                  {categoryPattern.value === 3 ? (
                     <input
                       className={styles.colorPickerHalf}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : categoryPattern.value === 4 ? (
+                    <input
+                      className={styles.colorPickerThree}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : null}
+                  {categoryPattern.value === 4 ? (
+                    <input
+                      className={styles.colorPickerThree}
                       type="color"
                       onChange={e => setCategoryColor(e.target.value)}
                     />
@@ -498,9 +594,11 @@ export default function ReportCreateContent() {
             </div>
           </div>
         </div>
-        <div className={styles.subTitle}>실종/발견 장소</div>
+        <div className={styles.subTitle} ref={positionInput}>
+          실종/발견 장소
+        </div>
         <hr />
-        {titleAlertOpen === 0 ? null : (
+        {positionAlertOpen === 0 ? null : (
           <div>
             <Stack sx={{ width: '100%' }} spacing={2}>
               <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
@@ -549,10 +647,12 @@ export default function ReportCreateContent() {
           </Map>
         </div>
 
-        <div className={styles.subTitle}>상세특징</div>
+        <div className={styles.subTitle} ref={contentInput}>
+          상세특징
+        </div>
         <hr />
         <div>
-          {titleAlertOpen === 0 ? null : (
+          {contentAlertOpen === 0 ? null : (
             <div>
               <Stack sx={{ width: '100%' }} spacing={2}>
                 <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
@@ -582,7 +682,10 @@ export default function ReportCreateContent() {
         <hr />
         <div>
           <Navbar>
-            <button type="submit">등록</button>
+            <button type="submit" className={styles.button}>
+              <div>등록</div>
+            </button>
+            <MenuLink move="/report/" value="등록" />
             <MenuLink move="/report/" value="취소" />
           </Navbar>
         </div>
