@@ -13,19 +13,19 @@ import java.util.List;
 
 @Repository
 public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProtectedDog, Long> {
-    Page<ShelterProtectedDog> findByShelterIdAndStateCodeNotIn(Long shelterId, List<ProtectState> stateCode, PageRequest pageRequest);
+    Page<ShelterProtectedDog> findByShelterShelterIdAndStateCodeNotIn(Long shelterId, List<ProtectState> stateCode, PageRequest pageRequest);
     Page<ShelterProtectedDog> findByStateCodeNotIn(List<ProtectState> stateCode, PageRequest pageRequest);
     ShelterProtectedDog findBySpDogId(Long spDogId);
 
-    List<ShelterProtectedDog> findByBreedIdAndSidoCodeAndGugunCode(Long breedId, String sidoCode, String gugunCode);
-    List<ShelterProtectedDog> findByBreedIdAndSidoCode(Long breedId,String sidoCode);
+    List<ShelterProtectedDog> findByBreedBreedIdAndSidoCodeAndGugunCode(Long breedId, String sidoCode, String gugunCode);
+    List<ShelterProtectedDog> findByBreedBreedIdAndSidoCode(Long breedId,String sidoCode);
     List<ShelterProtectedDog> findBySidoCodeAndGugunCode(String sidoCode, String gugunCode);
     List<ShelterProtectedDog> findBySidoCode(String sidoCode);
-    List<ShelterIdMapping> findDistinctBySidoCodeAndBreedId(String sidoCode, Long breedId);
-    Integer countShelterIdBySidoCodeAndBreedId(String sidoCode, Long breedId);
-    List<ShelterProtectedDog> findDistinctShelterIdByBreedId(Long breedId);
+    List<ShelterIdMapping> findDistinctBySidoCodeAndBreedBreedId(String sidoCode, Long breedId);
+    Integer countShelterIdBySidoCodeAndBreedBreedId(String sidoCode, Long breedId);
+    List<ShelterIdMapping> findDistinctByBreedBreedId(Long breedId);
     List<ShelterProtectedDog> findDistinctShelterIdBySidoCode(String sidoCode);
-    List<ShelterProtectedDog> findDistinctShelterIdBySidoCodeAndBreedId(String sidoCode,Long breedId);
+//    List<ShelterIdMapping> findDistinctBySidoCodeAndBreedBreedId(String sidoCode,Long breedId);
     List<ShelterProtectedDog> findDistinctShelterIdBySidoCodeAndGugunCode(String sidoCode,String gugunCode);
-    List<ShelterProtectedDog> findDistinctShelterIdBySidoCodeAndGugunCodeAndBreedId(String sidoCode,String gugunCode,Long breedId);
+    List<ShelterIdMapping> findDistinctBySidoCodeAndGugunCodeAndBreedBreedId(String sidoCode,String gugunCode,Long breedId);
 }

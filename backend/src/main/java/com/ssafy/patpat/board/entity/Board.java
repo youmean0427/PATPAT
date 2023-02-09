@@ -28,7 +28,6 @@ public class Board {
     private String title;
     private String content;
     private LocalDateTime dateTime;
-    @ColumnDefault("0")
     private Integer count;
     private BoardCode boardCode;
 
@@ -50,5 +49,10 @@ public class Board {
     public void update(String title,String content){
         this.title = title;
         this.content = content;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.count = this.count == null ? 0 : this.count;
     }
 }

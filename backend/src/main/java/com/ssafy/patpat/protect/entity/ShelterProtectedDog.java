@@ -3,6 +3,8 @@ package com.ssafy.patpat.protect.entity;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.Gender;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.shelter.entity.Breed;
+import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -27,10 +29,6 @@ public class ShelterProtectedDog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long spDogId;
 
-    @Column(name = "shelter_id")
-    private Long shelterId;//
-    @Column(name = "breed_id")
-    private Long breedId;//
     private LocalDate findingDate;
     private BigDecimal latitude;
     private BigDecimal longitude;
@@ -51,6 +49,14 @@ public class ShelterProtectedDog {
     private String gugunCode;//
 
     private ProtectState stateCode;//
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "breed_id")
+    private Breed breed;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
