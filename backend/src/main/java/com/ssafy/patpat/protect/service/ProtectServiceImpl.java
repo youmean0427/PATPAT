@@ -359,7 +359,7 @@ public class ProtectServiceImpl implements ProtectService{
             BigDecimal log = shelter.getLongitude();
             System.out.println(shelter);
             String extension = FilenameUtils.getExtension(uploadFile.getOriginalFilename()); // 3
-            if (!extension.equals("xlsx") && !extension.equals("xls")) {
+            if (!extension.equals("xlsx") && !extension.equals("xls") && !extension.equals("xlsm")) {
                 return new ResponseMessage("엑셀파일만 업로드 해주세요");
             }
 
@@ -370,8 +370,13 @@ public class ProtectServiceImpl implements ProtectService{
                 workbook = new XSSFWorkbook(uploadFile.getInputStream());
                 System.out.println("xls");
             }
+            else if (extension.equals("xlsm")) {
+                workbook = new XSSFWorkbook(uploadFile.getInputStream());
+                System.out.println("xlsm");
+            }
 
             Sheet sheet = workbook.getSheetAt(0);
+            System.out.println(sheet.getSheetName());
             List<ShelterProtectedDog> list = new ArrayList<>();
             for(Row row : sheet){
                 //실제 값이 들어있는 로우
