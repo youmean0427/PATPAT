@@ -63,3 +63,10 @@ export const updateProtect = async (formData, protectId) => {
   });
   return res;
 };
+
+export const enrollProtectByExcel = async formData => {
+  const res = await authInstance.post('/protects/batches', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return res;
+};

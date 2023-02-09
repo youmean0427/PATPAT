@@ -28,8 +28,13 @@
 .pagination {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   font-size: 2.4rem;
   margin-bottom: 1rem;
+  & > span {
+    color: $main-color;
+    line-height: 1rem;
+  }
   & > .button {
     color: $main-accent-color;
   }

@@ -51,7 +51,19 @@
   bottom: 0;
   transform: translateX(-50%);
   color: $white-color;
-  line-height: 34px;
   background-color: $mbti-btn-color;
-  padding-left: 1.6rem;
+  padding: 0 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > a {
+    font-family: $sunflower-font;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: $white-color;
+    transition: all 0.3s;
+    &:hover {
+      color: $black-color;
+    }
+  }
 }
