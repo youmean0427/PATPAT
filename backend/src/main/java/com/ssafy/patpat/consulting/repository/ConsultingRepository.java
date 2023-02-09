@@ -11,10 +11,10 @@ import java.util.List;
 
 @Repository
 public interface ConsultingRepository extends JpaRepository<Consulting, Long> {
-    Page<Consulting> findByUserIdAndRegistDateGreaterThanEqual(Long userId, LocalDate localDate, PageRequest pageRequest);
-    Page<Consulting> findByShelterIdAndRegistDateGreaterThanEqual(Long shelterId, LocalDate localDate, PageRequest pageRequest);
+    Page<Consulting> findByUserUserIdAndConsultingDateGreaterThanEqual(Long userId, LocalDate consultingDate, PageRequest pageRequest);
+    Page<Consulting> findByShelterShelterIdAndConsultingDateGreaterThanEqual(Long shelterId, LocalDate consultingDate, PageRequest pageRequest);
     Consulting findByConsultingId(Long consultingId);
-    List<Consulting> findByShelterIdAndRegistDate(Long shelterId, LocalDate localDate);
+    List<Consulting> findByShelterShelterIdAndConsultingDate(Long shelterId, LocalDate localDate);
 
 
 }

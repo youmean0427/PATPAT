@@ -1,6 +1,6 @@
 package com.ssafy.patpat.report.service;
 
-import com.ssafy.patpat.common.code.Neutered;
+import com.ssafy.patpat.common.code.category.Neutered;
 import com.ssafy.patpat.common.code.category.Gender;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
@@ -23,25 +23,21 @@ import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.service.UserService;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+
 @Service
 public class ReportServiceImpl implements ReportService{
 

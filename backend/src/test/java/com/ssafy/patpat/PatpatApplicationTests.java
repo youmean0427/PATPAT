@@ -1,50 +1,34 @@
 package com.ssafy.patpat;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.patpat.common.code.Neutered;
+import com.ssafy.patpat.common.code.category.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
-import com.ssafy.patpat.consulting.dto.ConsultingDto;
-import com.ssafy.patpat.consulting.dto.TimeDto;
-import com.ssafy.patpat.consulting.entity.Consulting;
-import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 //import com.ssafy.patpat.protect.entity.ShelterDogImage;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 //import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
-import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
-import com.ssafy.patpat.shelter.entity.Sido;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.GugunRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.shelter.repository.SidoRepository;
 import com.ssafy.patpat.test.TestDistance;
 import com.ssafy.patpat.test.TestRepository;
-import com.ssafy.patpat.user.dto.ResultDto;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.io.*;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @SpringBootTest
