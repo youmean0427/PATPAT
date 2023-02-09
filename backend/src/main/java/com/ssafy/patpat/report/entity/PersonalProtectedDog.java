@@ -1,6 +1,8 @@
 package com.ssafy.patpat.report.entity;
 
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.shelter.entity.Breed;
+import com.ssafy.patpat.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -24,8 +26,6 @@ public class PersonalProtectedDog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ppDogId;
 
-    private Long userId;
-    private Long breedId;
     private LocalDate missingDate;
     private String title;
     private BigDecimal latitude;
@@ -47,6 +47,14 @@ public class PersonalProtectedDog {
     private Integer age;
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "breed_id")
+    private Breed breed;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "personal_dog_image",
@@ -54,13 +62,13 @@ public class PersonalProtectedDog {
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     private List<Image> images;
 
-    public void update(int stateCode, String feature, int gender, long breedId, double weight, int neutered, int categoryEar, int categoryTail ,int categoryColor,
+    public void update(int stateCode, String feature, int gender, Breed breed, double weight, int neutered, int categoryEar, int categoryTail ,int categoryColor,
                        int categoryPattern,int categoryCloth){
         this.stateCode = stateCode;
         this.feature =feature;
         this.gender = gender;
         this.weight =weight;
-        this.breedId = breedId;
+        this.breed = breed;
         this.neutered =neutered;
         this.categoryCloth = categoryCloth;
         this.categoryClothColor = categoryClothColor;
