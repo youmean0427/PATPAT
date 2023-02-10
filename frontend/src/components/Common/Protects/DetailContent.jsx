@@ -39,12 +39,12 @@ export default function DetailContent({ data }) {
         <div
           className={
             data.stateCode === 0
-              ? styles['state0']
+              ? styles.state0
               : data.stateCode === 1
-              ? styles['state1']
+              ? styles.state1
               : data.stateCode === 2
-              ? styles['state2']
-              : styles['state3']
+              ? styles.state2
+              : styles.state3
           }
         >
           {data.state}

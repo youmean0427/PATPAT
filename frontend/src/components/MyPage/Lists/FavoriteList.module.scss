@@ -1,15 +1,43 @@
 @import 'assets/styles/variable.scss';
 
-.container {
-  width: 80%;
-  display: flex;
-  flex-flow: wrap;
-  justify-content: center;
-  margin: auto;
-  margin-bottom: 50px;
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5rem;
 }
 .no-data {
-  margin-top: 20px;
+  width: 100%;
   font-size: 2rem;
   font-weight: 600;
+  margin: auto;
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  & > span {
+    color: $main-color;
+    line-height: 1rem;
+  }
+  & > .button {
+    color: $main-accent-color;
+  }
+  & > .button.disabled {
+    color: $gray-color;
+  }
+}
+
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 }

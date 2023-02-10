@@ -11,7 +11,7 @@ export default function MissingDog({ userId }) {
   });
 
   if (isLoading) return;
-  console.log(data);
+
   return (
     <div className={styles.container}>
       {data.totalCount === 0 ? (
