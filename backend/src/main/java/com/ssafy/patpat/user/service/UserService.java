@@ -262,10 +262,13 @@ public class UserService {
     public UserDto getUserWithAuthorities() {
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         if(user.orElse(null) == null) {
-
             return null;
-
         }else{
+            Optional<Shelter> s = Optional.ofNullable(user.get().getShelter());
+            Long shelterId = null;
+            if(s.isPresent()){
+                shelterId = s.get().getShelterId();
+            }
             UserDto userDto = UserDto.builder()
                     .userId(user.get().getUserId())
                     .provider(user.get().getProvider())
@@ -274,6 +277,7 @@ public class UserService {
                     .ageRange(user.get().getAgeRange())
                     .profileImageUrl(fileService.getFileUrl(user.get().getImage()))
                     .providerId(user.get().getProviderId())
+                    .shelterId(shelterId)
                     .build();
             return userDto;
         }
