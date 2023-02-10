@@ -1,86 +1,65 @@
-.detail-view-wrapper {
-  max-width: 120rem;
-  margin: 0 auto;
-  display: block;
-  padding: 10px;
-}
+@import 'assets/styles/variable.scss';
+@import 'assets/styles/index.scss';
 
-.detail-view-go-list-btn {
-  border: 0;
-  padding: 10px;
-  background-color: #ffd9d9;
-}
-
-.div {
-  width: 100%;
-  height: 30vh;
-  background-color: #5d6dbe;
-  color: white;
-  text-align: center;
-  font-size: large;
-  vertical-align: center;
-  line-height: 30vh;
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .detail-title {
-  font-size: 50px;
-  color: #5d6dbe;
+  font-size: 3rem;
+  color: #a1887f;
+  border-bottom: 1px solid #a1887f;
 }
 
 .sub-title {
-  margin: 0 auto; /* container 영역을 브라우저에서 가운데 정렬하기 위해 auto설정 */
-  text-align: left; /* inline-block화 된 div들을 텍스트 마냥 center로 정렬*/
-  border-bottom: solid 1px #b8b8b8;
-  overflow: hidden;
-}
-
-.detail-view-row {
-  padding-left: 10px;
-  display: inline-block; /* 가로로 나열하기 위해 block레벨 요소를 inline-block레벨로 전환 */
-  color: gray;
-  position: bottom;
-}
-
-.detail-content {
-  width: 100%;
-  height: 100vh;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
 
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
-  align-items: center; /* 수직 정렬 */
-
-  -webkit-box-pack: center;
-  -moz-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center; /* 수평 정렬 */
+  width: 10rem;
+  color: #a3a3a3;
 }
 
-.list-div {
-  color: gray;
-  background-color: red;
+.detail-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  float: right;
+  color: white;
+  background-color: #a1887f;
+  width: fit-content;
 }
 
 .detail-btn {
-  color: white;
-  background-color: #1f3294;
-  width: auto;
-  height: auto;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+}
+
+.detail-view-row {
+  display: inline;
+  margin-right: 0.5rem;
+}
+
+.detail-img-box {
+  display: flex;
+  justify-content: center;
   float: right;
-  margin: 10px;
-  font-size: 20px;
 }
 
 .detail-img {
-  margin: auto;
-  padding: 20px;
-  text-align: center;
-  overflow: hidden;
+  background-position: 50% 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: black 1px solid;
+}
+
+.img {
+  width: 300px;
+  height: 150px;
+  object-fit: scale-down;
 }
 
 .detail-view-content {
+  text-align: center;
+  display: inline;
 }

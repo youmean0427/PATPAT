@@ -1,89 +1,88 @@
 import Card from 'components/Common/Card';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './AdoptionReviewItem.module.scss';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 800,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import Modal from 'components/Common/Modal';
+import { Link } from 'react-router-dom';
+import CommentList from '../Comment/CommentLIst';
+import CommentWrite from '../Comment/CommentWrite';
+import { OtherHouses } from '@mui/icons-material';
 
 export default function AdoptionReviewItem({ item }) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [modal, setModal] = useState(false);
+
+  const openModal = () => {
+    setModal(true);
+  };
+  const closeModal = () => {
+    setModal(false);
+  };
+
+  const images = [
+    'https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-176213403491/media/magazine_img/magazine_262/%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg',
+    'http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg',
+    'https://mblogthumb-phinf.pstatic.net/20130303_92/ovcharka_no1_1362279507519u1D77_JPEG/2.jpg?type=w2',
+    'https://image-notepet.akamaized.net/resize/620x-/seimage/20171124%2F7d893bf5da1a85fd9e34683179814863.jpg',
+  ];
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <Card>
-          <img src={item.thumbnail} alt="thumbnail" />
-          <div className={styles['desc-wrap']}>
-            <div className={styles.title}>{item.title}</div>
-            <div className={styles.content}>{item.content}</div>
-          </div>
-        </Card>
-      </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className={styles['detail-view-wrapper']}>
-            {item ? (
-              <>
-                <div className={styles['detail-title']}>
-                  <label>{item.title}</label>
-                </div>
-                <div className={styles['sub-title']}>
-                  <div className={styles['detail-view-row']}>
-                    <div>{item.author}</div>
-                  </div>
-                  <div className={styles['detail-view-row']}>
-                    <label>{item.count}</label>
-                  </div>
-                  <div className={styles['detail-view-row']}>
-                    <label>{item.registDate}</label>
-                  </div>
-                  <div className={styles['detail-btn']}>
-                    <button>삭제</button>
-                  </div>
-                  <div className={styles['detail-btn']}>
-                    <button onClick={() => console.log('눌렷다 눌렷어')}>수정</button>
-                  </div>
-                </div>
-                <div className={styles['detail-img']}>
-                  <img src={item.thumbnail} alt="thumbnail" />
-                </div>
-                <div className={styles['detail-view-content']}>
-                  <div>{item.content}</div>
-                </div>
-              </>
-            ) : (
-              '해당 게시글을 찾을 수 없습니다.'
-            )}
-            <div className={styles['detail-reply']}> 댓글창 </div>
-            <div>
-              <input type="text" placeholder="댓글을 입력해주세요" />
-              <div>
-                <Button className={style['detail-btn']}>이전</Button>
-                <Button className={style['detail-btn']}>목록</Button>
-                <Button className={style['detail-btn']}>다음</Button>
+      <Card>
+        <img src={images[0]} alt="thumbnail" onClick={openModal} />
+        <div className={styles['desc-wrap']}>
+          <div className={styles.title}>{item.title}</div>
+          <div className={styles.content}>{item.content}</div>
+        </div>
+      </Card>
+      <Modal open={modal} onClose={closeModal} close={closeModal}>
+        <div className={styles['detail-view-wrapper']}>
+          {item ? (
+            <>
+              <div className={styles['detail-title']}>
+                <label>{item.title}</label>
               </div>
-            </div>
-          </div>
-        </Box>
+              <div className={styles['sub-title']}>
+                <div className={styles['detail-view-row']}>
+                  <div>{item.author}</div>
+                </div>
+                <div className={styles['detail-view-row']}>
+                  <label>{item.count}</label>
+                </div>
+                <div className={styles['detail-view-row']}>
+                  <label>{item.registDate}</label>
+                </div>
+                <div className={styles['detail-btn']}>
+                  <button>삭제</button>
+                </div>
+                <div className={styles['detail-btn']}>
+                  <Link to={`/community/adoptionreviewupdate/${item.boardId}`} state={{ item: item }}>
+                    <button>수정</button>
+                  </Link>
+                </div>
+              </div>
+              <div className={styles['detail-img']}>
+                <img src={images[0]} alt="thumbnail" />
+              </div>
+              <div className={styles['detail-view-content']}>
+                {item.content === null
+                  ? null
+                  : item.content
+                      .replace(/(<([^>]+)>)/gi, ' ')
+                      .replace(/"/g, ' ')
+                      .replace(/\"n/, ' ')
+                      .replace(/&/g, ' ')
+                      .replace(/ /g, ' ')}
+              </div>
+              <div>
+                <CommentList boardId={item.boardId} />
+              </div>
+              <div>
+                <CommentWrite boardId={item.boardId} />
+              </div>
+            </>
+          ) : (
+            '해당 게시글을 찾을 수 없습니다.'
+          )}
+        </div>
       </Modal>
     </div>
   );

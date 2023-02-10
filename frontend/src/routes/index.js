@@ -20,10 +20,7 @@ import MyPage from 'pages/MyPage/MyPage';
 import MyMissing from 'components/MyPage/MyMissing';
 import Report from 'pages/Report/Report';
 import MoreInfo from 'pages/Mbti/MoreInfo';
-import InfoMain from 'pages/Community/InfoMain';
 import InfoDetail from 'components/Community/Info/InfoDetail';
-import AdoptionReviewMain from 'pages/Community/AdoptionReviewMain';
-import FreeShareMain from 'pages/Community/FreeShareMain';
 import FreeShareDetail from 'components/Community/FreeShare/FreeShareDetail';
 import MissingDogDetail from 'pages/Report/MissingDog/MissingDogDetail';
 import ReportCreate from 'pages/Report/Create/ReportCreate';
@@ -41,6 +38,16 @@ import ShelterConsulting from 'pages/Shelter/ShelterConsulting/ShelterConsulting
 import ShelterProtectEnroll from 'pages/Shelter/ShelterProtect/ShelterProtectEnroll';
 import ProtectsDetail from 'components/Common/Protects/ProtectsDetail';
 import { getBreedsList } from 'apis/api/shelter';
+import InfoList from 'components/Community/Info/InfoList';
+import InfoUpdate from 'components/Community/Info/InfoUpdate';
+import AdoptionReviewList from 'components/Community/AdoptionReview/AdoptionReviewList';
+import AdoptionReviewUpdate from 'components/Community/AdoptionReview/AdoptionReviewUpdate';
+import FreeShareList from 'components/Community/FreeShare/FreeShareList';
+import FreeShareUpdate from 'components/Community/FreeShare/FreeShareUpdate';
+import InfoWrite from 'components/Community/Info/InfoWrite';
+import FreeShareWrite from 'components/Community/FreeShare/FreeShareWrite';
+import AdoptionReviewWrite from 'components/Community/AdoptionReview/AdoptionReviewWrite';
+
 
 const router = createBrowserRouter([
   {
@@ -76,16 +83,22 @@ const router = createBrowserRouter([
           { path: 'consulting', element: <ShelterConsulting /> },
         ],
       },
-      { path: 'community/info', element: <InfoMain /> },
+      { path: 'community/info', element: <InfoList /> },
       { path: 'community/infodetail/:id', element: <InfoDetail /> },
-      { path: 'community/adoptionreview', element: <AdoptionReviewMain /> },
-      { path: 'communitzy/freeshare', element: <FreeShareMain /> },
+      { path: 'community/adoptionreview', element: <AdoptionReviewList /> },
+      { path: 'community/freeshare', element: <FreeShareList /> },
       { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
       { path: 'report/missing/:id', element: <MissingDogDetail /> },
       { path: 'report/personal/:id', element: <PersonalDogDetail /> },
       { path: 'report/personal/:id/update', element: <ReportUpdate /> },
       { path: 'report/missing/:id/update', element: <ReportUpdate /> },
       { path: 'report/create', element: <ReportCreate /> },
+      { path: 'community/freeshareupdate/:id', element: <FreeShareUpdate /> },
+      { path: 'community/infoupdate/:id', element: <InfoUpdate /> },
+      { path: 'community/adoptionreviewupdate/:id', element: <AdoptionReviewUpdate /> },
+      { path: 'community/adoptionreviewwrtie', element: <AdoptionReviewWrite /> },
+      { path: 'community/freesharewrite', element: <FreeShareWrite /> },
+      { path: 'community/infowrite', element: <InfoWrite /> },
     ],
   },
   {
