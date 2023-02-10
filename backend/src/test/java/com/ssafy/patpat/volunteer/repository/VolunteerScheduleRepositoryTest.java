@@ -15,6 +15,8 @@ import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.test.TestMapping;
+import com.ssafy.patpat.test.TestRepository;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.volunteer.dto.VolunteerShelterDto;
@@ -30,6 +32,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -66,6 +69,9 @@ class VolunteerScheduleRepositoryTest {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private TestRepository testRepository;
 
     @Autowired
     private ConsultingRepository consultingRepository;
@@ -157,10 +163,25 @@ class VolunteerScheduleRepositoryTest {
 //        List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(5L, LocalDate.parse("2023-02-02", DateTimeFormatter.ISO_DATE), list);
 //        List<Time> times = timeRepository.findByShelterShelterIdAndActiveTrue(291L);
 //        Shelter shelter = shelterRepository.findByNameAndRegNumber("경주동물사랑보호센터","20");
-        List<Shelter> list = shelterRepository.findAll();
-        for (Shelter s : list){
-            System.out.println(s.getName());
+//        List<Shelter> list = shelterRepository.findAll();
+//        for (Shelter s : list){
+//            System.out.println(s.getName());
+//        }
+
+        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("distance").descending());
+        BigDecimal a = new BigDecimal(37.5152937);
+        BigDecimal b = new BigDecimal(126.9013676);
+        Page<TestMapping> test = testRepository.selectAllSQL(a,b,a, pageRequest);
+        System.out.println("here");
+        for (TestMapping t:
+             test.toList()) {
+            System.out.println(t.getId());
+            System.out.println(t.getLat());
+            System.out.println(t.getLog());
+            System.out.println(t.getName());
+            System.out.println(t.getDistance());
         }
+
 //        System.out.println(shelter.getShelterId());
 //        for (Time t:
 //                times) {
