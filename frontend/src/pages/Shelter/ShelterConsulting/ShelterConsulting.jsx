@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import ConsultingList from 'components/ShelterPage/Lists/ConsultingList';
 import Modal from 'components/Common/Modal';
 import styles from './ShelterConsulting.module.scss';
+import { useLocation } from 'react-router-dom';
 export default function ShelterConsulting() {
   const [click, setClick] = useState([false, false, false, true]);
   const [modal, setModal] = useState(false);
-
+  const location = useLocation();
   const openModal = () => {
     setModal(true);
   };
@@ -15,38 +16,6 @@ export default function ShelterConsulting() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.buttons}>
-        <button
-          className={click[0] ? styles['btn-click'] : styles.btn}
-          onClick={() => setClick([true, false, false, false])}
-        >
-          정보
-        </button>
-        <button
-          className={click[1] ? styles['btn-click'] : styles.btn}
-          onClick={() => setClick([false, true, false, false])}
-        >
-          보호 동물
-        </button>
-        <button
-          className={click[2] ? styles['btn-click'] : styles.btn}
-          onClick={() => setClick([false, false, true, false])}
-        >
-          봉사 관리
-        </button>
-        <button
-          className={click[3] ? styles['btn-click'] : styles.btn}
-          onClick={() => setClick([false, false, false, true])}
-        >
-          상담 관리
-        </button>
-      </div>
-      {click[2] || click[3] ? (
-        <button onClick={openModal} className={styles.manage}>
-          관리
-        </button>
-      ) : null}
-
       <Modal open={modal} close={closeModal} title="상담시간 관리">
         <div className={styles['modal-content']}>
           <p className={styles['modal-title']}>상담시간 관리</p>
@@ -89,9 +58,7 @@ export default function ShelterConsulting() {
           </div>
         </div>
       </Modal>
-      <div className={styles.contents}>
-        {click[3] ? <ConsultingList shelterId="291" shelterName="사랑이네" /> : null}
-      </div>
+      <div className={styles.contents}>{click[3] ? <ConsultingList shelterId={location.state.shelterId} /> : null}</div>
     </div>
   );
 }

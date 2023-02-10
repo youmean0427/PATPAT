@@ -8,13 +8,12 @@ import { setConsulting } from 'redux/consulting';
 import { useMutation } from '@tanstack/react-query';
 
 export default function ConsultingItem({ item }) {
-  const { consultingId, stateCode, registDate, userId, userName, timeCode } = item.item;
-  const shelterId = item.shelterId;
-  const shelterName = item.shelterName;
+  const { consultingId, shelterName, shelterId, stateCode, registDate, userId, userName, timeCode } = item;
   const [click, setClick] = useState(false);
   const [btnState, setBtnState] = useState(stateCode);
   const { mutate } = useMutation((consultingId, data) => updateConsultant(consultingId, data), {
     onSuccess: data => {
+      console.log(data);
       dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
       navigate('/consulting/meeting');
     },
@@ -34,10 +33,10 @@ export default function ConsultingItem({ item }) {
       </div>
       <div className={styles.contents}>
         <p className={styles['user-name']}>{userName}</p>
-        <p>
+        {/* <p>
           {registDate[0]}.{registDate[1] <= 9 ? '0' + registDate[1] : registDate[1]}.
           {registDate[2] <= 9 ? '0' + registDate[2] : registDate[2]}
-        </p>
+        </p> */}
         <p>
           {timeCode === 0
             ? '10:00 ~ 11:00'

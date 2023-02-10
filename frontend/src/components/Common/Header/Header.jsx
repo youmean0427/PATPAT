@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import styles from './Header.module.scss';
-import Container from 'containers/Container';
 import Navbar from './Navbar/Navbar';
-import { FaDog } from 'react-icons/fa';
-import { useState } from 'react';
-export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Header({ handleClickModalOpen }) {
   const handleScroll = useCallback(() => {
     const header = document.querySelector(`.${styles.header}`);
     if (window.scrollY === 0) {
@@ -26,7 +22,7 @@ export default function Header() {
       <nav className={styles.nav}>
         <div className={styles.container}>
           <div className={styles['container-inner']}>
-            <Navbar />
+            <Navbar handleClickModalOpen={handleClickModalOpen} />
           </div>
         </div>
       </nav>

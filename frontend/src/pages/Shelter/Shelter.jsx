@@ -37,7 +37,7 @@ export default function Shelter() {
         <MenuLink move="intro" value="정보 보기" shelterId={shelterId} />
         <MenuLink move="protect" value="보호 동물" shelterId={shelterId} />
         <MenuLink move="volunteer" value="봉사 신청" shelterId={shelterId} />
-        <MenuLink move="consulting" value="상담 신청" shelterId={shelterId} />
+        <MenuLink move="consulting" value="상담 신청" shelterId={shelterId} shelterName={data.name} />
       </Navbar>
       <Outlet />
     </div>

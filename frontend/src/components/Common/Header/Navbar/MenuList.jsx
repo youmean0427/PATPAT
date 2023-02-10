@@ -10,7 +10,10 @@ import { isMobileMenuOpenState } from 'recoil/atoms/header';
 import { isHaveShelter } from 'utils/checkMyShelter';
 import MyProfileMenuItem from './MyProfileMenuItem';
 import { myShelterIdState } from 'recoil/atoms/user';
-export default function MenuList() {
+import { useQuery } from '@tanstack/react-query';
+import { getAuthShelterList } from 'apis/api/shelter';
+import { getUserInfo } from 'apis/api/user';
+export default function MenuList({ handleClickModalOpen }) {
   const [isLogin, setIsLogin] = useAuth();
   const [isOpen, setIsOpen] = useRecoilState(isMobileMenuOpenState);
   const [myShelterId, setMyShelterId] = useRecoilState(myShelterIdState);
@@ -30,7 +33,6 @@ export default function MenuList() {
       setMyShelterId(null);
     }
   }, [setIsLogin, setMyShelterId]);
-
   const intro = [
     { title: 'PATPAT은', path: 'intro' },
     { title: '미션 & 비전', path: 'vision' },
@@ -38,22 +40,7 @@ export default function MenuList() {
     { title: 'PETBTI', path: 'mbti' },
   ];
 
-  const shelter = [
-    { title: '보호소 찾기', path: 'shelter/search' },
-    { title: '보호소 등록', path: 'shelter/enroll' },
-  ];
-
-  const shelterUser = [
-    { title: '마이페이지', path: 'mypage' },
-    { title: '나의 보호소', path: `shelter/${myShelterId}/intro` },
-    { title: '로그아웃', path: '/' },
-  ];
-
-  const normalUser = [
-    { title: '마이페이지', path: 'mypage' },
-    { title: '보호소 등록', path: 'shelter/enroll' },
-    { title: '로그아웃', path: '/' },
-  ];
+  const shelter = [{ title: '보호소 찾기', path: 'shelter/search' }];
 
   return (
     <>
@@ -68,10 +55,8 @@ export default function MenuList() {
         <MenuItem move="community" value="커뮤니티" />
         {!isLogin ? (
           <MenuItem move="login" value="로그인" />
-        ) : isHaveShelter() ? (
-          <MyProfileMenuItem dropdown={shelterUser} />
         ) : (
-          <MyProfileMenuItem dropdown={normalUser} />
+          <MyProfileMenuItem handleClickModalOpen={handleClickModalOpen} isHaveShelter={true} />
         )}
       </ul>
     </>
