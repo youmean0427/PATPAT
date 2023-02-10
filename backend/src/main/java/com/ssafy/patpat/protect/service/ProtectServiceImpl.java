@@ -152,7 +152,7 @@ public class ProtectServiceImpl implements ProtectService{
             filterList.add(ProtectState.입양);
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
-            pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit());
+            pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
             shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
