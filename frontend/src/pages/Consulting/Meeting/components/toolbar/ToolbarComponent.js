@@ -33,6 +33,7 @@ export default class ToolbarComponent extends Component {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
+    this.camStatusChanged = this.camStatusChanged.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
   }
 
@@ -65,7 +66,9 @@ export default class ToolbarComponent extends Component {
     alert('상담 룸에서 나가시겠습니까?');
     this.props.leaveSession();
   }
-
+  camStatusChanged() {
+    this.props.camStatusChanged();
+  }
   toggleChat() {
     this.props.toggleChat();
   }
@@ -116,7 +119,12 @@ export default class ToolbarComponent extends Component {
             <IconButton sx={{ color: '#f39c12' }} className="navButton" onClick={this.toggleFullscreen}>
               {localUser !== undefined && this.state.fullscreen ? <FullscreenExit /> : <Fullscreen />}
             </IconButton>
-            <IconButton sx={{ color: '#dc0000' }} className="navButton" onClick={this.leaveSession} id="navLeaveButton">
+            <IconButton
+              sx={{ color: '#dc0000' }}
+              className="navButton"
+              onClick={(this.camStatusChanged, this.leaveSession)}
+              id="navLeaveButton"
+            >
               <Link to="/">
                 <PowerSettingsNew />
               </Link>

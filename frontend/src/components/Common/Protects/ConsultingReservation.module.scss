@@ -1,0 +1,58 @@
+@import 'assets/styles/variable.scss';
+
+.button {
+  height: 10rem;
+}
+.active {
+  display: inline-block;
+  position: relative;
+  left: 40%;
+  font-weight: 900;
+  font-size: 1.4rem;
+  border-radius: 0.5rem;
+  position: relative;
+  font-weight: 600;
+  text-align: center;
+  line-height: 50px;
+  padding: 0 3rem;
+  color: $white-color;
+  background-color: $main-color;
+  box-shadow: 0px 5px 0px 0px $main-accent-color;
+  border-radius: 5px;
+  transition: all 0.2s;
+  &:hover {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+}
+.select-date {
+  margin: auto;
+  width: 35rem;
+}
+.select-label {
+  display: inline-block;
+  width: 35rem;
+}
+.select-date span {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.modal-line {
+  margin: 10px 0 5px 0;
+  opacity: 0.6;
+}
+.date {
+  margin-left: 20px;
+  font-weight: 200;
+}
+.icon {
+  margin-bottom: -3px;
+}
+.up,
+.down {
+  float: right;
+}
+.blank {
+  padding: 10px;
+}

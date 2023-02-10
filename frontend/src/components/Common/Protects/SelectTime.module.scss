@@ -1,0 +1,19 @@
+@import 'assets/styles/variable.scss';
+
+.times {
+  display: flex;
+}
+.times div {
+  padding: 10px;
+  margin: 5px;
+}
+.activate {
+  background-color: $mbti-bg-color;
+  border: 2px solid $main-color;
+  cursor: pointer;
+}
+.deactivate {
+  background-color: #f5f5f5;
+  border: 2px solid lightgray;
+  pointer-events: none;
+}
