@@ -44,6 +44,7 @@ public class JwtFilter extends GenericFilterBean {
         String requestURI = httpServletRequest.getRequestURI();
 
         try{
+            LOGGER.info("접근중 uri: {}", requestURI);
             if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
                 Optional<String> isLogout = Optional.ofNullable(redisService.getValues(jwt));
 

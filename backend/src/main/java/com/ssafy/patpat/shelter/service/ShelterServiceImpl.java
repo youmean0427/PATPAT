@@ -122,7 +122,7 @@ public class ShelterServiceImpl implements ShelterService{
         List<BreedDto> breedDtoList = new ArrayList<>();
         breedDtoList.add(BreedDto.builder()
                         .breedId(0L)
-                        .breedName("전체")
+                        .breedName("견종")
                 .build());
         for(Breed b : breedList){
             breedDtoList.add(
