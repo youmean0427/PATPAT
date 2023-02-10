@@ -13,20 +13,46 @@ import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
-export default function PersonalDogList({ genderCode, breedCode, pages, totalPageFunction }) {
+export default function PersonalDogList({ genderCode, breedCode }) {
+  const [page, setPage] = useState(1);
   const LIMIT = 8;
 
   const { isLoading, data } = useQuery({
-    queryKey: ['personalDogList', breedCode.value, genderCode.value, pages],
-    queryFn: () => getPersonalDogList(breedCode.value, genderCode.value, LIMIT, pages - 1),
+    queryKey: ['personalDogList', breedCode.value, genderCode.value, page],
+    queryFn: () => getPersonalDogList(breedCode.value, genderCode.value, LIMIT, page - 1),
   });
+
+  const handleClickPrev = () => {
+    setPage(prev => prev - 1);
+  };
+
+  const handleClickNext = () => {
+    setPage(prev => prev + 1);
+  };
   console.log(data);
   if (isLoading) return;
 
   return (
     <div>
       <div className={styles['container-search']}>
-        <div className={styles['container-search-inner']}></div>
+        <div className={styles['container-search-inner']}>
+          <div className={styles.pagination}>
+            <button
+              onClick={handleClickPrev}
+              className={page === 1 ? `${styles.button} ${styles.disabled}` : styles.button}
+              disabled={page === 1 ? true : false}
+            >
+              <MdArrowBackIosNew />
+            </button>
+            <button
+              onClick={handleClickNext}
+              className={page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button}
+              disabled={page === data.totalPage ? true : false}
+            >
+              <MdArrowForwardIos />
+            </button>
+          </div>
+        </div>
       </div>
       <div className={styles.container}>
         <div className={styles.list}>

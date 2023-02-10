@@ -8,14 +8,15 @@ import { useState } from 'react';
 import test from '../../../assets/images/ear8.png';
 export default function MissingDogItem({ item }) {
   const { missingId, title, content, thumbnail } = item;
-  // console.log(item);
+  // console.log(thumbnail.filePath);
 
   return (
     <div className={styles.card}>
       <Link to={`missing/${missingId}`} state={{ missingId }}>
         <Card>
           {/* thumbnail로 변경 */}
-          <img src={test} alt="" />
+
+          <img src={`http://i8e104.p.ssafy.io:8081/api/img/${thumbnail.filePath}`} alt="" />
           <div className={styles.description}>
             <div className={styles.title}>{title}</div>
             <div className={styles.content}>

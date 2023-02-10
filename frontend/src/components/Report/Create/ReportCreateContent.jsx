@@ -20,6 +20,7 @@ import TailDetail from './TailDetail';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ReportCreateContent() {
   // info
@@ -38,7 +39,7 @@ export default function ReportCreateContent() {
 
   // category
   const [categoryEar, setCategoryEar] = useState({ value: 0 });
-  const [categoryColor, setCategoryColor] = useState([]);
+  const [categoryColor, setCategoryColor] = useState(0);
   const [categoryPattern, setCategoryPattern] = useState({ value: 0 });
   const [categoryTail, setCategoryTail] = useState({ value: 0 });
   const [categoryCloth, setCategoryCloth] = useState({ value: 0 });
@@ -115,16 +116,15 @@ export default function ReportCreateContent() {
     }
   }, [content]);
 
-  useEffect(() => {
-    setCategoryColor([color1, color2, color3]);
-  }, [color1, color2, color3]);
+  // useEffect(() => {
+  //   setCategoryColor([color1, color2, color3]);
+  // }, [color1, color2, color3]);
 
   // Picture
   const handleAddImages = e => {
     const imageFileList = [...fileList];
     let imageUrlLists = [...preFile];
     const imageLists = e.target.files;
-
     for (let i = 0; i < imageLists.length; i++) {
       imageFileList.push(imageLists[i]);
     }
@@ -158,14 +158,16 @@ export default function ReportCreateContent() {
   formData.append('categoryPattern', categoryPattern.value);
   formData.append('categoryTail', categoryTail.value);
   formData.append('categoryCloth', categoryCloth.value);
-  formData.append('categoryClothColor', categoryClothColor.value);
   formData.append('typeCode', typeCode.value);
-  formData.append('uploadFile', fileList);
+
   formData.append('latitude', lat);
   formData.append('longitude', lng);
 
   // POST (등록)
-
+  for (let i = 0; i < fileList.length; i++) {
+    formData.append('uploadFile', fileList[i]);
+  }
+  // formData.append('uploadFile', preFile);
   const { mutate: mutation } = useMutation(['createReport'], () => {
     return createReport(formData);
   });
@@ -176,7 +178,6 @@ export default function ReportCreateContent() {
     queryFn: () => getBreedsList(),
   });
   const breedData = data;
-
   // console.log(uploadFile);
   if (isLoading) return;
 
@@ -246,46 +247,14 @@ export default function ReportCreateContent() {
     setModal(false);
   };
   // Console
+
+  console.log(fileList);
+  console.log(preFile);
   return (
     <div>
       <form
         onSubmit={e => {
           e.preventDefault();
-          if (content === '') {
-            setContentAlertOpen(1);
-            contentInput.current.focus();
-          }
-          if (lat === 0 && lng === 0) {
-            setPositionAlertOpen(1);
-            positionInput.current.focus();
-          }
-          if (breedId.value === 0) {
-            setBreedAlertOpen(1);
-            breedInput.current.focus();
-          }
-          if (typeCode.value === 0) {
-            setTypeCodeAlertOpen(1);
-            typeCodeInput.current.focus();
-          }
-          if (name === '') {
-            setNameAlertOpen(1);
-            nameInput.current.focus();
-          }
-          if (title === '') {
-            setTitleAlertOpen(1);
-            titleInput.current.focus();
-          }
-
-          if (
-            lat !== 0 &&
-            lng !== 0 &&
-            content !== '' &&
-            breedId.value !== 0 &&
-            typeCode.value !== 0 &&
-            (name !== '') & (title !== '')
-          ) {
-            mutation();
-          }
         }}
       >
         <div className={styles.container}>
@@ -313,7 +282,7 @@ export default function ReportCreateContent() {
                     <div>
                       <div className={styles['deleteButton-box']}>
                         <button className={styles.deleteButton} onClick={() => handleDeleteImage(0)}>
-                          Delete
+                          <img src="" className={styles.quitButton} alt="" />
                         </button>
                       </div>
                       <img className={styles.thumbnail} src={preFile[0]} alt="" />
@@ -326,7 +295,7 @@ export default function ReportCreateContent() {
                     ) : (
                       <div className={styles['deleteButton-box']}>
                         <button className={styles.deleteButton} onClick={() => handleDeleteImage(1)}>
-                          Delete
+                          <img src="" className={styles.quitButton} alt="" />
                         </button>
 
                         <img className={styles.subPicture} src={preFile[1]} alt={1} />
@@ -337,7 +306,7 @@ export default function ReportCreateContent() {
                     ) : (
                       <div className={styles['deleteButton-box']}>
                         <button className={styles.deleteButton} onClick={() => handleDeleteImage(2)}>
-                          Delete
+                          <img src="" className={styles.quitButton} alt="" />
                         </button>
 
                         <img className={styles.subPicture} src={preFile[2]} alt={2} />
@@ -502,20 +471,6 @@ export default function ReportCreateContent() {
                 </div>
               </div>
               <div>
-                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
-                <span>옷착용</span>
-                <div>
-                  <Select
-                    options={categoryClothOpt}
-                    onChange={setCategoryCloth}
-                    defaultValue={categoryClothOpt[categoryCloth.value]}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div>
                 <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(2)} />
                 <span>꼬리</span>
                 <div>
@@ -523,6 +478,20 @@ export default function ReportCreateContent() {
                     options={categoryTailOpt}
                     onChange={setCategoryTail}
                     defaultValue={categoryTailOpt[categoryTail.value]}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <span>옷착용</span>
+                <div>
+                  <Select
+                    options={categoryClothOpt}
+                    onChange={setCategoryCloth}
+                    defaultValue={categoryClothOpt[categoryCloth.value]}
                   />
                 </div>
               </div>
@@ -576,17 +545,6 @@ export default function ReportCreateContent() {
                       onChange={e => setCategoryColor(e.target.value)}
                     />
                   ) : null}
-                </div>
-              </div>
-              <div>
-                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
-                <span>옷색</span>
-                <div>
-                  <Select
-                    options={categoryClothColorOpt}
-                    onChange={setCategoryClothColor}
-                    defaultValue={categoryClothColorOpt[categoryClothColor.value]}
-                  />
                 </div>
               </div>
             </div>
@@ -679,11 +637,57 @@ export default function ReportCreateContent() {
         <hr />
         <div>
           <Navbar>
-            <button type="submit" className={styles.button}>
+            <button
+              onClick={() => {
+                if (content === '') {
+                  setContentAlertOpen(1);
+                  contentInput.current.focus();
+                }
+                if (lat === 0 && lng === 0) {
+                  setPositionAlertOpen(1);
+                  positionInput.current.focus();
+                }
+                if (breedId.value === 0) {
+                  setBreedAlertOpen(1);
+                  breedInput.current.focus();
+                }
+                if (fileList[0] === '') {
+                  setFileListAlertOpen(1);
+                }
+                if (typeCode.value === 0) {
+                  setTypeCodeAlertOpen(1);
+                  typeCodeInput.current.focus();
+                }
+                if (name === '') {
+                  setNameAlertOpen(1);
+                  nameInput.current.focus();
+                }
+                if (title === '') {
+                  setTitleAlertOpen(1);
+                  titleInput.current.focus();
+                }
+
+                if (
+                  lat !== 0 &&
+                  lng !== 0 &&
+                  content !== '' &&
+                  breedId.value !== 0 &&
+                  typeCode.value !== 0 &&
+                  (name !== '') & (title !== '')
+                ) {
+                  mutation();
+                }
+              }}
+              className={styles.button}
+            >
               <div>등록</div>
             </button>
-            <MenuLink move="/report/" value="등록" />
-            <MenuLink move="/report/" value="취소" />
+
+            <Link to="/report" className="links">
+              <button className={styles.button}>
+                <div>취소</div>
+              </button>
+            </Link>
           </Navbar>
         </div>
       </form>

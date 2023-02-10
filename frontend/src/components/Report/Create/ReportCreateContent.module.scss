@@ -202,6 +202,7 @@
   width: 250px;
   height: 250px;
   object-fit: cover;
+  border-radius: 4px;
   margin-right: 10px;
   border: #cccccc 1px solid;
 }
@@ -209,7 +210,7 @@
   width: 125px;
   height: 125px;
   object-fit: cover;
-
+  border-radius: 4px;
   border: #cccccc 1px solid;
 }
 
@@ -221,6 +222,9 @@
     display: flex;
     justify-content: flex-end;
   }
+}
+.quitButton {
+  width: 50px;
 }
 
 .ckEditor {
@@ -312,7 +316,7 @@
   border-radius: 0.5rem;
   display: block;
   text-align: center;
-  // padding: 1rem 4rem;
+  padding: 1rem;
 
   transition: all 0.2s;
   background-color: $main-color;
@@ -321,12 +325,6 @@
   margin: 10px 0px 10px 0;
   & > div {
     font-size: 18px;
-  }
-  &.active {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    background-color: $main-accent-color;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
   &:hover {
     margin-top: 15px;

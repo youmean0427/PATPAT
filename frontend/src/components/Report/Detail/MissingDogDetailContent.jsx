@@ -16,7 +16,10 @@ export default function MissingDogDetailContent({ item, state }) {
   });
 
   if (isLoading) return;
-  console.log(data.fileUrlList[0].filePath);
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  // console.log(data.userId, user.userId, data.fileUrlList);
+
   return (
     <div>
       <header className={styles['container-title']}>
@@ -27,13 +30,16 @@ export default function MissingDogDetailContent({ item, state }) {
               {/* <span className={styles.writer}>{data.userId}</span>
               <span className={styles.date}>23.02.03</span> */}
             </div>
-            <div>
-              <Link to="update" state={{ data, state }}>
-                <Button variant="contained" className={styles.button}>
-                  수정
-                </Button>
-              </Link>
-            </div>
+
+            {data.userId === user.userId ? (
+              <div>
+                <Link to="update" state={{ data, state }}>
+                  <Button variant="contained" className={styles.button}>
+                    수정
+                  </Button>
+                </Link>
+              </div>
+            ) : null}
           </div>
         </div>
         <hr />
@@ -41,17 +47,17 @@ export default function MissingDogDetailContent({ item, state }) {
       <div className={styles.container}>
         <div className={styles['container-info-picture']}>
           <div className={styles['container-info-picture-inner']}>
-            <div className={styles.thumbnail}>
-              <img src={data.fileUrlList[0].filePath} alt="" />
+            <div>
+              {data.fileUrlList[0] === undefined ? null : (
+                <div className={styles.thumbnail}>
+                  <img src={data.fileUrlList[0].filePath} alt="" />{' '}
+                </div>
+              )}
             </div>
 
             <div className={styles['container-info-picture-inner-sub']}>
-              <div>
-                <img src={data.fileUrlList[0].filePath} alt="" />
-              </div>
-              <div>
-                <img src={data.fileUrlList[0].filePath} alt="" />
-              </div>
+              <div>{data.fileUrlList[1] === undefined ? null : <img src={data.fileUrlList[1].filePath} alt="" />}</div>
+              <div>{data.fileUrlList[2] === undefined ? null : <img src={data.fileUrlList[2].filePath} alt="" />}</div>
             </div>
           </div>
         </div>

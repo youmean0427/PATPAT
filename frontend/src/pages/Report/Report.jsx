@@ -35,17 +35,17 @@ export default function Report() {
   const [selectedGender, setSelectedGender] = useState(gender[0]);
   const [totalPage, setTotalPage] = useState(0);
 
-  const totalPageFunction = x => {
-    setTotalPage(x);
-  };
-  const [page, setPage] = useState(1);
-  const handleClickPrev = () => {
-    setPage(prev => prev - 1);
-  };
+  // const totalPageFunction = x => {
+  //   setTotalPage(x);
+  // };
+  // const [page, setPage] = useState(1);
+  // const handleClickPrev = () => {
+  //   setPage(prev => prev - 1);
+  // };
 
-  const handleClickNext = () => {
-    setPage(prev => prev + 1);
-  };
+  // const handleClickNext = () => {
+  //   setPage(prev => prev + 1);
+  // };
 
   if (isLoading) return;
 
@@ -95,7 +95,7 @@ export default function Report() {
             />
           </span>
         </div>
-        <div className={styles.pagination}>
+        {/* <div className={styles.pagination}>
           <button
             onClick={handleClickPrev}
             className={page === 1 ? `${styles.button} ${styles.disabled}` : styles.button}
@@ -110,7 +110,7 @@ export default function Report() {
           >
             <MdArrowForwardIos />
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div>
@@ -118,16 +118,16 @@ export default function Report() {
           <MissingDogList
             genderCode={selectedGender}
             breedCode={selectedBreed}
-            pages={page}
-            totalPageFunction={totalPageFunction}
+            // pages={page}
+            // totalPageFunction={totalPageFunction}
           />
         ) : null}
         {selected === '임보' ? (
           <PersonalDogList
             genderCode={selectedGender}
             breedCode={selectedBreed}
-            pages={page}
-            totalPageFunction={totalPageFunction}
+            // pages={page}
+            // totalPageFunction={totalPageFunction}
           />
         ) : null}
       </div>
