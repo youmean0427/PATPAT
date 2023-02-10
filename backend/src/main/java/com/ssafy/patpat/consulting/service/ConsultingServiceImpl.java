@@ -114,7 +114,7 @@ public class ConsultingServiceImpl implements ConsultingService{
             PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
             Page<Consulting> consultingList = consultingRepository.findByShelterShelterIdAndConsultingDateGreaterThanEqual(requestConsultingDto.getShelterId(), LocalDate.now(),pageRequest);
             for(Consulting c : consultingList.toList()){
-                ConsultingState transferStateCode = null;
+                ConsultingState transferStateCode = c.getConsultingState();
                 if(c.getConsultingState() == ConsultingState.승인 && c.getConsultingDate().equals(LocalDate.now())){
                     transferStateCode = ConsultingState.미완료;
                     c.updateConsulting(transferStateCode);
@@ -127,7 +127,11 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .state(transferStateCode.name())
                                 .consultingDate(c.getConsultingDate())
                                 //임시값
+                                .shelterName(c.getShelter().getName())
                                 .shelterId(c.getShelter().getShelterId())
+                                .address(c.getShelter().getAddress())
+                                .shelterDogId(c.getShelterProtectedDog().getSpDogId())
+                                .shelterDogName(c.getShelterProtectedDog().getName())
                                 .userId(c.getUser().getUserId())
                                 .userName(c.getUser().getNickname())
                                 .timeCode(c.getTimeCode().getCode())
