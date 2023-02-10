@@ -18,6 +18,7 @@ import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.shelter.dto.*;
 import com.ssafy.patpat.shelter.entity.*;
+import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
 import com.ssafy.patpat.shelter.repository.*;
 import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.entity.Owner;
@@ -490,6 +491,23 @@ public class ShelterServiceImpl implements ShelterService{
                 .ownerName(s.getOwner().getName())
                 .build();
         return shelterDto;
+    }
+
+    @Override
+    @Transactional
+    public List<ShelterNameDto> selectShelterAll(){
+        List<ShelterNameDto> shelterNameDtos = new ArrayList<>();
+        List<Shelter> list = shelterRepository.findAll();
+
+        long idx = 0;
+        for (Shelter s: list) {
+            shelterNameDtos.add(ShelterNameDto.builder()
+                    .idx(idx)
+                    .name(s.getName())
+                    .build());
+            idx++;
+        }
+        return shelterNameDtos;
     }
 
 

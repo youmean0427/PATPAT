@@ -1,6 +1,7 @@
 package com.ssafy.patpat.shelter.repository;
 
 import com.ssafy.patpat.shelter.entity.Shelter;
+import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

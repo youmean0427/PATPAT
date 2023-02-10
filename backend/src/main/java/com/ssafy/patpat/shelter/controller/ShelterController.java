@@ -152,6 +152,18 @@ public class ShelterController {
 
     }
     /**
+     * 전국 보호소 목록
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation(value = "보호소 상세 조회", notes = "보호소 상세 조회")
+    public ResponseEntity<Object> selectShelterAll(){
+        List<ShelterNameDto> list = service.selectShelterAll();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(list);
+
+    }
+    /**
      * 보호소 등록
      * @return
      */
