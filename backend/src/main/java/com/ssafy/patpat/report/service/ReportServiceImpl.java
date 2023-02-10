@@ -379,7 +379,7 @@ public class ReportServiceImpl implements ReportService{
                         reportDto.getNeuteredCode(), reportDto.getCategoryEar(), reportDto.getCategoryTail(),
                         reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
 
-                if(uploadFile != null){
+                if(uploadFile != null || !uploadFile.isEmpty()){
                     List<Image> missingDogImageList = missingDog.getImages();
                     for (Image i : missingDogImageList){
                         fileService.deleteFile(i);
@@ -447,7 +447,7 @@ public class ReportServiceImpl implements ReportService{
                         reportDto.getNeuteredCode(), reportDto.getCategoryEar(), reportDto.getCategoryTail(),
                         reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
 
-                if (uploadFile != null) {
+                if (uploadFile != null || !uploadFile.isEmpty()) {
                     List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
                     for (Image i : personalProtectedDogImageList) {
                         fileService.deleteFile(i);
