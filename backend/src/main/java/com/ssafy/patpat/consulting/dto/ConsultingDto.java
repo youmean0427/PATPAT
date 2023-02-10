@@ -25,6 +25,11 @@ public class ConsultingDto {
     private String userName;
     @Schema(example = "유저 id")
     private Long userId;
+    @Schema(example = "유저 경험치")
+    private Integer userExp;
+    @Schema(example = "유저 프로필 url")
+    private String userProfileUrl;
+
     @Schema(example = "주소")
     private String address;
     @Schema(example = "시간코드")

@@ -3,7 +3,7 @@ package com.ssafy.patpat.common.code;
 import java.util.Arrays;
 
 public enum ConsultingState {
-    대기(0), 승인(1), 거절(2), 미완료(3), 생성(4), 완료(5), 방참가(6);
+    대기(0), 승인(1), 거절(2), 불참(3), 완료(4), 생성(5), 방참가(6);
 
     private int code;
 

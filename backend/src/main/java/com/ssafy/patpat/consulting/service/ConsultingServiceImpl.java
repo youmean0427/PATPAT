@@ -6,6 +6,7 @@ import com.ssafy.patpat.common.code.TimeCode;
 import com.ssafy.patpat.common.code.TimeState;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.consulting.dto.ConsultingDto;
 import com.ssafy.patpat.consulting.dto.RequestConsultingDto;
@@ -58,6 +59,9 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Autowired
     UserService userService;
 
+    @Autowired
+    FileService fileService;
+
     @Override
     public ResponseListDto selectConsultingList(RequestConsultingDto requestConsultingDto) {
         ResponseListDto responseListDto = new ResponseListDto();
@@ -71,7 +75,7 @@ public class ConsultingServiceImpl implements ConsultingService{
             for(Consulting c : consultingList.toList()){
                 ConsultingState transferStateCode = null;
                 if(c.getConsultingState() == ConsultingState.승인 && c.getConsultingDate().equals(LocalDate.now())){
-                    transferStateCode = ConsultingState.미완료;
+                    transferStateCode = ConsultingState.생성;
                     c.updateConsulting(transferStateCode);
                     consultingRepository.save(c);
                 }
@@ -109,14 +113,13 @@ public class ConsultingServiceImpl implements ConsultingService{
     public ResponseListDto selectConsultingListByShelter(RequestConsultingDto requestConsultingDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
-        UserDto userDto = userService.getUserWithAuthorities();
         try{
             PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
             Page<Consulting> consultingList = consultingRepository.findByShelterShelterIdAndConsultingDateGreaterThanEqual(requestConsultingDto.getShelterId(), LocalDate.now(),pageRequest);
             for(Consulting c : consultingList.toList()){
                 ConsultingState transferStateCode = c.getConsultingState();
                 if(c.getConsultingState() == ConsultingState.승인 && c.getConsultingDate().equals(LocalDate.now())){
-                    transferStateCode = ConsultingState.미완료;
+                    transferStateCode = ConsultingState.생성;
                     c.updateConsulting(transferStateCode);
                     consultingRepository.save(c);
                 }
@@ -134,6 +137,8 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .shelterDogName(c.getShelterProtectedDog().getName())
                                 .userId(c.getUser().getUserId())
                                 .userName(c.getUser().getNickname())
+                                .userExp(c.getUser().getExp())
+                                .userProfileUrl(fileService.getFileUrl(c.getUser().getImage()))
                                 .timeCode(c.getTimeCode().getCode())
                                 .time(c.getTimeCode().name())
                                 .build()
@@ -207,7 +212,6 @@ public class ConsultingServiceImpl implements ConsultingService{
 
         List<Time> times = timeRepository.findByShelterShelterId(shelterId);
         List<ConsultingState> consultingStates = new ArrayList<>();
-        consultingStates.add(ConsultingState.미완료);
         consultingStates.add(ConsultingState.승인);
         List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(shelterId, date, consultingStates);
         List<TimeDto> timeDtoList = new ArrayList<>();

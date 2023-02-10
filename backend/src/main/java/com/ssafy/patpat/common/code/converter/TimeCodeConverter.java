@@ -24,7 +24,7 @@ public class TimeCodeConverter implements AttributeConverter<TimeCode, Integer> 
         }
         return Stream.of(TimeCode.values())
                 .filter(c -> c.getCode()==code)
-                .findAny()
+                .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
 }
