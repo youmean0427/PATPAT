@@ -150,13 +150,13 @@ class VolunteerScheduleRepositoryTest {
 
 //        Board board = boardRepository.findByBoardId(10L);
 //        System.out.println(board);
-        List<ConsultingState> list = new ArrayList<>();
-        list.add(ConsultingState.승인);
-        list.add(ConsultingState.거절);
-        List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(5L, LocalDate.parse("2023-02-02", DateTimeFormatter.ISO_DATE), list);
-
-        for (TimeCodeMapping t:
-             timeCodes) {
+//        List<ConsultingState> list = new ArrayList<>();
+//        list.add(ConsultingState.승인);
+//        list.add(ConsultingState.거절);
+//        List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(5L, LocalDate.parse("2023-02-02", DateTimeFormatter.ISO_DATE), list);
+        List<Time> times = timeRepository.findByShelterShelterIdAndActiveTrue(291L);
+        for (Time t:
+                times) {
             System.out.println(t.getTimeCode().name());
         }
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);

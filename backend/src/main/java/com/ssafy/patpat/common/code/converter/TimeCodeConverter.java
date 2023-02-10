@@ -4,8 +4,10 @@ import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.TimeCode;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+@Converter(autoApply = true)
 public class TimeCodeConverter implements AttributeConverter<TimeCode, Integer> {
     @Override
     public Integer convertToDatabaseColumn(TimeCode timeCode) {
@@ -22,7 +24,7 @@ public class TimeCodeConverter implements AttributeConverter<TimeCode, Integer> 
         }
         return Stream.of(TimeCode.values())
                 .filter(c -> c.getCode()==code)
-                .findFirst()
+                .findAny()
                 .orElseThrow(IllegalArgumentException::new);
     }
 }

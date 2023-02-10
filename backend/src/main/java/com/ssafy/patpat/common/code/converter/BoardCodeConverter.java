@@ -4,8 +4,9 @@ import com.ssafy.patpat.common.code.BoardCode;
 import com.ssafy.patpat.common.code.TimeCode;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.stream.Stream;
-
+@Converter(autoApply = true)
 public class BoardCodeConverter implements AttributeConverter<BoardCode, Integer> {
     @Override
     public Integer convertToDatabaseColumn(BoardCode boardCode) {

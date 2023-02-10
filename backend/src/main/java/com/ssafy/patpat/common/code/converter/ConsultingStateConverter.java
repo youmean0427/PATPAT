@@ -4,8 +4,9 @@ import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.ProtectState;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.stream.Stream;
-
+@Converter(autoApply = true)
 public class ConsultingStateConverter implements AttributeConverter<ConsultingState, Integer> {
     @Override
     public Integer convertToDatabaseColumn(ConsultingState consultingState) {
