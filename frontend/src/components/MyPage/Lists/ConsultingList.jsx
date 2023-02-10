@@ -12,6 +12,7 @@ export default function ConsultingList({ userId }) {
 
   if (isLoading) return;
 
+  console.log(userId, data);
   return (
     <div className={styles.container}>
       {data.totalCount === 0 ? (

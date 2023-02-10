@@ -17,3 +17,7 @@
   border: 2px solid lightgray;
   pointer-events: none;
 }
+.click {
+  background-color: $main-color;
+  border: 2px solid $main-color;
+}
