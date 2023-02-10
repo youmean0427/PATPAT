@@ -1,7 +1,7 @@
 import ShelterContainer from 'containers/ShelterContainer';
 import React from 'react';
 import { useState } from 'react';
-import styles from './ShelterEnroll.module.scss';
+import styles from './ShelterProtectEnroll.module.scss';
 import ExcelForm from 'components/ShelterPage/ShelterProtect/ExcelForm';
 import EnrollForm from 'components/ShelterPage/ShelterProtect/EnrollForm';
 export default function ShelterEnroll() {

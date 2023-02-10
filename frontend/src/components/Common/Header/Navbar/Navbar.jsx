@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
 import MenuList from './MenuList';
 
-export default function Navbar() {
+export default function Navbar({ handleClickModalOpen }) {
   return (
     <>
       <Link className={styles['logo-link']} to="/">
@@ -12,7 +12,7 @@ export default function Navbar() {
           <img src={logo} alt="logo" />
         </div>
       </Link>
-      <MenuList />
+      <MenuList handleClickModalOpen={handleClickModalOpen} />
     </>
   );
 }

@@ -6,10 +6,10 @@ export default function ReviewItem({ item }) {
   console.log(content);
   return (
     <Card>
-      <img src={thumbnail} alt="thumbnail" />
+      <img src={thumbnail.filePath} alt="thumbnail" />
       <div className={styles['desc-wrap']}>
         <div className={styles.title}>{title}</div>
-        <div className={styles.content}>{content}</div>
+        <div className={styles.content} dangerouslySetInnerHTML={{ __html: content }}></div>
       </div>
     </Card>
   );

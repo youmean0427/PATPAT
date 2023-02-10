@@ -10,11 +10,13 @@ import EditInfoModal from 'components/Common/Modal/shelters/EditInfoModal';
 import { checkMyShelter } from 'utils/checkMyShelter';
 import OpenModalBtn from 'components/Common/Button/OpenModalBtn';
 import ImageSlide from 'components/ShelterPage/ImageSlide';
+import { useRecoilValue } from 'recoil';
+import { myShelterIdState } from 'recoil/atoms/user';
 
 export default function ShelterIntro() {
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
   const { shelterId } = useParams();
-  const { shelterId: userShelterId } = JSON.parse(localStorage.getItem('user'));
+  const myShelterId = useRecoilValue(myShelterIdState);
 
   const { data, isLoading } = useQuery(['getShelterDetailInfo', shelterId], () => getShelterDetail(shelterId), {
     staleTime: 1000 * 60 * 5,
@@ -27,7 +29,7 @@ export default function ShelterIntro() {
         <div className={styles['info-box']}>
           <div className={styles['title-box']}>
             <span>{data.name}</span>
-            {checkMyShelter(shelterId, userShelterId) && <OpenModalBtn handleClickModalOpen={handleClickModalOpen} />}
+            {checkMyShelter(shelterId, myShelterId) && <OpenModalBtn handleClickModalOpen={handleClickModalOpen} />}
           </div>
           <div className={styles.info}>
             <div className={styles['info-item']}>

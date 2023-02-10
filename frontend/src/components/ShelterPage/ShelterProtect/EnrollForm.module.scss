@@ -2,7 +2,7 @@
 
 .container {
   width: 100%;
-  margin-top: 5rem;
+  margin: 5rem 0;
 }
 .header {
   background-color: $main-color;
@@ -31,13 +31,44 @@
 .form {
   display: flex;
   position: relative;
+  margin: 5rem 0 15rem 0;
   & > .form-left {
     flex: 1;
+    & > .file-box {
+      width: 100%;
+      height: 100%;
+      padding: 0 2rem 0 2rem;
+      display: grid;
+      grid-template-rows: repeat(6, 1fr);
+      gap: 2rem;
+      & > .file-label {
+        display: inline-flex;
+        width: 100%;
+        border-radius: 0.8rem;
+        border: 2px dashed $main-accent-color;
+        font-size: 1.6rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        grid-row-start: 1;
+        grid-row-end: 3;
+        & > .camera {
+          color: $main-accent-color;
+          font-size: 3rem;
+        }
+        & > span {
+          color: $main-color;
+        }
+      }
+    }
   }
   & > .form-right {
     flex: 1;
+    grid-column-start: 3;
+    grid-column-end: 5;
     display: grid;
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     & > .input-item {
@@ -47,8 +78,19 @@
       & > label {
         font-size: 1.6rem;
       }
-      & > input {
-        font-size: 1.6rem;
+      & > .input {
+        font-size: 1.4rem;
+        flex: 1;
+        border-radius: 0.4rem;
+        border: 1px solid $gray-color;
+        padding: 0.2rem 0.8rem;
+      }
+      & > .select {
+        font-size: 1.4rem;
+      }
+      & > .color-input {
+        flex: 1;
+        width: 100%;
       }
     }
   }
@@ -60,9 +102,38 @@
   }
 }
 
+.preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  grid-row-start: 3;
+  grid-row-end: 7;
+  &-item {
+    border-radius: 0.8rem;
+    position: relative;
+
+    & > .close {
+      font-size: 3rem;
+      position: absolute;
+      color: $main-accent-color;
+      right: -1.5rem;
+      top: -1.5rem;
+      cursor: pointer;
+    }
+  }
+}
+
 .enroll {
-  color: $black-color;
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  display: grid;
+  grid-template-rows: 1fr 40px;
+  &-btn {
+    color: $black-color;
+    background-color: $main-color;
+    border-radius: 0.4rem;
+    font-size: 2rem;
+    color: $white-color;
+    text-align: center;
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
 }

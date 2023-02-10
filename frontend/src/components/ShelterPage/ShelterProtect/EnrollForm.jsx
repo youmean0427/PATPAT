@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import styles from './EnrollForm.module.scss';
 import { BsPlusCircleDotted } from 'react-icons/bs';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { enrollProtectFormDataListState } from 'recoil/atoms/protect';
 import { useLoaderData } from 'react-router-dom';
 import Select from 'react-select';
@@ -13,6 +13,17 @@ import { encodeFileToBase64 } from 'utils/image';
 import { BsFillCameraFill } from 'react-icons/bs';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import TextField from '@mui/material/TextField';
+import {
+  categoryClothOpt,
+  categoryEarOpt,
+  categoryPatternOpt,
+  categoryTailOpt,
+  genderOpt,
+  neuteredOpt,
+} from 'data/shelterProtect';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createProtect } from 'apis/api/protect';
+import { myShelterIdState } from 'recoil/atoms/user';
 export default function EnrollForm() {
   const { handleSubmit, control, register } = useForm({ mode: onchange });
   const [count, setCount] = useState(0);
@@ -22,6 +33,14 @@ export default function EnrollForm() {
   const breedList = useLoaderData();
   const [formDataList, setFormDataList] = useRecoilState(enrollProtectFormDataListState);
   const LIMIT_UPLOAD_IMAGE_FILE = 4;
+  const queryClient = useQueryClient();
+  const myShelterId = useRecoilValue(myShelterIdState);
+  const { mutate } = useMutation(['enrollShelterProtect'], formdata => createProtect(formdata), {
+    onSuccess: data => {
+      console.log(data);
+      alert('등록되었습니다.');
+    },
+  });
 
   useEffect(() => {
     if (files) {
@@ -38,20 +57,38 @@ export default function EnrollForm() {
   }, [files]);
 
   const onSubmit = nData => {
+    const {
+      protectName,
+      breed,
+      age,
+      kg,
+      neutered,
+      gender,
+      categoryEar,
+      categoryTail,
+      categoryPattern,
+      categoryColor,
+      categoryCloth,
+      uploadImages,
+    } = nData;
     console.log(nData);
-    // const formData = new FormData();
-    // formData.append('name', nData.name);
-    // formData.append('ownerName', nData.ownerName);
-    // formData.append('phoneNumber', nData.phoneNumber);
-    // formData.append('infoContent', nData.infoContent);
-    // formData.append('shelterId', shelterId);
-    // let count = 0;
-    // Array.from(files).forEach(item => {
-    //   count++;
-    //   if (count > LIMIT_UPLOAD_IMAGE_FILE) return;
-    //   formData.append('uploadFile', item);
-    // });
-    // mutate(formData);
+    const formData = new FormData();
+    formData.append('protectName', protectName);
+    formData.append('breedId', breed.value);
+    formData.append('genderCode', gender.value);
+    formData.append('kg', kg);
+    formData.append('neuteredCode', neutered.value);
+    formData.append('age', age);
+    formData.append('categoryEar', categoryEar.value);
+    formData.append('categoryTail', categoryTail.value);
+    formData.append('categoryPattern', categoryPattern.value);
+    formData.append('categoryColor', 1);
+    formData.append('categoryCloth', categoryCloth.value);
+    formData.append('shelterId', myShelterId);
+    Array.from(uploadImages).forEach(item => {
+      formData.append('uploadFile', item);
+    });
+    mutate(formData);
   };
 
   const handleImagePreview = e => {
@@ -71,13 +108,7 @@ export default function EnrollForm() {
   };
 
   const handleClickNewForm = () => {};
-  const customStyles = {
-    control: base => ({
-      ...base,
-      height: 35,
-      minHeight: 35,
-    }),
-  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -85,36 +116,73 @@ export default function EnrollForm() {
         <BsPlusCircleDotted onClick={handleClickNewForm} className={styles.add} />
       </div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles['form-left']}></div>
+        <div className={styles['form-left']}>
+          <div className={styles['file-box']}>
+            <label className={styles['file-label']} htmlFor="upload-file">
+              <BsFillCameraFill className={styles.camera} />
+              <span>{count}/4</span>
+            </label>
+            <input
+              style={{ display: 'none' }}
+              id="upload-file"
+              type="file"
+              accept="image/*"
+              multiple
+              {...register('uploadImages', { onChange: handleImagePreview })}
+            />
+            <div className={styles.preview}>
+              {Base64s.map((item, index) => (
+                <div
+                  style={{ background: `no-repeat center/100% url("${item.url}")`, backgroundSize: 'cover' }}
+                  className={styles['preview-item']}
+                  key={index}
+                  data-index={index}
+                >
+                  <AiFillCloseCircle onClick={handleClickDelete} className={styles.close} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
         <div className={styles['form-right']}>
           <div className={`${styles['input-item']} ${styles.name}`}>
             <label>이름</label>
-            <input type="text" placeholder="이름을 입력해주세요" {...register('protectName')} />
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="이름을 입력해주세요"
+              {...register('protectName')}
+            />
           </div>
           <div className={`${styles['input-item']} ${styles.breed}`}>
             <label>견종</label>
             <Controller
               name="breed"
               render={({ field }) => (
-                <Select {...field} placeholder="선택해주세요" options={changeBreedList(breedList)} />
+                <Select
+                  {...field}
+                  className={styles.select}
+                  placeholder="선택해주세요"
+                  options={changeBreedList(breedList)}
+                />
               )}
               control={control}
             />
           </div>
           <div className={`${styles['input-item']} ${styles.kg}`}>
             <label>몸무게</label>
-            <input type="number" step="0.1" placeholder="몸무게" {...register('kg')} />
+            <input className={styles.input} type="number" step="0.1" placeholder="몸무게" {...register('kg')} />
           </div>
           <div className={`${styles['input-item']} ${styles.age}`}>
             <label>추정 나이</label>
-            <input type="number" placeholder="나이" {...register('age')} />
+            <input className={styles.input} type="number" placeholder="나이" {...register('age')} />
           </div>
           <div className={`${styles['input-item']} ${styles.gender}`}>
             <label>성별</label>
             <Controller
               name="gender"
               render={({ field }) => (
-                <Select {...field} placeholder="선택해주세요" options={changeBreedList(breedList)} />
+                <Select className={styles.select} {...field} placeholder="선택해주세요" options={genderOpt} />
               )}
               control={control}
             />
@@ -124,15 +192,61 @@ export default function EnrollForm() {
             <Controller
               name="neutered"
               render={({ field }) => (
-                <Select {...field} placeholder="선택해주세요" options={changeBreedList(breedList)} />
+                <Select className={styles.select} {...field} placeholder="선택해주세요" options={neuteredOpt} />
               )}
               control={control}
             />
           </div>
+          <div className={`${styles['input-item']} ${styles['category-ear']}`}>
+            <label>귀</label>
+            <Controller
+              name="categoryEar"
+              render={({ field }) => (
+                <Select className={styles.select} {...field} placeholder="선택해주세요" options={categoryEarOpt} />
+              )}
+              control={control}
+            />
+          </div>
+          <div className={`${styles['input-item']} ${styles['category-tail']}`}>
+            <label>꼬리</label>
+            <Controller
+              name="categoryTail"
+              render={({ field }) => (
+                <Select className={styles.select} {...field} placeholder="선택해주세요" options={categoryTailOpt} />
+              )}
+              control={control}
+            />
+          </div>
+          <div className={`${styles['input-item']} ${styles['category-pattern']}`}>
+            <label>무늬</label>
+            <Controller
+              name="categoryPattern"
+              render={({ field }) => (
+                <Select className={styles.select} {...field} placeholder="선택해주세요" options={categoryPatternOpt} />
+              )}
+              control={control}
+            />
+          </div>
+          <div className={`${styles['input-item']} ${styles['category-color']}`}>
+            <label>털색</label>
+            <input className={styles['color-input']} type="color" {...register('categoryColor')} />
+          </div>
+          <div className={`${styles['input-item']} ${styles['category-cloth']}`}>
+            <label>옷착용</label>
+            <Controller
+              name="categoryCloth"
+              render={({ field }) => (
+                <Select className={styles.select} {...field} placeholder="선택해주세요" options={categoryClothOpt} />
+              )}
+              control={control}
+            />
+          </div>
+          <div className={styles.enroll}>
+            <button className={styles['enroll-btn']} type="submit">
+              등록
+            </button>
+          </div>
         </div>
-        <button className={styles.enroll} type="submit">
-          제출
-        </button>
       </form>
     </div>
   );
