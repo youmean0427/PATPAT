@@ -39,6 +39,17 @@ export const getShelterConsultations = async (shelterId, limit, offset) => {
   return data;
 };
 
+/**
+ * 보호소 내 상담 예약 가능한 시간 리스트
+ * @param {int} shelterId
+ * @param {string} date
+ * @returns
+ */
+export const getShelterConsultationsTime = async (shelterId, date) => {
+  const { data } = await authInstance.get(`/consultations/shelters/${shelterId}?date=${date}`);
+  return data;
+};
+
 // POST
 
 /**
