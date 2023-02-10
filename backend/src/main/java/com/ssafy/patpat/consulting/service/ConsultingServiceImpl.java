@@ -201,7 +201,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Transactional
     public List<TimeDto> selectTimeList(Long shelterId, LocalDate date) {
 
-        List<Time> times = timeRepository.findByShelterShelterIdAndActive(shelterId, true);
+        List<Time> times = timeRepository.findByShelterShelterIdAndActiveTrue(shelterId);
         List<ConsultingState> consultingStates = new ArrayList<>();
         consultingStates.add(ConsultingState.미완료);
         consultingStates.add(ConsultingState.승인);
@@ -222,7 +222,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                     }
                 }
                 if(!ok) continue;
-                if(hour+1 < time.getTimeCode().getCode()){
+                if(hour < time.getTimeCode().getCode()){
                     timeDtoList.add(
                             TimeDto.builder()
                                     .timeCode(time.getTimeCode().getCode())
