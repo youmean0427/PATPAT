@@ -264,7 +264,7 @@ public class ProtectServiceImpl implements ProtectService{
         System.out.println(protectDto);
         try {
             List<Image> images = new ArrayList<>();
-            if(uploadFile != null || !uploadFile.isEmpty()){
+            if(uploadFile != null){
                 for (MultipartFile partFile : uploadFile) {
                     Image image = fileService.insertFile(partFile, "protect");
                     images.add(image);
@@ -549,7 +549,7 @@ public class ProtectServiceImpl implements ProtectService{
 //                list.add(i.getImageId());
 //            }
 //            List<Image> imageList = imageRepository.findByImageIdIn(list);
-            if(uploadFile != null || !uploadFile.isEmpty()){
+            if(uploadFile != null){
                 List<Image> images = shelterProtectedDog.getImages();
                 for(Image i : images){
 //                File file = new File(uploadPath+File.separator+i.getFilePath());

@@ -378,7 +378,7 @@ public class ShelterServiceImpl implements ShelterService{
 
 
 
-        if(uploadFile != null || !uploadFile.isEmpty()){
+        if(uploadFile != null){
             List<Image> shelterImageList = shelter.getImages();
             for (Image i:
                     shelterImageList) {
