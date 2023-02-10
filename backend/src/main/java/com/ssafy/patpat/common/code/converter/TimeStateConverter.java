@@ -4,8 +4,10 @@ import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.TimeState;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+@Converter(autoApply = true)
 public class TimeStateConverter implements AttributeConverter<TimeState, Integer> {
     @Override
     public Integer convertToDatabaseColumn(TimeState timeState) {

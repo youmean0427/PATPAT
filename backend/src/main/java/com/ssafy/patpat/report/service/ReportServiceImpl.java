@@ -379,7 +379,7 @@ public class ReportServiceImpl implements ReportService{
                         reportDto.getNeuteredCode(), reportDto.getCategoryEar(), reportDto.getCategoryTail(),
                         reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
 
-                if(uploadFile != null){
+                if(uploadFile != null || !uploadFile.isEmpty()){
                     List<Image> missingDogImageList = missingDog.getImages();
                     for (Image i : missingDogImageList){
                         fileService.deleteFile(i);
@@ -447,7 +447,7 @@ public class ReportServiceImpl implements ReportService{
                         reportDto.getNeuteredCode(), reportDto.getCategoryEar(), reportDto.getCategoryTail(),
                         reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
 
-                if (uploadFile != null) {
+                if (uploadFile != null || !uploadFile.isEmpty()) {
                     List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
                     for (Image i : personalProtectedDogImageList) {
                         fileService.deleteFile(i);
@@ -530,7 +530,7 @@ public class ReportServiceImpl implements ReportService{
         Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
         try{
             List<Image> images = new ArrayList<>();
-            if(!uploadFile.isEmpty()){
+            if(uploadFile != null || !uploadFile.isEmpty()){
                 for (MultipartFile file:
                         uploadFile) {
                     images.add(fileService.insertFile(file,"report"));

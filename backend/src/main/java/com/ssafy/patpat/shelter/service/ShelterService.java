@@ -26,4 +26,6 @@ public interface ShelterService {
     List<BreedDto> selectBreedList();
 
     MbtiMapDto selectBreedCountByMbti(Long breedId);
+
+    List<ShelterNameDto> selectShelterAll();
 }

@@ -68,4 +68,9 @@ public class ShelterProtectedDog {
     @ManyToMany(mappedBy = "favoriteDogs")
     private List<User> users;
 
+    @PrePersist
+    public void prePersist() {
+        this.stateCode = this.stateCode == null ? ProtectState.공고중 : this.stateCode;
+    }
+
 }

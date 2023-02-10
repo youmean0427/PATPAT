@@ -13,6 +13,7 @@ import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.shelter.entity.Shelter;
+import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
@@ -150,15 +151,21 @@ class VolunteerScheduleRepositoryTest {
 
 //        Board board = boardRepository.findByBoardId(10L);
 //        System.out.println(board);
-        List<ConsultingState> list = new ArrayList<>();
-        list.add(ConsultingState.승인);
-        list.add(ConsultingState.거절);
-        List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(5L, LocalDate.parse("2023-02-02", DateTimeFormatter.ISO_DATE), list);
-
-        for (TimeCodeMapping t:
-             timeCodes) {
-            System.out.println(t.getTimeCode().name());
+//        List<ConsultingState> list = new ArrayList<>();
+//        list.add(ConsultingState.승인);
+//        list.add(ConsultingState.거절);
+//        List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(5L, LocalDate.parse("2023-02-02", DateTimeFormatter.ISO_DATE), list);
+//        List<Time> times = timeRepository.findByShelterShelterIdAndActiveTrue(291L);
+//        Shelter shelter = shelterRepository.findByNameAndRegNumber("경주동물사랑보호센터","20");
+        List<Shelter> list = shelterRepository.findAll();
+        for (Shelter s : list){
+            System.out.println(s.getName());
         }
+//        System.out.println(shelter.getShelterId());
+//        for (Time t:
+//                times) {
+//            System.out.println(t.getTimeCode().name());
+//        }
 //        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(3L);
 //        List<ShelterProtectedDog> list = user.get().getFavoriteDogs();
 //        for (ShelterProtectedDog d:
