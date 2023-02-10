@@ -264,7 +264,7 @@ public class ProtectServiceImpl implements ProtectService{
         System.out.println(protectDto);
         try {
             List<Image> images = new ArrayList<>();
-            if(!uploadFile.isEmpty()){
+            if(uploadFile != null || !uploadFile.isEmpty()){
                 for (MultipartFile partFile : uploadFile) {
                     Image image = fileService.insertFile(partFile, "protect");
                     images.add(image);
@@ -540,7 +540,7 @@ public class ProtectServiceImpl implements ProtectService{
 
             ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(protectId);
 
-            List<Image> images = shelterProtectedDog.getImages();
+
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
 //            if(!uploadDir.exists()) uploadDir.mkdir();
@@ -549,19 +549,22 @@ public class ProtectServiceImpl implements ProtectService{
 //                list.add(i.getImageId());
 //            }
 //            List<Image> imageList = imageRepository.findByImageIdIn(list);
-            for(Image i : images){
+            if(uploadFile != null || !uploadFile.isEmpty()){
+                List<Image> images = shelterProtectedDog.getImages();
+                for(Image i : images){
 //                File file = new File(uploadPath+File.separator+i.getFilePath());
 //                if(file.exists()) file.delete();
-                fileService.deleteFile(i);
-            }
-            images.removeAll(images);
+                    fileService.deleteFile(i);
+                }
+                images.removeAll(images);
 
-            for (MultipartFile partFile : uploadFile) {
-                Image image = fileService.insertFile(partFile, "protect");
-                images.add(image);
+                for (MultipartFile partFile : uploadFile) {
+                    Image image = fileService.insertFile(partFile, "protect");
+                    images.add(image);
+                }
+                shelterProtectedDog.setImages(images);
             }
 
-            shelterProtectedDog.setImages(images);
             shelterProtectedDog.setWeight(protectDto.getKg());
             shelterProtectedDog.setFeature(protectDto.getInfoContent());
 

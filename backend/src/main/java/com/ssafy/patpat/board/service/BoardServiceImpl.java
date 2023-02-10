@@ -233,7 +233,7 @@ public class BoardServiceImpl implements BoardService{
 //        Optional<User> user = userRepository.findById(boardDto.getUserId());
         List<Image> images = new ArrayList<>();
         try{
-            if(uploadFile!=null) {
+            if(uploadFile != null || !uploadFile.isEmpty()) {
                 for (MultipartFile partFile : uploadFile) {
                     images.add(fileService.insertFile(partFile, "board"));
                 }
@@ -316,7 +316,7 @@ public class BoardServiceImpl implements BoardService{
             images.removeAll(images);
 
 //            List<Image> newImages = new ArrayList<>();
-            if(uploadFile!=null) {
+            if(uploadFile != null || !uploadFile.isEmpty()) {
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));
                 }

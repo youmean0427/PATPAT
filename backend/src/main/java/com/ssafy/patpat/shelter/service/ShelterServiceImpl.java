@@ -377,7 +377,7 @@ public class ShelterServiceImpl implements ShelterService{
 
 
 
-        if(uploadFile != null){
+        if(uploadFile != null || !uploadFile.isEmpty()){
             List<Image> shelterImageList = shelter.getImages();
             for (Image i:
                     shelterImageList) {
@@ -458,16 +458,26 @@ public class ShelterServiceImpl implements ShelterService{
             LOGGER.info("오너가 없다.");
             return null;
         }
-        for(Image i : shelterImageList){
+        if(shelterImageList.isEmpty()){
+            Image i = fileService.getDefaultImage();
             imageList.add(FileDto.builder()
                     .id(i.getImageId())
                     .origFilename(i.getOrigFilename())
                     .filename(i.getFilename())
                     .filePath(fileService.getFileUrl(i))
                     .build());
-
-
         }
+        else{
+            for(Image i : shelterImageList){
+                imageList.add(FileDto.builder()
+                        .id(i.getImageId())
+                        .origFilename(i.getOrigFilename())
+                        .filename(i.getFilename())
+                        .filePath(fileService.getFileUrl(i))
+                        .build());
+            }
+        }
+
 
         ShelterDto shelterDto = ShelterDto.builder()
                 .shelterId(s.getShelterId())
