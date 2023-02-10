@@ -175,7 +175,7 @@ public class ReportServiceImpl implements ReportService{
             }
             if(missingDogImageList.size() > 0){
                 thumbnail =  FileDto.builder()
-                        .filePath(missingDogImageList.get(0).getFilePath())
+                        .filePath(fileService.getFileUrl(missingDogImageList.get(0)))
                         .build();
             }
             Breed breed = missingDog.getBreed();
