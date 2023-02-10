@@ -315,11 +315,11 @@ class PatpatApplicationTests {
 //			timeDtoList.add(new TimeDto(i));
 //		}
 //		System.out.println(timeDtoList);
-		BigDecimal a = new BigDecimal(37.5152937);
-		BigDecimal b = new BigDecimal(126.9013676);
-		List<TestDistance> test = testRepository.selectAllSQL(a,b,a);
-		System.out.println("here");
-		System.out.println(test);
+//		BigDecimal a = new BigDecimal(37.5152937);
+//		BigDecimal b = new BigDecimal(126.9013676);
+//		List<TestDistance> test = testRepository.selectAllSQL(a,b,a);
+//		System.out.println("here");
+//		System.out.println(test);
 //
 //		System.out.println(passwordEncoder.matches("175","$2a$10$VOy/116s7ztl6fcGsh.C7.pYAinRybRqy4B8Q9OSm5fHQnvwNwH2G"));
 //
@@ -495,5 +495,73 @@ class PatpatApplicationTests {
 //				.fileSize(size)
 //				.filePath(s)
 //				.build();
+//	}
+//}
+@Test
+public void color(){
+	class Color implements Comparable<Color>{
+		String code;
+		int val;
+		public Color(String code, int val){
+			this.code=code;
+			this.val=val;
+		}
+
+		@Override
+		public String toString() {
+			return "Color{" +
+					"code='" + code + '\'' +
+					", val=" + val +
+					'}';
+		}
+
+		@Override
+		public int compareTo(Color o) {
+			return this.val-o.val;
+		}
 	}
+
+	String str = "#8B4513";
+	int[] colors = new int[3];
+	ArrayList<Color> list = new ArrayList<>();
+	list.add(new Color("R",Integer.parseInt(str.substring(1,3),16)));
+	list.add(new Color("G",Integer.parseInt(str.substring(3,5),16)));
+	list.add(new Color("B",Integer.parseInt(str.substring(5,7),16)));
+
+	Collections.sort(list);
+	for(Color c : list){
+		System.out.println(c);
+	}
+
+	int max = list.get(2).val;
+	int mid = list.get(1).val;
+	int min = list.get(0).val;
+	int maxMmid = max-mid;
+	int maxMmin = max-min;
+	String code = null;
+
+
+	if(max<=60 && mid<=60 && min<=60){
+		code = "K";
+	}else if(max>=230 && mid >=230 && min >=230){
+		code = "W";
+	}else{
+		if(maxMmin < 30){
+			code = "H";
+		}
+		else if(maxMmid >= 30){
+			code = list.get(2).code;
+		}
+		else if(maxMmid < 30 && maxMmin >=30){
+			if(list.get(3).code.equals("R") && list.get(2).code.equals("G")){
+				code = "Y";
+			}else if (list.get(3).code.equals("R") && list.get(3).code.equals("B")){
+				code = "V";
+			}else if(list.get(3).equals("G") && list.get(3).equals("B")){
+				code = "E";
+			}
+		}
+	}
+
+}
 }
