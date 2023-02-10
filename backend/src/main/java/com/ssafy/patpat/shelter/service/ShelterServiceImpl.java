@@ -9,6 +9,7 @@ import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.service.FileService;
+import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
@@ -321,7 +322,6 @@ public class ShelterServiceImpl implements ShelterService{
 //            rd.close();
 //            conn.disconnect();
             Shelter shelter = shelterRepository.findByNameAndRegNumber(shelterNm,shelterCode);
-            LOGGER.info("이고이노{}",shelterNm);
 
             if(shelter==null){
                 dto.setAuthCode("FAIL");
@@ -330,13 +330,24 @@ public class ShelterServiceImpl implements ShelterService{
             else{
                 dto.setAuthCode(passwordEncoder.encode(shelter.getRegNumber()));
                 System.out.println(dto);
-                UserDto userDto = userService.getUserWithAuthorities();
-                Owner owner = new Owner();
-                owner.setName(userDto.getUsername());
-                owner.setUser(userRepository.findById(userDto.getUserId()).get());
-                owner = ownerRepository.save(owner);
-                shelter.setOwner(owner);
-                shelterRepository.save(shelter);
+                Optional<Owner> o = Optional.ofNullable(shelter.getOwner());
+                if(!o.isPresent()){ // owner가 없다면
+                    Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+                    user.get().setShelter(shelter);
+                    Owner owner = new Owner();
+                    owner.setName(user.get().getNickname());
+                    owner.setUser(user.get());
+                    shelter.setOwner(owner);
+
+                    shelter = shelterRepository.save(shelter);
+                    userRepository.save(user.get());
+                    dto.setShelterId(shelter.getShelterId());
+                }
+                else{
+                    dto.setAuthCode("이미 등록된 보호소입니다.");
+                    return dto;
+                }
+
             }
         }catch (Exception e){
             e.printStackTrace();
