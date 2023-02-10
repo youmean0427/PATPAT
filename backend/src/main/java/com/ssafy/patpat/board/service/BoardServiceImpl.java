@@ -16,6 +16,8 @@ import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -36,6 +38,8 @@ import java.util.UUID;
 
 @Service
 public class BoardServiceImpl implements BoardService{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BoardServiceImpl.class);
     @Autowired
     BoardRepository boardRepository;
     @Autowired
