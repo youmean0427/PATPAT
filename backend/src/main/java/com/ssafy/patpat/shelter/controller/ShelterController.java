@@ -9,8 +9,11 @@ import com.ssafy.patpat.shelter.entity.Gugun;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.entity.Sido;
 import com.ssafy.patpat.shelter.service.ShelterService;
+import com.ssafy.patpat.shelter.service.ShelterServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,8 @@ import java.util.List;
 @RequestMapping("api/shelters")
 @Api(tags = {"05. Shelter"},description = "보호소 관련 서비스")
 public class ShelterController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShelterServiceImpl.class);
     @Autowired
     ShelterService service;
 
@@ -153,7 +158,7 @@ public class ShelterController {
     @PostMapping
     @ApiOperation(value = "보호소 등록", notes = "보호소 등록")
     public ResponseEntity<Object> insertShelter(@RequestBody RequestParamShelterInsertDto requestParamShelterInsertDto){
-        System.out.println(requestParamShelterInsertDto);
+        LOGGER.info("여긴와?");
         AuthCodeDto authCodeDto = service.insertShelter(requestParamShelterInsertDto);
         if(authCodeDto!=null){
             return ResponseEntity.status(HttpStatus.OK)
