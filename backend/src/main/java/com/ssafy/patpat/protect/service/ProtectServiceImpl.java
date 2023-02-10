@@ -286,7 +286,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .longitude(shelter.getLongitude())
                     .name(protectDto.getProtectName())
                     .weight(protectDto.getKg())
-                    .stateCode(ProtectState.of(protectDto.getStateCode()))
+//                    .stateCode(ProtectState.of(protectDto.getStateCode()))
                     .sidoCode(shelter.getSidoCode())
                     .gugunCode(shelter.getGugunCode())
                     .categoryCloth(protectDto.getCategoryCloth())
