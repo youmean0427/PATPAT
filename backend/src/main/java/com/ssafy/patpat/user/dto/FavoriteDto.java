@@ -22,8 +22,9 @@ public class FavoriteDto {
     private Integer stateCode;
     private String state;
     private Double weight;
-    private Boolean neutered;
 
+    private String neutered;
+    private Integer neuteredCode;
     private String gender;
     private Integer genderCode;
 

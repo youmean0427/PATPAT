@@ -315,11 +315,11 @@ class PatpatApplicationTests {
 //			timeDtoList.add(new TimeDto(i));
 //		}
 //		System.out.println(timeDtoList);
-		BigDecimal a = new BigDecimal(37.5152937);
-		BigDecimal b = new BigDecimal(126.9013676);
-		List<TestDistance> test = testRepository.selectAllSQL(a,b,a);
-		System.out.println("here");
-		System.out.println(test);
+//		BigDecimal a = new BigDecimal(37.5152937);
+//		BigDecimal b = new BigDecimal(126.9013676);
+//		List<TestDistance> test = testRepository.selectAllSQL(a,b,a);
+//		System.out.println("here");
+//		System.out.println(test);
 //
 //		System.out.println(passwordEncoder.matches("175","$2a$10$VOy/116s7ztl6fcGsh.C7.pYAinRybRqy4B8Q9OSm5fHQnvwNwH2G"));
 //
@@ -495,5 +495,5 @@ class PatpatApplicationTests {
 //				.fileSize(size)
 //				.filePath(s)
 //				.build();
-	}
+
 }
