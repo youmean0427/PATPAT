@@ -114,13 +114,13 @@ public class BoardServiceImpl implements BoardService{
             FileDto thumbnail = null;
             if(requestBoardDto.getTypeCode() == 0){
 //                List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
-                List<Image> postImageList = board.getImages();
-                List<Image> imageList = new ArrayList<>();
+
+                List<Image> imageList = board.getImages();
 //                for(Image post : postImageList){
 //                    imageList.add(imageRepository.findByImageId(post.getImageId()));
 //                }
 
-                if(imageList.isEmpty()){
+                if(imageList == null || imageList.isEmpty()){
                     thumbnail = FileDto.builder()
                             .filePath(fileService.getFileUrl(fileService.getDefaultImage()))
                             .build();

@@ -33,7 +33,7 @@ public class BoardController {
      * @return
      */
     @GetMapping()
-    @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트를 조회한다.")
+    @ApiOperation(value = "게시판 리스트", notes = "게시판 리스트를 조회한다.")
     public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
 //        System.out.println(requestBoardDto);
