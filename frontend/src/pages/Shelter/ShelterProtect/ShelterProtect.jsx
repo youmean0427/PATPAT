@@ -14,9 +14,8 @@ export default function ShelterProtect() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const LIMIT = 8;
-
   const { data, isLoading } = useQuery(['protectListOfShelter', shelterId, page], () => {
-    return getProtectListOfShelter(shelterId, LIMIT, page - 1);
+    return getProtectListOfShelter(shelterId, 0, LIMIT, page - 1);
   });
   const handleClickPrev = () => {
     setPage(prev => prev - 1);
