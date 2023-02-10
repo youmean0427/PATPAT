@@ -10,7 +10,10 @@ export default function MbtiContainer({ children }) {
         </header>
         <div className={styles.main}>{children}</div>
       </div>
-      <footer className={styles.footer}>나의 MBTI에 맞는 강아지는 ?</footer>
+      <footer className={styles.footer}>
+        <span>나의 MBTI에 맞는 강아지는 ?</span>
+        <Link to="/">PatPat 바로가기</Link>
+      </footer>
     </div>
   );
 }

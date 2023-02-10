@@ -1,17 +1,17 @@
 import useAuth from 'hooks/useAuth';
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import MenuItem from './MenuItem';
 import styles from './MenuList.module.scss';
 import { FaDog } from 'react-icons/fa';
 import { GiSittingDog } from 'react-icons/gi';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isMobileMenuOpenState } from 'recoil/atoms/header';
 import { isHaveShelter } from 'utils/checkMyShelter';
 import MyProfileMenuItem from './MyProfileMenuItem';
 import { myShelterIdState } from 'recoil/atoms/user';
 export default function MenuList() {
-  const [isLogin, setIsLogin, handleClickLogout, handleClickLogin] = useAuth();
+  const [isLogin, setIsLogin] = useAuth();
   const [isOpen, setIsOpen] = useRecoilState(isMobileMenuOpenState);
   const [myShelterId, setMyShelterId] = useRecoilState(myShelterIdState);
   const handleClickMobileMenu = () => {
@@ -29,12 +29,13 @@ export default function MenuList() {
     } else {
       setMyShelterId(null);
     }
-  }, []);
+  }, [setIsLogin, setMyShelterId]);
 
   const intro = [
     { title: 'PATPAT은', path: 'intro' },
     { title: '미션 & 비전', path: 'vision' },
     { title: '통계', path: 'statistics' },
+    { title: 'PETBTI', path: 'mbti' },
   ];
 
   const shelter = [

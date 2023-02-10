@@ -12,7 +12,6 @@ import Loading from 'components/Common/Loading';
 
 export default function SearchShelter() {
   const setPage = useSetRecoilState(searchShelterPageState);
-  const setSido = useSetRecoilState(selectSidoState);
   useEffect(() => {
     setPage(1);
   }, [setPage]);

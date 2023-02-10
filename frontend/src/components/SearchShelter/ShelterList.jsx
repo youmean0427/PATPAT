@@ -13,7 +13,7 @@ function ShelterList() {
   const breed = useRecoilValue(selectBreedState);
   const [page, setPage] = useRecoilState(searchShelterPageState);
   const LIMIT = 10;
-  const { data, isLoading, isFetching } = useQuery(
+  const { data, isLoading } = useQuery(
     ['shelterList', sido.sidoCode, gugun.gugunCode, breed.breedId, page],
     () => {
       return getShelterList(sido.sidoCode, gugun.gugunCode, breed.breedId, LIMIT, page - 1);
@@ -23,7 +23,7 @@ function ShelterList() {
   const handlePageChange = pageNumber => {
     setPage(pageNumber);
   };
-  if (isLoading || isFetching) return <Loading></Loading>;
+  if (isLoading) return <Loading />;
   return (
     <div className={styles.container}>
       {data.totalCount !== 0 ? (

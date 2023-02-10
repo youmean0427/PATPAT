@@ -1,6 +1,6 @@
+import styles from './MissingDogItem.module.scss';
 import Card from 'components/Common/Card';
 import React from 'react';
-import styles from './MissingDogItem.module.scss';
 import { Link } from 'react-router-dom';
 // import test from '../../../assets/images/ear8.png';
 import HtmlReactParser from 'html-react-parser';
