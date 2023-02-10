@@ -6,12 +6,13 @@ import EarDetail from 'components/Report/Create/EarDetail';
 import PatternDetail from 'components/Report/Create/PatternDetail';
 import TailDetail from 'components/Report/Create/TailDetail';
 import PetsIcon from '@mui/icons-material/Pets';
+import { insertFavProtect, deleteFavProtect } from 'apis/api/user';
 
 export default function DetailContent({ data }) {
   const [modal, setModal] = useState(false);
   const [modalNum, setModalNum] = useState();
   const [userId, setUserId] = useState();
-
+  const [favorite, setFavorite] = useState(true);
   const openModal = idx => {
     setModalNum(idx);
     setModal(true);
@@ -19,6 +20,11 @@ export default function DetailContent({ data }) {
 
   const closeModal = () => {
     setModal(false);
+  };
+
+  const handleFavBtn = () => {
+    favorite ? deleteFavProtect(data.protectId) : insertFavProtect(data.protectId);
+    setFavorite(cur => !cur);
   };
 
   useEffect(() => {
@@ -33,18 +39,30 @@ export default function DetailContent({ data }) {
         <div className={styles['dog-name']}>
           <p>{data.protectName}</p>{' '}
           {userId !== undefined ? (
-            <PetsIcon className={styles.pressed} sx={{ color: '#F87EA3', fontSize: '4rem' }} />
+            data.isFavorite ? (
+              <PetsIcon
+                className={styles.pressed}
+                onClick={() => handleFavBtn()}
+                sx={{ fontSize: '4rem', color: 'hotpink' }}
+              />
+            ) : (
+              <PetsIcon
+                className={styles.pressed}
+                onClick={() => handleFavBtn()}
+                sx={{ fontSize: '4rem', color: 'lightgray' }}
+              />
+            )
           ) : null}
         </div>
         <div
           className={
             data.stateCode === 0
-              ? styles['state0']
+              ? styles.state0
               : data.stateCode === 1
-              ? styles['state1']
+              ? styles.state1
               : data.stateCode === 2
-              ? styles['state2']
-              : styles['state3']
+              ? styles.state2
+              : styles.state3
           }
         >
           {data.state}
