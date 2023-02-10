@@ -41,7 +41,5 @@ public class ConsultingDto {
     private Long shelterDogId;
     @Schema(example = "강아지id")
     private String shelterDogName;
-    @Schema(example = "강아지id")
-    private Boolean isOpen;
 
 }

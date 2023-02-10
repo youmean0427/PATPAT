@@ -120,12 +120,11 @@ public class BoardServiceImpl implements BoardService{
 //                    imageList.add(imageRepository.findByImageId(post.getImageId()));
 //                }
 
-                if(imageList == null || imageList.isEmpty()){
+                if(imageList.isEmpty()){
                     thumbnail = FileDto.builder()
                             .filePath(fileService.getFileUrl(fileService.getDefaultImage()))
                             .build();
-                }
-                if(imageList.size()!=0){
+                }else{
                     thumbnail = FileDto.builder()
                             .filePath(fileService.getFileUrl(imageList.get(0)))
                             .build();
@@ -233,7 +232,7 @@ public class BoardServiceImpl implements BoardService{
 //        Optional<User> user = userRepository.findById(boardDto.getUserId());
         List<Image> images = new ArrayList<>();
         try{
-            if(uploadFile != null || !uploadFile.isEmpty()) {
+            if(uploadFile != null) {
                 for (MultipartFile partFile : uploadFile) {
                     images.add(fileService.insertFile(partFile, "board"));
                 }
@@ -316,7 +315,7 @@ public class BoardServiceImpl implements BoardService{
             images.removeAll(images);
 
 //            List<Image> newImages = new ArrayList<>();
-            if(uploadFile != null || !uploadFile.isEmpty()) {
+            if(uploadFile != null) {
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));
                 }
