@@ -1,5 +1,6 @@
 package com.ssafy.patpat.user.controller;
 
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.security.filter.JwtFilter;
@@ -43,18 +44,12 @@ public class UserController {
      */
     @GetMapping("/favorite")
     @PreAuthorize("hasAnyRole('USER')")
-    @ApiOperation(value = "찜 동물 조회", notes = "찜 동물 리스트 조회")
-    public ResponseEntity<Object> selectFavoriteList(){
+    @ApiOperation(value = "찜 동물 조회", notes = "찜 동물 리스트 조회 / offSet, limit")
+    public ResponseEntity<Object> selectFavoriteList(@RequestParam("offSet") Integer offSet, @RequestParam("limit") Integer limit){
         //서비스 호출 코드
-        UserDto user = userService.getUserWithAuthorities();
-        List<FavoriteDto> list = userService.getFavoriteDogs(user);
-        if(list != null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(list);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        ResponseListDto list = userService.getFavoriteDogs(offSet, limit);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(list);
     }
     /**
      * 찜 등록
@@ -62,11 +57,10 @@ public class UserController {
      */
     @GetMapping("/favorite/{protectId}")
     @PreAuthorize("hasAnyRole('USER')")
-    @ApiOperation(value = "찜 등록", notes = "찜 동물 등록")
+    @ApiOperation(value = "찜 등록", notes = "찜 동물 등록 / protectId")
     public ResponseEntity<Object> insertFavorite(@PathVariable Long protectId){
         //서비스 호출 코드
-        UserDto user = userService.getUserWithAuthorities();
-        if(userService.insertFavoriteDogs(user.getUserId(), protectId)){
+        if(userService.insertFavoriteDogs(protectId)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{
@@ -82,8 +76,7 @@ public class UserController {
     @ApiOperation(value = "찜 해제", notes = "찜 동물 해제")
     public ResponseEntity<Object> deleteFavorite(@PathVariable Long protectId){
         //서비스 호출 코드
-        UserDto user = userService.getUserWithAuthorities();
-        if(userService.deleteFavoriteDogs(user.getUserId(), protectId)){
+        if(userService.deleteFavoriteDogs(protectId)){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }else{

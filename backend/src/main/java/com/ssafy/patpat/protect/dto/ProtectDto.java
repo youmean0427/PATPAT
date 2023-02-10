@@ -67,4 +67,5 @@ public class ProtectDto {
     private String gugunCode;
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private Boolean isFavorite;
 }

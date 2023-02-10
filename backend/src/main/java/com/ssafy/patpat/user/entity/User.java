@@ -69,7 +69,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "sp_dog_id")}
     )
-    private Set<ShelterProtectedDog> favoriteDogs;
+    private List<ShelterProtectedDog> favoriteDogs;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(

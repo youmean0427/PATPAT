@@ -11,6 +11,7 @@ import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.service.FileService;
+import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
 import com.ssafy.patpat.protect.dto.RequestProtectDto;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
@@ -21,6 +22,8 @@ import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -67,6 +70,8 @@ public class ProtectServiceImpl implements ProtectService{
     ShelterRepository shelterRepository;
     @Autowired
     BreedRepository breedRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     FileService fileService;
@@ -92,6 +97,14 @@ public class ProtectServiceImpl implements ProtectService{
             else{
                 return null;
             }
+
+            boolean ok = false;
+            Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+            List<ShelterProtectedDog> shelterProtectedDogs = null;
+            if(user.isPresent()){ // user가 있으면
+                ok = true;
+            }
+
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
                 //파일 담을 객체 생성 후 받아오기
@@ -114,6 +127,12 @@ public class ProtectServiceImpl implements ProtectService{
                     thumbnail=fileService.getFileUrl(image);
                 }
 //                Breed breed = breedRepository.findByBreedId(s.getBreedId());
+                boolean isFavorite = false;
+                if(ok){
+                    if(userRepository.countByFavorite(user.get().getUserId(), s.getSpDogId()) == 1){
+                        isFavorite = true;
+                    }
+                }
                 protectDtoList.add(
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
@@ -124,12 +143,13 @@ public class ProtectServiceImpl implements ProtectService{
                                 .genderCode(s.getGender().getCode())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
-                                .neuteredCode(s.getNeutered())
-                                .neutered(Neutered.values()[s.getNeutered()].name())
+                                .neuteredCode(s.getNeutered().getCode())
+                                .neutered(s.getNeutered().name())
                                 .age(s.getAge())
                                 .breedName(s.getBreed().getName())
                                 .breedId(s.getBreed().getBreedId())
                                 .kg(s.getWeight())
+                                .isFavorite(isFavorite)
                                 .build()
 
                 );
@@ -184,8 +204,8 @@ public class ProtectServiceImpl implements ProtectService{
                                 .thumbnail(thumbnail)
                                 .gender(s.getGender().name())
                                 .genderCode(s.getGender().getCode())
-                                .neuteredCode(s.getNeutered())
-                                .neutered(Neutered.values()[s.getNeutered()].name())
+                                .neuteredCode(s.getNeutered().getCode())
+                                .neutered(s.getNeutered().name())
                                 .age(s.getAge())
                                 .breedName(s.getBreed().getName())
                                 .breedId(s.getBreed().getBreedId())
@@ -237,8 +257,8 @@ public class ProtectServiceImpl implements ProtectService{
                     .state(shelterProtectedDog.getStateCode().name())
                     .gender(shelterProtectedDog.getGender().name())
                     .genderCode(shelterProtectedDog.getGender().getCode())
-                    .neuteredCode(shelterProtectedDog.getNeutered())
-                    .neutered(Neutered.values()[shelterProtectedDog.getNeutered()].name())
+                    .neuteredCode(shelterProtectedDog.getNeutered().getCode())
+                    .neutered(shelterProtectedDog.getNeutered().name())
                     .infoContent(shelterProtectedDog.getFeature())
                     .kg(shelterProtectedDog.getWeight())
                     .categoryCloth(shelterProtectedDog.getCategoryCloth())
@@ -277,7 +297,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .shelter(shelter)
                     .feature(protectDto.getInfoContent())
                     .gender(Gender.of(protectDto.getGenderCode()))
-                    .neutered(protectDto.getNeuteredCode())
+                    .neutered(Neutered.of(protectDto.getNeuteredCode()))
                     .images(images)
                     .registDate(LocalDateTime.now().toLocalDate())
                     //.findingDate(protectDto.getFindingDate())
@@ -403,7 +423,7 @@ public class ProtectServiceImpl implements ProtectService{
                                 shelterProtectedDog.setWeight(cell.getNumericCellValue());
                                 break;
                             case 5 :
-                                shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()).ordinal());
+                                shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()));
                                 break;
                             case 6 :
                                 if(cell.getStringCellValue().equals("없음")){

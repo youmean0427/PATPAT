@@ -168,19 +168,21 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(s.getName());
 //        }
 
-        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("distance").descending());
-        BigDecimal a = new BigDecimal(37.5152937);
-        BigDecimal b = new BigDecimal(126.9013676);
-        Page<TestMapping> test = testRepository.selectAllSQL(a,b,a, pageRequest);
-        System.out.println("here");
-        for (TestMapping t:
-             test.toList()) {
-            System.out.println(t.getId());
-            System.out.println(t.getLat());
-            System.out.println(t.getLog());
-            System.out.println(t.getName());
-            System.out.println(t.getDistance());
-        }
+//        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("distance").descending());
+//        BigDecimal a = new BigDecimal(37.5152937);
+//        BigDecimal b = new BigDecimal(126.9013676);
+//        Page<TestMapping> test = testRepository.selectAllSQL(a,b,a, pageRequest);
+//        System.out.println("here");
+//        for (TestMapping t:
+//             test.toList()) {
+//            System.out.println(t.getId());
+//            System.out.println(t.getLat());
+//            System.out.println(t.getLog());
+//            System.out.println(t.getName());
+//            System.out.println(t.getDistance());
+//        }
+        int cnt = userRepository.countByFavorite(2L,3L);
+        System.out.println(cnt);
 
 //        System.out.println(shelter.getShelterId());
 //        for (Time t:

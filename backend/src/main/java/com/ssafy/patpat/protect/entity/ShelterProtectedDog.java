@@ -2,6 +2,7 @@ package com.ssafy.patpat.protect.entity;
 
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.Gender;
+import com.ssafy.patpat.common.code.category.Neutered;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -34,7 +35,7 @@ public class ShelterProtectedDog {
     private BigDecimal longitude;
     private Double weight;//
     private Gender gender;//
-    private Integer neutered;//
+    private Neutered neutered;//
     private LocalDate registDate;//
     private String feature;//
     private Integer categoryEar;//
