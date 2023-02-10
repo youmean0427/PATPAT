@@ -259,6 +259,7 @@ public class ShelterServiceImpl implements ShelterService{
     public AuthCodeDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto){
         String shelterNm = requestParamShelterInsertDto.getShelterName();
         String shelterCode = requestParamShelterInsertDto.getShelterCode();
+        LOGGER.info("이고이노{}",shelterNm);
         AuthCodeDto dto = new AuthCodeDto();
         try{
 //            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/animalShelterSrvc/shelterInfo");
@@ -319,9 +320,8 @@ public class ShelterServiceImpl implements ShelterService{
 //            }
 //            rd.close();
 //            conn.disconnect();
-            System.out.println(shelterNm+" "+shelterCode);
             Shelter shelter = shelterRepository.findByNameAndRegNumber(shelterNm,shelterCode);
-            System.out.println(shelter);
+            LOGGER.info("이고이노{}",shelterNm);
 
             if(shelter==null){
                 dto.setAuthCode("FAIL");
@@ -336,8 +336,6 @@ public class ShelterServiceImpl implements ShelterService{
                 owner.setUser(userRepository.findById(userDto.getUserId()).get());
                 owner = ownerRepository.save(owner);
                 shelter.setOwner(owner);
-                List<Image> images = new ArrayList<>();
-                shelter.setImages(images);
                 shelterRepository.save(shelter);
             }
         }catch (Exception e){
