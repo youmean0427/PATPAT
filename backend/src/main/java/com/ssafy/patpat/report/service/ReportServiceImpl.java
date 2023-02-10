@@ -247,7 +247,7 @@ public class ReportServiceImpl implements ReportService{
             }
             if(personalProtectedDogImageList.size() > 0){
                 FileDto.builder()
-                        .filePath(personalProtectedDogImageList.get(0).getFilePath())
+                        .filePath(fileService.getFileUrl(personalProtectedDogImageList.get(0)))
                         .build();
             }
             Breed breed = personalProtectedDog.getBreed();
