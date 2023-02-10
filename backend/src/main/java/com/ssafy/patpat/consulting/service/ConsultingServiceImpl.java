@@ -201,19 +201,20 @@ public class ConsultingServiceImpl implements ConsultingService{
     @Transactional
     public List<TimeDto> selectTimeList(Long shelterId, LocalDate date) {
 
-        List<Time> times = timeRepository.findByShelterShelterIdAndActiveTrue(shelterId);
+        List<Time> times = timeRepository.findByShelterShelterId(shelterId);
         List<ConsultingState> consultingStates = new ArrayList<>();
         consultingStates.add(ConsultingState.미완료);
         consultingStates.add(ConsultingState.승인);
         List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(shelterId, date, consultingStates);
         List<TimeDto> timeDtoList = new ArrayList<>();
         // 당일이면?
-        if(date == LocalDate.now()){
+        int check = date.compareTo(LocalDate.now());
+        if(check == 0){
             int hour = LocalDateTime.now().getHour();
 
             for (Time time:
                     times) {
-                boolean ok = true;
+                boolean ok = time.getActive();
                 for (TimeCodeMapping t:
                      timeCodes) {
                     if(t.getTimeCode() == time.getTimeCode()){
@@ -221,22 +222,36 @@ public class ConsultingServiceImpl implements ConsultingService{
                         break;
                     }
                 }
-                if(!ok) continue;
-                if(hour < time.getTimeCode().getCode()){
-                    timeDtoList.add(
-                            TimeDto.builder()
-                                    .timeCode(time.getTimeCode().getCode())
-                                    .time(time.getTimeCode().name())
-                                    .build()
-                    );
+                if(hour >= time.getTimeCode().getCode()) {
+                    ok = false;
                 }
+                timeDtoList.add(
+                        TimeDto.builder()
+                                .timeCode(time.getTimeCode().getCode())
+                                .time(time.getTimeCode().name())
+                                .active(ok)
+                                .build()
+                );
+            }
+        }
+        else if(check < 0){
+            for (Time time:
+                    times) {
+                boolean ok = false;
+
+                timeDtoList.add(
+                        TimeDto.builder()
+                                .timeCode(time.getTimeCode().getCode())
+                                .time(time.getTimeCode().name())
+                                .active(ok)
+                                .build()
+                );
             }
         }
         else{
-
             for (Time time:
                     times) {
-                boolean ok = true;
+                boolean ok = time.getActive();
                 for (TimeCodeMapping t:
                         timeCodes) {
                     if(t.getTimeCode() == time.getTimeCode()){
@@ -244,11 +259,11 @@ public class ConsultingServiceImpl implements ConsultingService{
                         break;
                     }
                 }
-                if(!ok) continue;
                 timeDtoList.add(
                         TimeDto.builder()
                                 .timeCode(time.getTimeCode().getCode())
                                 .time(time.getTimeCode().name())
+                                .active(ok)
                                 .build()
                 );
             }

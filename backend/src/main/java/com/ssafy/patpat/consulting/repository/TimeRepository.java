@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TimeRepository extends JpaRepository<Time, Long> {
-    List<Time> findByShelterShelterIdAndActiveTrue(Long shelterId);
+    List<Time> findByShelterShelterId(Long shelterId);
 }
