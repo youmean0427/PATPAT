@@ -120,6 +120,10 @@ public class ShelterServiceImpl implements ShelterService{
     public List<BreedDto> selectBreedList() {
         List<Breed> breedList = breedRepository.findAll();
         List<BreedDto> breedDtoList = new ArrayList<>();
+        breedDtoList.add(BreedDto.builder()
+                        .breedId(0L)
+                        .breedName("전체")
+                .build());
         for(Breed b : breedList){
             breedDtoList.add(
                     BreedDto.builder()

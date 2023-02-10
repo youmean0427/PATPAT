@@ -26,12 +26,6 @@ public class VolunteerReservation {
     @Column(name = "capacity")
     private int capacity;
 
-    @Column(name = "shelter_name")
-    private String shelterName;
-
-    @Column(name = "volunteer_date")
-    private String volunteerDate;
-
     @Column(name = "reservation_state_code")
     private Reservation reservationStateCode;
 
