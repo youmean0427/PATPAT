@@ -1,15 +1,15 @@
 package com.ssafy.patpat.consulting.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestConsultingDto {
-    private int userId;
-    private int offSet;
-    private int limit;
-    private int shelterId;
+    private Long userId;
+    private Integer offSet;
+    private Integer limit;
+    private Long shelterId;
 }

@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.service;
 
 import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
@@ -45,8 +46,8 @@ public class VolunteerService {
      * @return
      */
     @Transactional
-    public ResponseVolunteerDto selectNoticeList(RequestVolunteerDto requestVolunteerDto){
-        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
+    public ResponseListDto selectNoticeList(RequestVolunteerDto requestVolunteerDto){
+        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
         Page<VolunteerNotice> volunteerNotices;
         if(requestVolunteerDto.getGugunCode() != null){
             volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThan(requestVolunteerDto.getGugunCode(), Reservation.대기중, LocalDate.now().toString(), pageRequest);
@@ -80,10 +81,10 @@ public class VolunteerService {
                     .volunteerDate(vn.getVolunteerDate())
                     .build());
         }
-        ResponseVolunteerDto responseVolunteerDto = new ResponseVolunteerDto();
+        ResponseListDto responseVolunteerDto = new ResponseListDto();
         responseVolunteerDto.setTotalCount(volunteerNotices.getTotalElements());
         responseVolunteerDto.setTotalPage(volunteerNotices.getTotalPages());
-        responseVolunteerDto.setList(Collections.singletonList(list));
+        responseVolunteerDto.setList(list);
 
         return responseVolunteerDto;
     }
@@ -221,7 +222,7 @@ public class VolunteerService {
      * 특정 봉사일정을 보고 싶을 때
      * */
     @Transactional
-    public VolunteerScheduleDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
+    public ResponseListDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
 
         Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(requestVolunteerDto.getScheduleId());
         if(!volunteerSchedule.isPresent()){
@@ -231,7 +232,7 @@ public class VolunteerService {
 
         VolunteerSchedule vs = volunteerSchedule.get();
         int capacity = 0;
-        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit());
+        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
         Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
         List<VolunteerReservationDto> list = new ArrayList<>();
         if(!volunteerReservations.isEmpty()){
@@ -252,13 +253,14 @@ public class VolunteerService {
             }
         }
 
-        ResponseVolunteerDto responseVolunteerDto = new ResponseVolunteerDto();
+        ResponseListDto responseVolunteerDto = new ResponseListDto();
 
-        responseVolunteerDto.setList(Collections.singletonList(list));
+        responseVolunteerDto.setList(list);
         responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
         responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
         VolunteerScheduleDto volunteerScheduleDto = VolunteerScheduleDto.builder()
                 .scheduleId(vs.getScheduleId())
+                .noticeId(vs.getVolunteerNotice().getNoticeId())
                 .startTime(vs.getStartTime())
                 .endTime(vs.getEndTime())
                 .totalCapacity(vs.getCapacity())
@@ -266,10 +268,10 @@ public class VolunteerService {
                 .guideLine(vs.getGuideLine())
                 .reservationState(vs.getReservationStateCode().name())
                 .reservationStateCode(vs.getReservationStateCode().getCode())
-                .responseVolunteerDto(responseVolunteerDto)
+                .responseListDto(responseVolunteerDto)
                 .build();
 
-        return volunteerScheduleDto;
+        return responseVolunteerDto;
     }
 
     @Transactional
@@ -352,7 +354,7 @@ public class VolunteerService {
      * 미완료(3), 수락(1), 대기(0), 완료(5)
      */
     @Transactional
-    public ResponseVolunteerDto selectReservationList(RequestVolunteerDto requestVolunteerDto){
+    public ResponseListDto selectReservationList(RequestVolunteerDto requestVolunteerDto){
 
         List<Reservation> reservations = new ArrayList<>();
         reservations.add(Reservation.미완료);
@@ -367,7 +369,7 @@ public class VolunteerService {
         }
 
 //        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
-        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithUserByUserUserIdAndReservationStateCode(requestVolunteerDto.getUserId(), requestVolunteerDto.getOffset(), requestVolunteerDto.getLimit());
+        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithUserByUserUserIdAndReservationStateCode(requestVolunteerDto.getUserId(), requestVolunteerDto.getOffSet(), requestVolunteerDto.getLimit());
 
         List<VolunteerReservationDto> list = new ArrayList<>();
         for (VolunteerReservation vr:
@@ -387,10 +389,10 @@ public class VolunteerService {
         Long totalPage = totalCount.get() % requestVolunteerDto.getLimit() == 0 ? totalCount.get() / requestVolunteerDto.getLimit()
                 : (totalCount.get() / requestVolunteerDto.getLimit()) +1;
 
-        ResponseVolunteerDto responseVolunteerDto = ResponseVolunteerDto.builder()
+        ResponseListDto responseVolunteerDto = ResponseListDto.builder()
                 .totalCount(totalCount.get())
                 .totalPage(Math.toIntExact(totalPage))
-                .list(Collections.singletonList((list)))
+                .list(list)
                 .build();
 
         return responseVolunteerDto;
@@ -398,7 +400,7 @@ public class VolunteerService {
 
     /** 예약 등록 */
     @Transactional
-    public boolean insertReservation(ReservationDto reservationDto){
+    public boolean insertReservation(ReservationDto reservationDto) throws VolunteerException {
         /** 봉사 일정 조회 */
         Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(reservationDto.getScheduleId());
         if(!volunteerSchedule.isPresent()){
@@ -411,6 +413,10 @@ public class VolunteerService {
             LOGGER.info("등록된 유저가 아닙니다.");
             return false;
         }
+        if(volunteerSchedule.get().getTotaclCapacity() < volunteerSchedule.get().getCapacity() + reservationDto.getCapacity()){
+            throw new VolunteerException("인원이 맞지 않습니다.");
+        }
+
         VolunteerReservation volunteerReservation =
                 VolunteerReservation.builder()
                         .capacity(reservationDto.getCapacity())
@@ -424,4 +430,160 @@ public class VolunteerService {
         return true;
     }
 
+    @Transactional
+    public boolean updateReservation(ReservationDto reservationDto) throws VolunteerException {
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            return false;
+        }
+        if(volunteerReservation.get().getUser().getUserId() != reservationDto.getUserId()){
+            LOGGER.info("등록된 회원이 아닙니다.");
+            return false;
+        }
+        if(volunteerReservation.get().getReservationStateCode() == Reservation.수락){
+            throw new VolunteerException("이미 승인된 예약입니다.");
+        }
+
+        VolunteerReservation vr = volunteerReservation.get();
+        vr.setCapacity(reservationDto.getCapacity());
+        volunteerReservationRepository.save(vr);
+
+        return true;
+    }
+
+    @Transactional
+    public boolean deleteReservation(ReservationDto reservationDto) throws VolunteerException {
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            return false;
+        }
+        VolunteerReservation vr = volunteerReservation.get();
+        if(vr.getUser().getUserId() != reservationDto.getUserId()){
+            LOGGER.info("등록된 회원이 아닙니다.");
+            return false;
+        }
+        if(vr.getReservationStateCode() != Reservation.대기중){
+            LOGGER.info("이미 처리된 예약입니다.");
+            return false;
+        }
+
+        volunteerReservationRepository.delete(volunteerReservation.get());
+        return true;
+    }
+
+    @Transactional
+    public boolean changeReservationState(ReservationDto reservationDto) throws VolunteerException {
+        LOGGER.info("dto{}", reservationDto.toString());
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            throw new VolunteerException("유효한 예약이 아닙니다.");
+        }
+        VolunteerReservation vr = volunteerReservation.get();
+//        if(vr.getUser().getUserId() != reservationDto.getUserId()){
+//            LOGGER.info("등록된 회원이 아닙니다.");
+//            return false;
+//        }
+        if(vr.getReservationStateCode() == Reservation.완료 || vr.getReservationStateCode() == Reservation.미완료){
+            LOGGER.info("이미 처리된 예약입니다.");
+            throw new VolunteerException("이미 처리된 예약입니다.");
+        }
+
+        // 수락시
+        if(reservationDto.getStateCode() == 1){
+            vr.setReservationStateCode(Reservation.수락);
+            volunteerReservationRepository.save(vr);
+
+            // 전체 봉사 일정 체크 필요
+            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
+            int totalCapacity = volunteerSchedule.getTotaclCapacity();
+            int capacity = volunteerSchedule.getCapacity();
+            if(totalCapacity == capacity + vr.getCapacity()){
+                volunteerSchedule.setReservationStateCode(Reservation.수락);
+                volunteerScheduleRepository.save(volunteerSchedule);
+
+                // 전체 공고 체크 필요
+                VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
+                boolean ok = true;
+                for (VolunteerSchedule vs:
+                        volunteerNotice.getVolunteerSchedules()) {
+                    if(vs.getReservationStateCode() != Reservation.수락){
+                        ok = false;
+                    }
+                }
+                if(ok){
+                    volunteerNotice.setReservationStateCode(Reservation.수락);
+                }
+            }
+
+            // 나머지 예약들 거절 시키기
+            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+            for (VolunteerReservation vrs:
+                 volunteerReservations) {
+                if(vrs.getReservationId() != vr.getReservationId()){
+                    vrs.setReservationStateCode(Reservation.거절);
+                    volunteerReservationRepository.save(vrs);
+                }
+            }
+        }
+
+        // 거절시
+        if(reservationDto.getStateCode() == 2){
+            vr.setReservationStateCode(Reservation.거절);
+            volunteerReservationRepository.save(vr);
+            // 전체 봉사 일정 체크 필요
+            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
+            if(volunteerSchedule.getReservationStateCode() == Reservation.수락){
+                int capacity = volunteerSchedule.getCapacity();
+                volunteerSchedule.setCapacity(capacity-vr.getCapacity());
+                volunteerSchedule.setReservationStateCode(Reservation.대기중);
+                volunteerScheduleRepository.save(volunteerSchedule);
+
+                // 전체 공고 체크 필요
+                VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
+                if(volunteerNotice.getReservationStateCode() == Reservation.수락){
+                    volunteerNotice.setReservationStateCode(Reservation.대기중);
+                    volunteerNoticeRepository.save(volunteerNotice);
+                }
+            }
+            // 나머지 예약들 대기중 바꾸기
+            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+            for (VolunteerReservation vrs:
+                    volunteerReservations) {
+                if(vrs.getReservationId() != vr.getReservationId()){
+                    vrs.setReservationStateCode(Reservation.대기중);
+                    volunteerReservationRepository.save(vrs);
+                }
+            }
+
+        }
+
+        return true;
+    }
+
+    @Transactional
+    public boolean completeReservationState(ReservationDto reservationDto) throws VolunteerException {
+        Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
+        if(!volunteerReservation.isPresent()){
+            LOGGER.info("유효한 예약이 아닙니다.");
+            throw new VolunteerException("유효한 예약이 아닙니다.");
+        }
+        VolunteerReservation vr = volunteerReservation.get();
+//        if(vr.getUser().getUserId() != reservationDto.getUserId()){
+//            LOGGER.info("등록된 회원이 아닙니다.");
+//            return false;
+//        }
+        if(vr.getReservationStateCode() == Reservation.완료){
+            LOGGER.info("이미 처리된 예약입니다.");
+            throw new VolunteerException("이미 처리된 예약입니다.");
+        }
+
+        // 누르면 완료야
+        vr.setReservationStateCode(Reservation.완료);
+        volunteerReservationRepository.save(vr);
+
+        return true;
+    }
 }

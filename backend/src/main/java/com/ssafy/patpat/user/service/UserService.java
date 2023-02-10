@@ -228,9 +228,9 @@ public class UserService {
             user.setNickname(userDto.getUsername());
         }
         if(profileFile != null){
-            Image userImage = user.getImage();
-            fileService.deleteFile(userImage);
-            Image image = fileService.insertFile(profileFile);
+            Image image = user.getImage();
+            fileService.deleteFile(image);
+            image = fileService.insertFile(profileFile,"user");
             user.setImage(image);
         }
 
@@ -314,7 +314,7 @@ public class UserService {
      * 찜 등록
      * */
     @Transactional
-    public boolean insertFavoriteDogs(Long userId, int protectId){
+    public boolean insertFavoriteDogs(Long userId, Long protectId){
         LOGGER.info("user {}", userId);
         Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userId);
         if(!user.isPresent()){
@@ -338,7 +338,7 @@ public class UserService {
      * 찜 해제
      * */
     @Transactional
-    public boolean deleteFavoriteDogs(Long userId, int protectId){
+    public boolean deleteFavoriteDogs(Long userId, Long protectId){
         LOGGER.info("user {}", userId);
         Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userId);
         if(!user.isPresent()){
@@ -369,7 +369,7 @@ public class UserService {
 
         for (MultipartFile m:
              profileFile) {
-            fileService.insertFile(m);
+            fileService.insertFile(m,"default");
         }
 
         return true;

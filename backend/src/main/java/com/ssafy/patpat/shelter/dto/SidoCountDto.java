@@ -11,5 +11,5 @@ import lombok.*;
 public class SidoCountDto {
     private String sidoCode;
     private String sidoName;
-    private int count;
+    private Integer count;
 }

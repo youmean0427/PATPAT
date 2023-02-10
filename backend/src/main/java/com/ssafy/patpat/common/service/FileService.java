@@ -31,8 +31,9 @@ public class FileService {
     String callUrl;
 
     @Transactional
-    public Image insertFile(MultipartFile uploadFile) throws Exception {
-        File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+    public Image insertFile(MultipartFile uploadFile, String source) throws Exception {
+        String pathName = uploadPath + File.separator + uploadFolder + File.separator + source;
+        File uploadDir = new File(pathName);
         if (!uploadDir.exists()) uploadDir.mkdir();
 
         String fileName = uploadFile.getOriginalFilename();
@@ -45,7 +46,7 @@ public class FileService {
 
 //                    File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 
-        String FilePath = uploadPath + File.separator + uploadFolder + File.separator + savingFileName;
+        String FilePath = pathName + File.separator + savingFileName;
         Path path = Paths.get(FilePath).toAbsolutePath();
 
         uploadFile.transferTo(path.toFile());
@@ -54,7 +55,7 @@ public class FileService {
                 .origFilename(fileName)
                 .fileSize((int) uploadFile.getSize())
                 .filename(fileName)
-                .filePath(uploadFolder + "/" + savingFileName)
+                .filePath(uploadFolder + "/" + source + "/" + savingFileName)
                 .build();
 
         imageRepository.save(image);
@@ -84,7 +85,7 @@ public class FileService {
 
     @Transactional
     public Image getDefaultImage(){
-        return imageRepository.findById(11).get();
+        return imageRepository.findById(1L).get();
     }
 
     @Transactional
@@ -96,7 +97,6 @@ public class FileService {
             if(file.exists()) file.delete();
         }
 
-        imageRepository.delete(image);
         return true;
     }
 

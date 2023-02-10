@@ -1,6 +1,7 @@
 package com.ssafy.patpat.shelter.controller;
 
 import com.ssafy.patpat.board.dto.RequestBoardDto;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.shelter.dto.*;
 import com.ssafy.patpat.shelter.entity.Breed;
@@ -103,7 +104,7 @@ public class ShelterController {
      */
     @GetMapping("/mbti/count/{breedId}")
     @ApiOperation(value = "견종 정보 반환", notes = "견종 정보 반환(이미지, 견종)")
-    public ResponseEntity<Object> selectBreedCountByMbti(@PathVariable int breedId){
+    public ResponseEntity<Object> selectBreedCountByMbti(@PathVariable Long breedId){
         //service 호출
         MbtiMapDto mbtiMapDto = service.selectBreedCountByMbti(breedId);
         if(mbtiMapDto!=null){
@@ -123,14 +124,9 @@ public class ShelterController {
     public ResponseEntity<Object> selectShelterList(RequestShelterDto requestShelterDto){
         //service 호출
         try{
-            List<ShelterDto> shelterDtoList = service.shelterList(requestShelterDto);
-            if(shelterDtoList!=null){
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(shelterDtoList);
-            }else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ResponseMessage("FAIL"));
-            }
+            ResponseListDto shelterDtoList = service.shelterList(requestShelterDto);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(shelterDtoList);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -144,15 +140,11 @@ public class ShelterController {
      */
     @GetMapping("/{shelterId}")
     @ApiOperation(value = "보호소 상세 조회", notes = "보호소 상세 조회")
-    public ResponseEntity<Object> detailShelter(@PathVariable int shelterId){
+    public ResponseEntity<Object> detailShelter(@PathVariable Long shelterId){
         ShelterDto shelterDto = service.detailShelter(shelterId);
-        if(shelterDto!=null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(shelterDto);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(shelterDto);
+
     }
     /**
      * 보호소 등록
@@ -175,10 +167,10 @@ public class ShelterController {
      * 보호소 수정
      * @return
      */
-    @PostMapping("/{shelterId}")
+    @PostMapping("/update")
     @ApiOperation(value = "보호소 수정", notes = "보호소 수정")
-    public ResponseEntity<ResponseMessage> updateShelter(@PathVariable int shelterId, @RequestPart List<MultipartFile> uploadFile, ShelterDto shelterDto) throws Exception{
-        ResponseMessage responseMessage = service.updateShelter(shelterId,uploadFile,shelterDto);
+    public ResponseEntity<ResponseMessage> updateShelter(ShelterDto shelterDto, @RequestPart(value = "uploadFile",required = false) List<MultipartFile> uploadFile) throws Exception{
+        ResponseMessage responseMessage = service.updateShelter(shelterDto, uploadFile);
         if(responseMessage.getMessage()=="SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
@@ -195,7 +187,7 @@ public class ShelterController {
     @GetMapping("/auth")
     @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "보호소 인증", notes = "보호소 인증")
-    public ResponseEntity<ResponseMessage> authShelter(@RequestParam("shelterId") int shelterId, @RequestParam("authCode") String authCode){
+    public ResponseEntity<ResponseMessage> authShelter(@RequestParam("shelterId") Long shelterId, @RequestParam("authCode") String authCode){
         ResponseMessage responseMessage = service.AuthShelter(shelterId, authCode);
         if(responseMessage.getMessage()=="SUCCESS"){
             return ResponseEntity.status(HttpStatus.OK)

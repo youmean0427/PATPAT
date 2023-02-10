@@ -15,17 +15,17 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Builder
 public class FavoriteDto {
-    private int spDogId;
+    private Long spDogId;
     private Long userId;
     private String name;
     private String imageUrl;
-    private int stateCode;
+    private Integer stateCode;
     private String state;
-    private double weight;
-    private boolean neutered;
+    private Double weight;
+    private Boolean neutered;
 
     private String gender;
     private Integer genderCode;
 
-    private int age;
+    private Integer age;
 }

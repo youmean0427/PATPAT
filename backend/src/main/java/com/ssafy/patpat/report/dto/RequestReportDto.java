@@ -1,18 +1,18 @@
 package com.ssafy.patpat.report.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestReportDto {
-    private int offSet;
-    private int limit;
-    private int breedId;
-    private int gender;
-    private int missingId; 
+    private Integer offSet;
+    private Integer limit;
+    private Long breedId;
+    private Integer gender;
+    private Long missingId;
 }

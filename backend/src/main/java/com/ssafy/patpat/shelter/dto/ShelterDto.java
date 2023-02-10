@@ -4,15 +4,20 @@ import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.consulting.entity.Time;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.core.io.FileSystemResource;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class ShelterDto {
-    private int shelterId;
+    private Long shelterId;
     private String name;
     private String address;
 //    @Schema(example = "fileUrl:.png")

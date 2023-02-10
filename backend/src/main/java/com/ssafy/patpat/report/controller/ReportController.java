@@ -1,5 +1,6 @@
 package com.ssafy.patpat.report.controller;
 
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.protect.dto.ProtectDto;
 import com.ssafy.patpat.report.dto.ReportDto;
@@ -31,15 +32,10 @@ public class ReportController {
     @ApiOperation(value = "실종견 조회", notes = "{code==0 전체 실종견, code==2 견종 성별 필터링 검색}")
     public ResponseEntity<Object> selectMissingList(RequestReportDto requestReportDto){
         //서비스 호출 코드
-        System.out.println(requestReportDto);
-        List<ReportDto> reportDtoList = service.selectMissingList(requestReportDto);
-        if(reportDtoList.size() > 0){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(reportDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+//        System.out.println(requestReportDto);
+        ResponseListDto reportDtoList = service.selectMissingList(requestReportDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(reportDtoList);
     }
     /**
      * 실종견 리스트(현재 유저의 실종견 공고 리스트)
@@ -47,17 +43,12 @@ public class ReportController {
      */
     @GetMapping("/missings/{userId}")
     @ApiOperation(value = "실종견 조회", notes = "{현재 유저의 실종견 공고 리스트}")
-    public ResponseEntity<Object> selectMissingListByUser(@PathVariable int userId, RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectMissingListByUser(@PathVariable Long userId, RequestReportDto requestReportDto){
         //서비스 호출 코드
 
-        List<ReportDto> reportDtoList = service.selectMissingListByUser(userId,requestReportDto);
-        if(reportDtoList.size() > 0){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(reportDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        ResponseListDto reportDtoList = service.selectMissingListByUser(userId,requestReportDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(reportDtoList);
     }
     /**
      * 임보견 리스트
@@ -67,14 +58,9 @@ public class ReportController {
     @ApiOperation(value = "임보견 조회", notes = "{code==0 전체조회, code==1 성별 견종 필터링}")
     public ResponseEntity<Object> selectPersonalProtectionList(RequestReportDto requestReportDto){
         //서비스 호출 코드
-        List<ReportDto> reportDtoList = service.selectPersonalProtectionList(requestReportDto);
-        if(reportDtoList.size() > 0){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(reportDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        ResponseListDto reportDtoList = service.selectPersonalProtectionList(requestReportDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(reportDtoList);
     }
     /**
      * 실종견 상세
@@ -82,17 +68,12 @@ public class ReportController {
      */
     @GetMapping("/missings/detail/{missingId}")
     @ApiOperation(value = "실종견 상세", notes = "실종견 상세")
-    public ResponseEntity<Object> detailMissing(@PathVariable int missingId){
+    public ResponseEntity<Object> detailMissing(@PathVariable Long missingId){
         //서비스 호출 코드
 
         ReportDto reportDto = service.detailMissing(missingId);
-        if(reportDto != null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(reportDto);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(reportDto);
     }
     /**
      * 임보견 상세
@@ -100,16 +81,11 @@ public class ReportController {
      */
     @GetMapping("/personals/{personalProtectId}")
     @ApiOperation(value = "임보견 상세", notes = "임보견 상세")
-    public ResponseEntity<Object> detailPersonalProtection(@PathVariable int personalProtectId){
+    public ResponseEntity<Object> detailPersonalProtection(@PathVariable Long personalProtectId){
         //서비스 호출 코드
         ReportDto reportDto = service.detailPersonalProtection(personalProtectId);
-        if(reportDto != null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(reportDto);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(reportDto);
     }
 
     /**
@@ -171,7 +147,7 @@ public class ReportController {
      */
     @PostMapping("/updates")
     @ApiOperation(value = "실종,임보 수정", notes = "0==실종, 1==임보")
-    public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
+    public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile) throws Exception{
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateReport(reportDto, uploadFile);
         if(responseMessage.getMessage() == "SUCCESS"){

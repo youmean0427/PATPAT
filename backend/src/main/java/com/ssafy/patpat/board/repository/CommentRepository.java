@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment,String> {
-    List<Comment> findByboardId(int boardId);
-    void deleteByBoardId(int boardId);
-    Comment findByCommentId(int commentId);
-    void deleteByCommentId(int commentId);
+public interface CommentRepository extends JpaRepository<Comment,Long> {
+    List<Comment> findByBoardBoardId(long boardId);
+    void deleteByBoardBoardId(long boardId);
+    Comment findByCommentId(long commentId);
+    void deleteByCommentId(long commentId);
 }

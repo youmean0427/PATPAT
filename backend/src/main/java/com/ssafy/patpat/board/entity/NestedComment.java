@@ -1,14 +1,12 @@
 package com.ssafy.patpat.board.entity;
 
+import com.ssafy.patpat.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,12 +17,17 @@ import java.time.LocalDateTime;
 public class NestedComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int nestedCommentId;
+    private Long nestedCommentId;
     private String content;
-    private String nickName;
     private LocalDateTime regTime;
-    private int commentId;
-    private int userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     public void updateNestedComment(String content){
         this.content = content;
