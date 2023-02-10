@@ -133,7 +133,7 @@ public class ReportController {
         //서비스 호출 코드
         System.out.println(reportDto);
         ResponseMessage responseMessage = service.insertReport(reportDto, uploadFile);
-        if(responseMessage.getMessage() == "SUCCESS"){
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
         }else{
@@ -150,9 +150,9 @@ public class ReportController {
     public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile) throws Exception{
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateReport(reportDto, uploadFile);
-        if(responseMessage.getMessage() == "SUCCESS"){
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));

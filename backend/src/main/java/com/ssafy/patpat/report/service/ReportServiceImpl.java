@@ -287,6 +287,7 @@ public class ReportServiceImpl implements ReportService{
                             .build()
             );
         }
+        Long userId = userService.getUserWithAuthorities().getUserId();
         Breed breed = missingDog.getBreed();
         ReportDto reportDto = ReportDto.builder()
                 .missingId(missingDog.getMissingId())
@@ -310,6 +311,8 @@ public class ReportServiceImpl implements ReportService{
                 .fileUrlList(fileDtoList)
                 .latitude(missingDog.getLatitude().toString())
                 .longitude(missingDog.getLongitude().toString())
+                .stateCode(missingDog.getStateCode())
+                .userId(userId)
                 .build();
         return reportDto;
     }
@@ -336,7 +339,7 @@ public class ReportServiceImpl implements ReportService{
                 );
             }
         }
-
+        Long userId = userService.getUserWithAuthorities().getUserId();
         Breed breed = personalProtectedDog.getBreed();
         ReportDto reportDto = ReportDto.builder()
                 .personalProtectionId(personalProtectedDog.getPpDogId())
@@ -360,6 +363,8 @@ public class ReportServiceImpl implements ReportService{
                 .latitude(personalProtectedDog.getLatitude().toString())
                 .longitude(personalProtectedDog.getLongitude().toString())
                 .fileUrlList(fileDtoList)
+                .stateCode(personalProtectedDog.getStateCode())
+                .userId(userId)
                 .build();
 
 
@@ -528,6 +533,7 @@ public class ReportServiceImpl implements ReportService{
 //        UserDto userDto = userService.getUserWithAuthorities();
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
+        System.out.println(uploadFile);
         try{
             List<Image> images = new ArrayList<>();
             if(uploadFile != null){
