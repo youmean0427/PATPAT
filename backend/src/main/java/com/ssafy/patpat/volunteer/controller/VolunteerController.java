@@ -170,7 +170,7 @@ public class VolunteerController {
      * @return
      */
     @PostMapping("/reservations")
-    @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록")
+    @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록 로긘필수 parameter : shelterId, capacity")
     public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto) throws VolunteerException {
         //서비스 호출 코드
         volunteerService.insertReservation(reservationDto);
