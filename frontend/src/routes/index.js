@@ -48,7 +48,6 @@ import InfoWrite from 'components/Community/Info/InfoWrite';
 import FreeShareWrite from 'components/Community/FreeShare/FreeShareWrite';
 import AdoptionReviewWrite from 'components/Community/AdoptionReview/AdoptionReviewWrite';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
