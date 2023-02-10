@@ -12,32 +12,34 @@ import { useEffect } from 'react';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/atoms/user';
 
-export default function MissingDogList({ genderCode, breedCode, pages, totalPageFunction }) {
-  // const [page, setPage] = useState(1);
+export default function MissingDogList({ genderCode, breedCode }) {
+  const [isLogin] = useRecoilState(isLoginState);
+  const [page, setPage] = useState(1);
   const LIMIT = 8;
 
   const { isLoading, data } = useQuery({
-    queryKey: ['missingDogList', breedCode.value, genderCode.value, pages],
-    queryFn: () => getMissingDogList(breedCode.value, genderCode.value, LIMIT, pages - 1),
+    queryKey: ['missingDogList', breedCode.value, genderCode.value, page],
+    queryFn: () => getMissingDogList(breedCode.value, genderCode.value, LIMIT, page - 1),
   });
 
-  // const handleClickPrev = () => {
-  //   setPage(prev => prev - 1);
-  // };
+  const handleClickPrev = () => {
+    setPage(prev => prev - 1);
+  };
 
-  // const handleClickNext = () => {
-  //   setPage(prev => prev + 1);
-  // };
+  const handleClickNext = () => {
+    setPage(prev => prev + 1);
+  };
 
   // console.log(data);
   if (isLoading) return;
-  totalPageFunction(data.totalPage);
   return (
     <div>
       <div className={styles['container-search']}>
         <div className={styles['container-search-inner']}>
-          {/* <div className={styles.pagination}>
+          <div className={styles.pagination}>
             <button
               onClick={handleClickPrev}
               className={page === 1 ? `${styles.button} ${styles.disabled}` : styles.button}
@@ -52,20 +54,28 @@ export default function MissingDogList({ genderCode, breedCode, pages, totalPage
             >
               <MdArrowForwardIos />
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
       <div className={styles.container}>
-        <div className={styles.list}>
-          {data.list.map((item, index) => (
-            <MissingDogItem key={index} item={item} />
-          ))}
+        {data.totalCount !== 0 ? (
+          <div className={styles.list}>
+            {data.list.map((item, index) => (
+              <MissingDogItem key={index} item={item} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.non}>
+            <span>검색결과가 없습니다.</span>
+          </div>
+        )}
+        <div className={styles.navBar}>
+          {isLogin === true ? (
+            <Navbar className={styles.navBar}>
+              <MenuLink move="create" value="글쓰기" />
+            </Navbar>
+          ) : null}
         </div>
-      </div>
-      <div className={styles['container-newButton']}>
-        <Navbar>
-          <MenuLink move="create" value="글쓰기" />
-        </Navbar>
       </div>
     </div>
   );

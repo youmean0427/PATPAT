@@ -5,14 +5,13 @@
   // display: flex;
   justify-content: center;
   margin: 10px;
-
   &-search {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
+    margin-right: 20px;
 
     &-inner {
       display: flex;
-      position: relative;
 
       & > span {
         margin: 10px;
@@ -43,7 +42,8 @@
   margin: 10px !important;
   width: 100px !important;
   font-family: $seoul-font !important;
-
+  display: flex;
+  justify-content: c;
   background-color: $main-color !important;
   &:hover {
     background-color: $main-accent-color !important;
@@ -86,4 +86,19 @@
   & > .button.disabled {
     color: $gray-color;
   }
+}
+
+.non {
+  height: 323px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    font-size: 20px;
+  }
+}
+
+.navBar {
+  display: flex;
+  justify-content: flex-end;
 }
