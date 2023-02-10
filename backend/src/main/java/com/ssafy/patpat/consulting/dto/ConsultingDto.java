@@ -23,18 +23,24 @@ public class ConsultingDto {
     private String shelterName;
     @Schema(example = "유저 이름")
     private String userName;
-    @Schema(example = "유저 이름")
+    @Schema(example = "유저 id")
     private Long userId;
     @Schema(example = "주소")
     private String address;
     @Schema(example = "시간코드")
     private Integer timeCode;
+    @Schema(example = "시간")
+    private String time;
     @Schema(example = "날짜")
-    private LocalDate registDate;
+    private LocalDate consultingDate;
     @Schema(example = "대기중,수락,거절")
     private Integer stateCode;
+    @Schema(example = "대기중,수락,거절")
+    private String state;
     @Schema(example = "강아지id")
     private Long shelterDogId;
+    @Schema(example = "강아지id")
+    private String shelterDogName;
     @Schema(example = "강아지id")
     private Boolean isOpen;
 

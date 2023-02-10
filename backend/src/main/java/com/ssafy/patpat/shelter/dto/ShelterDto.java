@@ -37,6 +37,4 @@ public class ShelterDto {
     private String gugunName;
     private String ownerName;
     private Long ownerId;
-
-    private List<FileSystemResource> resources;
 }

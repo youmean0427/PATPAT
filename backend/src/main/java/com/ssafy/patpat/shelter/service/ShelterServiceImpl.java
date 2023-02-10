@@ -136,7 +136,7 @@ public class ShelterServiceImpl implements ShelterService{
         List<Sido> sidoList = sidoRepository.findAll();
         int total = 0;
         for(Sido s : sidoList){
-            List<ShelterIdMapping> count = shelterProtectedDogRepository.findDistinctBySidoCodeAndBreedId(s.getCode(),breedId);
+            List<ShelterIdMapping> count = shelterProtectedDogRepository.findDistinctBySidoCodeAndBreedBreedId(s.getCode(),breedId);
             total += count.size();
             sidoCountDtoList.add(
                     SidoCountDto.builder()
@@ -177,9 +177,9 @@ public class ShelterServiceImpl implements ShelterService{
         }
         else if(breedId!=null && sidoCode==null && gugunCode == null){
             //견종만
-            List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdByBreedId(breedId);
-            for(ShelterProtectedDog s : list){
-                longList.add(s.getShelterId());
+            List<ShelterIdMapping> list = shelterProtectedDogRepository.findDistinctByBreedBreedId(breedId);
+            for(ShelterIdMapping s : list){
+                longList.add(s.getShelter().getShelterId());
             }
             shelterList = shelterRepository.findByShelterIdIn(longList,pageRequest);
         }
@@ -192,16 +192,16 @@ public class ShelterServiceImpl implements ShelterService{
         }
         else if(breedId!=null && sidoCode != null && gugunCode==null){
             //시도, 견종
-            List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCodeAndBreedId(sidoCode,breedId);
-            for(ShelterProtectedDog s : list){
-                longList.add(s.getShelterId());
+            List<ShelterIdMapping> list = shelterProtectedDogRepository.findDistinctBySidoCodeAndBreedBreedId(sidoCode,breedId);
+            for(ShelterIdMapping s : list){
+                longList.add(s.getShelter().getShelterId());
             }
             shelterList = shelterRepository.findByShelterIdIn(longList,pageRequest);
         }
         else{
-            List<ShelterProtectedDog> list = shelterProtectedDogRepository.findDistinctShelterIdBySidoCodeAndGugunCodeAndBreedId(sidoCode,gugunCode,breedId);
-            for(ShelterProtectedDog s : list){
-                longList.add(s.getShelterId());
+            List<ShelterIdMapping> list = shelterProtectedDogRepository.findDistinctBySidoCodeAndGugunCodeAndBreedBreedId(sidoCode,gugunCode,breedId);
+            for(ShelterIdMapping s : list){
+                longList.add(s.getShelter().getShelterId());
             }
             shelterList = shelterRepository.findByShelterIdIn(longList,pageRequest);
         }
@@ -336,6 +336,8 @@ public class ShelterServiceImpl implements ShelterService{
                 owner.setUser(userRepository.findById(userDto.getUserId()).get());
                 owner = ownerRepository.save(owner);
                 shelter.setOwner(owner);
+                List<Image> images = new ArrayList<>();
+                shelter.setImages(images);
                 shelterRepository.save(shelter);
             }
         }catch (Exception e){
@@ -373,11 +375,10 @@ public class ShelterServiceImpl implements ShelterService{
                 fileService.deleteFile(i);
             }
             shelterImageList.removeAll(shelterImageList);
-            List<Image> newImageList = new ArrayList<>();
             for (MultipartFile partFile:
                     uploadFile) {
-                newImageList.add(fileService.insertFile(partFile, "shelter"));
-                shelter.setImages(newImageList);
+                shelterImageList.add(fileService.insertFile(partFile, "shelter"));
+                shelter.setImages(shelterImageList);
             }
         }
 
@@ -448,7 +449,6 @@ public class ShelterServiceImpl implements ShelterService{
             LOGGER.info("오너가 없다.");
             return null;
         }
-        List<FileSystemResource> resources = new ArrayList<>();
         for(Image i : shelterImageList){
             imageList.add(FileDto.builder()
                     .id(i.getImageId())
@@ -457,11 +457,7 @@ public class ShelterServiceImpl implements ShelterService{
                     .filePath(fileService.getFileUrl(i))
                     .build());
 
-            FileSystemResource resource = new FileSystemResource("static" + File.separator + i.getFilePath());
-            if(!resource.exists()){
-                LOGGER.info("파일이 없다.");
-                return null;
-            }
+
         }
 
         ShelterDto shelterDto = ShelterDto.builder()
@@ -473,7 +469,6 @@ public class ShelterServiceImpl implements ShelterService{
                 .imageList(imageList)
                 .ownerId(s.getOwner().getOwnerId())
                 .ownerName(s.getOwner().getName())
-                .resources(resources)
                 .build();
         return shelterDto;
     }

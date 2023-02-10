@@ -1,7 +1,7 @@
 package com.ssafy.patpat.protect.service;
 
 //import com.ssafy.patpat.board.entity.PostImage;
-import com.ssafy.patpat.common.code.Neutered;
+import com.ssafy.patpat.common.code.category.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
 import com.ssafy.patpat.common.code.category.Color;
@@ -21,7 +21,6 @@ import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
-import com.ssafy.patpat.user.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -33,10 +32,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
@@ -117,7 +113,7 @@ public class ProtectServiceImpl implements ProtectService{
 //                            .build();
                     thumbnail=fileService.getFileUrl(image);
                 }
-                Breed breed = breedRepository.findByBreedId(s.getBreedId());
+//                Breed breed = breedRepository.findByBreedId(s.getBreedId());
                 protectDtoList.add(
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
@@ -131,8 +127,8 @@ public class ProtectServiceImpl implements ProtectService{
                                 .neuteredCode(s.getNeutered())
                                 .neutered(Neutered.values()[s.getNeutered()].name())
                                 .age(s.getAge())
-                                .breedName(breed.getName())
-                                .breedId(breed.getBreedId())
+                                .breedName(s.getBreed().getName())
+                                .breedId(s.getBreed().getBreedId())
                                 .kg(s.getWeight())
                                 .build()
 
@@ -157,7 +153,7 @@ public class ProtectServiceImpl implements ProtectService{
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
             pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit());
-            shelterProtectedDogList = shelterProtectedDogRepository.findByShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
+            shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
                 //파일 담을 객체 생성 후 받아오기
@@ -178,7 +174,7 @@ public class ProtectServiceImpl implements ProtectService{
                     thumbnail=fileService.getFileUrl(image);
                 }
 
-                Breed breed = breedRepository.findByBreedId(s.getBreedId());
+//                Breed breed = breedRepository.findByBreedId(s.getBreedId());
                 protectDtoList.add(
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
@@ -191,8 +187,8 @@ public class ProtectServiceImpl implements ProtectService{
                                 .neuteredCode(s.getNeutered())
                                 .neutered(Neutered.values()[s.getNeutered()].name())
                                 .age(s.getAge())
-                                .breedName(breed.getName())
-                                .breedId(breed.getBreedId())
+                                .breedName(s.getBreed().getName())
+                                .breedId(s.getBreed().getBreedId())
                                 .kg(s.getWeight())
                                 .build()
 
@@ -218,22 +214,25 @@ public class ProtectServiceImpl implements ProtectService{
 //            }
 //            List<Image> imageList = imageRepository.findByImageIdIn(iList);
             List<FileDto> fileDtoList = new ArrayList<>();
-            for(Image i : shelterDogImageList){
-                fileDtoList.add(
-                        FileDto.builder()
-                                .filePath(fileService.getFileUrl(i))
-                                .build()
-                );
+            if(!shelterDogImageList.isEmpty()){
+                for(Image i : shelterDogImageList){
+                    fileDtoList.add(
+                            FileDto.builder()
+                                    .filePath(fileService.getFileUrl(i))
+                                    .build()
+                    );
+                }
             }
-            Breed breed = breedRepository.findByBreedId(shelterProtectedDog.getBreedId());
+
+//            Breed breed = breedRepository.findByBreedId(shelterProtectedDog.getBreed().getBreedId());
             ProtectDto protectDto = ProtectDto.builder()
                     .age(shelterProtectedDog.getAge())
                     .protectName(shelterProtectedDog.getName())
                     .protectId(shelterProtectedDog.getSpDogId())
-                    .shelterId(shelterProtectedDog.getShelterId())
-                    .breedId(shelterProtectedDog.getBreedId())
-                    .breedName(breed.getName())
-                    .breedId(breed.getBreedId())
+                    .shelterId(shelterProtectedDog.getShelter().getShelterId())
+                    .breedId(shelterProtectedDog.getBreed().getBreedId())
+                    .breedName(shelterProtectedDog.getBreed().getName())
+                    .breedId(shelterProtectedDog.getBreed().getBreedId())
                     .stateCode(shelterProtectedDog.getStateCode().getCode())
                     .state(shelterProtectedDog.getStateCode().name())
                     .gender(shelterProtectedDog.getGender().name())
@@ -261,13 +260,11 @@ public class ProtectServiceImpl implements ProtectService{
     public ResponseMessage insertProtect(ProtectDto protectDto,List<MultipartFile> uploadFile) {
         ResponseMessage responseMessage = new ResponseMessage();
         Shelter shelter = shelterRepository.findByShelterId(protectDto.getShelterId());
+        Breed breed = breedRepository.findByBreedId(protectDto.getBreedId());
         System.out.println(protectDto);
         try {
             List<Image> images = new ArrayList<>();
-            if(uploadFile == null){
-                Image image = fileService.getDefaultImage();
-                images.add(image);
-            }else{
+            if(!uploadFile.isEmpty()){
                 for (MultipartFile partFile : uploadFile) {
                     Image image = fileService.insertFile(partFile, "protect");
                     images.add(image);
@@ -276,8 +273,8 @@ public class ProtectServiceImpl implements ProtectService{
 
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
-                    .breedId(protectDto.getBreedId())
-                    .shelterId(protectDto.getShelterId())
+                    .breed(breed)
+                    .shelter(shelter)
                     .feature(protectDto.getInfoContent())
                     .gender(Gender.of(protectDto.getGenderCode()))
                     .neutered(protectDto.getNeuteredCode())
@@ -390,7 +387,8 @@ public class ProtectServiceImpl implements ProtectService{
                         Cell cell = cellIterator.next();
                         switch (col){
                             case 0 :
-                                shelterProtectedDog.setBreedId(breedRepository.findByName(cell.getStringCellValue()).getBreedId());
+                                Breed breed = breedRepository.findByName(cell.getStringCellValue());
+                                shelterProtectedDog.setBreed(breed);
                                 break;
                             case 1 :
                                 shelterProtectedDog.setName(cell.getStringCellValue());
@@ -454,7 +452,7 @@ public class ProtectServiceImpl implements ProtectService{
                     shelterProtectedDog.setGugunCode(shelter.getGugunCode());
                     shelterProtectedDog.setLatitude(lat);
                     shelterProtectedDog.setLongitude(log);
-                    shelterProtectedDog.setShelterId(shelterId);
+                    shelterProtectedDog.setShelter(shelter);
                     shelterProtectedDog.setStateCode(ProtectState.공고중);
                     shelterProtectedDog.setRegistDate(LocalDate.now());
                     shelterProtectedDog.setImages(images);
@@ -546,21 +544,18 @@ public class ProtectServiceImpl implements ProtectService{
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
 //            if(!uploadDir.exists()) uploadDir.mkdir();
-
-            List<Image> shelterDogImageList = shelterProtectedDog.getImages();
 //            List<Integer> list = new ArrayList<>();
 //            for(Image i : shelterDogImageList){
 //                list.add(i.getImageId());
 //            }
 //            List<Image> imageList = imageRepository.findByImageIdIn(list);
-            for(Image i : shelterDogImageList){
+            for(Image i : images){
 //                File file = new File(uploadPath+File.separator+i.getFilePath());
 //                if(file.exists()) file.delete();
                 fileService.deleteFile(i);
             }
-            shelterDogImageList.removeAll(shelterDogImageList);
+            images.removeAll(images);
 
-            List<Image> newImages = new ArrayList<>();
             for (MultipartFile partFile : uploadFile) {
                 Image image = fileService.insertFile(partFile, "protect");
                 images.add(image);

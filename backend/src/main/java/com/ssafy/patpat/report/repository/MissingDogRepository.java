@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface MissingDogRepository extends JpaRepository<MissingDog,Long> {
-    Page<MissingDog> findByGenderAndBreedId(int gender, Long breedId , PageRequest pageRequest);
+    Page<MissingDog> findByGenderAndBreedBreedId(int gender, Long breedId , PageRequest pageRequest);
     Page<MissingDog> findByGender(int gender, PageRequest pageRequest);
-    Page<MissingDog> findByBreedId(Long breedId, PageRequest pageRequest);
-    Page<MissingDog> findByUserId(Long userId, PageRequest pageRequest);
+    Page<MissingDog> findByBreedBreedId(Long breedId, PageRequest pageRequest);
+    Page<MissingDog> findByUserUserId(Long userId, PageRequest pageRequest);
     MissingDog findByMissingId(Long missingId);
 }

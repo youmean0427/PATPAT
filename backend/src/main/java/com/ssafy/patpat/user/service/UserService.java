@@ -228,9 +228,9 @@ public class UserService {
             user.setNickname(userDto.getUsername());
         }
         if(profileFile != null){
-            Image userImage = user.getImage();
-            fileService.deleteFile(userImage);
-            Image image = fileService.insertFile(profileFile,"user");
+            Image image = user.getImage();
+            fileService.deleteFile(image);
+            image = fileService.insertFile(profileFile,"user");
             user.setImage(image);
         }
 

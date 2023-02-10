@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface PersonalProtectedDogRepository extends JpaRepository<PersonalProtectedDog,Long> {
-    Page<PersonalProtectedDog> findByGenderAndBreedId(int gender, Long breedId , PageRequest pageRequest);
+    Page<PersonalProtectedDog> findByGenderAndBreedBreedId(int gender, Long breedId , PageRequest pageRequest);
     Page<PersonalProtectedDog> findByGender(int gender, PageRequest pageRequest);
-    Page<PersonalProtectedDog> findByBreedId(Long breedId, PageRequest pageRequest);
+    Page<PersonalProtectedDog> findByBreedBreedId(Long breedId, PageRequest pageRequest);
     PersonalProtectedDog findByPpDogId(Long ppDogId);
 }

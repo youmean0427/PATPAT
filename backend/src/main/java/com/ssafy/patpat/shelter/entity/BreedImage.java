@@ -10,7 +10,6 @@
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
 //
-//@Entity
 //@Builder
 //@Getter
 //@NoArgsConstructor

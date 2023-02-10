@@ -1,34 +1,53 @@
 package com.ssafy.patpat.consulting.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ssafy.patpat.common.code.ConsultingState;
+import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.code.TimeCode;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.shelter.entity.Shelter;
+import com.ssafy.patpat.user.entity.User;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Controller;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Data
+@Getter
+@Setter
+@DynamicUpdate
+@DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Consulting {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long consultingId;
-    private Long shelterId;
-    private Long userId;
-    private Integer stateCode;
-    private LocalDate registDate;
-    private Integer timeCode;
-    private Long spDogId;
-    public void updateConsulting(int stateCode){
-        this.stateCode = stateCode;
+
+    private ConsultingState consultingState;
+    private LocalDate consultingDate;
+    private TimeCode timeCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sp_dog_id")
+    private ShelterProtectedDog shelterProtectedDog;
+
+
+
+    public void updateConsulting(ConsultingState consultingState){
+        this.consultingState = consultingState;
     }
 }
