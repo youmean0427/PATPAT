@@ -80,9 +80,14 @@ export const getCountShelterByBreed = async breedId => {
  * @param {string} name
  * @returns
  */
-export const createShelter = async (code, name) => {
-  const res = await authInstance.post(`/shelters?code=${code}&name=${name}`);
+export const createShelter = async data => {
+  const res = await authInstance.post(`/shelters`, data);
   return res;
+};
+
+export const getAuthShelterList = async () => {
+  const { data } = await authInstance.get('/shelters/list');
+  return data;
 };
 
 /**

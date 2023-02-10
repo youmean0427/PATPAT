@@ -2,7 +2,6 @@ export const checkMyShelter = (shelterId, userShelterId) => {
   return parseInt(shelterId) === userShelterId;
 };
 
-export const isHaveShelter = () => {
-  const shelterId = JSON.parse(localStorage.getItem('user'))?.shelterId;
+export const isHaveShelter = shelterId => {
   return shelterId !== null;
 };
