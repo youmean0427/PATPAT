@@ -44,11 +44,12 @@ public class Shelter {
     private String regNumber;
     private String sidoCode;
     private String gugunCode;
+    private String authCode;
 
     @ColumnDefault("소개글을 작성해 주세요.")
     private String info;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "owner_id")
     private Owner owner;
 

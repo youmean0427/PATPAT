@@ -11,4 +11,5 @@ import lombok.*;
 @Builder
 public class AuthCodeDto {
     private String authCode;
+    private Long shelterId;
 }
