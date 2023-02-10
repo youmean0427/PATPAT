@@ -96,7 +96,7 @@ export const CreateComment = async data => {
  * @returns 성공 , 실패 여부
  */
 export const CreateReply = async data => {
-  const res = await authInstance.post('/boards/comments/replies', data, {
+  const res = await authInstance.post('/boards/replies', data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -129,7 +129,7 @@ export const UpdateComment = async (commentId, data) => {
 }
  */
 export const UpdateReply = async (replyId, data) => {
-  const res = await authInstance.put(`/boards/comments/replies/${replyId}`, data, {
+  const res = await authInstance.put(`/boards/replies/${replyId}`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -163,6 +163,12 @@ export const DeleteComment = async commentId => {
  * @returns 성공 , 실패 여부
  */
 export const DeleteReply = async replyId => {
-  const res = await authInstance.delete(`/boards/comments/replies/${replyId}`);
+  const res = await authInstance.delete(`/boards/replies/${replyId}`);
   return res;
+};
+
+// GET: 게시판 댓글 리스트 조회
+export const getCommentList = async (typeCode, limit, offset) => {
+  const { data } = await defaultInstance.get(`/boards/comment`);
+  return data;
 };
