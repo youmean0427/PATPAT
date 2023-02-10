@@ -530,7 +530,7 @@ public class ReportServiceImpl implements ReportService{
         Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
         try{
             List<Image> images = new ArrayList<>();
-            if(uploadFile != null || !uploadFile.isEmpty()){
+            if(uploadFile != null){
                 for (MultipartFile file:
                         uploadFile) {
                     images.add(fileService.insertFile(file,"report"));
