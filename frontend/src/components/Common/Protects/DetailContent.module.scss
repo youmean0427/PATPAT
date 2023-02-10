@@ -35,10 +35,44 @@
 .pressed {
   margin-left: 5px;
 }
-.dog-state {
+.state0 {
   text-align: right;
   width: 30%;
   margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  background-color: $yellow-color;
+}
+.state1 {
+  text-align: right;
+  width: 30%;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  background-color: $main-accent-color;
+  color: white;
+}
+.state2 {
+  text-align: right;
+  width: 30%;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  background-color: $main-color;
+  color: white;
+}
+.state3 {
+  text-align: right;
+  width: 30%;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  background-color: $border-color;
+  color: white;
 }
 .dog-detail,
 .dog-detail-ans {

@@ -36,7 +36,19 @@ export default function DetailContent({ data }) {
             <PetsIcon className={styles.pressed} sx={{ color: '#F87EA3', fontSize: '4rem' }} />
           ) : null}
         </div>
-        <div className={styles['dog-state']}>{data.state}</div>
+        <div
+          className={
+            data.stateCode === 0
+              ? styles['state0']
+              : data.stateCode === 1
+              ? styles['state1']
+              : data.stateCode === 2
+              ? styles['state2']
+              : styles['state3']
+          }
+        >
+          {data.state}
+        </div>
       </div>
       <hr className={styles.line} />
       <div className={styles.content2}>

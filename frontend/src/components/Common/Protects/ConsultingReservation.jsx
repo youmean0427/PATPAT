@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { getShelterConsultationsTime } from 'apis/api/consulting';
+import { createConsultant } from 'apis/api/consulting';
 import React, { useState, useEffect } from 'react';
 import styles from './ConsultingReservation.module.scss';
 import DetailModal from 'components/Common/DetailModal';
@@ -15,8 +14,12 @@ import SelectTime from './SelectTime';
 export default function ConsultingReservation({ data }) {
   const [modal, setModal] = useState(false);
   const [value, setValue] = useState(new Date());
-  const [time, setTime] = useState();
   const [dateClick, setDateClick] = useState(false);
+  const [timeClick, setTimeClick] = useState(false);
+  const [selectTime, setSelectTime] = useState();
+  const [click, setClick] = useState([false, false, false, false, false, false]);
+
+  const userId = JSON.parse(localStorage.getItem('user')).userId;
 
   const openModal = idx => {
     setModal(true);
@@ -25,12 +28,28 @@ export default function ConsultingReservation({ data }) {
   const closeModal = () => {
     setModal(false);
   };
+  const save = () => {
+    alert('신청되었습니다.');
+    const sendData = {
+      consultingDate: moment(value).format('YYYY-MM-DD'),
+      shelterId: 316,
+      timeCode: selectTime,
+      shelterDogId: data.protectId,
+      userid: userId,
+    };
+    createConsultant(sendData);
+    closeModal();
+  };
+
+  const saveFunction = selTime => {
+    setSelectTime(selTime);
+  };
 
   return (
     <>
       <div className={styles.button}>
         <button className={styles.active} onClick={() => openModal()}>
-          내 가족 찾기
+          상담 신청하기
         </button>
       </div>
       <DetailModal open={modal} close={closeModal} title="상담 신청">
@@ -41,28 +60,69 @@ export default function ConsultingReservation({ data }) {
             </span>
             <span>날짜 선택</span>
             <span className={styles.date}>{moment(value).format('YYYY-MM-DD')}</span>
-            <KeyboardArrowUpIcon className={`${styles.icon} ${styles.up}`} sx={{ fontSize: '20px' }} />
-            <KeyboardArrowDownIcon className={`${styles.icon} ${styles.down}`} sx={{ fontSize: '20px' }} />
+            {dateClick ? (
+              <KeyboardArrowUpIcon
+                onClick={() => setDateClick(cur => !cur)}
+                className={`${styles.icon} ${styles.up}`}
+                sx={{ fontSize: '20px' }}
+              />
+            ) : (
+              <KeyboardArrowDownIcon
+                onClick={() => setDateClick(cur => !cur)}
+                className={`${styles.icon} ${styles.down}`}
+                sx={{ fontSize: '20px' }}
+              />
+            )}
           </div>
           <hr className={styles['modal-line']} />
-          <Calendar
-            className={styles.calendar}
-            onChange={e => {
-              setValue(e);
-            }}
-            value={value}
-            calendarType="US"
-          />
-          <hr className={styles['modal-line']} />
+          <div className={dateClick ? styles.calendar : styles['no-calendar']}>
+            <Calendar
+              onChange={e => {
+                setValue(e);
+                setClick([false, false, false, false, false, false]);
+              }}
+              value={value}
+              calendarType="US"
+            />
+          </div>
+
           <div className={styles.blank}></div>
           <span>
             <AccessTimeIcon className={styles.icon} sx={{ fontSize: '20px', color: '#694e4e' }} />
           </span>
           <span>시간 선택</span>
-          <KeyboardArrowUpIcon className={`${styles.icon} ${styles.up}`} sx={{ fontSize: '20px' }} />
-          <KeyboardArrowDownIcon className={`${styles.icon} ${styles.down}`} sx={{ fontSize: '20px' }} />
-          <SelectTime shelterId={data.shelterId} value={value} />
+          {timeClick ? (
+            <KeyboardArrowUpIcon
+              onClick={() => setTimeClick(cur => !cur)}
+              className={`${styles.icon} ${styles.up}`}
+              sx={{ fontSize: '20px' }}
+            />
+          ) : (
+            <KeyboardArrowDownIcon
+              onClick={() => setTimeClick(cur => !cur)}
+              className={`${styles.icon} ${styles.down}`}
+              sx={{ fontSize: '20px' }}
+            />
+          )}
+          <hr className={styles['modal-line']} />
+          <div className={timeClick ? styles.selTime : styles['no-selTime']}>
+            <SelectTime
+              shelterId={data.shelterId}
+              value={value}
+              saveFunction={saveFunction}
+              click={click}
+              setClick={setClick}
+            />
+          </div>
         </div>
+        <footer className={styles.footer}>
+          <button className={styles.save} onClick={save}>
+            신청
+          </button>
+          <button className={styles.close} onClick={closeModal}>
+            취소
+          </button>
+        </footer>
       </DetailModal>
     </>
   );

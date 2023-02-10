@@ -3,6 +3,7 @@ import styles from './ReservationItem.module.scss';
 import ShelterImg from 'assets/images/shelter.png';
 
 export default function VolunteerItem({ item }) {
+  console.log(item);
   const { shelterName, address, startTime, endTime, state } = item;
   return (
     <div className={styles.items}>

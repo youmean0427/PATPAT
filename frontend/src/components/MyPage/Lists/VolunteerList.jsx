@@ -7,7 +7,7 @@ import VolunteerItem from '../Items/VolunteerItem';
 export default function VolunteerList({ userId }) {
   const { data, isLoading } = useQuery({
     queryKey: ['myVolunteerList'],
-    queryFn: () => getVolReservationOfUser(userId, 20, 0),
+    queryFn: () => getVolReservationOfUser(20, 0, userId),
   });
 
   if (isLoading) return;
@@ -17,7 +17,7 @@ export default function VolunteerList({ userId }) {
       {data.totalCount === 0 ? (
         <div className={styles['no-data']}>신청한 봉사 정보가 없습니다.</div>
       ) : (
-        data.map(item => <VolunteerItem key={item.reservationId} item={item} />)
+        data.list.map(item => <VolunteerItem key={item.reservationId} item={item} />)
       )}
     </div>
   );

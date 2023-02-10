@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { modifyUserInfo } from 'apis/api/user';
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './ForPawMeter.module.scss';
@@ -18,6 +19,16 @@ export default function ForPawMeter({ data }) {
 
   const fileInput = useRef(null);
   const reader = new FileReader();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(['modifyUserInfo'], formData => modifyUserInfo(formData), {
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['getUserInfo'] });
+      closeModal();
+    },
+    onError: error => {
+      console.log(error);
+    },
+  });
 
   useEffect(() => {
     setProfile(data.profileImageUrl);
@@ -45,7 +56,7 @@ export default function ForPawMeter({ data }) {
     formData.append('userId', data.userId);
     formData.append('username', userName);
     formData.append('profileFile', file);
-    modifyUserInfo(formData);
+    mutate(formData);
   };
 
   const handleUserName = e => {
