@@ -1,11 +1,14 @@
 package com.ssafy.patpat.common.service;
 
 import com.ssafy.patpat.common.code.category.Color;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+@Service
+@RequiredArgsConstructor
 public class ColorService {
     //inner class
     class Colors implements Comparable<Colors>{
