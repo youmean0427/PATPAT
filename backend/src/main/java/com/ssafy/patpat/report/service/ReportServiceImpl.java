@@ -117,7 +117,7 @@ public class ReportServiceImpl implements ReportService{
                 }
                 if(missingDogImageList.size() > 0){
                     thumbnail = FileDto.builder()
-                            .filePath(missingDogImageList.get(0).getFilePath())
+                            .filePath(fileService.getFileUrl(missingDogImageList.get(0)))
                             .build();
                 }
                 Breed breed = missingDog.getBreed();
@@ -143,15 +143,16 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public ResponseListDto selectMissingListByUser(Long userId, RequestReportDto requestReportDto) {
+    public ResponseListDto selectMissingListByUser(RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         int limit = requestReportDto.getLimit();
         int offSet = requestReportDto.getOffSet();
         PageRequest pageRequest = PageRequest.of(offSet,limit);
 //        System.out.println(userId);
 //        System.out.println(requestReportDto);
 
-        Page<MissingDog> missingDogList = missingDogRepository.findByUserUserId(userId,pageRequest);
+        Page<MissingDog> missingDogList = missingDogRepository.findByUserUserId(user.get().getUserId(),pageRequest);
 
 //        System.out.println(missingDogList);
         List<ReportDto> reportDtoList = new ArrayList<>();

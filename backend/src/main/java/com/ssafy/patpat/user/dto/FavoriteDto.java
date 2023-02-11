@@ -23,6 +23,9 @@ public class FavoriteDto {
     private String state;
     private Double weight;
 
+    private Long breedId;
+    private String breedName;
+
     private String neutered;
     private Integer neuteredCode;
     private String gender;
