@@ -51,9 +51,9 @@ public class VolunteerService {
      * @return
      */
     @Transactional
-    public ResponseListDto selectNoticeListByLatLng(RequestVolunteerDto requestVolunteerDto){
+    public List<VolunteerNoticeDto> selectNoticeListByLatLng(RequestVolunteerDto requestVolunteerDto){
         PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
-        Page<VolunteerNotice> volunteerNotices;
+        List<VolunteerNotice> volunteerNotices;
         if(requestVolunteerDto.getLatitude() != null &&
                 requestVolunteerDto.getLongitude() != null){
             BigDecimal a = new BigDecimal(requestVolunteerDto.getLatitude());
@@ -62,14 +62,14 @@ public class VolunteerService {
 //            LOGGER.info("뜨긴 뜨나 {}",sheltersInDistance.get(0).getDistance());
             List<Long> shelters = sheltersInDistance.stream().map( s -> s.getShelterId()).collect(Collectors.toList());
 //            LOGGER.info("뜨긴 뜨나 shelter {}",shelters.get(0));
-            volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdInAndReservationStateCodeAndVolunteerDateGreaterThan(shelters, Reservation.대기중, LocalDate.now().toString(), pageRequest);
+            volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdInAndReservationStateCodeAndVolunteerDateBetween(shelters, Reservation.대기중, LocalDate.now().plusDays(1).toString(), LocalDate.now().plusDays(7L).toString());
             if(volunteerNotices.isEmpty()){
                 LOGGER.info("검색되는 봉사 공고가 없습니다.");
                 return null;
             }
             List<VolunteerNoticeDto> list = new ArrayList<>();
             for (VolunteerNotice vn:
-                    volunteerNotices.toList()) {
+                    volunteerNotices) {
 //                LOGGER.info("검색된 봉사 공고의 보호소 id {}",vn.getShelter().getShelterId());
 //                List<Long> scheduleId = new ArrayList<>();
 //                for (VolunteerSchedule vs:
@@ -103,12 +103,12 @@ public class VolunteerService {
                         .longitude(vn.getShelter().getLongitude().toString())
                         .build());
             }
-            ResponseListDto responseVolunteerDto = new ResponseListDto();
-            responseVolunteerDto.setTotalCount(volunteerNotices.getTotalElements());
-            responseVolunteerDto.setTotalPage(volunteerNotices.getTotalPages());
-            responseVolunteerDto.setList(list);
+//            ResponseListDto responseVolunteerDto = new ResponseListDto();
+//            responseVolunteerDto.setTotalCount(volunteerNotices.getTotalElements());
+//            responseVolunteerDto.setTotalPage(volunteerNotices.getTotalPages());
+//            responseVolunteerDto.setList(list);
 
-            return responseVolunteerDto;
+            return list;
 
         }else{
             LOGGER.info("탐색 기준이 없습니다.");
