@@ -85,7 +85,7 @@ export default function DetailContent({ data }) {
           <p>{data.gender}</p>
           <p>{data.age}</p>
           <p>{data.kg}kg</p>
-          <p>{data.neeutered}</p>
+          <p>{data.neutered}</p>
         </div>
       </div>
       <div className={styles.content3}>
