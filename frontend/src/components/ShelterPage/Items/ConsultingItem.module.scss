@@ -1,87 +1,36 @@
 @import 'assets/styles/variable.scss';
 
-.items {
-  position: relative;
+.info {
   display: flex;
-  width: 37rem;
-  height: 13rem;
-  margin: 10px;
-  background-color: #f5f4f4;
-}
-.consulting-img img {
-  width: 8rem;
-  margin-top: 2rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-}
-.contents {
-  text-align: left;
-  width: 25rem;
-  margin-top: 2rem;
-}
-.user-name {
-  margin: 1rem 0 1rem 0;
-  font-size: 1.5rem;
-  color: $main-color;
-  font-weight: 700;
-}
-.buttons button {
-  width: 5rem;
-  height: 2.5rem;
-  margin-top: 9rem;
-  margin-right: 2rem;
-}
-.buttons button:hover {
-  transform: translateY(-2px);
-}
-.state-buttons {
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  width: 35rem;
-  right: -10%;
-  bottom: -15%;
-  z-index: 2;
-}
-.state-buttons button {
-  display: flex;
-  width: 5rem;
-  height: 2.5rem;
-  margin: 1px;
-  padding: 5px;
-  justify-content: center;
-}
-.state-buttons button:hover {
-  transform: translateY(-3px);
-}
-.hide-buttons {
-  display: none;
-}
-.state0 {
-  background-color: $lighter-blue-color;
-  color: white;
-}
-.state1 {
-  background-color: $green-color;
-  color: white;
-}
-.state2 {
-  background-color: $red-color;
-  color: white;
-}
-.state3 {
-  background-color: $yellow-color;
-}
-.state4 {
-  background-color: lightgray;
-}
-.state5 {
-  background-color: $purple-color;
-  color: white;
-}
-.disabled {
-  background-color: $purple-color;
-  color: white;
-  opacity: 0.5;
-  pointer-events: none;
+  gap: 2rem;
+  & > .user {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    .user-name {
+      width: 10rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 0.5rem 2rem;
+      border-radius: 0.4rem;
+      color: $black-color;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    & > img {
+      width: 10rem;
+      height: 10rem;
+      border-radius: 0.4rem;
+    }
+  }
+
+  & > .desc {
+    flex: 1;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 }

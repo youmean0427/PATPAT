@@ -11,9 +11,5 @@ export default function ConsultingList({ shelterId }) {
   });
 
   if (isLoading) return;
-  return (
-    <div className={styles['consulting-list']}>
-      {data && data.list.map(item => <ConsultingItem key={item.consultingId} item={item} />)}
-    </div>
-  );
+  return data.list.map(item => <ConsultingItem key={item.consultingId} item={item} />);
 }
