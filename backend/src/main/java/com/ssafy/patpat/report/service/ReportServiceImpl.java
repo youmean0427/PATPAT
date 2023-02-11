@@ -493,7 +493,7 @@ public class ReportServiceImpl implements ReportService{
             else {
                 PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(reportDto.getPersonalProtectionId());
                 Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
-
+                
                 List<DogColor> colors = new ArrayList<>();
                 for (String c:
                         reportDto.getCategoryColor()) {
