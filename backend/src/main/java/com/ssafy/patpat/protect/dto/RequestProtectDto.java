@@ -14,4 +14,5 @@ public class RequestProtectDto {
     private Integer code;
     private Integer offSet;
     private Integer limit;
+    private Integer stateCode;
 }
