@@ -1,8 +1,7 @@
 package com.ssafy.patpat.protect.entity;
 
 import com.ssafy.patpat.common.code.ProtectState;
-import com.ssafy.patpat.common.code.category.Gender;
-import com.ssafy.patpat.common.code.category.Neutered;
+import com.ssafy.patpat.common.code.category.*;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -29,25 +28,19 @@ public class ShelterProtectedDog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long spDogId;
-
     private LocalDate findingDate;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
     private Double weight;//
     private Gender gender;//
     private Neutered neutered;//
     private LocalDate registDate;//
     private String feature;//
-    private Integer categoryEar;//
-    private Integer categoryTail;//
-    private Integer categoryColor;//
-    private Integer categoryPattern;//
-    private Integer categoryCloth;//
-    private Integer categoryClothColor;//
+    private Ear categoryEar;//
+    private Tail categoryTail;//
+    private Color categoryColor;//
+    private Pattern categoryPattern;//
+    private Cloth categoryCloth;//
     private String name;//
     private Integer age;//
-    private String sidoCode;//
-    private String gugunCode;//
 
     private ProtectState stateCode;//
 

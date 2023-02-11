@@ -181,8 +181,9 @@ class VolunteerScheduleRepositoryTest {
 //            System.out.println(t.getName());
 //            System.out.println(t.getDistance());
 //        }
-        int cnt = userRepository.countByFavorite(2L,3L);
-        System.out.println(cnt);
+//        int cnt = userRepository.countByFavorite(2L,3L);
+//        System.out.println(cnt);
+//
 
 //        System.out.println(shelter.getShelterId());
 //        for (Time t:
