@@ -9,6 +9,7 @@ import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
+import com.ssafy.patpat.common.service.ColorService;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
@@ -68,6 +69,8 @@ public class ReportServiceImpl implements ReportService{
 
     @Autowired
     UserService userService;
+    @Autowired
+    ColorService colorService;
 
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;
@@ -614,7 +617,7 @@ public class ReportServiceImpl implements ReportService{
                         .build());
             }
             /** Color 처리 로직 */
-            Color color = null;
+            Color color = colorService.getColorCode(reportDto.getCategoryColor());
             if(reportDto.getTypeCode() == 1) {
 
                 MissingDog missingDog = MissingDog.builder()

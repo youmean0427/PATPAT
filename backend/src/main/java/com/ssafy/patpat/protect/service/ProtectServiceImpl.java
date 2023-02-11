@@ -11,6 +11,7 @@ import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.service.ColorService;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
@@ -76,6 +77,8 @@ public class ProtectServiceImpl implements ProtectService{
 
     @Autowired
     FileService fileService;
+    @Autowired
+    ColorService colorService;
     @Override
     public ResponseListDto selectProtectList(RequestProtectDto requestProtectDto) {
         try{
@@ -344,7 +347,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .categoryEar(shelterProtectedDog.getCategoryEar().name())
                     .categoryEarCode(shelterProtectedDog.getCategoryEar().getCode())
                     .categoryTail(shelterProtectedDog.getCategoryTail().name())
-                    .categoryEarCode(shelterProtectedDog.getCategoryTail().getCode())
+                    .categoryTailCode(shelterProtectedDog.getCategoryTail().getCode())
                     .categoryPattern(shelterProtectedDog.getCategoryPattern().name())
                     .categoryPatternCode(shelterProtectedDog.getCategoryPattern().getCode())
                     .categoryCloth(shelterProtectedDog.getCategoryCloth().name())
@@ -385,7 +388,9 @@ public class ProtectServiceImpl implements ProtectService{
                         .build());
             }
             /** color 처리 로직 필요 */
-            Color color = null;
+
+            Color color = colorService.getColorCode(protectDto.getCategoryColor());
+
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
                     .breed(breed)
