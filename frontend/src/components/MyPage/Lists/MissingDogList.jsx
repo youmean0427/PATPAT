@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMissingDogListOfUser } from 'apis/api/report';
+import { getMissingDogListOfMy } from 'apis/api/report';
 import React from 'react';
 import styles from './MissingDogList.module.scss';
 import MissingDogItem from '../Items/MissingDogItem';
@@ -7,7 +7,7 @@ import MissingDogItem from '../Items/MissingDogItem';
 export default function MissingDog({ userId }) {
   const { data, isLoading } = useQuery({
     queryKey: ['myMissingDogList'],
-    queryFn: () => getMissingDogListOfUser(userId, 20, 0),
+    queryFn: () => getMissingDogListOfMy(20, 0),
   });
 
   if (isLoading) return;

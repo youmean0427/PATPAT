@@ -1,8 +1,9 @@
+import ProtectStateBadge from 'components/Common/Badge/ProtectStateBadge';
 import Card from 'components/Common/Card';
 import React from 'react';
 import styles from './AbandonedDogItem.module.scss';
 export default function AbandonedDogItem({ item }) {
-  const { name, age, breedName, thumbnail, kg, gender, neutered, protectName } = item;
+  const { name, age, breedName, thumbnail, kg, gender, neutered, protectName, state, stateCode } = item;
   return (
     <Card>
       <img src={thumbnail} alt={name} />
@@ -16,6 +17,7 @@ export default function AbandonedDogItem({ item }) {
           {age}살 / {kg}kg
         </div>
       </div>
+      <ProtectStateBadge state={state} stateCode={stateCode} />
     </Card>
   );
 }

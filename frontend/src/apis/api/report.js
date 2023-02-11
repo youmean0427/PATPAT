@@ -32,6 +32,11 @@ export const getMissingDogListOfUser = async (limit, offset) => {
   return data;
 };
 
+export const getMissingDogListOfMy = async (limit, offset) => {
+  const { data } = await authInstance.get(`/reports/missings/me?limit=${limit}&offSet=${offset}`);
+  return data;
+};
+
 /**
  * GET : 실종견 공고의 상세 정보 데이터
  * @param {int} missingId

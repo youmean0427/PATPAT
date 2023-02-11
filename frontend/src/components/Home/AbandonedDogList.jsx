@@ -6,7 +6,7 @@ import styles from './AbandonedDogList.module.scss';
 export default function AbandonedDogList() {
   const { data } = useQuery({
     queryKey: ['protectListSortedByEuthanasia'],
-    queryFn: () => getProtectList(0, 4, 0),
+    queryFn: () => getProtectList(0, 0, 4, 0),
   });
   return (
     <div className={styles.list}>
