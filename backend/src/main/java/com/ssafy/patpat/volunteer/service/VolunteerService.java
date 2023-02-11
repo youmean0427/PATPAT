@@ -3,6 +3,7 @@ package com.ssafy.patpat.volunteer.service;
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.error.VolunteerException;
+import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.user.entity.User;
@@ -245,8 +246,11 @@ public class VolunteerService {
                         .reservationId(vr.getReservationId())
                         .scheduleId(vs.getScheduleId())
                         .capacity(vr.getCapacity())
-                        .shelterName(vr.getShelterName())
-                        .volunteerDate(vr.getVolunteerDate())
+                        .shelterName(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getName())
+                        .shelterAddress(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getAddress())
+                        .volunteerDate(vr.getVolunteerSchedule().getVolunteerNotice().getVolunteerDate())
+                        .startTime(vr.getVolunteerSchedule().getStartTime())
+                        .endTime(vr.getVolunteerSchedule().getEndTime())
                         .reservationState(vr.getReservationStateCode().name())
                         .reservationStateCode(vr.getReservationStateCode().getCode())
                         .build());
@@ -360,15 +364,16 @@ public class VolunteerService {
         reservations.add(Reservation.승인);
         reservations.add(Reservation.대기중);
         reservations.add(Reservation.완료);
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         Optional<Long> totalCount = volunteerReservationRepository
-                .countWithUserByUserUserIdAndReservationStateCodeIn(requestVolunteerDto.getUserId(), reservations);
+                .countWithUserByUserUserIdAndReservationStateCodeIn(user.get().getUserId(), reservations);
         if(!totalCount.isPresent()){
             LOGGER.info("목록이 없습니다.");
             return null;
         }
 
 //        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffset(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
-        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithUserByUserUserIdAndReservationStateCode(requestVolunteerDto.getUserId(), requestVolunteerDto.getOffSet(), requestVolunteerDto.getLimit());
+        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithUserByUserUserIdAndReservationStateCode(user.get().getUserId(), requestVolunteerDto.getOffSet(), requestVolunteerDto.getLimit());
 
         List<VolunteerReservationDto> list = new ArrayList<>();
         for (VolunteerReservation vr:
@@ -377,8 +382,11 @@ public class VolunteerService {
                     .reservationId(vr.getReservationId())
                     .scheduleId(vr.getVolunteerSchedule().getScheduleId())
                     .capacity(vr.getCapacity())
-                    .shelterName(vr.getShelterName())
-                    .volunteerDate(vr.getVolunteerDate())
+                    .shelterName(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getName())
+                    .shelterAddress(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getAddress())
+                    .volunteerDate(vr.getVolunteerSchedule().getVolunteerNotice().getVolunteerDate())
+                    .startTime(vr.getVolunteerSchedule().getStartTime())
+                    .endTime(vr.getVolunteerSchedule().getEndTime())
                     .reservationState(vr.getReservationStateCode().name())
                     .reservationStateCode(vr.getReservationStateCode().getCode())
                     .build());
@@ -407,7 +415,7 @@ public class VolunteerService {
             return false;
         }
         /** user 조회 */
-        Optional<User> user = userRepository.findById(reservationDto.getUserId());
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         if(!user.isPresent()){
             LOGGER.info("등록된 유저가 아닙니다.");
             return false;
@@ -421,8 +429,6 @@ public class VolunteerService {
                         .capacity(reservationDto.getCapacity())
                         .user(user.get())
                         .volunteerSchedule(volunteerSchedule.get())
-                        .shelterName(reservationDto.getShelterName())
-                        .volunteerDate(reservationDto.getVolunteerDate())
                         .build();
         volunteerReservationRepository.save(volunteerReservation);
 
@@ -436,7 +442,8 @@ public class VolunteerService {
             LOGGER.info("유효한 예약이 아닙니다.");
             return false;
         }
-        if(volunteerReservation.get().getUser().getUserId() != reservationDto.getUserId()){
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        if(!user.isPresent()){
             LOGGER.info("등록된 회원이 아닙니다.");
             return false;
         }

@@ -77,7 +77,7 @@ public class FileService {
     public String getFileUrl(Image image){
         String fileName = image.getFilename();
         if(!fileName.equals("kakao") && !fileName.equals("naver") && !fileName.equals("google")){
-            return callUrl+File.separator+image.getFilePath();
+            return callUrl+"/"+image.getFilePath();
         }else{
             return image.getFilePath();
         }

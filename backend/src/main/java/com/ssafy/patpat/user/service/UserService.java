@@ -1,6 +1,7 @@
 package com.ssafy.patpat.user.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.redis.RedisService;
@@ -22,6 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -31,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigInteger;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -122,7 +127,7 @@ public class UserService {
         List<Authority> list = new ArrayList<>();
         list.add(authority);
 
-        Set<ShelterProtectedDog> favoriteDogs = new HashSet<>();
+        List<ShelterProtectedDog> favoriteDogs = new ArrayList<>();
 
         String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
@@ -287,46 +292,63 @@ public class UserService {
      * 찜 목록
      * */
     @Transactional(readOnly = true)
-    public List<FavoriteDto> getFavoriteDogs(UserDto userDto){
-        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userDto.getUserId());
+    public ResponseListDto getFavoriteDogs(Integer offSet, Integer limit){
+        ResponseListDto responseListDto = new ResponseListDto();
+        List<FavoriteDto> list = new ArrayList<>();
+        PageRequest pageRequest = PageRequest.of(offSet,limit);
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         if(!user.isPresent()){
-            return null;
+            return responseListDto;
         }
 
-        List<FavoriteDto> list = new ArrayList<>();
-        Set<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
-        for (ShelterProtectedDog dog:
-             dogs) {
+        Page<BigInteger> dogIds = userRepository.findByFavorite(user.get().getUserId(), pageRequest);
+
+        for (BigInteger dogId:
+                dogIds) {
+            ShelterProtectedDog dog = shelterProtectedDogRepository.findBySpDogId(dogId.longValue());
+            List<Image> images = dog.getImages();
+            String imageUrl = null;
+            if(images.isEmpty()){
+                imageUrl = fileService.getFileUrl(fileService.getDefaultImage());
+            }else{
+                imageUrl = fileService.getFileUrl(images.get(0));
+            }
             list.add(FavoriteDto.builder()
                     .spDogId(dog.getSpDogId())
                     .userId(user.get().getUserId())
                     .name(dog.getName())
-                    .imageUrl(fileService.getFileUrl(dog.getImages().get(0)))
+                    .imageUrl(imageUrl)
+                    .breedId(dog.getBreed().getBreedId())
+                    .breedName(dog.getBreed().getName())
                     .stateCode(dog.getStateCode().getCode())
                     .state(dog.getStateCode().name())
                     .weight(dog.getWeight())
-                    //.neutered(dog.isNeutered())
+                    .neutered(dog.getNeutered().name())
+                    .neuteredCode(dog.getNeutered().getCode())
                     .gender(dog.getGender().name())
                     .genderCode(dog.getGender().getCode())
                     .age(dog.getAge())
                     .build());
         }
-        return list;
+        responseListDto.setList(list);
+        responseListDto.setTotalCount(dogIds.getTotalElements());
+        responseListDto.setTotalPage(dogIds.getTotalPages());
+        return responseListDto;
     }
 
     /**
      * 찜 등록
      * */
     @Transactional
-    public boolean insertFavoriteDogs(Long userId, Long protectId){
-        LOGGER.info("user {}", userId);
-        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userId);
+    public boolean insertFavoriteDogs(Long protectId){
+
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         if(!user.isPresent()){
             return false;
         }
 
         LOGGER.info("userEmail {} : ", user.get().getEmail());
-        Set<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
+        List<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
         if(dogs.isEmpty()){
             LOGGER.info("최초 관심 동물 등록");
         }
@@ -342,15 +364,14 @@ public class UserService {
      * 찜 해제
      * */
     @Transactional
-    public boolean deleteFavoriteDogs(Long userId, Long protectId){
-        LOGGER.info("user {}", userId);
-        Optional<User> user = userRepository.findWithFavoriteDogsByUserId(userId);
+    public boolean deleteFavoriteDogs(Long protectId){
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         if(!user.isPresent()){
             return false;
         }
 
         LOGGER.info("userEmail {} : ", user.get().getEmail());
-        Set<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
+        List<ShelterProtectedDog> dogs = user.get().getFavoriteDogs();
         if(dogs.isEmpty()){
             LOGGER.info("삭제할 것이 없습니다.");
             return false;
