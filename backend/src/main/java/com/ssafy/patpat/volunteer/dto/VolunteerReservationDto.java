@@ -15,6 +15,8 @@ public class VolunteerReservationDto {
 
     private Long scheduleId;
 
+    private Long noticeId;
+
     private Integer capacity;
 
     private String shelterName;
