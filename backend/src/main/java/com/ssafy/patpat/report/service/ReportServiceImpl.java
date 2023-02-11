@@ -503,6 +503,17 @@ public class ReportServiceImpl implements ReportService{
                             .colorCode(c)
                             .build());
                 }
+                List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
+                if (uploadFile != null) {
+                    for (Image i : personalProtectedDogImageList) {
+                        fileService.deleteFile(i);
+                    }
+                    personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
+
+                    for (MultipartFile partFile : uploadFile) {
+                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "report"));
+                    }
+                }
                 /** Color 처리 로직 필요 */
                 Color color = null;
                 personalProtectedDog = PersonalProtectedDog.builder()
@@ -518,20 +529,10 @@ public class ReportServiceImpl implements ReportService{
                         .colors(colors)
                         .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
+                        .images(personalProtectedDogImageList)
                         .build();
                 
-                if (uploadFile != null) {
-                    List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
-                    for (Image i : personalProtectedDogImageList) {
-                        fileService.deleteFile(i);
-                    }
-                    personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
 
-                    for (MultipartFile partFile : uploadFile) {
-                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "report"));
-                    }
-                    personalProtectedDog.setImages(personalProtectedDogImageList);
-                }
                 personalProtectedDogRepository.save(personalProtectedDog);
             }
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
