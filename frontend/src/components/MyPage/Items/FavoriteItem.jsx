@@ -3,19 +3,24 @@ import styles from './FavoriteItem.module.scss';
 import Card from 'components/Common/Card';
 import PetsIcon from '@mui/icons-material/Pets';
 import { insertFavProtect, deleteFavProtect } from 'apis/api/user';
+import { useNavigate } from 'react-router-dom';
 
 export default function FavoriteItem({ item }) {
-  const { spDogId, userId, name, imageUrl, stateCode, state, weight, neutered, neuteredCode, gender, genderCode, age } =
-    item;
+  const { spDogId, breedName, name, imageUrl, stateCode, state, weight, neutered, gender, age } = item;
   const [favorite, setFavorite] = useState(true);
+  const navigate = useNavigate();
 
   const handleFavBtn = () => {
     favorite ? deleteFavProtect(spDogId) : insertFavProtect(spDogId);
     setFavorite(cur => !cur);
   };
 
+  const handleCardClick = () => {
+    navigate(`/protects/${spDogId}`);
+  };
+
   return (
-    <Card>
+    <div className={styles.card} onClick={handleCardClick}>
       <img src={imageUrl} alt={name} />
       <div
         className={`${styles.state} ${
@@ -33,7 +38,7 @@ export default function FavoriteItem({ item }) {
       <div className={styles.description}>
         <div className={styles.detail}>
           <div className={styles.name}>{name}</div>
-          {/* <div className={styles.kind}>{breedName}</div> */}
+          <div className={styles.kind}>{breedName}</div>
           <div className={styles.gender}>
             {gender}(중성화 {neutered ? 'O' : 'X'})
           </div>
@@ -49,6 +54,6 @@ export default function FavoriteItem({ item }) {
           )}
         </div>
       </div>
-    </Card>
+    </div>
   );
 }

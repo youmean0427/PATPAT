@@ -3,10 +3,9 @@ import { getFavListListOfUser } from 'apis/api/user';
 import React, { useState } from 'react';
 import styles from './FavoriteList.module.scss';
 import FavoriteItem from '../Items/FavoriteItem';
-import ShelterContainer from 'containers/ShelterContainer';
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
+
 export default function FavoriteList() {
-  const userId = JSON.parse(localStorage.getItem('user')).userId;
   const [page, setPage] = useState(1);
   const LIMIT = 8;
   const { data, isLoading } = useQuery({
@@ -24,7 +23,7 @@ export default function FavoriteList() {
   if (isLoading) return;
 
   return (
-    <ShelterContainer title="꾹 리스트">
+    <div className={styles.container}>
       <div className={styles.pagination}>
         <button
           onClick={handleClickPrev}
@@ -51,6 +50,6 @@ export default function FavoriteList() {
           data.list.map(item => <FavoriteItem key={item.spDogId} item={item} />)
         )}
       </div>
-    </ShelterContainer>
+    </div>
   );
 }
