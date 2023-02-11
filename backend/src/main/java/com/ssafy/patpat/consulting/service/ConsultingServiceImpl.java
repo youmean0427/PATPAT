@@ -29,6 +29,7 @@ import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
@@ -66,22 +67,35 @@ public class ConsultingServiceImpl implements ConsultingService{
     public ResponseListDto selectConsultingList(RequestConsultingDto requestConsultingDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
-//        System.out.println(requestConsultingDto);
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+
         try{
-            PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
-//            System.out.println(requestConsultingDto);
-            Page<Consulting> consultingList = consultingRepository.findByUserUserIdAndConsultingDateGreaterThanEqual(requestConsultingDto.getUserId(),LocalDate.now(),pageRequest);
-//            System.out.println(consultingList);
+            PageRequest pageRequest = null;
+
+//            Integer code = requestConsultingDto.getCode();
+            ConsultingState consultingState = null;
+            Page<Consulting> consultingList = null;
+            if(consultingState == null){
+                pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
+                consultingList = consultingRepository.findByUserAndConsultingDateGreaterThanEqual(user.get(),LocalDate.now(),pageRequest);
+            }
+            else{ //consultingState != null
+                consultingState = ConsultingState.of(requestConsultingDto.getStateCode());
+                pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
+                consultingList = consultingRepository.findByUserAndConsultingDateGreaterThanEqualAndConsultingState(user.get(),LocalDate.now(), consultingState,pageRequest);
+            }
+
+
             for(Consulting c : consultingList.toList()){
-                ConsultingState transferStateCode = null;
-                if(c.getConsultingState() == ConsultingState.승인 && c.getConsultingDate().equals(LocalDate.now())){
-                    transferStateCode = ConsultingState.생성;
-                    c.updateConsulting(transferStateCode);
-                    consultingRepository.save(c);
-                }
-                else{
-                    transferStateCode  = c.getConsultingState();
-                }
+                ConsultingState transferStateCode = c.getConsultingState();
+//                if(c.getConsultingState() == ConsultingState.승인 && c.getConsultingDate().equals(LocalDate.now())){
+//                    transferStateCode = ConsultingState.생성;
+//                    c.updateConsulting(transferStateCode);
+//                    consultingRepository.save(c);
+//                }
+//                else{
+//                    transferStateCode  = c.getConsultingState();
+//                }
                 Shelter shelter = shelterRepository.findByShelterId(c.getShelter().getShelterId());
 
                 consultingDtoList.add(
@@ -96,6 +110,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .time(c.getTimeCode().name())
                                 .shelterId(shelter.getShelterId())
                                 .shelterDogName(c.getShelterProtectedDog().getName())
+                                .registDate(c.getRegistDate())
                                 .build()
                 );
             }
@@ -113,16 +128,30 @@ public class ConsultingServiceImpl implements ConsultingService{
     public ResponseListDto selectConsultingListByShelter(RequestConsultingDto requestConsultingDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
+
         try{
-            PageRequest pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit());
-            Page<Consulting> consultingList = consultingRepository.findByShelterShelterIdAndConsultingDateGreaterThanEqual(requestConsultingDto.getShelterId(), LocalDate.now(),pageRequest);
+            PageRequest pageRequest = null;
+
+//            Integer code = requestConsultingDto.getCode();
+            ConsultingState consultingState = null;
+            Page<Consulting> consultingList = null;
+
+            if(consultingState == null){
+                pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
+                consultingList = consultingRepository.findByShelterShelterIdAndConsultingDateGreaterThanEqual(requestConsultingDto.getShelterId(),LocalDate.now(),pageRequest);
+            }
+            else{ //consultingState != null
+                consultingState = ConsultingState.of(requestConsultingDto.getStateCode());
+                pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
+                consultingList = consultingRepository.findByShelterShelterIdAndConsultingDateGreaterThanEqualAndConsultingState(requestConsultingDto.getShelterId(),LocalDate.now(), consultingState,pageRequest);
+            }
             for(Consulting c : consultingList.toList()){
                 ConsultingState transferStateCode = c.getConsultingState();
-                if(c.getConsultingState() == ConsultingState.승인 && c.getConsultingDate().equals(LocalDate.now())){
-                    transferStateCode = ConsultingState.생성;
-                    c.updateConsulting(transferStateCode);
-                    consultingRepository.save(c);
-                }
+//                if(c.getConsultingState() == ConsultingState.승인 && c.getConsultingDate().equals(LocalDate.now())){
+//                    transferStateCode = ConsultingState.생성;
+//                    c.updateConsulting(transferStateCode);
+//                    consultingRepository.save(c);
+//                }
                 consultingDtoList.add(
                         ConsultingDto.builder()
                                 .consultingId(c.getConsultingId())
@@ -141,6 +170,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .userProfileUrl(fileService.getFileUrl(c.getUser().getImage()))
                                 .timeCode(c.getTimeCode().getCode())
                                 .time(c.getTimeCode().name())
+                                .registDate(c.getRegistDate())
                                 .build()
                 );
 
