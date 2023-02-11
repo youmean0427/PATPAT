@@ -70,23 +70,26 @@ public class PersonalProtectedDog {
     )
     private List<DogColor> colors;
 
+
+    public void update(ProtectState stateCode, String feature, Gender gender, Breed breed, double weight, Neutered neutered, Ear categoryEar, Tail categoryTail
+            ,Color categoryColor, Pattern categoryPattern,Cloth categoryCloth){
+        this.stateCode = stateCode;
+        this.feature =feature;
+        this.gender = gender;
+        this.weight =weight;
+        this.breed = breed;
+        this.neutered =neutered;
+        this.categoryCloth = categoryCloth;
+        this.categoryColor = categoryColor;
+        this.categoryEar =categoryEar;
+        this.categoryTail = categoryTail;
+        this.categoryPattern = categoryPattern;
+    }
+
+
     @PrePersist
     public void prePersist() {
         this.stateCode = this.stateCode == null ? ProtectState.보호중 : this.stateCode;
     }
-//    public void update(int stateCode, String feature, int gender, Breed breed, double weight, int neutered, int categoryEar, int categoryTail ,int categoryColor,
-//                       int categoryPattern,int categoryCloth){
-//        this.stateCode = stateCode;
-//        this.feature =feature;
-//        this.gender = gender;
-//        this.weight =weight;
-//        this.breed = breed;
-//        this.neutered =neutered;
-//        this.categoryCloth = categoryCloth;
-//        this.categoryClothColor = categoryClothColor;
-//        this.categoryColor = categoryColor;
-//        this.categoryEar =categoryEar;
-//        this.categoryTail = categoryTail;
-//        this.categoryPattern = categoryPattern;
-//    }
+
 }
