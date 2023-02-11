@@ -288,7 +288,6 @@ public class ReportServiceImpl implements ReportService{
                             .build()
             );
         }
-        Long userId = userService.getUserWithAuthorities().getUserId();
         Breed breed = missingDog.getBreed();
         ReportDto reportDto = ReportDto.builder()
                 .missingId(missingDog.getMissingId())
@@ -313,7 +312,7 @@ public class ReportServiceImpl implements ReportService{
                 .latitude(missingDog.getLatitude().toString())
                 .longitude(missingDog.getLongitude().toString())
                 .stateCode(missingDog.getStateCode())
-                .userId(userId)
+                .userId(missingDog.getUser().getUserId())
                 .build();
         return reportDto;
     }
@@ -340,7 +339,6 @@ public class ReportServiceImpl implements ReportService{
                 );
             }
         }
-        Long userId = userService.getUserWithAuthorities().getUserId();
         Breed breed = personalProtectedDog.getBreed();
         ReportDto reportDto = ReportDto.builder()
                 .personalProtectionId(personalProtectedDog.getPpDogId())
@@ -365,7 +363,7 @@ public class ReportServiceImpl implements ReportService{
                 .longitude(personalProtectedDog.getLongitude().toString())
                 .fileUrlList(fileDtoList)
                 .stateCode(personalProtectedDog.getStateCode())
-                .userId(userId)
+                .userId(personalProtectedDog.getUser().getUserId())
                 .build();
 
 
