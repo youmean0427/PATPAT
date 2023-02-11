@@ -498,11 +498,11 @@ class PatpatApplicationTests {
 //	}
 //}
 @Test
-public void color(){
-	class Color implements Comparable<Color>{
+public void colorTest(){
+	class Colors implements Comparable<Colors>{
 		String code;
 		int val;
-		public Color(String code, int val){
+		public Colors(String code, int val){
 			this.code=code;
 			this.val=val;
 		}
@@ -516,52 +516,65 @@ public void color(){
 		}
 
 		@Override
-		public int compareTo(Color o) {
+		public int compareTo(Colors o) {
 			return this.val-o.val;
 		}
 	}
 
-	String str = "#8B4513";
-	int[] colors = new int[3];
-	ArrayList<Color> list = new ArrayList<>();
-	list.add(new Color("R",Integer.parseInt(str.substring(1,3),16)));
-	list.add(new Color("G",Integer.parseInt(str.substring(3,5),16)));
-	list.add(new Color("B",Integer.parseInt(str.substring(5,7),16)));
+	ArrayList<String> clist = new ArrayList<>();
+	clist.add("#8B4513");
+	clist.add("#FF6347");
+	clist.add("#FDF5E6");
+	ArrayList<String> cclist = new ArrayList<>();
+	for(String str : clist) {
+		ArrayList<Colors> list = new ArrayList<>();
+		list.add(new Colors("R", Integer.parseInt(str.substring(1, 3), 16)));
+		list.add(new Colors("G", Integer.parseInt(str.substring(3, 5), 16)));
+		list.add(new Colors("B", Integer.parseInt(str.substring(5, 7), 16)));
 
-	Collections.sort(list);
-	for(Color c : list){
-		System.out.println(c);
-	}
+		Collections.sort(list);
+		for (Colors c : list) {
+			System.out.println(c);
+		}
 
-	int max = list.get(2).val;
-	int mid = list.get(1).val;
-	int min = list.get(0).val;
-	int maxMmid = max-mid;
-	int maxMmin = max-min;
-	String code = null;
+		int max = list.get(2).val;
+		int mid = list.get(1).val;
+		int min = list.get(0).val;
+		int maxMmid = max - mid;
+		int maxMmin = max - min;
+		String code = null;
 
 
-	if(max<=60 && mid<=60 && min<=60){
-		code = "K";
-	}else if(max>=230 && mid >=230 && min >=230){
-		code = "W";
-	}else{
-		if(maxMmin < 30){
+		if (max <= 60 && mid <= 60 && min <= 60) {
+			code = "K";
+		} else if (max >= 230 && mid >= 230 && min >= 230) {
+			code = "W";
+		}else if(maxMmin < 30) {
 			code = "H";
 		}
-		else if(maxMmid >= 30){
-			code = list.get(2).code;
-		}
-		else if(maxMmid < 30 && maxMmin >=30){
-			if(list.get(3).code.equals("R") && list.get(2).code.equals("G")){
-				code = "Y";
-			}else if (list.get(3).code.equals("R") && list.get(3).code.equals("B")){
-				code = "V";
-			}else if(list.get(3).equals("G") && list.get(3).equals("B")){
-				code = "E";
+		else {
+			if (maxMmid >= 50) {
+				code = list.get(2).code;//최대값의 색상
+			}else{
+				//최대값의 색이 R 이고 중간값의 색이 G 인경우
+				if ((list.get(2).code.equals("R") && list.get(1).code.equals("G")) || (list.get(2).code.equals("G")&&list.get(1).code.equals("R"))) {
+					code = "Y";
+					//최대값의 색이 R이고 중간값의 색이 B 인경우
+				} else if ((list.get(2).code.equals("R") && list.get(1).code.equals("B")) || (list.get(2).code.equals("B") && list.get(1).code.equals("R"))) {
+					code = "V";
+					//최대값의 색이 G이고 중간값의 색이 B인경우
+				} else if ((list.get(2).code.equals("G") && list.get(1).code.equals("B")) || (list.get(2).code.equals("B") && list.get(1).code.equals("G"))) {
+					code = "E";
+				}
 			}
 		}
+		cclist.add(code);
 	}
-
+	Collections.sort(cclist);
+	String result = "";
+	for(String s : cclist){
+		result += s;
+	}
+	System.out.println(Color.valueOf(result));
 }
 }
