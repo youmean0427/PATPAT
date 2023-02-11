@@ -21,6 +21,16 @@ export const getUserInfo = async () => {
   return data;
 };
 
+/**
+ * GET : 유저 꾹 리스트에 보호 동물 객체 추가
+ * @param {*} protectId
+ * @returns 성공 , 실패 여부
+ */
+export const insertFavProtect = async protectId => {
+  const res = await authInstance.get(`/user/favorite/${protectId}`);
+  return res;
+};
+
 // POST
 
 /**
@@ -32,16 +42,6 @@ export const modifyUserInfo = async formData => {
     headers: { 'Content-Type': 'multipart/form-data' },
     body: formData,
   });
-  return res;
-};
-
-/**
- * POST : 유저 꾹 리스트에 보호 동물 객체 추가
- * @param {*} protectId
- * @returns 성공 , 실패 여부
- */
-export const insertFavProtect = async protectId => {
-  const res = await authInstance.post(`/user/favorite/${protectId}`);
   return res;
 };
 

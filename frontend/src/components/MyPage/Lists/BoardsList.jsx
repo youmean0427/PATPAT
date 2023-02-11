@@ -3,15 +3,26 @@ import { getBoardListByMe } from 'apis/api/board';
 import React, { useState } from 'react';
 import styles from './BoardsList.module.scss';
 import BoardsItem from '../Items/BoardsItem';
+import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
 
 export default function Boards() {
   const [category, setCategory] = useState([true, false, false]);
   const [typeCode, setTypeCode] = useState(0);
+  const [page, setPage] = useState(1);
+  const LIMIT = 10;
 
   const { data, isLoading } = useQuery({
     queryKey: ['myBoardList', typeCode],
-    queryFn: () => getBoardListByMe(20, 0, typeCode),
+    queryFn: () => getBoardListByMe(LIMIT, page - 1, typeCode),
   });
+
+  const handleClickPrev = () => {
+    setPage(prev => prev - 1);
+  };
+
+  const handleClickNext = () => {
+    setPage(prev => prev + 1);
+  };
 
   if (isLoading) return;
 
@@ -50,10 +61,33 @@ export default function Boards() {
       </div>
       <br />
       <div className={styles.list}>
-        {data.list.map(item => {
-          <BoardsItem key={item.boardId} item={item} />;
-        })}
+        {data.totalCount === 0 ? (
+          <div className={styles['no-data']}>등록된 게시물이 없습니다.</div>
+        ) : (
+          data.list.map(item => <BoardsItem key={item.spDogId} item={item} />)
+        )}
       </div>
+      {data.totalCount === 0 ? null : (
+        <div className={styles.pagination}>
+          <button
+            onClick={handleClickPrev}
+            className={page === 1 ? `${styles.button} ${styles.disabled}` : styles.button}
+            disabled={page === 1 ? true : false}
+          >
+            <MdArrowBackIosNew />
+          </button>
+          <span>{page}</span>
+          <button
+            onClick={handleClickNext}
+            className={
+              data.totalPage === 0 || page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button
+            }
+            disabled={data.totalPage === 0 || page === data.totalPage ? true : false}
+          >
+            <MdArrowForwardIos />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
