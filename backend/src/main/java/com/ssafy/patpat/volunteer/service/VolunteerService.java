@@ -5,6 +5,7 @@ import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.shelter.entity.Shelter;
+import com.ssafy.patpat.shelter.mapping.ShelterDistanceMapping;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
@@ -25,8 +26,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,17 +45,84 @@ public class VolunteerService {
 
     /**
      * 봉사 공고 조회(전체)
-     * 봉사 찾기로 구군으로 탐색 했을 경우
+     * 봉사 찾기로 구군으로 탐색 했을 경우 X
+     * 이제 위도 경도를 준답니다.
      * 개인이 보호소 페이지에서 보는 경우
      * @return
      */
     @Transactional
-    public ResponseListDto selectNoticeList(RequestVolunteerDto requestVolunteerDto){
+    public ResponseListDto selectNoticeListByLatLng(RequestVolunteerDto requestVolunteerDto){
         PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
         Page<VolunteerNotice> volunteerNotices;
-        if(requestVolunteerDto.getGugunCode() != null){
-            volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThan(requestVolunteerDto.getGugunCode(), Reservation.대기중, LocalDate.now().toString(), pageRequest);
-        }else if(requestVolunteerDto.getShelterId() != null){
+        if(requestVolunteerDto.getLatitude() != null &&
+                requestVolunteerDto.getLongitude() != null){
+            BigDecimal a = new BigDecimal(requestVolunteerDto.getLatitude());
+            BigDecimal b = new BigDecimal(requestVolunteerDto.getLongitude());
+            List<ShelterDistanceMapping> sheltersInDistance = shelterRepository.findAllShelter(a, b, a, 30);
+//            LOGGER.info("뜨긴 뜨나 {}",sheltersInDistance.get(0).getDistance());
+            List<Long> shelters = sheltersInDistance.stream().map( s -> s.getShelterId()).collect(Collectors.toList());
+//            LOGGER.info("뜨긴 뜨나 shelter {}",shelters.get(0));
+            volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdInAndReservationStateCodeAndVolunteerDateGreaterThan(shelters, Reservation.대기중, LocalDate.now().toString(), pageRequest);
+            if(volunteerNotices.isEmpty()){
+                LOGGER.info("검색되는 봉사 공고가 없습니다.");
+                return null;
+            }
+            List<VolunteerNoticeDto> list = new ArrayList<>();
+            for (VolunteerNotice vn:
+                    volunteerNotices.toList()) {
+//                LOGGER.info("검색된 봉사 공고의 보호소 id {}",vn.getShelter().getShelterId());
+//                List<Long> scheduleId = new ArrayList<>();
+//                for (VolunteerSchedule vs:
+//                        vn.getVolunteerSchedules()) {
+//                    scheduleId.add(vs.getScheduleId());
+//                }
+                List<Long> scheduleId = vn.getVolunteerSchedules().stream()
+                        .map(vs -> vs.getScheduleId()).collect(Collectors.toList());
+
+//                LOGGER.info("distance {}", sheltersInDistance.stream()
+//                        .filter(s -> s.getShelterId().equals(vn.getShelter().getShelterId()))
+//                        .findAny()
+//                        .map( d -> d.getDistance())
+//                        .get());
+
+                list.add(VolunteerNoticeDto.builder()
+                        .name(vn.getShelter().getName())
+                        .noticeId(vn.getNoticeId())
+                        .shelterId(vn.getShelter().getShelterId())
+                        .state(vn.getReservationStateCode().name())
+                        .stateCode(vn.getReservationStateCode().getCode())
+                        .title(vn.getTitle())
+                        .scheduleId(scheduleId)
+                        .volunteerDate(vn.getVolunteerDate())
+                        .distance(sheltersInDistance.stream()
+                            .filter(s -> s.getShelterId().equals(vn.getShelter().getShelterId()))
+                            .findAny()
+                            .map(d -> d.getDistance())
+                            .get())
+                        .latitude(vn.getShelter().getLatitude().toString())
+                        .longitude(vn.getShelter().getLongitude().toString())
+                        .build());
+            }
+            ResponseListDto responseVolunteerDto = new ResponseListDto();
+            responseVolunteerDto.setTotalCount(volunteerNotices.getTotalElements());
+            responseVolunteerDto.setTotalPage(volunteerNotices.getTotalPages());
+            responseVolunteerDto.setList(list);
+
+            return responseVolunteerDto;
+
+        }else{
+            LOGGER.info("탐색 기준이 없습니다.");
+            return null;
+        }
+
+    }
+
+    @Transactional
+    public ResponseListDto selectNoticeListByShelter(RequestVolunteerDto requestVolunteerDto){
+        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
+        Page<VolunteerNotice> volunteerNotices;
+
+        if(requestVolunteerDto.getShelterId() != null){
             volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndReservationStateCodeAndVolunteerDateGreaterThan(requestVolunteerDto.getShelterId(), Reservation.대기중, LocalDate.now().toString(), pageRequest);
         }else{
             LOGGER.info("탐색 기준이 없습니다.");
@@ -68,7 +138,7 @@ public class VolunteerService {
                 volunteerNotices.toList()) {
             List<Long> scheduleId = new ArrayList<>();
             for (VolunteerSchedule vs:
-                 vn.getVolunteerSchedules()) {
+                    vn.getVolunteerSchedules()) {
                 scheduleId.add(vs.getScheduleId());
             }
             list.add(VolunteerNoticeDto.builder()
@@ -89,6 +159,7 @@ public class VolunteerService {
 
         return responseVolunteerDto;
     }
+
 
     @Transactional
     public List<VolunteerNoticeDto> selectNoticeListByMonth(VolunteerMonthDto volunteerMonthDto){

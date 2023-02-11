@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.repository;
 
 import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
 import com.ssafy.patpat.volunteer.mapping.VolunteerShelterIdMapping;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ public interface VolunteerNoticeRepository extends JpaRepository<VolunteerNotice
      * 구군으로 탐색
      * */
     Page<VolunteerNotice> findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThan(String gugunCode, Reservation reservation, String volunteerDate, PageRequest pageRequest);
-    Page<VolunteerNotice> findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThanOrderByVolunteerDate(String gugunCode, Reservation reservation, String volunteerDate, PageRequest pageRequest);
+    Page<VolunteerNotice> findWithShelterByShelterShelterIdInAndReservationStateCodeAndVolunteerDateGreaterThan(List<Long> shelters, Reservation reservation, String volunteerDate, PageRequest pageRequest);
 
     /**
      * 보호소 id로 탐색
