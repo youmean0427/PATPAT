@@ -222,10 +222,10 @@ public class ReportServiceImpl implements ReportService{
             personalProtectedDogList = personalProtectedDogRepository.findAll(pageRequest);
 
         }
-        else if(gender.getCode() == 0 && breedId > 0){
+        else if(gender.getCode() > 0 && breedId == 0){
             personalProtectedDogList = personalProtectedDogRepository.findByGender(gender,pageRequest);
         }
-        else if(gender.getCode()>0 && breedId==0){
+        else if(gender.getCode() == 0 && breedId > 0){
             personalProtectedDogList = personalProtectedDogRepository.findByBreedBreedId(breedId,pageRequest);
         }
         else if(gender.getCode() > 0 && breedId > 0){

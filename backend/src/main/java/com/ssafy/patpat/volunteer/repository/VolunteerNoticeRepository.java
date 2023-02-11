@@ -20,6 +20,7 @@ public interface VolunteerNoticeRepository extends JpaRepository<VolunteerNotice
      * */
     Page<VolunteerNotice> findWithShelterByShelterGugunCodeAndReservationStateCodeAndVolunteerDateGreaterThan(String gugunCode, Reservation reservation, String volunteerDate, PageRequest pageRequest);
     Page<VolunteerNotice> findWithShelterByShelterShelterIdInAndReservationStateCodeAndVolunteerDateGreaterThan(List<Long> shelters, Reservation reservation, String volunteerDate, PageRequest pageRequest);
+    List<VolunteerNotice> findWithShelterByShelterShelterIdInAndReservationStateCodeAndVolunteerDateBetween(List<Long> shelters, Reservation reservation, String volunteerDate, String extraDate);
 
     /**
      * 보호소 id로 탐색

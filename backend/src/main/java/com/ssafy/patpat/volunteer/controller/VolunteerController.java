@@ -48,7 +48,7 @@ public class VolunteerController {
     @ApiOperation(value = "봉사 공고 조회", notes = "위도 경도로 조회")
     public ResponseEntity<Object> selectNoticeListByLatLng(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        ResponseListDto responseVolunteerDto = volunteerService.selectNoticeListByLatLng(requestVolunteerDto);
+        List<VolunteerNoticeDto> responseVolunteerDto = volunteerService.selectNoticeListByLatLng(requestVolunteerDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseVolunteerDto);
