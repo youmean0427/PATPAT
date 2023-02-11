@@ -86,16 +86,31 @@ public class ProtectServiceImpl implements ProtectService{
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
             LOGGER.info("여기와? {} : ",requestProtectDto);
-            if(requestProtectDto.getCode() == 0){
-                pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
-                shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
-            }
-            else if(requestProtectDto.getCode() == 1){
-                pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
-                shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
+            if(requestProtectDto.getStateCode() ==null){
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
+                }
+                else {
+                    return null;
+                }
             }
             else{
-                return null;
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCode(ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCode(ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else {
+                    return null;
+                }
             }
 
             boolean ok = false;
@@ -172,8 +187,36 @@ public class ProtectServiceImpl implements ProtectService{
             filterList.add(ProtectState.입양);
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
-            pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
-            shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
+
+            if(requestProtectDto.getStateCode() ==null){
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(),filterList,pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(),filterList,pageRequest);
+                }
+                else {
+                    return null;
+                }
+            }
+            else{
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCode(requestProtectDto.getShelterId(), ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCode(requestProtectDto.getShelterId(), ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else {
+                    return null;
+                }
+            }
+
+//            pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+//            shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
                 //파일 담을 객체 생성 후 받아오기
