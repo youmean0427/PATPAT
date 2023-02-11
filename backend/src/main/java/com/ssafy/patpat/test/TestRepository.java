@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TestRepository extends JpaRepository<TestDistance,String> {
-    @Query(value = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( lat ) )* cos( radians( log) - radians(:b) )+ sin ( radians(:c) ) * sin( radians( lat )))) as distance from test group by id having distance < 2",nativeQuery = true)
+    @Query(value = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( lat ) )* cos( radians( log) - radians(:b) )+ sin ( radians(:c) ) * sin( radians( lat )))) as distance from test having distance < 2",nativeQuery = true)
     public Page<TestMapping> selectAllSQL(BigDecimal a, BigDecimal b , BigDecimal c, PageRequest pageRequest);
 }
 

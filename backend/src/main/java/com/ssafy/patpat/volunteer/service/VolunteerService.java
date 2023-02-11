@@ -381,6 +381,7 @@ public class VolunteerService {
             list.add(VolunteerReservationDto.builder()
                     .reservationId(vr.getReservationId())
                     .scheduleId(vr.getVolunteerSchedule().getScheduleId())
+                    .noticeId(vr.getVolunteerSchedule().getVolunteerNotice().getNoticeId())
                     .capacity(vr.getCapacity())
                     .shelterName(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getName())
                     .shelterAddress(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getAddress())

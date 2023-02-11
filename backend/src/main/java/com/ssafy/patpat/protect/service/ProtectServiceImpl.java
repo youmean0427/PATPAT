@@ -149,10 +149,10 @@ public class ProtectServiceImpl implements ProtectService{
                 /** 찜목록인지 확인 */
                 boolean isFavorite = false;
                 if(ok){
-                    if(userRepository.countByFavorite(user.get().getUserId(), s.getSpDogId()) == 1){
-                        isFavorite = true;
-                    }
+                    isFavorite = user.get().getFavoriteDogs().stream()
+                            .anyMatch( d -> d.getSpDogId() == s.getSpDogId());
                 }
+
                 protectDtoList.add(
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
@@ -251,9 +251,8 @@ public class ProtectServiceImpl implements ProtectService{
                 /** 찜목록인지 확인 */
                 boolean isFavorite = false;
                 if(ok){
-                    if(userRepository.countByFavorite(user.get().getUserId(), s.getSpDogId()) == 1){
-                        isFavorite = true;
-                    }
+                    isFavorite = user.get().getFavoriteDogs().stream()
+                            .anyMatch( d -> d.getSpDogId() == s.getSpDogId());
                 }
 //                Breed breed = breedRepository.findByBreedId(s.getBreedId());
                 protectDtoList.add(
@@ -315,9 +314,8 @@ public class ProtectServiceImpl implements ProtectService{
             /** 찜목록인지 확인 */
             boolean isFavorite = false;
             if(ok){
-                if(userRepository.countByFavorite(user.get().getUserId(), shelterProtectedDog.getSpDogId()) == 1){
-                    isFavorite = true;
-                }
+                 isFavorite = user.get().getFavoriteDogs().stream()
+                        .anyMatch(d -> d.getSpDogId() == shelterProtectedDog.getSpDogId());
             }
 
 //            Breed breed = breedRepository.findByBreedId(shelterProtectedDog.getBreed().getBreedId());
