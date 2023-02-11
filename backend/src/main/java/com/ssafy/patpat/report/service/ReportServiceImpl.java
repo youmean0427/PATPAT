@@ -406,19 +406,6 @@ public class ReportServiceImpl implements ReportService{
 
                 Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
 
-                List<Image> missingDogImageList = missingDog.getImages();
-                if(uploadFile != null){
-                    for (Image i : missingDogImageList){
-                        fileService.deleteFile(i);
-                    }
-                    missingDogImageList.removeAll(missingDogImageList);
-
-                    for (MultipartFile partFile : uploadFile){
-                        missingDogImageList.add(fileService.insertFile(partFile,"missing"));
-                    }
-                }
-
-
                 List<DogColor> colors = new ArrayList<>();
                 for (String c:
                         reportDto.getCategoryColor()) {
@@ -441,8 +428,20 @@ public class ReportServiceImpl implements ReportService{
                         .colors(colors)
                         .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
-                        .images(missingDogImageList)
                         .build();
+
+                if(uploadFile != null){
+                    List<Image> missingDogImageList = missingDog.getImages();
+                    for (Image i : missingDogImageList){
+                        fileService.deleteFile(i);
+                    }
+                    missingDogImageList.removeAll(missingDogImageList);
+
+                    for (MultipartFile partFile : uploadFile){
+                        missingDogImageList.add(fileService.insertFile(partFile,"missing"));
+                    }
+                    missingDog.setImages(missingDogImageList);
+                }
                 missingDogRepository.save(missingDog);
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
@@ -495,17 +494,6 @@ public class ReportServiceImpl implements ReportService{
                 PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(reportDto.getPersonalProtectionId());
                 Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
 
-                List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
-                if (uploadFile != null) {
-                    for (Image i : personalProtectedDogImageList) {
-                        fileService.deleteFile(i);
-                    }
-                    personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
-
-                    for (MultipartFile partFile : uploadFile) {
-                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "personal"));
-                    }
-                }
                 List<DogColor> colors = new ArrayList<>();
                 for (String c:
                         reportDto.getCategoryColor()) {
@@ -528,8 +516,20 @@ public class ReportServiceImpl implements ReportService{
                         .colors(colors)
                         .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
-                        .images(personalProtectedDogImageList)
                         .build();
+                
+                if (uploadFile != null) {
+                    List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
+                    for (Image i : personalProtectedDogImageList) {
+                        fileService.deleteFile(i);
+                    }
+                    personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
+
+                    for (MultipartFile partFile : uploadFile) {
+                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "personal"));
+                    }
+                    personalProtectedDog.setImages(personalProtectedDogImageList);
+                }
                 personalProtectedDogRepository.save(personalProtectedDog);
             }
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
