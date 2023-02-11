@@ -7,6 +7,7 @@ import com.ssafy.patpat.common.code.category.*;
 import com.ssafy.patpat.common.code.category.Color;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
+import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.dto.ResponseMessage;
@@ -322,7 +323,12 @@ public class ProtectServiceImpl implements ProtectService{
 //            Breed breed = breedRepository.findByBreedId(shelterProtectedDog.getBreed().getBreedId());
 
             /** Color 테이블에서 Color 빼오는 로직 필요 */
-            List<String> colors = null;
+            List<DogColor> colors = shelterProtectedDog.getColors();
+            List<String> colorCode = new ArrayList<>();
+            for (DogColor color:
+                 colors) {
+                colorCode.add(color.getColorCode());
+            }
 
             ProtectDto protectDto = ProtectDto.builder()
                     .shelterId(shelterProtectedDog.getShelter().getShelterId())
@@ -346,7 +352,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .categoryPatternCode(shelterProtectedDog.getCategoryPattern().getCode())
                     .categoryCloth(shelterProtectedDog.getCategoryCloth().name())
                     .categoryClothCode(shelterProtectedDog.getCategoryCloth().getCode())
-                    .categoryColor(colors)
+                    .categoryColor(colorCode)
                     .stateCode(shelterProtectedDog.getStateCode().getCode())
                     .state(shelterProtectedDog.getStateCode().name())
                     .infoContent(shelterProtectedDog.getFeature())
@@ -374,9 +380,17 @@ public class ProtectServiceImpl implements ProtectService{
                     images.add(image);
                 }
             }
+            List<DogColor> colors = new ArrayList<>();
+            for (String c:
+                 protectDto.getCategoryColor()) {
+                colors.add(DogColor.builder()
+                        .colorCode(c)
+                        .build());
+            }
             /** color 처리 로직 필요 */
 
             Color color = colorService.getColorCode(protectDto.getCategoryColor());
+
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
                     .breed(breed)
@@ -394,6 +408,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .categoryPattern(Pattern.of(protectDto.getCategoryPatternCode()))
                     .categoryEar(Ear.of(protectDto.getCategoryEarCode()))
                     .categoryColor(color)
+                    .colors(colors)
                     .build();
             shelterProtectedDogRepository.save(shelterProtectedDog);
             responseMessage.setMessage("SUCCESS");
@@ -516,10 +531,13 @@ public class ProtectServiceImpl implements ProtectService{
                         col++;
                     }
                     List<Image> images = new ArrayList<>();
+                    List<DogColor> colors = new ArrayList<>();
+
                     shelterProtectedDog.setShelter(shelter);
                     shelterProtectedDog.setStateCode(ProtectState.공고중);
                     shelterProtectedDog.setRegistDate(LocalDate.now());
                     shelterProtectedDog.setImages(images);
+                    shelterProtectedDog.setColors(colors);
                     Collections.sort(strList);
                     StringBuilder sb = new StringBuilder();
                     for(int i=0; i<strList.size(); i++){

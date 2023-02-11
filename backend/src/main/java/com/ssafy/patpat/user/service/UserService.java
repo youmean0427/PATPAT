@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.entity.Recommend;
 import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.redis.RefreshRedis;
 import com.ssafy.patpat.common.redis.RefreshRedisRepository;
@@ -129,6 +130,8 @@ public class UserService {
 
         List<ShelterProtectedDog> favoriteDogs = new ArrayList<>();
 
+        List<Recommend> recommends = new ArrayList<>();
+
         String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
         Image image = fileService.insertFileUrl(userDto.getProfileImageUrl(), userDto.getProvider());
@@ -143,6 +146,7 @@ public class UserService {
                 .image(image)
                 .authorities(list)
                 .favoriteDogs(favoriteDogs)
+                .recommends(recommends)
                 .build();
 
         return userRepository.save(user);

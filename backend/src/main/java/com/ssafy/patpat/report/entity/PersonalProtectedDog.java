@@ -2,6 +2,7 @@ package com.ssafy.patpat.report.entity;
 
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
+import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.user.entity.User;
@@ -60,6 +61,14 @@ public class PersonalProtectedDog {
             joinColumns = {@JoinColumn(name = "pp_dog_id")},
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     private List<Image> images;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "personal_dog_color",
+            joinColumns = {@JoinColumn(name = "pp_dog_id")},
+            inverseJoinColumns = {@JoinColumn(name = "color_id")}
+    )
+    private List<DogColor> colors;
 
     @PrePersist
     public void prePersist() {

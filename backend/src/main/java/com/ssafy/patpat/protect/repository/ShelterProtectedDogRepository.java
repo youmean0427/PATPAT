@@ -3,7 +3,6 @@ package com.ssafy.patpat.protect.repository;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
-import io.swagger.models.auth.In;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +23,5 @@ public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProt
     List<ShelterIdMapping> findDistinctByBreedBreedId(Long breedId);
 
     List<ShelterIdMapping> findDistinctByShelterSidoCodeAndShelterGugunCodeAndBreedBreedId(String sidoCode,String gugunCode,Long breedId);
+
 }

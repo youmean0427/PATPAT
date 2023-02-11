@@ -3,6 +3,7 @@ package com.ssafy.patpat.report.entity;
 import com.ssafy.patpat.common.code.MissingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
+import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.user.entity.User;
@@ -63,6 +64,14 @@ public class MissingDog {
             joinColumns = {@JoinColumn(name = "missing_id")},
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     private List<Image> images;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "missing_dog_color",
+            joinColumns = {@JoinColumn(name = "missing_id")},
+            inverseJoinColumns = {@JoinColumn(name = "color_id")}
+    )
+    private List<DogColor> colors;
 
     @PrePersist
     public void prePersist() {
