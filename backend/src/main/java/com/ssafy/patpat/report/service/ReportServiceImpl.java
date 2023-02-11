@@ -416,7 +416,6 @@ public class ReportServiceImpl implements ReportService{
                     for (MultipartFile partFile : uploadFile){
                         missingDogImageList.add(fileService.insertFile(partFile,"missing"));
                     }
-                    missingDog.setImages(missingDogImageList);
                 }
 
 
