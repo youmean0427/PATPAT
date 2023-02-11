@@ -413,6 +413,18 @@ public class ReportServiceImpl implements ReportService{
                             .colorCode(c)
                             .build());
                 }
+                List<Image> missingDogImageList = missingDog.getImages();
+                if(uploadFile != null){
+                    for (Image i : missingDogImageList){
+                        fileService.deleteFile(i);
+                    }
+                    missingDogImageList.removeAll(missingDogImageList);
+
+                    for (MultipartFile partFile : uploadFile){
+                        missingDogImageList.add(fileService.insertFile(partFile,"report"));
+                    }
+                }
+
                 /** Color 처리 로직 필요 */
                 Color color = null;
                 missingDog = MissingDog.builder()
@@ -428,20 +440,10 @@ public class ReportServiceImpl implements ReportService{
                         .colors(colors)
                         .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
+                        .images(missingDogImageList)
                         .build();
 
-                if(uploadFile != null){
-                    List<Image> missingDogImageList = missingDog.getImages();
-                    for (Image i : missingDogImageList){
-                        fileService.deleteFile(i);
-                    }
-                    missingDogImageList.removeAll(missingDogImageList);
 
-                    for (MultipartFile partFile : uploadFile){
-                        missingDogImageList.add(fileService.insertFile(partFile,"missing"));
-                    }
-                    missingDog.setImages(missingDogImageList);
-                }
                 missingDogRepository.save(missingDog);
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
@@ -526,7 +528,7 @@ public class ReportServiceImpl implements ReportService{
                     personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
 
                     for (MultipartFile partFile : uploadFile) {
-                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "personal"));
+                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "report"));
                     }
                     personalProtectedDog.setImages(personalProtectedDogImageList);
                 }
