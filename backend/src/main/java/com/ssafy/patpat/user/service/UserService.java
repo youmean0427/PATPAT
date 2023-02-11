@@ -318,6 +318,8 @@ public class UserService {
                     .userId(user.get().getUserId())
                     .name(dog.getName())
                     .imageUrl(imageUrl)
+                    .breedId(dog.getBreed().getBreedId())
+                    .breedName(dog.getBreed().getName())
                     .stateCode(dog.getStateCode().getCode())
                     .state(dog.getStateCode().name())
                     .weight(dog.getWeight())

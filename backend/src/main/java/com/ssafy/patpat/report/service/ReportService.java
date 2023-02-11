@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ReportService {
     ResponseListDto selectMissingList(RequestReportDto requestReportDto);
-    ResponseListDto selectMissingListByUser(Long userId, RequestReportDto requestReportDto);
+    ResponseListDto selectMissingListByUser(RequestReportDto requestReportDto);
     ResponseListDto selectPersonalProtectionList(RequestReportDto requestReportDto);
     ReportDto detailMissing(Long missingId);
     ReportDto detailPersonalProtection(Long personalProtectId);
