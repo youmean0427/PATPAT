@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './ReservationItem.module.scss';
 import ShelterImg from 'assets/images/shelter.png';
-import { cancelVolReservation } from 'apis/api/volunteer';
 
 export default function VolunteerItem({ item }) {
   const { reservationId, reservationState, reservationStateCode, scheduleId, shelterAddress, shelterName, startTime } =
@@ -27,7 +26,6 @@ export default function VolunteerItem({ item }) {
           <button
             className={styles.cancel}
             onClick={() => {
-              cancelVolReservation(scheduleId);
               alert('취소되었습니다.');
             }}
           >

@@ -23,7 +23,7 @@ export default function FavoriteList() {
   if (isLoading) return;
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.pagination}>
         <button
           onClick={handleClickPrev}
