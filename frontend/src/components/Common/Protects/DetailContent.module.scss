@@ -112,9 +112,21 @@
 .info-icon {
   width: 10px;
   margin-right: 3px;
+  cursor: pointer;
+}
+.info-icon:hover {
+  transform: translateY(-2px);
 }
 .line {
   width: 90%;
   opacity: 0.6;
   margin: auto;
+}
+.color-box {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+}
+.icon:hover {
+  transform: translateY(-3px);
 }
