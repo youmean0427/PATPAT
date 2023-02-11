@@ -142,7 +142,7 @@ public class ShelterServiceImpl implements ShelterService{
         List<Sido> sidoList = sidoRepository.findAll();
         int total = 0;
         for(Sido s : sidoList){
-            List<ShelterIdMapping> count = shelterProtectedDogRepository.findDistinctBySidoCodeAndBreedBreedId(s.getCode(),breedId);
+            List<ShelterIdMapping> count = shelterProtectedDogRepository.findDistinctByShelterSidoCodeAndBreedBreedId(s.getCode(),breedId);
             total += count.size();
             sidoCountDtoList.add(
                     SidoCountDto.builder()
@@ -198,14 +198,14 @@ public class ShelterServiceImpl implements ShelterService{
         }
         else if(breedId!=null && sidoCode != null && gugunCode==null){
             //시도, 견종
-            List<ShelterIdMapping> list = shelterProtectedDogRepository.findDistinctBySidoCodeAndBreedBreedId(sidoCode,breedId);
+            List<ShelterIdMapping> list = shelterProtectedDogRepository.findDistinctByShelterSidoCodeAndBreedBreedId(sidoCode,breedId);
             for(ShelterIdMapping s : list){
                 longList.add(s.getShelter().getShelterId());
             }
             shelterList = shelterRepository.findByShelterIdIn(longList,pageRequest);
         }
         else{
-            List<ShelterIdMapping> list = shelterProtectedDogRepository.findDistinctBySidoCodeAndGugunCodeAndBreedBreedId(sidoCode,gugunCode,breedId);
+            List<ShelterIdMapping> list = shelterProtectedDogRepository.findDistinctByShelterSidoCodeAndShelterGugunCodeAndBreedBreedId(sidoCode,gugunCode,breedId);
             for(ShelterIdMapping s : list){
                 longList.add(s.getShelter().getShelterId());
             }
