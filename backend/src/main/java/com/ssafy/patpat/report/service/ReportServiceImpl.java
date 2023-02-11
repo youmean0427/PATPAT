@@ -6,6 +6,7 @@ import com.ssafy.patpat.common.code.category.*;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.service.FileService;
@@ -291,7 +292,12 @@ public class ReportServiceImpl implements ReportService{
         }
         Breed breed = missingDog.getBreed();
         /** color 처리 로직 필요  */
-        List<String> color = null;
+        List<DogColor> colors = missingDog.getColors();
+        List<String> colorCode = new ArrayList<>();
+        for (DogColor color:
+                colors) {
+            colorCode.add(color.getColorCode());
+        }
         ReportDto reportDto = ReportDto.builder()
                 .missingId(missingDog.getMissingId())
                 .breedName(breed.getName())
@@ -305,7 +311,7 @@ public class ReportServiceImpl implements ReportService{
                 .name(missingDog.getName())
                 .categoryCloth(missingDog.getCategoryCloth().name())
                 .categoryClothCode(missingDog.getCategoryCloth().getCode())
-                .categoryColor(color)
+                .categoryColor(colorCode)
                 .categoryEar(missingDog.getCategoryEar().name())
                 .categoryEarCode(missingDog.getCategoryEar().getCode())
                 .categoryPattern(missingDog.getCategoryPattern().name())
@@ -347,7 +353,12 @@ public class ReportServiceImpl implements ReportService{
             }
         }
         /** color 처리 로직 필요  */
-        List<String> color = null;
+        List<DogColor> colors = personalProtectedDog.getColors();
+        List<String> colorCode = new ArrayList<>();
+        for (DogColor color:
+                colors) {
+            colorCode.add(color.getColorCode());
+        }
         Breed breed = personalProtectedDog.getBreed();
         ReportDto reportDto = ReportDto.builder()
                 .personalProtectionId(personalProtectedDog.getPpDogId())
@@ -362,7 +373,7 @@ public class ReportServiceImpl implements ReportService{
                 .name(personalProtectedDog.getName())
                 .categoryCloth(personalProtectedDog.getCategoryCloth().name())
                 .categoryTailCode(personalProtectedDog.getCategoryCloth().getCode())
-                .categoryColor(color)
+                .categoryColor(colorCode)
                 .categoryEar(personalProtectedDog.getCategoryEar().name())
                 .categoryEarCode(personalProtectedDog.getCategoryEar().getCode())
                 .categoryPattern(personalProtectedDog.getCategoryPattern().name())
@@ -405,6 +416,14 @@ public class ReportServiceImpl implements ReportService{
                     missingDog.setImages(missingDogImageList);
                 }
 
+
+                List<DogColor> colors = new ArrayList<>();
+                for (String c:
+                        reportDto.getCategoryColor()) {
+                    colors.add(DogColor.builder()
+                            .colorCode(c)
+                            .build());
+                }
                 /** Color 처리 로직 필요 */
                 Color color = null;
                 missingDog = MissingDog.builder()
@@ -417,6 +436,7 @@ public class ReportServiceImpl implements ReportService{
                         .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
                         .categoryCloth(Cloth.of(reportDto.getCategoryClothCode()))
                         .categoryColor(color)
+                        .colors(colors)
                         .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
                         .images(missingDogImageList)
@@ -484,6 +504,13 @@ public class ReportServiceImpl implements ReportService{
                         personalProtectedDogImageList.add(fileService.insertFile(partFile, "personal"));
                     }
                 }
+                List<DogColor> colors = new ArrayList<>();
+                for (String c:
+                        reportDto.getCategoryColor()) {
+                    colors.add(DogColor.builder()
+                            .colorCode(c)
+                            .build());
+                }
                 /** Color 처리 로직 필요 */
                 Color color = null;
                 personalProtectedDog = PersonalProtectedDog.builder()
@@ -496,6 +523,7 @@ public class ReportServiceImpl implements ReportService{
                         .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
                         .categoryCloth(Cloth.of(reportDto.getCategoryClothCode()))
                         .categoryColor(color)
+                        .colors(colors)
                         .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
                         .images(personalProtectedDogImageList)
@@ -578,6 +606,13 @@ public class ReportServiceImpl implements ReportService{
                     images.add(fileService.insertFile(file,"report"));
                 }
             }
+            List<DogColor> colors = new ArrayList<>();
+            for (String c:
+                    reportDto.getCategoryColor()) {
+                colors.add(DogColor.builder()
+                        .colorCode(c)
+                        .build());
+            }
             /** Color 처리 로직 */
             Color color = null;
             if(reportDto.getTypeCode() == 1) {
@@ -593,6 +628,7 @@ public class ReportServiceImpl implements ReportService{
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
                         .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
                         .categoryColor(color)
+                        .colors(colors)
                         .latitude(new BigDecimal(reportDto.getLatitude()))
                         .longitude(new BigDecimal(reportDto.getLongitude()))
                         .name(reportDto.getName())
@@ -652,6 +688,7 @@ public class ReportServiceImpl implements ReportService{
                         .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
                         .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
                         .categoryColor(color)
+                        .colors(colors)
                         .latitude(new BigDecimal(reportDto.getLatitude()))
                         .longitude(new BigDecimal(reportDto.getLongitude()))
                         .name(reportDto.getName())

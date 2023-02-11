@@ -1,29 +1,14 @@
 package com.ssafy.patpat.volunteer.repository;
 
-import com.ssafy.patpat.board.entity.Board;
 import com.ssafy.patpat.board.repository.BoardRepository;
-import com.ssafy.patpat.common.code.ConsultingState;
-import com.ssafy.patpat.common.code.Reservation;
-import com.ssafy.patpat.common.code.TimeCode;
-import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
-import com.ssafy.patpat.consulting.entity.Time;
-import com.ssafy.patpat.consulting.mapping.TimeCodeMapping;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
-import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
-import com.ssafy.patpat.shelter.entity.Shelter;
-import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
+import com.ssafy.patpat.shelter.mapping.ShelterDistanceMapping;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.test.TestMapping;
 import com.ssafy.patpat.test.TestRepository;
-import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
-import com.ssafy.patpat.volunteer.dto.VolunteerShelterDto;
-import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
-import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
-import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
-import com.ssafy.patpat.volunteer.mapping.VolunteerShelterIdMapping;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,15 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class VolunteerScheduleRepositoryTest {
@@ -171,14 +148,13 @@ class VolunteerScheduleRepositoryTest {
 //        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("distance").descending());
 //        BigDecimal a = new BigDecimal(37.5152937);
 //        BigDecimal b = new BigDecimal(126.9013676);
+////        Page<ShelterDistanceMapping> test = shelterRepository.findAllShelter(a,b,a, pageRequest);
 //        Page<TestMapping> test = testRepository.selectAllSQL(a,b,a, pageRequest);
 //        System.out.println("here");
 //        for (TestMapping t:
-//             test.toList()) {
+//                test.toList()) {
+////            System.out.println(t.getShelter().getShelterId());
 //            System.out.println(t.getId());
-//            System.out.println(t.getLat());
-//            System.out.println(t.getLog());
-//            System.out.println(t.getName());
 //            System.out.println(t.getDistance());
 //        }
 //        int cnt = userRepository.countByFavorite(2L,3L);
