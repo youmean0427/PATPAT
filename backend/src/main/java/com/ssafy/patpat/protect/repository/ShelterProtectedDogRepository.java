@@ -3,11 +3,15 @@ package com.ssafy.patpat.protect.repository;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.mapping.ShelterIdMapping;
+import com.ssafy.patpat.test.TestMapping;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -23,5 +27,8 @@ public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProt
     List<ShelterIdMapping> findDistinctByBreedBreedId(Long breedId);
 
     List<ShelterIdMapping> findDistinctByShelterSidoCodeAndShelterGugunCodeAndBreedBreedId(String sidoCode,String gugunCode,Long breedId);
+
+    @Query(value = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( lat ) )* cos( radians( log) - radians(:b) )+ sin ( radians(:c) ) * sin( radians( lat )))) as distance from test where regist_date <= :localDate group by id having distance < 15",nativeQuery = true)
+    List<ShelterProtectedDog> selectBydistance(BigDecimal a, BigDecimal b , BigDecimal c, LocalDate localDate);
 
 }

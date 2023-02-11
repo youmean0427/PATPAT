@@ -1,5 +1,6 @@
 package com.ssafy.patpat.report.service;
 
+import com.ssafy.patpat.common.code.DogType;
 import com.ssafy.patpat.common.code.MissingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -8,11 +9,15 @@ import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.entity.Recommend;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.service.ColorService;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+import com.ssafy.patpat.report.dto.RecommendDto;
 import com.ssafy.patpat.report.dto.ReportDto;
 import com.ssafy.patpat.report.dto.RequestReportDto;
 import com.ssafy.patpat.report.entity.MissingDog;
@@ -71,6 +76,9 @@ public class ReportServiceImpl implements ReportService{
     UserService userService;
     @Autowired
     ColorService colorService;
+
+    @Autowired
+    ShelterProtectedDogRepository shelterProtectedDogRepository;
 
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;
@@ -617,6 +625,15 @@ public class ReportServiceImpl implements ReportService{
                         .build());
             }
             /** Color 처리 로직 */
+            /** 프론트에게 다시 줘야하는 #333333 형식의 컬러 코드 리스트를 엔티티리스트에 저장 **/
+            for(String color : reportDto.getCategoryColor()){
+                colors.add(
+                        DogColor.builder()
+                                .colorCode(color)
+                                .build()
+                );
+            }
+            /** 유사도 비교시 사용할 백엔드에서만 사용하는 컬러코드 저장 **/
             Color color = colorService.getColorCode(reportDto.getCategoryColor());
             if(reportDto.getTypeCode() == 1) {
 
@@ -644,6 +661,9 @@ public class ReportServiceImpl implements ReportService{
                         .build();
 
                 missingDogRepository.save(missingDog);
+
+                /** 임보,보호동물 조회 후 추천견종 엔티티에 집어 넣는다. **/
+                insertRecommend(user.get(),missingDog);
 
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
@@ -746,10 +766,95 @@ public class ReportServiceImpl implements ReportService{
         }
         return responseMessage;
     }
+    @Override
+    public void insertRecommend(User user, MissingDog missingDog) {
+        List<PersonalProtectedDog> pProtectList = personalProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getRegistDate());
+        List<ShelterProtectedDog>  sProtectList = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getRegistDate());
+        List<Recommend> recommendList = user.getRecommends();
+
+        for(PersonalProtectedDog p : pProtectList){
+            int count = 0;
+            if(missingDog.getBreed().equals(p.getBreed())) count++;
+            if(missingDog.getGender().equals(p.getGender())) count++;
+            if(missingDog.getCategoryCloth().equals(p.getCategoryCloth())) count++;
+            if(missingDog.getCategoryColor().equals(p.getCategoryColor())) count++;
+            if(missingDog.getCategoryEar().equals(p.getCategoryEar())) count++;
+            if(missingDog.getCategoryPattern().equals(p.getCategoryPattern())) count++;
+            if(missingDog.getCategoryTail().equals(p.getCategoryTail())) count++;
+            if(count >= 4){
+                recommendList.add(
+                        Recommend.builder()
+                                .dogId(p.getPpDogId())
+                                .dogType(DogType.개인보호견)
+                                .user(missingDog.getUser())
+                                .build()
+                );
+            }
+        }
+
+        for(ShelterProtectedDog s : sProtectList){
+            int count = 0;
+            if(missingDog.getBreed().equals(s.getBreed())) count++;
+            if(missingDog.getGender().equals(s.getGender())) count++;
+            if(missingDog.getCategoryCloth().equals(s.getCategoryCloth())) count++;
+            if(missingDog.getCategoryColor().equals(s.getCategoryColor())) count++;
+            if(missingDog.getCategoryEar().equals(s.getCategoryEar())) count++;
+            if(missingDog.getCategoryPattern().equals(s.getCategoryPattern())) count++;
+            if(missingDog.getCategoryTail().equals(s.getCategoryTail())) count++;
+            if(count >= 4){
+                recommendList.add(
+                        Recommend.builder()
+                                .dogId(s.getSpDogId())
+                                .dogType(DogType.보호소보호견)
+                                .user(missingDog.getUser())
+                                .build()
+                );
+            }
+        }
+        userRepository.save(user);
+    }
 
     @Override
-    public List<ProtectDto> selectRecommendList(RequestReportDto requestReportDto) {
-        return null;
+    public List<RecommendDto> selectRecommendList(RequestReportDto requestReportDto) {
+        List<RecommendDto> recommendDtoList = new ArrayList<>();
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        List<Recommend> recommendList = user.get().getRecommends();
+        for(Recommend r : recommendList){
+            RecommendDto recommendDto = new RecommendDto();
+            if(r.getDogType().getCode()==1){
+                PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(r.getDogId());
+                recommendDto.setPersonalProtectionId(personalProtectedDog.getPpDogId());
+                recommendDto.setKg(personalProtectedDog.getWeight());
+                recommendDto.setAge(personalProtectedDog.getAge());
+                recommendDto.setName(personalProtectedDog.getName());
+                recommendDto.setBreedId(personalProtectedDog.getBreed().getBreedId());
+                recommendDto.setBreedName(personalProtectedDog.getBreed().getName());
+                recommendDto.setThumbnail(
+                        FileDto.builder()
+                                .filePath(personalProtectedDog.getImages().get(0).getFilePath())
+                                .build()
+                );
+                recommendDto.setNeuteredCode(personalProtectedDog.getNeutered().getCode());
+                recommendDto.setNeutered(personalProtectedDog.getNeutered().name());
+            }else if(r.getDogType().getCode()==2){
+                ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(r.getDogId());
+                recommendDto.setProtectId(shelterProtectedDog.getSpDogId());
+                recommendDto.setKg(shelterProtectedDog.getWeight());
+                recommendDto.setAge(shelterProtectedDog.getAge());
+                recommendDto.setName(shelterProtectedDog.getName());
+                recommendDto.setBreedId(shelterProtectedDog.getBreed().getBreedId());
+                recommendDto.setBreedName(shelterProtectedDog.getBreed().getName());
+                recommendDto.setThumbnail(
+                        FileDto.builder()
+                                .filePath(shelterProtectedDog.getImages().get(0).getFilePath())
+                                .build()
+                );
+                recommendDto.setNeuteredCode(shelterProtectedDog.getNeutered().getCode());
+                recommendDto.setNeutered(shelterProtectedDog.getNeutered().name());
+            }
+            recommendDtoList.add(recommendDto);
+        }
+        return recommendDtoList;
     }
 
     @Override

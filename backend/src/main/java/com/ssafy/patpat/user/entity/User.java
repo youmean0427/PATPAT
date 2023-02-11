@@ -30,6 +30,9 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "missing_id")
+    private Long missingId;
+
     @Column(name = "age_range")
     private String ageRange;
 

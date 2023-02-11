@@ -387,8 +387,16 @@ public class ProtectServiceImpl implements ProtectService{
                         .colorCode(c)
                         .build());
             }
-            /** color 처리 로직 필요 */
-
+            /** Color 처리 로직 */
+            /** 프론트에게 다시 줘야하는 #333333 형식의 컬러 코드 리스트를 엔티티리스트에 저장 **/
+            for(String color : protectDto.getCategoryColor()){
+                colors.add(
+                        DogColor.builder()
+                                .colorCode(color)
+                                .build()
+                );
+            }
+            /** 유사도 비교시 사용할 백엔드에서만 사용하는 컬러코드 저장 **/
             Color color = colorService.getColorCode(protectDto.getCategoryColor());
 
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
