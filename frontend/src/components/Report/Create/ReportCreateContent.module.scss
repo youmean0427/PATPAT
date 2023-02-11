@@ -248,9 +248,14 @@
   font-size: 1.2rem;
   font-weight: 600;
   padding: 2px;
+  & > span {
+    color: $main-accent-color;
+  }
 }
 .modal-detail img {
+  margin-top: 10px;
   width: 100px;
+  border-radius: 30px;
 }
 .modal-detail p span {
   font-size: 1.4rem;
