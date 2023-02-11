@@ -11,6 +11,8 @@ import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.consulting.entity.Time;
 import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.volunteer.dto.VolunteerNoticeDto;
+import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -52,6 +54,9 @@ public class Shelter {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "owner_id")
     private Owner owner;
+
+    @OneToMany(mappedBy = "shelter")
+    private List<VolunteerNotice> volunteerNotices;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(

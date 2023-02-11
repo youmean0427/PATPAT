@@ -146,13 +146,19 @@ class VolunteerScheduleRepositoryTest {
 //        }
 
 //        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("distance").descending());
-//        BigDecimal a = new BigDecimal(37.5152937);
-//        BigDecimal b = new BigDecimal(126.9013676);
-////        Page<ShelterDistanceMapping> test = shelterRepository.findAllShelter(a,b,a, pageRequest);
-//        Page<TestMapping> test = testRepository.selectAllSQL(a,b,a, pageRequest);
-//        System.out.println("here");
+        BigDecimal a = new BigDecimal(37.5152937);
+        BigDecimal b = new BigDecimal(126.9013676);
+//        Page<ShelterDistanceMapping> test = shelterRepository.findAllShelter(a,b,a, pageRequest);
+        List<TestMapping> test = testRepository.selectAllSQL(a,b,a);
+        System.out.println("here");
+        String d = test.stream()
+                .filter(s -> s.getId() == 1)
+                .findAny()
+                .map(ds -> ds.getDistance())
+                .get();
+        System.out.println(d);
 //        for (TestMapping t:
-//                test.toList()) {
+//                test) {
 ////            System.out.println(t.getShelter().getShelterId());
 //            System.out.println(t.getId());
 //            System.out.println(t.getDistance());
