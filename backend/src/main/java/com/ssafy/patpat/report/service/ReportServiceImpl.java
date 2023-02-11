@@ -91,10 +91,10 @@ public class ReportServiceImpl implements ReportService{
             if(gender.getCode() == 0 && breedId == 0){
               missingDogList = missingDogRepository.findAll(pageRequest);
             }
-            else if(gender.getCode() == 0 && breedId > 0){
+            else if(gender.getCode()>0 && breedId==0){
                 missingDogList = missingDogRepository.findByGender(gender,pageRequest);
             }
-            else if(gender.getCode()>0 && breedId==0){
+            else if(gender.getCode() == 0 && breedId > 0){
                 missingDogList = missingDogRepository.findByBreedBreedId(breedId,pageRequest);
             }
             else if(gender.getCode() > 0 && breedId > 0){

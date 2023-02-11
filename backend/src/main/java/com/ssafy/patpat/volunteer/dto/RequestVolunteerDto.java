@@ -16,6 +16,8 @@ public class RequestVolunteerDto {
     private String keyword;
     private String volunteerDate;
 
+    private String extraDate;
+
     private String latitude;
     private String longitude;
 
