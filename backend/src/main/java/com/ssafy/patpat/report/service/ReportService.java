@@ -20,4 +20,6 @@ public interface ReportService {
     ResponseMessage insertReport(ReportDto reportDto, List<MultipartFile> uploadFile);
     List<ProtectDto> selectRecommendList(RequestReportDto requestReportDto);
     HashMap<String, Integer> selectRecommendCount(RequestReportDto requestReportDto);
+
+    Boolean deleteAll();
 }

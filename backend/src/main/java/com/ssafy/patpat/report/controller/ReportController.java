@@ -159,4 +159,14 @@ public class ReportController {
         }
     }
 
+    @DeleteMapping("/happy")
+    @ApiOperation(value = "행복 버튼", notes = "모든 report 데이터를 날린다.")
+    public ResponseEntity<Object> deleteAll(){
+        //서비스 호출 코드
+//        System.out.println(requestReportDto);
+        service.deleteAll();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("HAPPY"));
+    }
+
 }

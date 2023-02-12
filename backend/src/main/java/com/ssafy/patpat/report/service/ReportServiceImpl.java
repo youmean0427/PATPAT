@@ -764,6 +764,34 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
+    public Boolean deleteAll(){
+
+        List<MissingDog> missingDogList = missingDogRepository.findAll();
+        for (MissingDog m:
+             missingDogList) {
+            List<Image> images = m.getImages();
+            for (Image i:
+                 images) {
+                fileService.deleteFile(i);
+            }
+        }
+        missingDogRepository.deleteAll();
+
+        List<PersonalProtectedDog> personalProtectedDogList = personalProtectedDogRepository.findAll();
+        for (PersonalProtectedDog p:
+             personalProtectedDogList) {
+            List<Image> images = p.getImages();
+            for (Image i:
+                 images) {
+                fileService.deleteFile(i);
+            }
+            personalProtectedDogRepository.deleteAll();
+        }
+        return true;
+    }
+
+    @Override
     public List<ProtectDto> selectRecommendList(RequestReportDto requestReportDto) {
         return null;
     }
