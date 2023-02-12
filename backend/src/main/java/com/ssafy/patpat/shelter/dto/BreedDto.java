@@ -15,7 +15,7 @@ public class BreedDto {
     @Schema(example = "견종")
     private String breedName;
     @Schema(example = "fileUrl:dd.png")
-    private FileDto fileDto;
+    private String thumbnail;
     @Schema(example = "분양횟수")
     private Integer adoptCount;
     @Schema(example = "제목")
