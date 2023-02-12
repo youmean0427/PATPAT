@@ -1,14 +1,14 @@
 import { createConsultant } from 'apis/api/consulting';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from './ConsultingReservation.module.scss';
 import DetailModal from 'components/Common/DetailModal';
 import Calendar from 'react-calendar';
 import './Calendar.css';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import moment from 'moment';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 import SelectTime from './SelectTime';
 import { useNavigate } from 'react-router-dom';
 
@@ -100,7 +100,7 @@ export default function ConsultingReservation({ data }) {
 
           <div className={styles.blank}></div>
           <span>
-            <AccessTimeIcon className={styles.icon} sx={{ fontSize: '20px', color: '#694e4e' }} />
+            <AiOutlineClockCircle className={styles.icon} sx={{ fontSize: '20px', color: '#694e4e' }} />
           </span>
           <span>시간 선택</span>
           {timeClick ? (

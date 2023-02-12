@@ -1,0 +1,74 @@
+@import 'assets/styles/variable.scss';
+
+.title {
+  text-align: center;
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+.state-info {
+  margin: 3rem;
+  text-align: center;
+  font-size: 2rem;
+  & > .state {
+    color: $white-color;
+    border-radius: 0.4rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.6s;
+    &.zero {
+      background-color: $state-con-zero;
+    }
+    &.one {
+      background-color: $state-con-one;
+    }
+    &.two {
+      background-color: $state-con-two;
+    }
+    &.three {
+      background-color: $state-con-three;
+    }
+    &.four {
+      background-color: $state-con-four;
+    }
+    &.five {
+      background-color: $state-con-five;
+    }
+    &.six {
+      background-color: $state-con-six;
+    }
+  }
+}
+
+.select-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
+.select {
+  font-size: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  & > .btn {
+    padding: 0.5rem 1rem;
+    color: $white-color;
+    border-radius: 0.4rem;
+    cursor: pointer;
+  }
+  margin-bottom: 2rem;
+}
+.select.approve {
+  & > .btn {
+    background-color: $state-con-one;
+  }
+}
+.select.reject {
+  & > .btn {
+    background-color: $state-con-two;
+  }
+}
+.select.open {
+  & > .btn {
+    background-color: $state-con-three;
+  }
+}
