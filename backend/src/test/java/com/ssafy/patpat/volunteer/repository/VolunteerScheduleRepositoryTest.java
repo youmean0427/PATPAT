@@ -1,27 +1,14 @@
 package com.ssafy.patpat.volunteer.repository;
 
-import com.ssafy.patpat.board.entity.Board;
 import com.ssafy.patpat.board.repository.BoardRepository;
-import com.ssafy.patpat.common.code.ConsultingState;
-import com.ssafy.patpat.common.code.Reservation;
-import com.ssafy.patpat.common.code.TimeCode;
-import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
-import com.ssafy.patpat.consulting.entity.Time;
-import com.ssafy.patpat.consulting.mapping.TimeCodeMapping;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.consulting.repository.TimeRepository;
-import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
-import com.ssafy.patpat.shelter.entity.Shelter;
-import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
+import com.ssafy.patpat.shelter.mapping.ShelterDistanceMapping;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
-import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.test.TestMapping;
+import com.ssafy.patpat.test.TestRepository;
 import com.ssafy.patpat.user.repository.UserRepository;
-import com.ssafy.patpat.volunteer.dto.VolunteerShelterDto;
-import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
-import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
-import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
-import com.ssafy.patpat.volunteer.mapping.VolunteerShelterIdMapping;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,15 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class VolunteerScheduleRepositoryTest {
@@ -66,6 +46,9 @@ class VolunteerScheduleRepositoryTest {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private TestRepository testRepository;
 
     @Autowired
     private ConsultingRepository consultingRepository;
@@ -157,10 +140,33 @@ class VolunteerScheduleRepositoryTest {
 //        List<TimeCodeMapping> timeCodes = consultingRepository.findByShelterShelterIdAndConsultingDateAndConsultingStateIn(5L, LocalDate.parse("2023-02-02", DateTimeFormatter.ISO_DATE), list);
 //        List<Time> times = timeRepository.findByShelterShelterIdAndActiveTrue(291L);
 //        Shelter shelter = shelterRepository.findByNameAndRegNumber("경주동물사랑보호센터","20");
-        List<Shelter> list = shelterRepository.findAll();
-        for (Shelter s : list){
-            System.out.println(s.getName());
-        }
+//        List<Shelter> list = shelterRepository.findAll();
+//        for (Shelter s : list){
+//            System.out.println(s.getName());
+//        }
+
+//        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("distance").descending());
+        BigDecimal a = new BigDecimal(37.5152937);
+        BigDecimal b = new BigDecimal(126.9013676);
+//        Page<ShelterDistanceMapping> test = shelterRepository.findAllShelter(a,b,a, pageRequest);
+        List<TestMapping> test = testRepository.selectAllSQL(a,b,a);
+        System.out.println("here");
+        String d = test.stream()
+                .filter(s -> s.getId() == 1)
+                .findAny()
+                .map(ds -> ds.getDistance())
+                .get();
+        System.out.println(d);
+//        for (TestMapping t:
+//                test) {
+////            System.out.println(t.getShelter().getShelterId());
+//            System.out.println(t.getId());
+//            System.out.println(t.getDistance());
+//        }
+//        int cnt = userRepository.countByFavorite(2L,3L);
+//        System.out.println(cnt);
+//
+
 //        System.out.println(shelter.getShelterId());
 //        for (Time t:
 //                times) {

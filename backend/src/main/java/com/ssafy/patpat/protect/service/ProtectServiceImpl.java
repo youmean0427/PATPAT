@@ -7,10 +7,13 @@ import com.ssafy.patpat.common.code.category.*;
 import com.ssafy.patpat.common.code.category.Color;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
+import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.service.ColorService;
 import com.ssafy.patpat.common.service.FileService;
+import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
 import com.ssafy.patpat.protect.dto.RequestProtectDto;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
@@ -21,6 +24,8 @@ import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -67,9 +72,13 @@ public class ProtectServiceImpl implements ProtectService{
     ShelterRepository shelterRepository;
     @Autowired
     BreedRepository breedRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     FileService fileService;
+    @Autowired
+    ColorService colorService;
     @Override
     public ResponseListDto selectProtectList(RequestProtectDto requestProtectDto) {
         try{
@@ -81,17 +90,40 @@ public class ProtectServiceImpl implements ProtectService{
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
             LOGGER.info("여기와? {} : ",requestProtectDto);
-            if(requestProtectDto.getCode() == 0){
-                pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
-                shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
-            }
-            else if(requestProtectDto.getCode() == 1){
-                pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
-                shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
+            if(requestProtectDto.getStateCode() ==null){
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCodeNotIn(filterList,pageRequest);
+                }
+                else {
+                    return null;
+                }
             }
             else{
-                return null;
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCode(ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByStateCode(ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else {
+                    return null;
+                }
             }
+
+            /** 로그인했는지 판단 */
+            boolean ok = false;
+            Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+            if(user.isPresent()){ // user가 있으면
+                ok = true;
+            }
+
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
                 //파일 담을 객체 생성 후 받아오기
@@ -114,6 +146,13 @@ public class ProtectServiceImpl implements ProtectService{
                     thumbnail=fileService.getFileUrl(image);
                 }
 //                Breed breed = breedRepository.findByBreedId(s.getBreedId());
+                /** 찜목록인지 확인 */
+                boolean isFavorite = false;
+                if(ok){
+                    isFavorite = user.get().getFavoriteDogs().stream()
+                            .anyMatch( d -> d.getSpDogId() == s.getSpDogId());
+                }
+
                 protectDtoList.add(
                         ProtectDto.builder()
                                 .protectId(s.getSpDogId())
@@ -124,12 +163,13 @@ public class ProtectServiceImpl implements ProtectService{
                                 .genderCode(s.getGender().getCode())
                                 .protectName(s.getName())
                                 .thumbnail(thumbnail)
-                                .neuteredCode(s.getNeutered())
-                                .neutered(Neutered.values()[s.getNeutered()].name())
+                                .neuteredCode(s.getNeutered().getCode())
+                                .neutered(s.getNeutered().name())
                                 .age(s.getAge())
                                 .breedName(s.getBreed().getName())
                                 .breedId(s.getBreed().getBreedId())
                                 .kg(s.getWeight())
+                                .isFavorite(isFavorite)
                                 .build()
 
                 );
@@ -152,8 +192,43 @@ public class ProtectServiceImpl implements ProtectService{
             filterList.add(ProtectState.입양);
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
-            pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
-            shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
+
+            if(requestProtectDto.getStateCode() ==null){
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(),filterList,pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(),filterList,pageRequest);
+                }
+                else {
+                    return null;
+                }
+            }
+            else{
+                if(requestProtectDto.getCode() == 0){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCode(requestProtectDto.getShelterId(), ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else if(requestProtectDto.getCode() == 1){
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCode(requestProtectDto.getShelterId(), ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
+                }
+                else {
+                    return null;
+                }
+            }
+
+//            pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+//            shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(), filterList,pageRequest);
+            /** 로그인했는지 판단 */
+            boolean ok = false;
+            Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+            if(user.isPresent()){ // user가 있으면
+                ok = true;
+            }
+
             List<ProtectDto> protectDtoList = new ArrayList<>();
             for(ShelterProtectedDog s : shelterProtectedDogList){
                 //파일 담을 객체 생성 후 받아오기
@@ -173,7 +248,12 @@ public class ProtectServiceImpl implements ProtectService{
 //                            .build();
                     thumbnail=fileService.getFileUrl(image);
                 }
-
+                /** 찜목록인지 확인 */
+                boolean isFavorite = false;
+                if(ok){
+                    isFavorite = user.get().getFavoriteDogs().stream()
+                            .anyMatch( d -> d.getSpDogId() == s.getSpDogId());
+                }
 //                Breed breed = breedRepository.findByBreedId(s.getBreedId());
                 protectDtoList.add(
                         ProtectDto.builder()
@@ -184,12 +264,13 @@ public class ProtectServiceImpl implements ProtectService{
                                 .thumbnail(thumbnail)
                                 .gender(s.getGender().name())
                                 .genderCode(s.getGender().getCode())
-                                .neuteredCode(s.getNeutered())
-                                .neutered(Neutered.values()[s.getNeutered()].name())
+                                .neuteredCode(s.getNeutered().getCode())
+                                .neutered(s.getNeutered().name())
                                 .age(s.getAge())
                                 .breedName(s.getBreed().getName())
                                 .breedId(s.getBreed().getBreedId())
                                 .kg(s.getWeight())
+                                .isFavorite(isFavorite)
                                 .build()
 
                 );
@@ -223,31 +304,58 @@ public class ProtectServiceImpl implements ProtectService{
                     );
                 }
             }
+            /** 로그인했는지 판단 */
+            boolean ok = false;
+            Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+            if(user.isPresent()){ // user가 있으면
+                ok = true;
+            }
+
+            /** 찜목록인지 확인 */
+            boolean isFavorite = false;
+            if(ok){
+                 isFavorite = user.get().getFavoriteDogs().stream()
+                        .anyMatch(d -> d.getSpDogId() == shelterProtectedDog.getSpDogId());
+            }
 
 //            Breed breed = breedRepository.findByBreedId(shelterProtectedDog.getBreed().getBreedId());
+
+            /** Color 테이블에서 Color 빼오는 로직 필요 */
+            List<DogColor> colors = shelterProtectedDog.getColors();
+            List<String> colorCode = new ArrayList<>();
+            for (DogColor color:
+                 colors) {
+                colorCode.add(color.getColorCode());
+            }
+
             ProtectDto protectDto = ProtectDto.builder()
-                    .age(shelterProtectedDog.getAge())
-                    .protectName(shelterProtectedDog.getName())
-                    .protectId(shelterProtectedDog.getSpDogId())
                     .shelterId(shelterProtectedDog.getShelter().getShelterId())
+                    .shelterName(shelterProtectedDog.getShelter().getName())
+                    .protectId(shelterProtectedDog.getSpDogId())
+                    .protectName(shelterProtectedDog.getName())
                     .breedId(shelterProtectedDog.getBreed().getBreedId())
                     .breedName(shelterProtectedDog.getBreed().getName())
-                    .breedId(shelterProtectedDog.getBreed().getBreedId())
-                    .stateCode(shelterProtectedDog.getStateCode().getCode())
-                    .state(shelterProtectedDog.getStateCode().name())
+                    .findingDate(shelterProtectedDog.getFindingDate())
                     .gender(shelterProtectedDog.getGender().name())
                     .genderCode(shelterProtectedDog.getGender().getCode())
-                    .neuteredCode(shelterProtectedDog.getNeutered())
-                    .neutered(Neutered.values()[shelterProtectedDog.getNeutered()].name())
-                    .infoContent(shelterProtectedDog.getFeature())
+                    .age(shelterProtectedDog.getAge())
                     .kg(shelterProtectedDog.getWeight())
-                    .categoryCloth(shelterProtectedDog.getCategoryCloth())
-                    .categoryClothColor(shelterProtectedDog.getCategoryClothColor())
-                    .categoryColor(shelterProtectedDog.getCategoryColor())
-                    .categoryEar(shelterProtectedDog.getCategoryEar())
-                    .categoryPattern(shelterProtectedDog.getCategoryPattern())
-                    .categoryTail(shelterProtectedDog.getCategoryTail())
+                    .neutered(shelterProtectedDog.getNeutered().name())
+                    .neuteredCode(shelterProtectedDog.getNeutered().getCode())
+                    .categoryEar(shelterProtectedDog.getCategoryEar().name())
+                    .categoryEarCode(shelterProtectedDog.getCategoryEar().getCode())
+                    .categoryTail(shelterProtectedDog.getCategoryTail().name())
+                    .categoryTailCode(shelterProtectedDog.getCategoryTail().getCode())
+                    .categoryPattern(shelterProtectedDog.getCategoryPattern().name())
+                    .categoryPatternCode(shelterProtectedDog.getCategoryPattern().getCode())
+                    .categoryCloth(shelterProtectedDog.getCategoryCloth().name())
+                    .categoryClothCode(shelterProtectedDog.getCategoryCloth().getCode())
+                    .categoryColor(colorCode)
+                    .stateCode(shelterProtectedDog.getStateCode().getCode())
+                    .state(shelterProtectedDog.getStateCode().name())
+                    .infoContent(shelterProtectedDog.getFeature())
                     .fileUrlList(fileDtoList)
+                    .isFavorite(isFavorite)
                     .build();
             return  protectDto;
         }catch(Exception e){
@@ -264,12 +372,22 @@ public class ProtectServiceImpl implements ProtectService{
         System.out.println(protectDto);
         try {
             List<Image> images = new ArrayList<>();
-            if(uploadFile != null || !uploadFile.isEmpty()){
+            if(uploadFile != null){
                 for (MultipartFile partFile : uploadFile) {
                     Image image = fileService.insertFile(partFile, "protect");
                     images.add(image);
                 }
             }
+            List<DogColor> colors = new ArrayList<>();
+            for (String c:
+                 protectDto.getCategoryColor()) {
+                colors.add(DogColor.builder()
+                        .colorCode(c)
+                        .build());
+            }
+            /** color 처리 로직 필요 */
+
+            Color color = colorService.getColorCode(protectDto.getCategoryColor());
 
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
@@ -277,57 +395,20 @@ public class ProtectServiceImpl implements ProtectService{
                     .shelter(shelter)
                     .feature(protectDto.getInfoContent())
                     .gender(Gender.of(protectDto.getGenderCode()))
-                    .neutered(protectDto.getNeuteredCode())
+                    .neutered(Neutered.of(protectDto.getNeuteredCode()))
                     .images(images)
                     .registDate(LocalDateTime.now().toLocalDate())
-                    //.findingDate(protectDto.getFindingDate())
                     .findingDate(LocalDate.now())
-                    .latitude(shelter.getLatitude())
-                    .longitude(shelter.getLongitude())
                     .name(protectDto.getProtectName())
                     .weight(protectDto.getKg())
-//                    .stateCode(ProtectState.of(protectDto.getStateCode()))
-                    .sidoCode(shelter.getSidoCode())
-                    .gugunCode(shelter.getGugunCode())
-                    .categoryCloth(protectDto.getCategoryCloth())
-                    .categoryTail(protectDto.getCategoryTail())
-                    .categoryPattern(protectDto.getCategoryPattern())
-                    .categoryEar(protectDto.getCategoryEar())
-                    .categoryClothColor(protectDto.getCategoryClothColor())
-                    .categoryColor(protectDto.getCategoryColor())
+                    .categoryCloth(Cloth.of(protectDto.getCategoryClothCode()))
+                    .categoryTail(Tail.of(protectDto.getCategoryTailCode()))
+                    .categoryPattern(Pattern.of(protectDto.getCategoryPatternCode()))
+                    .categoryEar(Ear.of(protectDto.getCategoryEarCode()))
+                    .categoryColor(color)
+                    .colors(colors)
                     .build();
             shelterProtectedDogRepository.save(shelterProtectedDog);
-//            File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-//            if (!uploadDir.exists()) uploadDir.mkdir();
-//            System.out.println(uploadFile.size());
-
-
-//                int spDogId = shelterProtectedDog.getSpDogId();
-//                String fileName = partFile.getOriginalFilename();
-//
-//                UUID uuid = UUID.randomUUID();
-//
-//                String extension = FilenameUtils.getExtension(fileName);
-//
-//                String savingFileName = uuid + "." + extension;
-//
-//                File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-//
-//                partFile.transferTo(destFile);
-//
-//                Image image = Image.builder()
-//                        .origFilename(fileName)
-//                        .fileSize((int) partFile.getSize())
-//                        .filename(fileName)
-//                        .filePath(uploadFolder + "/" + savingFileName)
-//                        .build();
-//
-//                imageRepository.save(image);
-
-
-
-//                shelterDogImageRepository.save(shelterDogImage);
-//            }
             responseMessage.setMessage("SUCCESS");
         } catch (Exception e) {
             e.printStackTrace();
@@ -403,7 +484,7 @@ public class ProtectServiceImpl implements ProtectService{
                                 shelterProtectedDog.setWeight(cell.getNumericCellValue());
                                 break;
                             case 5 :
-                                shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()).ordinal());
+                                shelterProtectedDog.setNeutered(Neutered.valueOf(cell.getStringCellValue()));
                                 break;
                             case 6 :
                                 if(cell.getStringCellValue().equals("없음")){
@@ -430,16 +511,16 @@ public class ProtectServiceImpl implements ProtectService{
                                 }
                                 break;
                             case 9 :
-                                shelterProtectedDog.setCategoryPattern(Pattern.valueOf(cell.getStringCellValue()).ordinal());
+                                shelterProtectedDog.setCategoryPattern(Pattern.valueOf(cell.getStringCellValue()));
                                 break;
                             case 10 :
-                                shelterProtectedDog.setCategoryEar(Ear.valueOf(cell.getStringCellValue()).ordinal());
+                                shelterProtectedDog.setCategoryEar(Ear.valueOf(cell.getStringCellValue()));
                                 break;
                             case 11 :
-                                shelterProtectedDog.setCategoryTail(Tail.valueOf(cell.getStringCellValue()).ordinal());
+                                shelterProtectedDog.setCategoryTail(Tail.valueOf(cell.getStringCellValue()));
                                 break;
                             case 12 :
-                                shelterProtectedDog.setCategoryCloth(Cloth.valueOf(cell.getStringCellValue()).ordinal());
+                                shelterProtectedDog.setCategoryCloth(Cloth.valueOf(cell.getStringCellValue()));
                                 break;
                             case 13 :
                                 shelterProtectedDog.setFeature(cell.getStringCellValue());
@@ -448,21 +529,20 @@ public class ProtectServiceImpl implements ProtectService{
                         col++;
                     }
                     List<Image> images = new ArrayList<>();
-                    shelterProtectedDog.setSidoCode(shelter.getSidoCode());
-                    shelterProtectedDog.setGugunCode(shelter.getGugunCode());
-                    shelterProtectedDog.setLatitude(lat);
-                    shelterProtectedDog.setLongitude(log);
+                    List<DogColor> colors = new ArrayList<>();
+
                     shelterProtectedDog.setShelter(shelter);
                     shelterProtectedDog.setStateCode(ProtectState.공고중);
                     shelterProtectedDog.setRegistDate(LocalDate.now());
                     shelterProtectedDog.setImages(images);
+                    shelterProtectedDog.setColors(colors);
                     Collections.sort(strList);
                     StringBuilder sb = new StringBuilder();
                     for(int i=0; i<strList.size(); i++){
                         sb.append(strList.get(i));
                     }
-                    int code = Color.valueOf(sb.toString()).getCode();
-                    shelterProtectedDog.setCategoryColor(code);
+//                    int code = .getCode();
+                    shelterProtectedDog.setCategoryColor(Color.valueOf(sb.toString()));
                     list.add(shelterProtectedDog);
                 }
             }
@@ -549,7 +629,7 @@ public class ProtectServiceImpl implements ProtectService{
 //                list.add(i.getImageId());
 //            }
 //            List<Image> imageList = imageRepository.findByImageIdIn(list);
-            if(uploadFile != null || !uploadFile.isEmpty()){
+            if(uploadFile != null){
                 List<Image> images = shelterProtectedDog.getImages();
                 for(Image i : images){
 //                File file = new File(uploadPath+File.separator+i.getFilePath());

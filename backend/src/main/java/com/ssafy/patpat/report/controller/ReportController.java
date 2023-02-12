@@ -29,7 +29,7 @@ public class ReportController {
      * @return
      */
     @GetMapping("/missings")
-    @ApiOperation(value = "실종견 조회", notes = "{code==0 전체 실종견, code==2 견종 성별 필터링 검색}")
+    @ApiOperation(value = "실종견 조회", notes = "gender, breedId 넣는것에 따라 무조건 필수로 주세요")
     public ResponseEntity<Object> selectMissingList(RequestReportDto requestReportDto){
         //서비스 호출 코드
 //        System.out.println(requestReportDto);
@@ -41,12 +41,12 @@ public class ReportController {
      * 실종견 리스트(현재 유저의 실종견 공고 리스트)
      * @return
      */
-    @GetMapping("/missings/{userId}")
+    @GetMapping("/missings/me")
     @ApiOperation(value = "실종견 조회", notes = "{현재 유저의 실종견 공고 리스트}")
-    public ResponseEntity<Object> selectMissingListByUser(@PathVariable Long userId, RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectMissingListByUser(RequestReportDto requestReportDto){
         //서비스 호출 코드
 
-        ResponseListDto reportDtoList = service.selectMissingListByUser(userId,requestReportDto);
+        ResponseListDto reportDtoList = service.selectMissingListByUser(requestReportDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(reportDtoList);
     }
@@ -133,7 +133,7 @@ public class ReportController {
         //서비스 호출 코드
         System.out.println(reportDto);
         ResponseMessage responseMessage = service.insertReport(reportDto, uploadFile);
-        if(responseMessage.getMessage() == "SUCCESS"){
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
         }else{
@@ -150,9 +150,9 @@ public class ReportController {
     public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile) throws Exception{
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateReport(reportDto, uploadFile);
-        if(responseMessage.getMessage() == "SUCCESS"){
+        if(responseMessage.getMessage().equals("SUCCESS")){
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseMessage("SUCCESS"));
+                    .body(responseMessage);
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ResponseMessage("FAIL"));

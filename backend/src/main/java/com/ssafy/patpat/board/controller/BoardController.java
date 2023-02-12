@@ -33,8 +33,8 @@ public class BoardController {
      * @return
      */
     @GetMapping()
-    @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트를 조회한다.")
-    public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
+    @ApiOperation(value = "게시판 리스트", notes = "게시판 리스트를 조회한다.")
+    public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
         //service 호출
 //        System.out.println(requestBoardDto);
         ResponseListDto boardDtoList = service.selectBoardList(requestBoardDto);
@@ -49,7 +49,7 @@ public class BoardController {
      */
     @GetMapping("/me")
     @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트")
-    public ResponseEntity<Object> selectBoardList(RequestBoardDto requestBoardDto){
+    public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
         ResponseListDto boardDtoList = service.selectUserBoardList(requestBoardDto);
         return ResponseEntity.status(HttpStatus.OK)

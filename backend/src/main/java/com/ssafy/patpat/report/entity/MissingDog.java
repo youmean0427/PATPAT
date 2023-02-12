@@ -1,5 +1,9 @@
 package com.ssafy.patpat.report.entity;
 
+import com.ssafy.patpat.common.code.MissingState;
+import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.code.category.*;
+import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.user.entity.User;
@@ -32,21 +36,18 @@ public class MissingDog {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Double weight;
-    private Integer gender;
-    private Integer neutered;
+    private Gender gender;
+    private Neutered neutered;
     private LocalDate registDate;
     private String feature;
-    private Integer stateCode;
-    private Integer categoryEar;
-    private Integer categoryTail;
-    private Integer categoryColor;
-    private Integer categoryPattern;
-    private Integer categoryCloth;
-    private Integer categoryClothColor;
+    private MissingState stateCode;
+    private Ear categoryEar;
+    private Tail categoryTail;
+    private Color categoryColor;
+    private Pattern categoryPattern;
+    private Cloth categoryCloth;
     private String name;
     private int age;
-    private String sidoCode;
-    private String gugunCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -64,8 +65,21 @@ public class MissingDog {
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     private List<Image> images;
 
-    public void update(int stateCode, String feature, int gender, Breed breed, double weight, int neutered, int categoryEar, int categoryTail ,int categoryColor,
-                       int categoryPattern,int categoryCloth){
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "missing_dog_color",
+            joinColumns = {@JoinColumn(name = "missing_id")},
+            inverseJoinColumns = {@JoinColumn(name = "color_id")}
+    )
+    private List<DogColor> colors;
+
+    @PrePersist
+    public void prePersist() {
+        this.stateCode = this.stateCode == null ? MissingState.실종 : this.stateCode;
+    }
+
+    public void update(MissingState stateCode, String feature, Gender gender, Breed breed, double weight, Neutered neutered, Ear categoryEar, Tail categoryTail
+            ,Color categoryColor, Pattern categoryPattern, Cloth categoryCloth){
         this.stateCode = stateCode;
         this.feature =feature;
         this.gender = gender;
@@ -73,7 +87,6 @@ public class MissingDog {
         this.breed = breed;
         this.neutered =neutered;
         this.categoryCloth = categoryCloth;
-        this.categoryClothColor = categoryClothColor;
         this.categoryColor = categoryColor;
         this.categoryEar =categoryEar;
         this.categoryTail = categoryTail;

@@ -111,11 +111,12 @@ public class BoardServiceImpl implements BoardService{
         //보드 하나 골라서
         for(Board board : entityList.toList()){
             //0번 상태인 경우 썸네일을 넣는다.
+            LOGGER.info("board좀 보자 {}", board);
             FileDto thumbnail = null;
             if(requestBoardDto.getTypeCode() == 0){
 //                List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
-                List<Image> postImageList = board.getImages();
-                List<Image> imageList = new ArrayList<>();
+
+                List<Image> imageList = board.getImages();
 //                for(Image post : postImageList){
 //                    imageList.add(imageRepository.findByImageId(post.getImageId()));
 //                }
@@ -124,8 +125,7 @@ public class BoardServiceImpl implements BoardService{
                     thumbnail = FileDto.builder()
                             .filePath(fileService.getFileUrl(fileService.getDefaultImage()))
                             .build();
-                }
-                if(imageList.size()!=0){
+                }else{
                     thumbnail = FileDto.builder()
                             .filePath(fileService.getFileUrl(imageList.get(0)))
                             .build();
@@ -233,7 +233,7 @@ public class BoardServiceImpl implements BoardService{
 //        Optional<User> user = userRepository.findById(boardDto.getUserId());
         List<Image> images = new ArrayList<>();
         try{
-            if(uploadFile != null || !uploadFile.isEmpty()) {
+            if(uploadFile != null) {
                 for (MultipartFile partFile : uploadFile) {
                     images.add(fileService.insertFile(partFile, "board"));
                 }
@@ -316,7 +316,7 @@ public class BoardServiceImpl implements BoardService{
             images.removeAll(images);
 
 //            List<Image> newImages = new ArrayList<>();
-            if(uploadFile != null || !uploadFile.isEmpty()) {
+            if(uploadFile != null) {
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));
                 }

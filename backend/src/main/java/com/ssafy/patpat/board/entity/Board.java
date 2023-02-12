@@ -53,6 +53,8 @@ public class Board {
 
     @PrePersist
     public void prePersist() {
+
         this.count = this.count == null ? 0 : this.count;
+        this.dateTime = this.dateTime == null ? LocalDateTime.now() : this.dateTime;
     }
 }

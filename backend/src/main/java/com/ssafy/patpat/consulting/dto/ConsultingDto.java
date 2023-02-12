@@ -25,6 +25,11 @@ public class ConsultingDto {
     private String userName;
     @Schema(example = "유저 id")
     private Long userId;
+    @Schema(example = "유저 경험치")
+    private Integer userExp;
+    @Schema(example = "유저 프로필 url")
+    private String userProfileUrl;
+
     @Schema(example = "주소")
     private String address;
     @Schema(example = "시간코드")
@@ -33,6 +38,10 @@ public class ConsultingDto {
     private String time;
     @Schema(example = "날짜")
     private LocalDate consultingDate;
+
+    @Schema(example = "신청날짜")
+    private LocalDateTime registDate;
+
     @Schema(example = "대기중,수락,거절")
     private Integer stateCode;
     @Schema(example = "대기중,수락,거절")
@@ -41,7 +50,5 @@ public class ConsultingDto {
     private Long shelterDogId;
     @Schema(example = "강아지id")
     private String shelterDogName;
-    @Schema(example = "강아지id")
-    private Boolean isOpen;
 
 }

@@ -46,23 +46,33 @@ public class ReportDto {
     @Schema(example = "나이")
     private Integer age;
     @Schema(example = "귀모양")
-    private Integer categoryEar;
+    private String categoryEar;
+    @Schema(example = "귀모양")
+    private Integer categoryEarCode;
     @Schema(example = "꼬리모양")
-    private Integer categoryTail;
+    private String categoryTail;
+    @Schema(example = "꼬리모양")
+    private Integer categoryTailCode;
     @Schema(example = "털색")
-    private Integer categoryColor;
+    private List<String> categoryColor;
     @Schema(example = "패턴")
-    private Integer categoryPattern;
+    private String categoryPattern;
+    @Schema(example = "패턴")
+    private Integer categoryPatternCode;
     @Schema(example = "옷여부")
-    private Integer categoryCloth;
-    @Schema(example = "옷색깔")
-    private Integer categoryClothColor;
+    private String categoryCloth;
+    @Schema(example = "옷여부")
+    private Integer categoryClothCode;
     @Schema(example = "fileurl:.png")
     private List<FileDto> fileUrlList;
     @Schema(example = "filePath: ")
     private FileDto thumbnail;
-    @Schema(example = "발견날짜")
-    private LocalDate findDate;
+    @Schema(example = "발견날짜/실종날짜")
+    private LocalDate date;
+    @Schema(example = "등록날짜")
+    private LocalDate registDate;
+    @Schema(example = "상태")
+    private String state;
     @Schema(example = "상태코드")
     private Integer stateCode;
 }

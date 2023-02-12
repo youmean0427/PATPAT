@@ -15,7 +15,12 @@ public class RequestVolunteerDto {
     private Integer limit;
     private String keyword;
     private String volunteerDate;
-    private String gugunCode;
+
+    private String extraDate;
+
+    private String latitude;
+    private String longitude;
+
     private Long userId;
     private Long scheduleId;
 

@@ -1,12 +1,15 @@
 package com.ssafy.patpat.report.service;
 
-import com.ssafy.patpat.common.code.category.Neutered;
-import com.ssafy.patpat.common.code.category.Gender;
+import com.ssafy.patpat.common.code.MissingState;
+import com.ssafy.patpat.common.code.ProtectState;
+import com.ssafy.patpat.common.code.category.*;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
+import com.ssafy.patpat.common.service.ColorService;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
@@ -66,6 +69,8 @@ public class ReportServiceImpl implements ReportService{
 
     @Autowired
     UserService userService;
+    @Autowired
+    ColorService colorService;
 
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;
@@ -76,23 +81,23 @@ public class ReportServiceImpl implements ReportService{
     public ResponseListDto selectMissingList(RequestReportDto requestReportDto) {
         try{
             ResponseListDto responseListDto = new ResponseListDto();
-            int gender = requestReportDto.getGender();
+            Gender gender = Gender.of(requestReportDto.getGender());
             Long breedId = requestReportDto.getBreedId();
             int limit = requestReportDto.getLimit();
             int offSet = requestReportDto.getOffSet();
             PageRequest pageRequest = PageRequest.of(offSet,limit, Sort.by("missingId").descending());
 
             Page<MissingDog> missingDogList = null;
-            if(gender == 0 && breedId == 0){
+            if(gender.getCode() == 0 && breedId == 0){
               missingDogList = missingDogRepository.findAll(pageRequest);
             }
-            else if(gender == 0 && breedId > 0){
+            else if(gender.getCode()>0 && breedId==0){
                 missingDogList = missingDogRepository.findByGender(gender,pageRequest);
             }
-            else if(gender>0 && breedId==0){
+            else if(gender.getCode() == 0 && breedId > 0){
                 missingDogList = missingDogRepository.findByBreedBreedId(breedId,pageRequest);
             }
-            else if(gender > 0 && breedId > 0){
+            else if(gender.getCode() > 0 && breedId > 0){
                 missingDogList = missingDogRepository.findByGenderAndBreedBreedId(gender, breedId, pageRequest);
             }
 
@@ -117,7 +122,7 @@ public class ReportServiceImpl implements ReportService{
                 }
                 if(missingDogImageList.size() > 0){
                     thumbnail = FileDto.builder()
-                            .filePath(missingDogImageList.get(0).getFilePath())
+                            .filePath(fileService.getFileUrl(missingDogImageList.get(0)))
                             .build();
                 }
                 Breed breed = missingDog.getBreed();
@@ -143,15 +148,16 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public ResponseListDto selectMissingListByUser(Long userId, RequestReportDto requestReportDto) {
+    public ResponseListDto selectMissingListByUser(RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         int limit = requestReportDto.getLimit();
         int offSet = requestReportDto.getOffSet();
         PageRequest pageRequest = PageRequest.of(offSet,limit);
 //        System.out.println(userId);
 //        System.out.println(requestReportDto);
 
-        Page<MissingDog> missingDogList = missingDogRepository.findByUserUserId(userId,pageRequest);
+        Page<MissingDog> missingDogList = missingDogRepository.findByUserUserId(user.get().getUserId(),pageRequest);
 
 //        System.out.println(missingDogList);
         List<ReportDto> reportDtoList = new ArrayList<>();
@@ -175,7 +181,7 @@ public class ReportServiceImpl implements ReportService{
             }
             if(missingDogImageList.size() > 0){
                 thumbnail =  FileDto.builder()
-                        .filePath(missingDogImageList.get(0).getFilePath())
+                        .filePath(fileService.getFileUrl(missingDogImageList.get(0)))
                         .build();
             }
             Breed breed = missingDog.getBreed();
@@ -184,10 +190,10 @@ public class ReportServiceImpl implements ReportService{
                             .title(missingDog.getTitle())
                             .name(missingDog.getName())
                             .missingId(missingDog.getMissingId())
-                            .genderCode(missingDog.getGender())
-                            .gender(Gender.values()[missingDog.getGender()].toString())
-                            .neuteredCode(missingDog.getNeutered())
-                            .neutered(Neutered.values()[missingDog.getNeutered()].toString())
+                            .genderCode(missingDog.getGender().getCode())
+                            .gender(missingDog.getGender().name())
+                            .neuteredCode(missingDog.getNeutered().getCode())
+                            .neutered(missingDog.getNeutered().name())
                             .age(missingDog.getAge())
                             .breedId(breed.getBreedId())
                             .breedName(breed.getName())
@@ -205,24 +211,24 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public ResponseListDto selectPersonalProtectionList(RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
-        int gender = requestReportDto.getGender();
+        Gender gender = Gender.of(requestReportDto.getGender());
         long breedId = requestReportDto.getBreedId();
         int limit = requestReportDto.getLimit();
         int offSet = requestReportDto.getOffSet();
         PageRequest pageRequest = PageRequest.of(offSet,limit,Sort.by("ppDogId").descending());
 
         Page<PersonalProtectedDog> personalProtectedDogList = null;
-        if(gender == 0 && breedId == 0){
+        if(gender.getCode() == 0 && breedId == 0){
             personalProtectedDogList = personalProtectedDogRepository.findAll(pageRequest);
 
         }
-        else if(gender == 0 && breedId > 0){
+        else if(gender.getCode() > 0 && breedId == 0){
             personalProtectedDogList = personalProtectedDogRepository.findByGender(gender,pageRequest);
         }
-        else if(gender>0 && breedId==0){
+        else if(gender.getCode() == 0 && breedId > 0){
             personalProtectedDogList = personalProtectedDogRepository.findByBreedBreedId(breedId,pageRequest);
         }
-        else if(gender > 0 && breedId > 0){
+        else if(gender.getCode() > 0 && breedId > 0){
             personalProtectedDogList = personalProtectedDogRepository.findByGenderAndBreedBreedId(gender, breedId, pageRequest);
         }
 
@@ -247,7 +253,7 @@ public class ReportServiceImpl implements ReportService{
             }
             if(personalProtectedDogImageList.size() > 0){
                 FileDto.builder()
-                        .filePath(personalProtectedDogImageList.get(0).getFilePath())
+                        .filePath(fileService.getFileUrl(personalProtectedDogImageList.get(0)))
                         .build();
             }
             Breed breed = personalProtectedDog.getBreed();
@@ -288,28 +294,41 @@ public class ReportServiceImpl implements ReportService{
             );
         }
         Breed breed = missingDog.getBreed();
+        /** color 처리 로직 필요  */
+        List<DogColor> colors = missingDog.getColors();
+        List<String> colorCode = new ArrayList<>();
+        for (DogColor color:
+                colors) {
+            colorCode.add(color.getColorCode());
+        }
         ReportDto reportDto = ReportDto.builder()
                 .missingId(missingDog.getMissingId())
                 .breedName(breed.getName())
                 .breedId(breed.getBreedId())
                 .kg(missingDog.getWeight())
-                .genderCode(missingDog.getGender())
-                .gender(Gender.values()[missingDog.getGender()].toString())
-                .neuteredCode(missingDog.getNeutered())
-                .neutered(Neutered.values()[missingDog.getNeutered()].toString())
+                .genderCode(missingDog.getGender().getCode())
+                .gender(missingDog.getGender().name())
+                .neuteredCode(missingDog.getNeutered().getCode())
+                .neutered(missingDog.getNeutered().name())
                 .age(missingDog.getAge())
                 .name(missingDog.getName())
-                .categoryCloth(missingDog.getCategoryCloth())
-                .categoryColor(missingDog.getCategoryColor())
-                .categoryEar(missingDog.getCategoryEar())
-                .categoryPattern(missingDog.getCategoryPattern())
-                .categoryTail(missingDog.getCategoryTail())
-                .categoryClothColor(missingDog.getCategoryClothColor())
+                .categoryCloth(missingDog.getCategoryCloth().name())
+                .categoryClothCode(missingDog.getCategoryCloth().getCode())
+                .categoryColor(colorCode)
+                .categoryEar(missingDog.getCategoryEar().name())
+                .categoryEarCode(missingDog.getCategoryEar().getCode())
+                .categoryPattern(missingDog.getCategoryPattern().name())
+                .categoryPatternCode(missingDog.getCategoryPattern().getCode())
+                .categoryTail(missingDog.getCategoryTail().name())
+                .categoryTailCode(missingDog.getCategoryTail().getCode())
                 .content(missingDog.getFeature())
                 .title(missingDog.getTitle())
                 .fileUrlList(fileDtoList)
                 .latitude(missingDog.getLatitude().toString())
                 .longitude(missingDog.getLongitude().toString())
+                .state(missingDog.getStateCode().name())
+                .stateCode(missingDog.getStateCode().getCode())
+                .userId(missingDog.getUser().getUserId())
                 .build();
         return reportDto;
     }
@@ -336,30 +355,42 @@ public class ReportServiceImpl implements ReportService{
                 );
             }
         }
-
+        /** color 처리 로직 필요  */
+        List<DogColor> colors = personalProtectedDog.getColors();
+        List<String> colorCode = new ArrayList<>();
+        for (DogColor color:
+                colors) {
+            colorCode.add(color.getColorCode());
+        }
         Breed breed = personalProtectedDog.getBreed();
         ReportDto reportDto = ReportDto.builder()
                 .personalProtectionId(personalProtectedDog.getPpDogId())
                 .breedName(breed.getName())
                 .breedId(breed.getBreedId())
                 .kg(personalProtectedDog.getWeight())
-                .genderCode(personalProtectedDog.getGender())
-                .gender(Gender.values()[personalProtectedDog.getGender()].toString())
-                .neuteredCode(personalProtectedDog.getNeutered())
-                .neutered(Neutered.values()[personalProtectedDog.getNeutered()].toString())
+                .genderCode(personalProtectedDog.getGender().getCode())
+                .gender(personalProtectedDog.getGender().name())
+                .neuteredCode(personalProtectedDog.getNeutered().getCode())
+                .neutered(personalProtectedDog.getNeutered().name())
                 .age(personalProtectedDog.getAge())
                 .name(personalProtectedDog.getName())
-                .categoryCloth(personalProtectedDog.getCategoryCloth())
-                .categoryColor(personalProtectedDog.getCategoryColor())
-                .categoryEar(personalProtectedDog.getCategoryEar())
-                .categoryPattern(personalProtectedDog.getCategoryPattern())
-                .categoryTail(personalProtectedDog.getCategoryTail())
-                .categoryClothColor(personalProtectedDog.getCategoryClothColor())
+                .categoryCloth(personalProtectedDog.getCategoryCloth().name())
+                .categoryClothCode(personalProtectedDog.getCategoryCloth().getCode())
+                .categoryColor(colorCode)
+                .categoryEar(personalProtectedDog.getCategoryEar().name())
+                .categoryEarCode(personalProtectedDog.getCategoryEar().getCode())
+                .categoryPattern(personalProtectedDog.getCategoryPattern().name())
+                .categoryPatternCode(personalProtectedDog.getCategoryPattern().getCode())
+                .categoryTail(personalProtectedDog.getCategoryTail().name())
+                .categoryTailCode(personalProtectedDog.getCategoryTail().getCode())
                 .content(personalProtectedDog.getFeature())
                 .title(personalProtectedDog.getTitle())
                 .latitude(personalProtectedDog.getLatitude().toString())
                 .longitude(personalProtectedDog.getLongitude().toString())
                 .fileUrlList(fileDtoList)
+                .stateCode(personalProtectedDog.getStateCode().getCode())
+                .state(personalProtectedDog.getStateCode().name())
+                .userId(personalProtectedDog.getUser().getUserId())
                 .build();
 
 
@@ -374,12 +405,19 @@ public class ReportServiceImpl implements ReportService{
                 MissingDog missingDog = missingDogRepository.findByMissingId(reportDto.getMissingId());
 
                 Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
-                missingDog.update(
-                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGenderCode(), breed,
-                        reportDto.getNeuteredCode(), reportDto.getCategoryEar(), reportDto.getCategoryTail(),
-                        reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
 
-                if(uploadFile != null || !uploadFile.isEmpty()){
+                List<DogColor> colors = missingDog.getColors();
+                colors.removeAll(colors);
+                for (String c:
+                        reportDto.getCategoryColor()) {
+                    colors.add(DogColor.builder()
+                            .colorCode(c)
+                            .build());
+                }
+                missingDog.setColors(colors);
+
+
+                if(uploadFile != null){
                     List<Image> missingDogImageList = missingDog.getImages();
                     for (Image i : missingDogImageList){
                         fileService.deleteFile(i);
@@ -387,10 +425,32 @@ public class ReportServiceImpl implements ReportService{
                     missingDogImageList.removeAll(missingDogImageList);
 
                     for (MultipartFile partFile : uploadFile){
-                        missingDogImageList.add(fileService.insertFile(partFile,"missing"));
+                        missingDogImageList.add(fileService.insertFile(partFile,"report"));
                     }
                     missingDog.setImages(missingDogImageList);
                 }
+                /** Color 처리 로직 필요 */
+                Color color = null;
+
+                missingDog.update(
+                        MissingState.of(reportDto.getStateCode()),
+                        reportDto.getContent(),
+                        Gender.of(reportDto.getGenderCode()),
+                        breed,
+                        reportDto.getKg(),
+                        Neutered.of(reportDto.getNeuteredCode()),
+                        Ear.of(reportDto.getCategoryEarCode()),
+                        Tail.of(reportDto.getCategoryTailCode()),
+                        color,
+                        Pattern.of(reportDto.getCategoryPatternCode()),
+                        Cloth.of(reportDto.getCategoryClothCode()));
+
+                missingDog.setTitle(reportDto.getTitle());
+                missingDog.setAge(reportDto.getAge());
+                missingDog.setName(reportDto.getName());
+                missingDog.setLatitude(new BigDecimal(reportDto.getLatitude()));
+                missingDog.setLongitude(new BigDecimal(reportDto.getLongitude()));
+
                 missingDogRepository.save(missingDog);
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
@@ -442,12 +502,18 @@ public class ReportServiceImpl implements ReportService{
             else {
                 PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(reportDto.getPersonalProtectionId());
                 Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
-                personalProtectedDog.update(
-                        reportDto.getStateCode(), reportDto.getContent(), reportDto.getGenderCode(), breed,
-                        reportDto.getNeuteredCode(), reportDto.getCategoryEar(), reportDto.getCategoryTail(),
-                        reportDto.getCategoryColor(), reportDto.getCategoryPattern(), reportDto.getCategoryCloth(), reportDto.getCategoryClothColor());
+                
+                List<DogColor> colors = personalProtectedDog.getColors();
+                colors.removeAll(colors);
+                for (String c:
+                        reportDto.getCategoryColor()) {
+                    colors.add(DogColor.builder()
+                            .colorCode(c)
+                            .build());
+                }
+                personalProtectedDog.setColors(colors);
 
-                if (uploadFile != null || !uploadFile.isEmpty()) {
+                if (uploadFile != null) {
                     List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
                     for (Image i : personalProtectedDogImageList) {
                         fileService.deleteFile(i);
@@ -455,10 +521,32 @@ public class ReportServiceImpl implements ReportService{
                     personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
 
                     for (MultipartFile partFile : uploadFile) {
-                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "personal"));
+                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "report"));
                     }
                     personalProtectedDog.setImages(personalProtectedDogImageList);
                 }
+                /** Color 처리 로직 필요 */
+                Color color = null;
+
+                personalProtectedDog.update(
+                        ProtectState.of(reportDto.getStateCode()),
+                        reportDto.getContent(),
+                        Gender.of(reportDto.getGenderCode()),
+                        breed,
+                        reportDto.getKg(),
+                        Neutered.of(reportDto.getNeuteredCode()),
+                        Ear.of(reportDto.getCategoryEarCode()),
+                        Tail.of(reportDto.getCategoryTailCode()),
+                        color,
+                        Pattern.of(reportDto.getCategoryPatternCode()),
+                        Cloth.of(reportDto.getCategoryClothCode()));
+
+                personalProtectedDog.setTitle(reportDto.getTitle());
+                personalProtectedDog.setAge(reportDto.getAge());
+                personalProtectedDog.setName(reportDto.getName());
+                personalProtectedDog.setLatitude(new BigDecimal(reportDto.getLatitude()));
+                personalProtectedDog.setLongitude(new BigDecimal(reportDto.getLongitude()));
+
                 personalProtectedDogRepository.save(personalProtectedDog);
             }
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
@@ -528,27 +616,38 @@ public class ReportServiceImpl implements ReportService{
 //        UserDto userDto = userService.getUserWithAuthorities();
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
+        System.out.println(uploadFile);
         try{
             List<Image> images = new ArrayList<>();
-            if(uploadFile != null || !uploadFile.isEmpty()){
+            if(uploadFile != null){
                 for (MultipartFile file:
                         uploadFile) {
                     images.add(fileService.insertFile(file,"report"));
                 }
             }
+            List<DogColor> colors = new ArrayList<>();
+            for (String c:
+                    reportDto.getCategoryColor()) {
+                colors.add(DogColor.builder()
+                        .colorCode(c)
+                        .build());
+            }
+            /** Color 처리 로직 */
+            Color color = colorService.getColorCode(reportDto.getCategoryColor());
             if(reportDto.getTypeCode() == 1) {
+
                 MissingDog missingDog = MissingDog.builder()
-                        .missingDate(reportDto.getFindDate())
+                        .missingDate(reportDto.getDate())
                         .breed(breed)
                         .age(reportDto.getAge())
-                        .gender(reportDto.getGenderCode())
-                        .neutered(reportDto.getNeuteredCode())
-                        .categoryCloth(reportDto.getCategoryCloth())
-                        .categoryPattern(reportDto.getCategoryPattern())
-                        .categoryTail(reportDto.getCategoryTail())
-                        .categoryEar(reportDto.getCategoryEar())
-                        .categoryClothColor(reportDto.getCategoryClothColor())
-                        .categoryColor(reportDto.getCategoryColor())
+                        .gender(Gender.of(reportDto.getGenderCode()))
+                        .neutered(Neutered.of(reportDto.getNeuteredCode()))
+                        .categoryCloth(Cloth.of(reportDto.getCategoryClothCode()))
+                        .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
+                        .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
+                        .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
+                        .categoryColor(color)
+                        .colors(colors)
                         .latitude(new BigDecimal(reportDto.getLatitude()))
                         .longitude(new BigDecimal(reportDto.getLongitude()))
                         .name(reportDto.getName())
@@ -556,7 +655,6 @@ public class ReportServiceImpl implements ReportService{
                         .weight(reportDto.getKg())
                         .user(user.get())
                         .feature(reportDto.getContent())
-                        .stateCode(0)
                         .images(images)
                         .registDate(LocalDate.now())
                         .build();
@@ -599,16 +697,17 @@ public class ReportServiceImpl implements ReportService{
             }else{
 
                 PersonalProtectedDog personalProtectedDog = PersonalProtectedDog.builder()
+                        .findDate(reportDto.getDate())
                         .breed(breed)
                         .age(reportDto.getAge())
-                        .gender(reportDto.getGenderCode())
-                        .neutered(reportDto.getNeuteredCode())
-                        .categoryCloth(reportDto.getCategoryCloth())
-                        .categoryPattern(reportDto.getCategoryPattern())
-                        .categoryTail(reportDto.getCategoryTail())
-                        .categoryEar(reportDto.getCategoryEar())
-                        .categoryClothColor(reportDto.getCategoryClothColor())
-                        .categoryColor(reportDto.getCategoryColor())
+                        .gender(Gender.of(reportDto.getGenderCode()))
+                        .neutered(Neutered.of(reportDto.getNeuteredCode()))
+                        .categoryCloth(Cloth.of(reportDto.getCategoryClothCode()))
+                        .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
+                        .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
+                        .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
+                        .categoryColor(color)
+                        .colors(colors)
                         .latitude(new BigDecimal(reportDto.getLatitude()))
                         .longitude(new BigDecimal(reportDto.getLongitude()))
                         .name(reportDto.getName())
@@ -616,7 +715,6 @@ public class ReportServiceImpl implements ReportService{
                         .weight(reportDto.getKg())
                         .user(user.get())
                         .feature(reportDto.getContent())
-                        .stateCode(0)
                         .registDate(LocalDate.now())
                         .images(images)
                         .build();

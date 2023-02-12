@@ -18,5 +18,9 @@ public class VolunteerNoticeDto {
     private String title;
     private List<Long> scheduleId;
     private String state;
-    private int stateCode;
+    private Integer stateCode;
+    private String distance;
+
+    private String latitude;
+    private String longitude;
 }

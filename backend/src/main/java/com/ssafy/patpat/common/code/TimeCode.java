@@ -3,7 +3,7 @@ package com.ssafy.patpat.common.code;
 import java.util.Arrays;
 
 public enum TimeCode {
-    십시(10),십사시(14),십오시(15),십육시(16), 십칠시(17);
+    십시(10),십일시(11),십사시(14),십오시(15),십육시(16), 십칠시(17);
 
     private int code;
 

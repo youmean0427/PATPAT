@@ -14,4 +14,6 @@ import lombok.*;
 public class TimeDto {
     private Integer timeCode;
     private String time;
+
+    private Boolean active;
 }

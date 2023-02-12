@@ -31,6 +31,7 @@ public class Consulting {
 
     private ConsultingState consultingState;
     private LocalDate consultingDate;
+    private LocalDateTime registDate;
     private TimeCode timeCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,5 +50,10 @@ public class Consulting {
 
     public void updateConsulting(ConsultingState consultingState){
         this.consultingState = consultingState;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.registDate = this.registDate == null ? LocalDateTime.now() : this.registDate;
     }
 }
