@@ -775,7 +775,6 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-<<<<<<< HEAD
     @Transactional
     public Boolean deleteAll(){
 
@@ -804,14 +803,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public List<ProtectDto> selectRecommendList(RequestReportDto requestReportDto) {
-        return null;
-    }
-
-    @Override
-    public HashMap<String, Integer> selectRecommendCount(RequestReportDto requestReportDto) {
-        return null;
-=======
+    @Transactional
     public ResponseListDto selectRecommendList(Long missingId,RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         List<ProtectDto> protectDtoList = new ArrayList<>();
@@ -846,6 +838,5 @@ public class ReportServiceImpl implements ReportService{
         responseListDto.setTotalPage(shelterProtectedDogPage.getTotalPages());
         responseListDto.setTotalCount(shelterProtectedDogPage.getTotalElements());
         return responseListDto;
->>>>>>> 8656f34f94eb16285f3a213af747d8e859c763b3
     }
 }

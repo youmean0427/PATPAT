@@ -21,13 +21,8 @@ public interface ReportService {
     ReportDto detailPersonalProtection(Long personalProtectId);
     ResponseMessage updateReport(ReportDto reportDto, List<MultipartFile> uploadFile) throws Exception;
     ResponseMessage insertReport(ReportDto reportDto, List<MultipartFile> uploadFile);
-<<<<<<< HEAD
-    List<ProtectDto> selectRecommendList(RequestReportDto requestReportDto);
-    HashMap<String, Integer> selectRecommendCount(RequestReportDto requestReportDto);
-
     Boolean deleteAll();
-=======
-    ResponseListDto  selectRecommendList(Long missingId, RequestReportDto requestReportDto);
+    ResponseListDto selectRecommendList(Long missingId, RequestReportDto requestReportDto);
 //    void insertRecommend(User user, MissingDog missingDog);
->>>>>>> 8656f34f94eb16285f3a213af747d8e859c763b3
+
 }
