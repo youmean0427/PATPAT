@@ -75,7 +75,7 @@ public class ConsultingServiceImpl implements ConsultingService{
 //            Integer code = requestConsultingDto.getCode();
             ConsultingState consultingState = null;
             Page<Consulting> consultingList = null;
-            if(consultingState == null){
+            if(requestConsultingDto.getStateCode() == null){
                 pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
                 consultingList = consultingRepository.findByUserAndConsultingDateGreaterThanEqual(user.get(),LocalDate.now(),pageRequest);
             }
@@ -136,7 +136,7 @@ public class ConsultingServiceImpl implements ConsultingService{
             ConsultingState consultingState = null;
             Page<Consulting> consultingList = null;
 
-            if(consultingState == null){
+            if(requestConsultingDto.getStateCode() == null){
                 pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
                 consultingList = consultingRepository.findByShelterShelterIdAndConsultingDateGreaterThanEqual(requestConsultingDto.getShelterId(),LocalDate.now(),pageRequest);
             }
