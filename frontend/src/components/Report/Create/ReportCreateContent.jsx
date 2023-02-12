@@ -14,16 +14,16 @@ import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import infoIcon from 'assets/images/forpaw-info.png';
 import DetailModal from 'components/Common/DetailModal';
-import Ear1 from 'assets/images/ear1.png';
-import Ear2 from 'assets/images/ear2.png';
-import Ear3 from 'assets/images/ear3.png';
-import Ear4 from 'assets/images/ear4.png';
-import Ear5 from 'assets/images/ear5.png';
-import Ear6 from 'assets/images/ear6.png';
-import Ear7 from 'assets/images/ear7.png';
-import Ear8 from 'assets/images/ear8.png';
+import EarDetail from './EarDetail';
+import PatternDetail from './PatternDetail';
+import TailDetail from './TailDetail';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ReportCreateContent() {
+  // info
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [age, setAge] = useState(0);
@@ -34,18 +34,45 @@ export default function ReportCreateContent() {
   const [genderCode, setGenderCode] = useState(3);
   const [breedId, setBreedId] = useState({ value: 0 });
   const [kg, setKg] = useState(0);
-  const [neutered, setNeutered] = useState({ value: 0 });
-
+  const [neuteredCode, setNeuteredCode] = useState({ value: 0 });
   const [content, setContent] = useState('');
+
+  // category
   const [categoryEar, setCategoryEar] = useState({ value: 0 });
-  const [categoryColor, setCategoryColor] = useState({ value: 0 });
+  const [categoryColor, setCategoryColor] = useState(0);
   const [categoryPattern, setCategoryPattern] = useState({ value: 0 });
   const [categoryTail, setCategoryTail] = useState({ value: 0 });
   const [categoryCloth, setCategoryCloth] = useState({ value: 0 });
   const [categoryClothColor, setCategoryClothColor] = useState({ value: 0 });
-  const [uploadFile, setUploadFile] = useState([]);
-  const [fileUrl, setfileUrl] = useState([]);
+  const [color1, setColor1] = useState('#000000');
+  const [color2, setColor2] = useState('#000000');
+  const [color3, setColor3] = useState('#000000');
+
+  // Picture
+  const [preFile, setPreFile] = useState([]);
+  const [fileList, setFileList] = useState([]);
+
+  // Modal
   const [modal, setModal] = useState(false);
+  const [modalNum, setModalNum] = useState();
+  const reader = new FileReader();
+
+  // Alert
+  const [titleAlertOpen, setTitleAlertOpen] = useState(0);
+  const [fileListAlertOpen, setFileListAlertOpen] = useState(0);
+  const [nameAlertOpen, setNameAlertOpen] = useState(0);
+  const [typeCodeAlertOpen, setTypeCodeAlertOpen] = useState(0);
+  const [breedAlertOpen, setBreedAlertOpen] = useState(0);
+  const [positionAlertOpen, setPositionAlertOpen] = useState(0);
+  const [contentAlertOpen, setContentAlertOpen] = useState(0);
+
+  const titleInput = useRef();
+  const fileListInput = useRef();
+  const nameInput = useRef();
+  const typeCodeInput = useRef();
+  const breedInput = useRef();
+  const positionInput = useRef();
+  const contentInput = useRef();
 
   // useEffect
 
@@ -54,28 +81,66 @@ export default function ReportCreateContent() {
     setLng(position.lng);
   }, [position]);
 
+  useEffect(() => {
+    if (title !== '') {
+      setTitleAlertOpen(0);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (name !== '') {
+      setNameAlertOpen(0);
+    }
+  }, [name]);
+
+  useEffect(() => {
+    if (typeCode.value !== 0) {
+      setTypeCodeAlertOpen(0);
+    }
+  }, [typeCode]);
+
+  useEffect(() => {
+    if (breedId.value !== 0) {
+      setBreedAlertOpen(0);
+    }
+  }, [breedId]);
+  useEffect(() => {
+    if (lat !== 0 && lng !== 0) {
+      setPositionAlertOpen(0);
+    }
+  }, [lat, lng]);
+
+  useEffect(() => {
+    if (content !== '') {
+      setContentAlertOpen(0);
+    }
+  }, [content]);
+
+  // useEffect(() => {
+  //   setCategoryColor([color1, color2, color3]);
+  // }, [color1, color2, color3]);
+
   // Picture
-  const handleAddImages = event => {
-    const imageUrl = event.target.files;
-
-    let imageLists = [...uploadFile];
-    imageLists.push(event.target.files[0]);
-
-    if (imageLists.length > 3) {
-      imageLists = imageLists.slice(0, 3);
+  const handleAddImages = e => {
+    const imageFileList = [...fileList];
+    let imageUrlLists = [...preFile];
+    const imageLists = e.target.files;
+    for (let i = 0; i < imageLists.length; i++) {
+      imageFileList.push(imageLists[i]);
     }
-    setUploadFile(imageLists);
 
-    let imageUrlList = [...fileUrl];
-    for (let i = 0; i < imageUrl.length; i++) {
-      const url = URL.createObjectURL(imageUrl[i]);
-      imageUrlList.push(url);
-      setfileUrl(imageUrlList);
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
     }
+    setPreFile(imageUrlLists);
+    setFileList(imageFileList);
   };
 
+  // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = id => {
-    setUploadFile(uploadFile.filter((_, index) => index !== id));
+    setPreFile(preFile.filter((_, index) => index !== id));
+    setFileList(fileList.filter((_, index) => index !== id));
   };
 
   // FormData
@@ -86,21 +151,23 @@ export default function ReportCreateContent() {
   formData.append('genderCode', genderCode);
   formData.append('breedId', breedId.value);
   formData.append('kg', kg);
-  formData.append('neutered', neutered.value);
+  formData.append('neuteredCode', neuteredCode.value);
   formData.append('content', content);
   formData.append('categoryEar', categoryEar.value);
-  formData.append('categoryColor', categoryColor.value);
+  formData.append('categoryColor', categoryColor);
   formData.append('categoryPattern', categoryPattern.value);
   formData.append('categoryTail', categoryTail.value);
   formData.append('categoryCloth', categoryCloth.value);
-  formData.append('categoryClothColor', categoryClothColor.value);
   formData.append('typeCode', typeCode.value);
-  formData.append('uploadFile', uploadFile);
+
   formData.append('latitude', lat);
   formData.append('longitude', lng);
 
   // POST (등록)
-
+  for (let i = 0; i < fileList.length; i++) {
+    formData.append('uploadFile', fileList[i]);
+  }
+  // formData.append('uploadFile', preFile);
   const { mutate: mutation } = useMutation(['createReport'], () => {
     return createReport(formData);
   });
@@ -111,9 +178,11 @@ export default function ReportCreateContent() {
     queryFn: () => getBreedsList(),
   });
   const breedData = data;
+  // console.log(uploadFile);
   if (isLoading) return;
 
   // Select Data
+  // console.log(fileList);
 
   const stateOpt = [
     { value: 1, label: '실종' },
@@ -169,7 +238,8 @@ export default function ReportCreateContent() {
     { value: 2, label: '파랑' },
   ];
 
-  const openModal = () => {
+  const openModal = idx => {
+    setModalNum(idx);
     setModal(true);
   };
 
@@ -178,73 +248,98 @@ export default function ReportCreateContent() {
   };
   // Console
 
-  // console.log(categoryColor);
-
+  console.log(fileList);
+  console.log(preFile);
   return (
     <div>
       <form
         onSubmit={e => {
           e.preventDefault();
-          mutation();
-          // console.log('POST');
         }}
       >
         <div className={styles.container}>
           <div className={styles.title}>
-            <input type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <input ref={titleInput} type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <div>
+              {titleAlertOpen === 0 ? null : (
+                <div>
+                  <Stack sx={{ width: '100%' }} spacing={2}>
+                    <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                      제목을 작성해주세요.
+                    </Alert>
+                  </Stack>
+                </div>
+              )}
+            </div>
           </div>
           <div className={styles['container-info']}>
             <div className={styles['container-info-picture']}>
               <div>
                 <div className={styles['container-info-picture-inner']}>
-                  {uploadFile.length === 0 ? (
+                  {preFile.length === 0 ? (
                     <img className={styles.thumbnail} src={Test} alt="" />
                   ) : (
                     <div>
                       <div className={styles['deleteButton-box']}>
                         <button className={styles.deleteButton} onClick={() => handleDeleteImage(0)}>
-                          Delete
+                          <img src="" className={styles.quitButton} alt="" />
                         </button>
                       </div>
-                      <img className={styles.thumbnail} src={fileUrl[0]} alt="" />
+                      <img className={styles.thumbnail} src={preFile[0]} alt="" />
                     </div>
                   )}
 
                   <div className={styles['container-info-picture-inner-sub']}>
-                    {uploadFile.length === 0 || uploadFile.length === 1 ? (
+                    {preFile.length === 0 || preFile.length === 1 ? (
                       <img className={styles.subPicture} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
                         <button className={styles.deleteButton} onClick={() => handleDeleteImage(1)}>
-                          Delete
+                          <img src="" className={styles.quitButton} alt="" />
                         </button>
 
-                        <img className={styles.subPicture} src={fileUrl[1]} alt={1} />
+                        <img className={styles.subPicture} src={preFile[1]} alt={1} />
                       </div>
                     )}
-                    {uploadFile.length === 0 || uploadFile.length === 1 || uploadFile.length === 2 ? (
+                    {preFile.length === 0 || preFile.length === 1 || preFile.length === 2 ? (
                       <img className={styles.subPicture} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
                         <button className={styles.deleteButton} onClick={() => handleDeleteImage(2)}>
-                          Delete
+                          <img src="" className={styles.quitButton} alt="" />
                         </button>
 
-                        <img className={styles.subPicture} src={fileUrl[2]} alt={2} />
+                        <img className={styles.subPicture} src={preFile[2]} alt={2} />
                       </div>
                     )}
                   </div>
                 </div>
                 <div className={styles.pictureButtonCont}>
-                  {uploadFile.length < 3 ? (
+                  {preFile.length < 3 ? (
                     <label htmlFor="file" onChange={handleAddImages}>
                       <div className={styles.pictureButton}>
                         사진추가
-                        <input type="file" id="file" accept="image/*" className={styles.file} multiple />
+                        <input
+                          ref={fileListInput}
+                          type="file"
+                          id="file"
+                          accept="image/*"
+                          className={styles.file}
+                          multiple
+                        />
                       </div>
                     </label>
                   ) : (
                     <div> 3장까지 업로드 가능합니다. </div>
+                  )}
+                  {fileListAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          사진을 1장 이상 추가해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
                   )}
                 </div>
               </div>
@@ -253,16 +348,48 @@ export default function ReportCreateContent() {
             <div className={styles['container-info-content']}>
               <div>
                 <div>
-                  <input type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                  <input ref={nameInput} type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                  {nameAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          이름을 작성해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <Select options={stateOpt} onChange={setTypeCode} placeholder="상태" />
+                  <Select options={stateOpt} ref={typeCodeInput} onChange={setTypeCode} placeholder="상태" />
+                  {typeCodeAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          상태를 선택해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
+                  )}
                 </div>
               </div>
 
               <div>
                 <div>
-                  <Select options={changeBreedList(breedData)} onChange={setBreedId} placeholder="견종" />
+                  <Select
+                    options={changeBreedList(breedData)}
+                    ref={breedInput}
+                    onChange={setBreedId}
+                    placeholder="견종"
+                  />
+                  {breedAlertOpen === 0 ? null : (
+                    <div>
+                      <Stack sx={{ width: '100%' }} spacing={2}>
+                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                          견종을 선택해주세요.
+                        </Alert>
+                      </Stack>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -274,7 +401,7 @@ export default function ReportCreateContent() {
                       <div>
                         <input
                           type="radio"
-                          value={1}
+                          value={parseInt(1)}
                           checked={genderCode === 1}
                           onChange={e => setGenderCode(parseInt(e.target.value))}
                         />
@@ -307,7 +434,7 @@ export default function ReportCreateContent() {
                 </div>
                 <div>
                   <div>
-                    <Select options={neuteredOpt} onChange={setNeutered} placeholder="중성화" />
+                    <Select options={neuteredOpt} onChange={setNeuteredCode} placeholder="중성화" />
                   </div>
                 </div>
               </div>
@@ -322,7 +449,7 @@ export default function ReportCreateContent() {
           <div className={styles['container-character']}>
             <div>
               <div>
-                <img src={infoIcon} alt="" className={styles['info-icon']} onClick={openModal} />
+                <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(0)} />
                 <span>귀</span>
                 <div className={styles.categoryIndexEar}>
                   <Select
@@ -333,33 +460,7 @@ export default function ReportCreateContent() {
                 </div>
               </div>
               <div>
-                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
-                <span>털색</span>
-                <div>
-                  {categoryPattern.value > 1 ? (
-                    <input
-                      className={styles.colorPickerHalf}
-                      type="color"
-                      onChange={e => setCategoryColor(e.target.value)}
-                    />
-                  ) : (
-                    <input
-                      className={styles.colorPicker}
-                      type="color"
-                      onChange={e => setCategoryColor(e.target.value)}
-                    />
-                  )}
-                  {categoryPattern.value > 1 ? (
-                    <input
-                      className={styles.colorPickerHalf}
-                      type="color"
-                      onChange={e => setCategoryColor(e.target.value)}
-                    />
-                  ) : null}
-                </div>
-              </div>
-              <div>
-                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(1)} />
                 <span>무늬</span>
                 <div className={styles.categoryIndexPat}>
                   <Select
@@ -369,11 +470,8 @@ export default function ReportCreateContent() {
                   />
                 </div>
               </div>
-            </div>
-
-            <div>
               <div>
-                <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
+                <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(2)} />
                 <span>꼬리</span>
                 <div>
                   <Select
@@ -383,6 +481,9 @@ export default function ReportCreateContent() {
                   />
                 </div>
               </div>
+            </div>
+
+            <div>
               <div>
                 <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
                 <span>옷착용</span>
@@ -396,13 +497,54 @@ export default function ReportCreateContent() {
               </div>
               <div>
                 <img src={infoIcon} alt="" className={styles['info-icon']} style={{ visibility: 'hidden' }} />
-                <span>옷색</span>
+                <span>털색</span>
                 <div>
-                  <Select
-                    options={categoryClothColorOpt}
-                    onChange={setCategoryClothColor}
-                    defaultValue={categoryClothColorOpt[categoryClothColor.value]}
-                  />
+                  {categoryPattern.value === 3 ? (
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : categoryPattern.value === 1 ? (
+                    <input
+                      className={styles.colorPicker}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : categoryPattern.value === 4 ? (
+                    <input
+                      className={styles.colorPickerThree}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : (
+                    <input
+                      className={styles.colorPickerDisabled}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                      disabled
+                    />
+                  )}
+                  {categoryPattern.value === 3 ? (
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : categoryPattern.value === 4 ? (
+                    <input
+                      className={styles.colorPickerThree}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : null}
+                  {categoryPattern.value === 4 ? (
+                    <input
+                      className={styles.colorPickerThree}
+                      type="color"
+                      onChange={e => setCategoryColor(e.target.value)}
+                    />
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -410,8 +552,18 @@ export default function ReportCreateContent() {
         </div>
         <div className={styles.subTitle}>실종/발견 장소</div>
         <hr />
-        <div className={styles.map}>
-          <Map // 지도를 표시할 Container
+        {positionAlertOpen === 0 ? null : (
+          <div>
+            <Stack sx={{ width: '100%' }} spacing={2}>
+              <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                장소를 선택해주세요.
+              </Alert>
+            </Stack>
+          </div>
+        )}
+        <div className={styles.map} ref={positionInput}>
+          <Map
+            // 지도를 표시할 Container
             center={{
               // 지도의 중심좌표
               lat: 35.95,
@@ -449,9 +601,21 @@ export default function ReportCreateContent() {
             )}
           </Map>
         </div>
-        <div className={styles.subTitle}>상세특징</div>
+
+        <div className={styles.subTitle} ref={contentInput}>
+          상세특징
+        </div>
         <hr />
         <div>
+          {contentAlertOpen === 0 ? null : (
+            <div>
+              <Stack sx={{ width: '100%' }} spacing={2}>
+                <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                  상세특징을 입력해주세요.
+                </Alert>
+              </Stack>
+            </div>
+          )}
           <div className={styles.ckEditor}>
             <CKEditor
               editor={ClassicEditor}
@@ -473,63 +637,67 @@ export default function ReportCreateContent() {
         <hr />
         <div>
           <Navbar>
-            <button type="submit">등록</button>
-            <MenuLink move="/report/" value="취소" />
+            <button
+              onClick={() => {
+                if (content === '') {
+                  setContentAlertOpen(1);
+                  contentInput.current.focus();
+                }
+                if (lat === 0 && lng === 0) {
+                  setPositionAlertOpen(1);
+                  positionInput.current.focus();
+                }
+                if (breedId.value === 0) {
+                  setBreedAlertOpen(1);
+                  breedInput.current.focus();
+                }
+                if (fileList[0] === '') {
+                  setFileListAlertOpen(1);
+                }
+                if (typeCode.value === 0) {
+                  setTypeCodeAlertOpen(1);
+                  typeCodeInput.current.focus();
+                }
+                if (name === '') {
+                  setNameAlertOpen(1);
+                  nameInput.current.focus();
+                }
+                if (title === '') {
+                  setTitleAlertOpen(1);
+                  titleInput.current.focus();
+                }
+
+                if (
+                  lat !== 0 &&
+                  lng !== 0 &&
+                  content !== '' &&
+                  breedId.value !== 0 &&
+                  typeCode.value !== 0 &&
+                  (name !== '') & (title !== '')
+                ) {
+                  mutation();
+                }
+              }}
+              className={styles.button}
+            >
+              <div>등록</div>
+            </button>
+
+            <Link to="/report" className="links">
+              <button className={styles.button}>
+                <div>취소</div>
+              </button>
+            </Link>
           </Navbar>
         </div>
       </form>
       {/* Modal  */}
-      <DetailModal open={modal} close={closeModal} title="귀 모양 상세">
-        <div className={styles['modal-content']}>
-          <div className={styles['modal-detail']}>
-            <p>
-              1. <span>직립 귀</span> : 귀가 쫑긋 서 있고, 귀 끝이 둥글거나 뾰족한 귀
-            </p>
-            <img src={Ear1} alt="" />
-          </div>
-          <div className={styles['modal-detail']}>
-            <p>
-              2. <span>박쥐 귀</span> : 귀 사이 큰 V자형 공간이 있어 귀가 바깥으로 펼쳐진 귀
-            </p>
-            <img src={Ear2} alt="" />
-          </div>
-          <div className={styles['modal-detail']}>
-            <p>
-              3. <span>반직립 귀</span> : 귀 끝의 1/4 정도가 앞으로 구부러져 있는 귀
-            </p>
-            <img src={Ear3} alt="" />
-          </div>
-          <div className={styles['modal-detail']}>
-            <p>
-              4. <span>버튼 귀</span> : 귓볼이 반으로 접혀 귓구멍을 감춘 귀
-            </p>
-            <img src={Ear4} alt="" />
-          </div>
-          <div className={styles['modal-detail']}>
-            <p>
-              5. <span>장미 귀</span> : 귀가 뒤로 젖혀져 귀 끝이 옆으로 떨어진 귀
-            </p>
-            <img src={Ear5} alt="" />
-          </div>
-          <div className={styles['modal-detail']}>
-            <p>
-              6. <span>처진 귀</span> : 귀가 시작되는 머리 옆에서부터 그대로 아래로 축 처진 귀
-            </p>
-            <img src={Ear6} alt="" />
-          </div>
-          <div className={styles['modal-detail']}>
-            <p>
-              7. <span>접힌 귀</span> : 귀의 시작이 머리 윗부분이면서 아래로 축 처진 귀
-            </p>
-            <img src={Ear7} alt="" />
-          </div>
-          <div className={styles['modal-detail']}>
-            <p>
-              8. <span>V자 귀</span> : 앞에서 봤을 때 접힌 귀 모양이 V자인 귀
-            </p>
-            <img src={Ear8} alt="" />
-          </div>
-        </div>
+      <DetailModal
+        open={modal}
+        close={closeModal}
+        title={modalNum === 0 ? '귀 모양 상세' : modalNum === 1 ? '무늬 상세' : '꼬리 모양 상세'}
+      >
+        {modalNum === 0 ? <EarDetail /> : modalNum === 1 ? <PatternDetail /> : <TailDetail />}
       </DetailModal>
     </div>
   );

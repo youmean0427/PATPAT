@@ -21,6 +21,7 @@ import PowerSettingsNew from '@mui/icons-material/PowerSettingsNew';
 import QuestionAnswer from '@mui/icons-material/QuestionAnswer';
 
 import IconButton from '@mui/material/IconButton';
+import store from 'redux/store';
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ export default class ToolbarComponent extends Component {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
+    this.camStatusChanged = this.camStatusChanged.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
   }
 
@@ -65,7 +67,9 @@ export default class ToolbarComponent extends Component {
     alert('상담 룸에서 나가시겠습니까?');
     this.props.leaveSession();
   }
-
+  camStatusChanged() {
+    this.props.camStatusChanged();
+  }
   toggleChat() {
     this.props.toggleChat();
   }
@@ -73,6 +77,7 @@ export default class ToolbarComponent extends Component {
   render() {
     // const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    const isShelter = this.props.isShelter;
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
@@ -116,10 +121,21 @@ export default class ToolbarComponent extends Component {
             <IconButton sx={{ color: '#f39c12' }} className="navButton" onClick={this.toggleFullscreen}>
               {localUser !== undefined && this.state.fullscreen ? <FullscreenExit /> : <Fullscreen />}
             </IconButton>
-            <IconButton sx={{ color: '#dc0000' }} className="navButton" onClick={this.leaveSession} id="navLeaveButton">
-              <Link to="/">
-                <PowerSettingsNew />
-              </Link>
+            <IconButton
+              sx={{ color: '#dc0000' }}
+              className="navButton"
+              onClick={(this.camStatusChanged, this.leaveSession)}
+              id="navLeaveButton"
+            >
+              {isShelter ? (
+                <Link to={`/shelters/${String(store.getState().shelter.value.resShelterId)}/consulting`}>
+                  <PowerSettingsNew />
+                </Link>
+              ) : (
+                <Link to="/mypage">
+                  <PowerSettingsNew />
+                </Link>
+              )}
             </IconButton>
             <IconButton sx={{ color: '#f39c12' }} onClick={this.toggleChat} id="navChatButton">
               {this.props.showNotification && <div id="point" className="" />}

@@ -10,7 +10,7 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @returns
  */
 export const getVolNoticeList = async (keyword, limit, offset) => {
-  const { data } = await defaultInstance.get(`/volunteers/notices?keyword=${keyword}&limit=${limit}&offset=${offset}`);
+  const { data } = await defaultInstance.get(`/volunteers/notices?keyword=${keyword}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -33,19 +33,21 @@ export const getVolNoticeDetail = async noticeId => {
  */
 export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
   const { data } = await authInstance.get(
-    `/volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offset=${offset}`
+    `/volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };
 
 /**
- * GET : 보호소 관리 페이지에서 봉사 활동 관리 하는 경우 , 달력으로 보여줘야 하므로 월별로 데이터 받아와야 함
- * @param {int} shelterId
- * @param {int} month
+ * GET : 위도 & 경도를 통해 반경 30km 내에 위치한 보호소 봉사 공고 리스트
+ * @param {String} latitude
+ * @param {String} longitude
  * @returns
  */
-export const getVolNoticePerMonth = async (shelterId, month) => {
-  const { data } = await authInstance.get(`/volunteers/months?shelterId=${shelterId}&month=${month}`);
+export const getVolNoticePerMonth = async (latitude, longitude) => {
+  const { data } = await defaultInstance.get(
+    `/volunteers/months?limit=4&offSet=0&latitude=${latitude}&longitude=${longitude}`
+  );
   return data;
 };
 
@@ -54,8 +56,8 @@ export const getVolNoticePerMonth = async (shelterId, month) => {
  * @param {int} userId
  * @returns
  */
-export const getVolReservationOfUser = async userId => {
-  const { data } = await defaultInstance.get(`/volunteers/reservations/users?userId=${userId}`);
+export const getVolReservationOfUser = async (limit, offset, userId) => {
+  const { data } = await authInstance.get(`/volunteers/reservations?limit=${limit}&offSet=${offset}&userId=${userId}`);
   return data;
 };
 

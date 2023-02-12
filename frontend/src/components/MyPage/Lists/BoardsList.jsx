@@ -1,17 +1,28 @@
 import { useQuery } from '@tanstack/react-query';
 import { getBoardListByMe } from 'apis/api/board';
 import React, { useState } from 'react';
-import BoardsItem from '../Items/BoardsItem';
 import styles from './BoardsList.module.scss';
-import Table from 'components/Common/Table';
-export default function BoardsList() {
-  const [category, setCategory] = useState([true, false, false, false]);
-  const [typeCode, setTypeCode] = useState(null);
+import BoardsItem from '../Items/BoardsItem';
+import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
+
+export default function Boards() {
+  const [category, setCategory] = useState([true, false, false]);
+  const [typeCode, setTypeCode] = useState(0);
+  const [page, setPage] = useState(1);
+  const LIMIT = 10;
 
   const { data, isLoading } = useQuery({
-    queryKey: ['myBoardList'],
-    queryFn: () => getBoardListByMe(20, 0, typeCode),
+    queryKey: ['myBoardList', typeCode],
+    queryFn: () => getBoardListByMe(LIMIT, page - 1, typeCode),
   });
+
+  const handleClickPrev = () => {
+    setPage(prev => prev - 1);
+  };
+
+  const handleClickNext = () => {
+    setPage(prev => prev + 1);
+  };
 
   if (isLoading) return;
 
@@ -22,34 +33,25 @@ export default function BoardsList() {
           <li
             className={category[0] ? styles.click : styles.default}
             onClick={() => {
-              setCategory([true, false, false, false]);
-              setTypeCode(null);
-            }}
-          >
-            전체
-          </li>
-          <li
-            className={category[1] ? styles.click : styles.default}
-            onClick={() => {
-              setCategory([false, true, false, false]);
+              setCategory([true, false, false]);
               setTypeCode(0);
             }}
           >
             입양후기
           </li>
           <li
-            className={category[2] ? styles.click : styles.default}
+            className={category[1] ? styles.click : styles.default}
             onClick={() => {
-              setCategory([false, false, true, false]);
+              setCategory([false, true, false]);
               setTypeCode(1);
             }}
           >
             무료나눔
           </li>
           <li
-            className={category[3] ? styles.click : styles.default}
+            className={category[2] ? styles.click : styles.default}
             onClick={() => {
-              setCategory([false, false, false, true]);
+              setCategory([false, false, true]);
               setTypeCode(2);
             }}
           >
@@ -59,12 +61,33 @@ export default function BoardsList() {
       </div>
       <br />
       <div className={styles.list}>
-        <Table>
-          {data.map(item => (
-            <BoardsItem key={item.boardId} item={item} />
-          ))}
-        </Table>
+        {data.totalCount === 0 ? (
+          <div className={styles['no-data']}>등록된 게시물이 없습니다.</div>
+        ) : (
+          data.list.map(item => <BoardsItem key={item.spDogId} item={item} />)
+        )}
       </div>
+      {data.totalCount === 0 ? null : (
+        <div className={styles.pagination}>
+          <button
+            onClick={handleClickPrev}
+            className={page === 1 ? `${styles.button} ${styles.disabled}` : styles.button}
+            disabled={page === 1 ? true : false}
+          >
+            <MdArrowBackIosNew />
+          </button>
+          <span>{page}</span>
+          <button
+            onClick={handleClickNext}
+            className={
+              data.totalPage === 0 || page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button
+            }
+            disabled={data.totalPage === 0 || page === data.totalPage ? true : false}
+          >
+            <MdArrowForwardIos />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

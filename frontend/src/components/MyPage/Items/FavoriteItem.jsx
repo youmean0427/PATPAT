@@ -1,45 +1,67 @@
 import React, { useState } from 'react';
 import styles from './FavoriteItem.module.scss';
 import Card from 'components/Common/Card';
-import FavImg from 'assets/images/fav-img.png';
-import UnFavImg from 'assets/images/unfav-img.png';
+import PetsIcon from '@mui/icons-material/Pets';
 import { insertFavProtect, deleteFavProtect } from 'apis/api/user';
+import { useNavigate } from 'react-router-dom';
 
 export default function FavoriteItem({ item }) {
-  const { spDogId, userId, name, imageUrl, stateCode, state, weight, neutered, gender, genderCode, age } = item;
+  const { spDogId, breedName, name, imageUrl, stateCode, state, weight, neutered, gender, age } = item;
   const [favorite, setFavorite] = useState(true);
+  const navigate = useNavigate();
 
   const handleFavBtn = () => {
     favorite ? deleteFavProtect(spDogId) : insertFavProtect(spDogId);
     setFavorite(cur => !cur);
   };
 
+  const handleCardClick = () => {
+    navigate(`/protects/${spDogId}`);
+  };
+
   return (
-    <div className={styles.card}>
-      <Card>
-        <div>
-          <div className={state === 0 ? styles.state0 : state === 1 ? styles.state1 : styles.state2}>
-            {state === 0 ? '공고' : state === 1 ? '보호중' : '입양완료'}
-          </div>
-          <img src={imageUrl} alt="" />
-          <img
-            onClick={handleFavBtn}
-            title="꾹 버튼"
-            className={styles['fav-img']}
-            src={favorite ? FavImg : UnFavImg}
-            alt=""
-          />
-        </div>
-        <div className={styles.description}>
+    <Card>
+      <img src={imageUrl} alt={name} onClick={handleCardClick} />
+      <div
+        className={`${styles.state} ${
+          stateCode === 0
+            ? styles.state0
+            : stateCode === 1
+            ? styles.state1
+            : stateCode === 2
+            ? styles.state2
+            : styles.state3
+        }`}
+      >
+        {state}
+      </div>
+      <div className={styles.description}>
+        <div className={styles.detail}>
           <div className={styles.name}>{name}</div>
+          <div className={styles.kind}>{breedName}</div>
           <div className={styles.gender}>
-            {gender}(중성화 {genderCode ? 'O' : 'X'})
+            {gender}(중성화 {neutered ? 'O' : 'X'})
           </div>
           <div className={styles.age}>
             {age}살 / {weight}kg
           </div>
         </div>
-      </Card>
-    </div>
+        <div className={styles['fav-icon']} title={favorite ? '꾹 해제' : '꾹 등록'}>
+          {favorite ? (
+            <PetsIcon
+              className={styles.icon}
+              onClick={() => handleFavBtn()}
+              sx={{ fontSize: '55px', color: 'hotpink' }}
+            />
+          ) : (
+            <PetsIcon
+              className={styles.icon}
+              onClick={() => handleFavBtn()}
+              sx={{ fontSize: '55px', color: 'lightgray' }}
+            />
+          )}
+        </div>
+      </div>
+    </Card>
   );
 }

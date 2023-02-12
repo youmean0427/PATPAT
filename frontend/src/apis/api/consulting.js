@@ -18,10 +18,10 @@ import { authInstance } from 'apis/utils';
       "state": "대기,승인,거절,완료",
       "userName": "유저 이름"
     }
-  ] 
+  ]
  */
-export const getMyConsultations = async (limit, offset, userId) => {
-  const { data } = await authInstance.get(`/consultations?limit=${limit}&offset=${offset}&userId=${userId}`);
+export const getMyConsultations = async (limit, offset, stateCode) => {
+  const { data } = await authInstance.get(`/consultations?limit=${limit}&offSet=${offset}&stateCode=${stateCode}`);
   return data;
 };
 
@@ -32,10 +32,21 @@ export const getMyConsultations = async (limit, offset, userId) => {
  * @param {*} offset
  * @returns
  */
-export const getShelterConsultations = async (shelterId, limit, offset) => {
+export const getShelterConsultations = async (shelterId, limit, offset, stateCode) => {
   const { data } = await authInstance.get(
-    `/consultations/shelters?limit=${limit}&offset=${offset}&shelterId=${shelterId}`
+    `/consultations/shelters?limit=${limit}&offSet=${offset}&shelterId=${shelterId}&stateCode=${stateCode}`
   );
+  return data;
+};
+
+/**
+ * 보호소 내 상담 예약 가능한 시간 리스트
+ * @param {int} shelterId
+ * @param {string} date
+ * @returns
+ */
+export const getShelterConsultationsTime = async (shelterId, date) => {
+  const { data } = await authInstance.get(`/consultations/shelters/${shelterId}?date=${date}`);
   return data;
 };
 
@@ -61,9 +72,8 @@ export const createConsultant = async data => {
  * @param {json} data
  */
 export const updateConsultant = async (consultingId, data) => {
-  const res = await authInstance.put(`/consultations/${consultingId}`, {
+  const res = await authInstance.put(`/consultations/${consultingId}`, data, {
     headers: { 'Content-Type': 'application/json' },
-    body: { ...data },
   });
   return res;
 };

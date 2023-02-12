@@ -7,10 +7,16 @@ import { FaDog } from 'react-icons/fa';
 import { GiSittingDog } from 'react-icons/gi';
 import { useRecoilState } from 'recoil';
 import { isMobileMenuOpenState } from 'recoil/atoms/header';
-
-export default function MenuList() {
+import { isHaveShelter } from 'utils/checkMyShelter';
+import MyProfileMenuItem from './MyProfileMenuItem';
+import { myShelterIdState } from 'recoil/atoms/user';
+import { useQuery } from '@tanstack/react-query';
+import { getAuthShelterList } from 'apis/api/shelter';
+import { getUserInfo } from 'apis/api/user';
+export default function MenuList({ handleClickModalOpen }) {
   const [isLogin, setIsLogin] = useAuth();
   const [isOpen, setIsOpen] = useRecoilState(isMobileMenuOpenState);
+  const [myShelterId, setMyShelterId] = useRecoilState(myShelterIdState);
   const handleClickMobileMenu = () => {
     setIsOpen(prev => !prev);
   };
@@ -20,7 +26,22 @@ export default function MenuList() {
     } else {
       setIsLogin(false);
     }
-  }, []);
+    if (localStorage.getItem('user')) {
+      const shelterId = JSON.parse(localStorage.getItem('user')).shelterId;
+      setMyShelterId(shelterId);
+    } else {
+      setMyShelterId(null);
+    }
+  }, [setIsLogin, setMyShelterId]);
+  const intro = [
+    { title: 'PATPAT은', path: 'intro' },
+    { title: '미션 & 비전', path: 'vision' },
+    { title: '통계', path: 'statistics' },
+    { title: 'PETBTI', path: 'mbti' },
+  ];
+
+  const shelter = [{ title: '보호소 찾기', path: 'shelter/search' }];
+
   return (
     <>
       <div onClick={handleClickMobileMenu} className={styles['mobile-menu']}>
@@ -28,17 +49,16 @@ export default function MenuList() {
       </div>
       <ul className={isOpen ? `${styles.menu} ${styles.active}` : styles.menu}>
         <MenuItem move="intro" value="소개" dropdown={intro} />
-        <MenuItem move="shelter/search" value="보호소" />
+        <MenuItem move="shelter/search" value="보호소" dropdown={shelter} />
         <MenuItem move="report" value="신고" />
         <MenuItem move="volunteer" value="봉사" />
         <MenuItem move="community" value="커뮤니티" />
-        <MenuItem move={isLogin ? '/' : 'login'} value={isLogin ? '로그아웃' : '로그인'} />
+        {!isLogin ? (
+          <MenuItem move="login" value="로그인" />
+        ) : (
+          <MyProfileMenuItem handleClickModalOpen={handleClickModalOpen} isHaveShelter={true} />
+        )}
       </ul>
     </>
   );
 }
-const intro = [
-  { title: 'PATPAT은', path: 'intro' },
-  { title: '미션 & 비전', path: 'vision' },
-  { title: '통계', path: 'statistics' },
-];

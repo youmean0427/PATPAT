@@ -59,9 +59,9 @@
           & > input {
             width: 100%;
             font-size: 1.6rem;
-            padding: 8.5px;
+            padding: 6px;
             padding-left: 10px;
-            font-family: $seoul-font;
+            font-family: $noto-font;
             border: 1px;
             border-style: solid;
             border-color: #cccccc;
@@ -96,9 +96,9 @@
   &-radio {
     width: 100%;
     font-size: 1.6rem;
-    padding: 8.5px;
+    padding: 6px;
     padding-left: 10px;
-    font-family: $seoul-font;
+    font-family: $noto-font;
     border: 1px;
     border-style: solid;
     border-color: #cccccc;
@@ -150,7 +150,7 @@
     width: 100%;
     font-size: 20px;
     padding: 10px;
-    font-family: $seoul-font;
+    font-family: $noto-font;
     border: 1px;
     border-style: solid;
     border-color: #cccccc;
@@ -174,7 +174,7 @@
   font-size: 20px !important;
   margin: 10px !important;
   width: 100px !important;
-  font-family: $seoul-font !important;
+  font-family: $noto-font !important;
 
   background-color: $main-color !important;
   &:hover {
@@ -187,7 +187,7 @@
 }
 .pictureButton {
   width: 385px;
-  font-family: $seoul-font;
+  font-family: $noto-font;
   border: $main-color solid 2px;
   color: $main-color;
   border-radius: 4px;
@@ -202,6 +202,7 @@
   width: 250px;
   height: 250px;
   object-fit: cover;
+  border-radius: 4px;
   margin-right: 10px;
   border: #cccccc 1px solid;
 }
@@ -209,7 +210,7 @@
   width: 125px;
   height: 125px;
   object-fit: cover;
-
+  border-radius: 4px;
   border: #cccccc 1px solid;
 }
 
@@ -222,6 +223,9 @@
     justify-content: flex-end;
   }
 }
+.quitButton {
+  width: 50px;
+}
 
 .ckEditor {
   font-size: 20px;
@@ -229,10 +233,12 @@
   margin-bottom: 30px;
 }
 .map {
+  // position: relative;
   width: 100%;
   height: 500px;
   margin-top: 30px;
   margin-bottom: 30px;
+  // z-index: -1;
 }
 
 .modal-detail {
@@ -242,9 +248,14 @@
   font-size: 1.2rem;
   font-weight: 600;
   padding: 2px;
+  & > span {
+    color: $main-accent-color;
+  }
 }
 .modal-detail img {
+  margin-top: 10px;
   width: 100px;
+  border-radius: 30px;
 }
 .modal-detail p span {
   font-size: 1.4rem;
@@ -285,6 +296,15 @@
     height: 38px;
     width: 50%;
   }
+  &Three {
+    height: 38px;
+    width: 33.333333333%;
+  }
+  &Disabled {
+    height: 38px;
+    width: 100%;
+    opacity: 50%;
+  }
 }
 
 .categoryIndex {
@@ -293,5 +313,28 @@
   }
   &Pat {
     z-index: 2;
+  }
+}
+
+.button {
+  font-weight: 700;
+  border-radius: 0.5rem;
+  display: block;
+  text-align: center;
+  padding: 1rem;
+
+  transition: all 0.2s;
+  background-color: $main-color;
+  color: $white-color;
+  box-shadow: 0px 5px 0px 0px $main-accent-color;
+  margin: 10px 0px 10px 0;
+  & > div {
+    font-size: 18px;
+  }
+  &:hover {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    background-color: $main-accent-color;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
 }

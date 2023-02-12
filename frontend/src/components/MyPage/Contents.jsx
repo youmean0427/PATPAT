@@ -5,7 +5,6 @@ import MissingDogList from './Lists/MissingDogList';
 import FavoriteList from './Lists/FavoriteList';
 import VolunteerList from './Lists/VolunteerList';
 import ConsultingList from './Lists/ConsultingList';
-import { NavLink } from 'react-router-dom';
 
 export default function Contents({ data }) {
   const [click, setClick] = useState([true, false, false, false, false]);

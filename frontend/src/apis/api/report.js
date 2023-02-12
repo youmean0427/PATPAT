@@ -17,7 +17,7 @@ import { authInstance, defaultInstance } from 'apis/utils';
  */
 export const getMissingDogList = async (breedId, gender, limit, offset) => {
   const { data } = await defaultInstance.get(
-    `/reports/missings?breedId=${breedId}&gender=${gender}&limit=${limit}&offset=${offset}`
+    `/reports/missings?breedId=${breedId}&gender=${gender}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };
@@ -27,8 +27,13 @@ export const getMissingDogList = async (breedId, gender, limit, offset) => {
  * @param {int} userId
  * @returns
  */
-export const getMissingDogListOfUser = async (userId, limit) => {
-  const { data } = await authInstance.get(`/reports/missings/${userId}?limit=${limit}`);
+export const getMissingDogListOfUser = async (limit, offset) => {
+  const { data } = await authInstance.get(`/reports/missings/me?limit=${limit}&offSet=${offset}`);
+  return data;
+};
+
+export const getMissingDogListOfMy = async (limit, offset) => {
+  const { data } = await authInstance.get(`/reports/missings/me?limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -52,7 +57,7 @@ export const getMissingDogDetail = async missingId => {
  */
 export const getPersonalDogList = async (breedId, gender, limit, offset) => {
   const { data } = await defaultInstance.get(
-    `/reports/personals?breedId=${breedId}&gender=${gender}&limit=${limit}&offset=${offset}`
+    `/reports/personals?breedId=${breedId}&gender=${gender}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };
@@ -75,7 +80,7 @@ export const getPersonalDogDetail = async personalProtectId => {
  * @returns
  */
 export const getSimilarDogList = async (missingId, limit, offset) => {
-  const { data } = await authInstance.get(`/reports/recommends?missingId=${missingId}&limit=${limit}&offset=${offset}`);
+  const { data } = await authInstance.get(`/reports/recommends?missingId=${missingId}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 

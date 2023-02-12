@@ -1,36 +1,125 @@
 @import 'assets/styles/variable.scss';
 
 .container {
+  // margin-top: 5rem;
   display: flex;
   justify-content: center;
   margin: 10px;
-}
 
-.button {
-  &-selected {
-    font-size: 20px !important;
-    margin: 10px !important;
-    width: 300px !important;
-    font-family: $seoul-font !important;
+  &-search {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
 
-    border-color: $main-color !important;
-    background-color: $main-color !important;
-    &:hover {
-      background-color: $main-accent-color !important;
+    &-inner {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px;
+      & > div {
+        display: flex;
+        > span {
+          margin: 10px;
+          > select {
+            width: auto;
+            font-size: 20px;
+            font-family: $noto-font;
+          }
+        }
+      }
     }
   }
-  &-unselected {
-    font-size: 20px !important;
-    margin: 10px !important;
-    width: 300px !important;
-    font-family: $seoul-font !important;
+}
+.select {
+  &-breed {
+    width: 200px;
+    font-size: 15px;
+    font-family: $noto-font;
+  }
+  &-gender {
+    font-size: 15px;
+    font-family: $noto-font;
+  }
+}
+// .button {
+//   &-selected {
+//     font-size: 20px !important;
+//     margin: 10px !important;
+//     width: 300px !important;
+//     font-family: $seoul-font !important;
 
-    border-color: $main-color !important;
-    background-color: $white-color !important;
-    color: $main-color !important;
-    &:hover {
-      background-color: $white-color !important;
-      border-color: $main-accent-color !important;
-    }
+//     border-color: $main-color !important;
+//     background-color: $main-color !important;
+//     &:hover {
+//       background-color: $main-accent-color !important;
+//     }
+//   }
+//   &-unselected {
+//     font-size: 20px !important;
+//     margin: 10px !important;
+//     width: 300px !important;
+//     font-family: $seoul-font !important;
+
+//     border-color: $main-color !important;
+//     background-color: $white-color !important;
+//     color: $main-color !important;
+//     &:hover {
+//       background-color: $white-color !important;
+//       border-color: $main-accent-color !important;
+//     }
+//   }
+// }
+.select-gender {
+  position: relative;
+  z-index: 3;
+}
+.main-button {
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 0.5rem;
+  display: block;
+  text-align: center;
+  padding: 1rem 4rem;
+  transition: all 0.2s;
+  background-color: $main-color;
+  color: $white-color;
+  box-shadow: 0px 5px 0px 0px $main-accent-color;
+  margin: 10px 10px 10px 10px;
+
+  &-active {
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 0.5rem;
+    display: block;
+    text-align: center;
+    padding: 1rem 4rem;
+    transition: all 0.2s;
+    background-color: $main-color;
+    color: $white-color;
+    box-shadow: 0px 5px 0px 0px $main-accent-color;
+    margin: 10px 10px 10px 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    background-color: $main-accent-color;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+  &:hover {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    background-color: $main-accent-color;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 2.4rem;
+  margin-right: 1rem;
+  & > .button {
+    color: $main-accent-color;
+  }
+  & > .button.disabled {
+    color: $gray-color;
   }
 }

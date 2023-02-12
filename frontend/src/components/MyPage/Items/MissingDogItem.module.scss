@@ -1,7 +1,23 @@
 @import 'assets/styles/variable.scss';
 
-.card {
-  margin: 1%;
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 1.5rem;
+  column-gap: 1.5rem;
+  width: 100%;
+}
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    row-gap: 1rem;
+  }
 }
 .description {
   padding: 0 1rem 1rem 1rem;

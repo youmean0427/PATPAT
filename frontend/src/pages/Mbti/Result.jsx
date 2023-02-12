@@ -22,19 +22,19 @@ export default function Result() {
 
   const { data, isLoading } = useQuery(['mbtiResultList'], () => getMbtiBreedInfo(state.mbti));
   if (isLoading) return;
-  console.log(data);
+
   const { breedId, breedName, title, description, thumbnail } = data;
   return (
     <MbtiContainer>
       <div className={styles['main-result']}>
         <div className={styles.title}>
-          🐶 <span>{title}</span> 🐶
+          <span>{title}</span>
         </div>
         <div className={styles['img-box']}>
-          <img src={thumbnail ? thumbnail : copyLink} alt="img" />
+          <img src={'/PETBTI/' + state.mbti.toLowerCase() + '.png'} alt="img" />
         </div>
         <div className={styles.result}>
-          <span>{state.mbti}</span>
+          <span>{state.mbti.toUpperCase()}</span>
           <span>{breedName}</span>
         </div>
       </div>

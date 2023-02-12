@@ -1,18 +1,18 @@
 import React from 'react';
 import styles from './ReservationItem.module.scss';
-import ConsultingImg from 'assets/images/consulting.png';
+import ConsultingImg from 'assets/images/shelter.png';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setConsulting } from 'redux/consulting';
+import { setUser } from 'redux/user';
 
 export default function Consulting({ item }) {
-  const { consultingId, shelterId, shelterName, address, registDate, stateCode, timeCode } = item;
+  const { consultingId, shelterId, shelterName, address, timeCode, consultingDate, stateCode, state } = item;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const name = JSON.parse(localStorage.getItem('user')).userName;
   const startConsulting = () => {
-    dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
+    dispatch(setUser({ resIsShelter: false, resShelterId: shelterId, resUserName: name }));
     navigate('/consulting/meeting');
   };
 
@@ -23,12 +23,12 @@ export default function Consulting({ item }) {
       </div>
       <div className={styles.contents}>
         <p className={styles['shelter-name']}>{shelterName}</p>
-        <p>{address}</p>
-        <p>
-          {registDate[0]}.{registDate[1] <= 9 ? '0' + registDate[1] : registDate[1]}.
-          {registDate[2] <= 9 ? '0' + registDate[2] : registDate[2]}
+        <p className={styles.address}>{address}</p>
+        <p className={styles.date}>
+          {consultingDate[0]}.{consultingDate[1] <= 9 ? '0' + consultingDate[1] : consultingDate[1]}.
+          {consultingDate[2] <= 9 ? '0' + consultingDate[2] : consultingDate[2]}
         </p>
-        <p>
+        <p className={styles.time}>
           {timeCode === 0
             ? '10 : 00 ~ 11 : 00'
             : timeCode === 1
@@ -41,13 +41,13 @@ export default function Consulting({ item }) {
         </p>
       </div>
       <div className={styles.buttons}>
-        {stateCode === 0 || stateCode === 1 ? (
+        {stateCode === 0 ? (
           <button className={styles.cancel}>예약 취소</button>
         ) : (
           <button className={styles.cancel} style={{ visibility: 'hidden' }}></button>
         )}
-        {stateCode === 5 ? (
-          <button disabled={true} onClick={startConsulting} className={styles.disabled}>
+        {stateCode === 4 ? (
+          <button onClick={startConsulting} className={styles.state8}>
             방참가
           </button>
         ) : stateCode === 8 ? (

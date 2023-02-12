@@ -10,7 +10,7 @@ import { defaultInstance, authInstance } from 'apis/utils';
  * @returns [] : typeCode에 따른 Item을 가진 배열
  */
 export const getBoardList = async (typeCode, limit, offset) => {
-  const { data } = await defaultInstance.get(`/boards?typeCode=${typeCode}&limit=${limit}&offset=${offset}`);
+  const { data } = await defaultInstance.get(`/boards?typeCode=${typeCode}&limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -22,7 +22,7 @@ export const getBoardList = async (typeCode, limit, offset) => {
  * @returns [] : typeCode에 따른 Item을 가진 배열
  */
 export const getBoardListByMe = async (limit, offset, typecode) => {
-  const { data } = await authInstance.get(`/boards/me?limit=${limit}&offset=${offset}&typecode=${typecode}`);
+  const { data } = await authInstance.get(`/boards/me?limit=${limit}&offSet=${offset}&typeCode=${typecode}`);
   return data;
 };
 
@@ -96,7 +96,7 @@ export const CreateComment = async data => {
  * @returns 성공 , 실패 여부
  */
 export const CreateReply = async data => {
-  const res = await authInstance.post('/boards/comments/replies', data, {
+  const res = await authInstance.post('/boards/replies', data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -107,7 +107,7 @@ export const CreateReply = async data => {
 /**
  * PUT : 게시글 댓글 수정
  * @param {int} commentId 댓글 id
- * @param {json} data 
+ * @param {json} data
  * {
     "content": "본문",
   }
@@ -121,7 +121,7 @@ export const UpdateComment = async (commentId, data) => {
 };
 
 /**
- * PUT : 게시글 대댓글 수정 
+ * PUT : 게시글 대댓글 수정
  * @param {int} replyId
  * @param {json} data
  * {
@@ -129,7 +129,7 @@ export const UpdateComment = async (commentId, data) => {
 }
  */
 export const UpdateReply = async (replyId, data) => {
-  const res = await authInstance.put(`/boards/comments/replies/${replyId}`, data, {
+  const res = await authInstance.put(`/boards/replies/${replyId}`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -163,6 +163,12 @@ export const DeleteComment = async commentId => {
  * @returns 성공 , 실패 여부
  */
 export const DeleteReply = async replyId => {
-  const res = await authInstance.delete(`/boards/comments/replies/${replyId}`);
+  const res = await authInstance.delete(`/boards/replies/${replyId}`);
   return res;
+};
+
+// GET: 게시판 댓글 리스트 조회
+export const getCommentList = async (typeCode, limit, offset) => {
+  const { data } = await defaultInstance.get(`/boards/comment`);
+  return data;
 };

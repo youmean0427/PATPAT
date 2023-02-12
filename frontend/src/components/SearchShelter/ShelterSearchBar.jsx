@@ -2,9 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import { getBreedsList, getGugunList } from 'apis/api/shelter';
 import ShelterSearchBadge from 'components/Common/Badge/ShelterSearchBadge';
 import React from 'react';
+import { useCallback } from 'react';
 import Select from 'react-select';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { gugunIsDisabledState, selectBreedState, selectGugunState, selectSidoState } from 'recoil/atoms/shelter';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  gugunIsDisabledState,
+  searchShelterPageState,
+  selectBreedState,
+  selectGugunState,
+  selectSidoState,
+} from 'recoil/atoms/shelter';
 import { changeBreedList, changeGugunList } from 'utils/changeSelectTemplate';
 import styles from './ShelterSearchBar.module.scss';
 export default React.memo(function ShelterSearchBar() {
@@ -12,6 +19,7 @@ export default React.memo(function ShelterSearchBar() {
   const [gugun, setGugun] = useRecoilState(selectGugunState);
   const [breed, setBreed] = useRecoilState(selectBreedState);
   const [gugunIsDisabled, setGugunIsDisabled] = useRecoilState(gugunIsDisabledState);
+  const setPage = useSetRecoilState(searchShelterPageState);
   const { data: gugunList, isLoading: gugunLoading } = useQuery(
     ['gugunList', sido.sidoCode],
     () => getGugunList(sido.sidoCode),
@@ -27,12 +35,14 @@ export default React.memo(function ShelterSearchBar() {
     staleTime: 1000 * 60 * 5,
   });
 
-  const handleChangeOnGugunList = selected => {
+  const handleChangeOnGugunList = useCallback(selected => {
+    setPage(1);
     setGugun({ gugunCode: selected.value, name: selected.label });
-  };
-  const handleChangeOnBreedList = selected => {
+  });
+  const handleChangeOnBreedList = useCallback(selected => {
+    setPage(1);
     setBreed({ breedId: selected.value, name: selected.label });
-  };
+  });
   if (gugunLoading || breedLoading) return;
   return (
     <div className={styles.select__wrapper}>

@@ -75,7 +75,6 @@ export default class StreamComponent extends Component {
           ) : (
             <div>
               <span id="nickname">{this.props.user.getNickname()}</span>
-              {this.props.user.isLocal() && <span id=""> (호스트)</span>}
             </div>
           )}
         </div>

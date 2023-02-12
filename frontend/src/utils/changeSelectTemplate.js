@@ -9,3 +9,9 @@ export const changeBreedList = list => {
     return { value: item.breedId, label: item.breedName };
   });
 };
+
+export const changeShelterList = list => {
+  return list.map(item => {
+    return { value: item.idx, label: item.name };
+  });
+};

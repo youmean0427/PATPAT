@@ -3,7 +3,9 @@ import styles from './ReservationItem.module.scss';
 import ShelterImg from 'assets/images/shelter.png';
 
 export default function VolunteerItem({ item }) {
-  const { shelterName, address, startTime, endTime, state } = item;
+  const { reservationId, reservationState, reservationStateCode, scheduleId, shelterAddress, shelterName, startTime } =
+    item;
+
   return (
     <div className={styles.items}>
       <div className={styles['consulting-img']}>
@@ -11,45 +13,43 @@ export default function VolunteerItem({ item }) {
       </div>
       <div className={styles.contents}>
         <p className={styles['shelter-name']}>{shelterName}</p>
-        <p>{address}</p>
-        <p>
-          {startTime[0]}.{startTime[1]}.{startTime[2]} {startTime[3]}:
-          {startTime[4] <= 9 ? '0' + startTime[4] : startTime[4]} ~ {endTime[3]}:
-          {endTime[4] <= 9 ? '0' + endTime[4] : endTime[4]}
+        <p className={styles.address}>{shelterAddress}</p>
+        <p className={styles.date}>
+          {startTime[0]}.{startTime[1]}.{startTime[2]}
+        </p>
+        <p className={styles.time}>
+          {startTime[3]}:{startTime[4] <= 9 ? '0' + startTime[4] : startTime[4]}
         </p>
       </div>
       <div className={styles.buttons}>
-        {state === 0 || state === 1 ? (
-          <button className={styles.cancel}>예약 취소</button>
+        {reservationStateCode === 0 ? (
+          <button
+            className={styles.cancel}
+            onClick={() => {
+              alert('취소되었습니다.');
+            }}
+          >
+            예약 취소
+          </button>
         ) : (
           <button className={styles.cancel} style={{ visibility: 'hidden' }}></button>
         )}
         <button
           className={
-            state === 0
+            reservationStateCode === 0
               ? styles.state0
-              : state === 1
+              : reservationStateCode === 1
               ? styles.state1
-              : state === 2
+              : reservationStateCode === 2
               ? styles.state2
-              : state === 3
+              : reservationStateCode === 3
               ? styles.state3
-              : state === 4
+              : reservationStateCode === 4
               ? styles.state4
               : null
           }
         >
-          {state === 0
-            ? '대기'
-            : state === 1
-            ? '승인'
-            : state === 2
-            ? '거부'
-            : state === 3
-            ? '미완료'
-            : state === 4
-            ? '완료'
-            : null}
+          {reservationState}
         </button>
       </div>
     </div>
