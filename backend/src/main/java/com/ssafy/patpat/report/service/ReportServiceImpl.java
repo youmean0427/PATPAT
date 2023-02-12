@@ -445,6 +445,12 @@ public class ReportServiceImpl implements ReportService{
                         Pattern.of(reportDto.getCategoryPatternCode()),
                         Cloth.of(reportDto.getCategoryClothCode()));
 
+                missingDog.setTitle(reportDto.getTitle());
+                missingDog.setAge(reportDto.getAge());
+                missingDog.setName(reportDto.getName());
+                missingDog.setLatitude(new BigDecimal(reportDto.getLatitude()));
+                missingDog.setLongitude(new BigDecimal(reportDto.getLongitude()));
+
                 missingDogRepository.save(missingDog);
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
@@ -535,7 +541,11 @@ public class ReportServiceImpl implements ReportService{
                         Pattern.of(reportDto.getCategoryPatternCode()),
                         Cloth.of(reportDto.getCategoryClothCode()));
 
-                
+                personalProtectedDog.setTitle(reportDto.getTitle());
+                personalProtectedDog.setAge(reportDto.getAge());
+                personalProtectedDog.setName(reportDto.getName());
+                personalProtectedDog.setLatitude(new BigDecimal(reportDto.getLatitude()));
+                personalProtectedDog.setLongitude(new BigDecimal(reportDto.getLongitude()));
 
                 personalProtectedDogRepository.save(personalProtectedDog);
             }
