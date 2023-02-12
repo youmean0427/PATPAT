@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getProtectDetail } from 'apis/api/protect';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router';
 import styles from './ProtectsDetail.module.scss';
 import ShelterContainer from 'containers/ShelterContainer';
