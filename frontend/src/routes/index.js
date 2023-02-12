@@ -15,7 +15,7 @@ import PlainLayout from 'layouts/PlainLayout';
 import VideoRoomComponent from 'pages/Consulting/Meeting/components/VideoRoomComponent';
 import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
-import Address from 'pages/Volunteer/Address';
+import SearchVolunteer from 'pages/Volunteer/SearchVolunteer';
 import MyPage from 'pages/MyPage/MyPage';
 import MyMissing from 'components/MyPage/MyMissing';
 import Report from 'pages/Report/Report';
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
       { path: 'volunteer', element: <Volunteer /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'mypage/mymissing/:id', element: <MyMissing /> },
-      { path: 'volunteer/address', element: <Address /> },
+      { path: 'volunteer/search', element: <SearchVolunteer /> },
       { path: 'report', element: <Report /> },
       { path: 'shelter/search', element: <SearchShelter /> },
       { path: 'protects/:id', element: <ProtectsDetail /> },
