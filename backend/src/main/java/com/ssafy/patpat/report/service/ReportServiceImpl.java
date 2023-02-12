@@ -1,5 +1,6 @@
 package com.ssafy.patpat.report.service;
 
+import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.MissingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -71,6 +72,8 @@ public class ReportServiceImpl implements ReportService{
     UserService userService;
     @Autowired
     ColorService colorService;
+    @Autowired
+    NotificationService notificationService;
 
     @Autowired
     ShelterProtectedDogRepository shelterProtectedDogRepository;
@@ -671,7 +674,7 @@ public class ReportServiceImpl implements ReportService{
                         .build();
 
                 missingDogRepository.save(missingDog);
-
+                notificationService.notifyAddMissingDogEvent(missingDog.getMissingId());
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
 //                if (uploadFile != null) {
