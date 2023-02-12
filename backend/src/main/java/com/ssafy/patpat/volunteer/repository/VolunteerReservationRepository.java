@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface VolunteerReservationRepository extends JpaRepository<VolunteerR
 //            " volunteer_date asc limit :offset, :limit")
 //    List<VolunteerReservation> findWithUserByUserUserIdAndReservationStateCode(Long userId, Integer offset, Integer limit);
 
-    Page<VolunteerReservation> findByUserAndVolunteerScheduleVolunteerNoticeVolunteerDateGreaterThanEqual(User user, String volunteerDate, PageRequest pageRequest);
+    Page<VolunteerReservation> findByUserAndVolunteerDateGreaterThanEqual(User user, String volunteerDate, PageRequest pageRequest);
 
     /**
      * 3, 0, 1, 5 중에서만

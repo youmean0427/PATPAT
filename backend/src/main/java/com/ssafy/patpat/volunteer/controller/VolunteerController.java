@@ -36,7 +36,7 @@ public class VolunteerController {
         //서비스 호출 코드
         List<VolunteerNoticeDto> list = volunteerService.selectNoticeListByMonth(volunteerMonthDto);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ArrayList<NoticeDto>());
+                .body(list);
     }
 
     /**

@@ -29,7 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -473,11 +475,11 @@ public class VolunteerService {
         }
 
         PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
-        Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findByUserAndVolunteerScheduleVolunteerNoticeVolunteerDateGreaterThanEqual(user.get(), LocalDate.now().toString(), pageRequest);
+        Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findByUserAndVolunteerDateGreaterThanEqual(user.get(), LocalDate.now().toString(), pageRequest);
 
         List<VolunteerReservationDto> list = new ArrayList<>();
         for (VolunteerReservation vr:
-             volunteerReservations.toList()) {
+                volunteerReservations) {
             list.add(VolunteerReservationDto.builder()
                     .reservationId(vr.getReservationId())
                     .scheduleId(vr.getVolunteerSchedule().getScheduleId())
@@ -494,7 +496,8 @@ public class VolunteerService {
         }
 
 
-        Long totalPage = totalCount.get() % requestVolunteerDto.getLimit() == 0 ? totalCount.get() / requestVolunteerDto.getLimit()
+        Long totalPage = totalCount.get() % requestVolunteerDto.getLimit() == 0 ?
+                totalCount.get() / requestVolunteerDto.getLimit()
                 : (totalCount.get() / requestVolunteerDto.getLimit()) +1;
 
         ResponseListDto responseVolunteerDto = new ResponseListDto();
@@ -528,6 +531,7 @@ public class VolunteerService {
                 VolunteerReservation.builder()
                         .capacity(reservationDto.getCapacity())
                         .user(user.get())
+                        .volunteerDate(volunteerSchedule.get().getVolunteerNotice().getVolunteerDate())
                         .volunteerSchedule(volunteerSchedule.get())
                         .build();
         volunteerReservationRepository.save(volunteerReservation);
