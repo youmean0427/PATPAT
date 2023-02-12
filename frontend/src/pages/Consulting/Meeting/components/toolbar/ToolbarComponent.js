@@ -128,7 +128,7 @@ export default class ToolbarComponent extends Component {
               id="navLeaveButton"
             >
               {isShelter ? (
-                <Link to={`/shelters/${String(store.getState().shelter.value.resShelterId)}/consulting`}>
+                <Link to={`/shelter/${String(store.getState().shelter.value.resShelterId)}/consulting`}>
                   <PowerSettingsNew />
                 </Link>
               ) : (

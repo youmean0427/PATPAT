@@ -46,7 +46,7 @@ export default function Consulting({ item }) {
         ) : (
           <button className={styles.cancel} style={{ visibility: 'hidden' }}></button>
         )}
-        {stateCode === 4 ? (
+        {stateCode === 3 ? (
           <button onClick={startConsulting} className={styles.state8}>
             방참가
           </button>
