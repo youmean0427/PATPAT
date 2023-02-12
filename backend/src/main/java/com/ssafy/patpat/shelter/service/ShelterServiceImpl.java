@@ -85,16 +85,16 @@ public class ShelterServiceImpl implements ShelterService{
         BreedDto breedDto = null;
         if(breedImage != null){
 //            Image image =imageRepository.findByImageId(breedImage.getImageId());
-            FileDto fileDto = FileDto.builder()
-                    .filePath(fileService.getFileUrl(breedImage))
-                    .build();
+//            FileDto fileDto = FileDto.builder()
+//                    .filePath()
+//                    .build();
 
             breedDto = BreedDto.builder()
                     .breedId(breed.getBreedId())
                     .breedName(breed.getName())
                     .title(breed.getTitle())
                     .description(breed.getDescription())
-                    .fileDto(fileDto)
+                    .thumbnail(fileService.getFileUrl(breedImage))
                     .build();
         }else{
             breedDto = BreedDto.builder()
