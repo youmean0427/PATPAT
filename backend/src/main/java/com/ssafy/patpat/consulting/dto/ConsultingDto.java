@@ -38,6 +38,10 @@ public class ConsultingDto {
     private String time;
     @Schema(example = "날짜")
     private LocalDate consultingDate;
+
+    @Schema(example = "신청날짜")
+    private LocalDateTime registDate;
+
     @Schema(example = "대기중,수락,거절")
     private Integer stateCode;
     @Schema(example = "대기중,수락,거절")

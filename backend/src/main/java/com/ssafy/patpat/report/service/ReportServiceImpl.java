@@ -99,10 +99,10 @@ public class ReportServiceImpl implements ReportService{
             if(gender.getCode() == 0 && breedId == 0){
               missingDogList = missingDogRepository.findAll(pageRequest);
             }
-            else if(gender.getCode() == 0 && breedId > 0){
+            else if(gender.getCode()>0 && breedId==0){
                 missingDogList = missingDogRepository.findByGender(gender,pageRequest);
             }
-            else if(gender.getCode()>0 && breedId==0){
+            else if(gender.getCode() == 0 && breedId > 0){
                 missingDogList = missingDogRepository.findByBreedBreedId(breedId,pageRequest);
             }
             else if(gender.getCode() > 0 && breedId > 0){
@@ -230,10 +230,10 @@ public class ReportServiceImpl implements ReportService{
             personalProtectedDogList = personalProtectedDogRepository.findAll(pageRequest);
 
         }
-        else if(gender.getCode() == 0 && breedId > 0){
+        else if(gender.getCode() > 0 && breedId == 0){
             personalProtectedDogList = personalProtectedDogRepository.findByGender(gender,pageRequest);
         }
-        else if(gender.getCode()>0 && breedId==0){
+        else if(gender.getCode() == 0 && breedId > 0){
             personalProtectedDogList = personalProtectedDogRepository.findByBreedBreedId(breedId,pageRequest);
         }
         else if(gender.getCode() > 0 && breedId > 0){
@@ -414,44 +414,45 @@ public class ReportServiceImpl implements ReportService{
 
                 Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
 
-                List<Image> missingDogImageList = missingDog.getImages();
-                if(uploadFile != null){
-                    for (Image i : missingDogImageList){
-                        fileService.deleteFile(i);
-                    }
-                    missingDogImageList.removeAll(missingDogImageList);
-
-                    for (MultipartFile partFile : uploadFile){
-                        missingDogImageList.add(fileService.insertFile(partFile,"missing"));
-                    }
-                    missingDog.setImages(missingDogImageList);
-                }
-
-
-                List<DogColor> colors = new ArrayList<>();
+                List<DogColor> colors = missingDog.getColors();
+                colors.removeAll(colors);
                 for (String c:
                         reportDto.getCategoryColor()) {
                     colors.add(DogColor.builder()
                             .colorCode(c)
                             .build());
                 }
+                missingDog.setColors(colors);
+
+
+                if(uploadFile != null){
+                    List<Image> missingDogImageList = missingDog.getImages();
+                    for (Image i : missingDogImageList){
+                        fileService.deleteFile(i);
+                    }
+                    missingDogImageList.removeAll(missingDogImageList);
+
+                    for (MultipartFile partFile : uploadFile){
+                        missingDogImageList.add(fileService.insertFile(partFile,"report"));
+                    }
+                    missingDog.setImages(missingDogImageList);
+                }
                 /** Color 처리 로직 필요 */
                 Color color = null;
-                missingDog = MissingDog.builder()
-                        .missingId(missingDog.getMissingId())
-                        .breed(breed)
-                        .stateCode(MissingState.of(reportDto.getStateCode()))
-                        .feature(reportDto.getContent())
-                        .gender(Gender.of(reportDto.getGenderCode()))
-                        .neutered(Neutered.of(reportDto.getNeuteredCode()))
-                        .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
-                        .categoryCloth(Cloth.of(reportDto.getCategoryClothCode()))
-                        .categoryColor(color)
-                        .colors(colors)
-                        .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
-                        .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
-                        .images(missingDogImageList)
-                        .build();
+
+                missingDog.update(
+                        MissingState.of(reportDto.getStateCode()),
+                        reportDto.getContent(),
+                        Gender.of(reportDto.getGenderCode()),
+                        breed,
+                        reportDto.getKg(),
+                        Neutered.of(reportDto.getNeuteredCode()),
+                        Ear.of(reportDto.getCategoryEarCode()),
+                        Tail.of(reportDto.getCategoryTailCode()),
+                        color,
+                        Pattern.of(reportDto.getCategoryPatternCode()),
+                        Cloth.of(reportDto.getCategoryClothCode()));
+
                 missingDogRepository.save(missingDog);
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
@@ -503,42 +504,47 @@ public class ReportServiceImpl implements ReportService{
             else {
                 PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(reportDto.getPersonalProtectionId());
                 Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
-
-                List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
-                if (uploadFile != null) {
-                    for (Image i : personalProtectedDogImageList) {
-                        fileService.deleteFile(i);
-                    }
-                    personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
-
-                    for (MultipartFile partFile : uploadFile) {
-                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "personal"));
-                    }
-                }
-                List<DogColor> colors = new ArrayList<>();
+                
+                List<DogColor> colors = personalProtectedDog.getColors();
+                colors.removeAll(colors);
                 for (String c:
                         reportDto.getCategoryColor()) {
                     colors.add(DogColor.builder()
                             .colorCode(c)
                             .build());
                 }
+                personalProtectedDog.setColors(colors);
+
+                if (uploadFile != null) {
+                    List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
+                    for (Image i : personalProtectedDogImageList) {
+                        fileService.deleteFile(i);
+                    }
+                    personalProtectedDogImageList.removeAll(personalProtectedDogImageList);
+
+                    for (MultipartFile partFile : uploadFile) {
+                        personalProtectedDogImageList.add(fileService.insertFile(partFile, "report"));
+                    }
+                    personalProtectedDog.setImages(personalProtectedDogImageList);
+                }
                 /** Color 처리 로직 필요 */
                 Color color = null;
-                personalProtectedDog = PersonalProtectedDog.builder()
-                        .ppDogId(personalProtectedDog.getPpDogId())
-                        .breed(breed)
-                        .stateCode(ProtectState.of(reportDto.getStateCode()))
-                        .feature(reportDto.getContent())
-                        .gender(Gender.of(reportDto.getGenderCode()))
-                        .neutered(Neutered.of(reportDto.getNeuteredCode()))
-                        .categoryEar(Ear.of(reportDto.getCategoryEarCode()))
-                        .categoryCloth(Cloth.of(reportDto.getCategoryClothCode()))
-                        .categoryColor(color)
-                        .colors(colors)
-                        .categoryPattern(Pattern.of(reportDto.getCategoryPatternCode()))
-                        .categoryTail(Tail.of(reportDto.getCategoryTailCode()))
-                        .images(personalProtectedDogImageList)
-                        .build();
+
+                personalProtectedDog.update(
+                        ProtectState.of(reportDto.getStateCode()),
+                        reportDto.getContent(),
+                        Gender.of(reportDto.getGenderCode()),
+                        breed,
+                        reportDto.getKg(),
+                        Neutered.of(reportDto.getNeuteredCode()),
+                        Ear.of(reportDto.getCategoryEarCode()),
+                        Tail.of(reportDto.getCategoryTailCode()),
+                        color,
+                        Pattern.of(reportDto.getCategoryPatternCode()),
+                        Cloth.of(reportDto.getCategoryClothCode()));
+
+                
+
                 personalProtectedDogRepository.save(personalProtectedDog);
             }
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);

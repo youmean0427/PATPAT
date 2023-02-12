@@ -22,7 +22,7 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
     Shelter findByShelterId(Long shelterId);
     Shelter findByNameAndRegNumber(String name, String regNumber);
 
-    @Query(value = "SELECT * , (6371 * acos ( cos ( radians(?) )* cos( radians( latitude ) )* cos( radians( longitude ) - radians(?) )+ sin ( radians(?) ) * sin( radians( latitude )))) AS distance FROM shelter where distance < 100",nativeQuery = true)
-    Page<ShelterDistanceMapping> findAllShelter(BigDecimal a, BigDecimal b , BigDecimal c, PageRequest pageRequest);
+    @Query(value = "SELECT shelter_id as shelterId, (6371 * acos ( cos ( radians(?) )* cos( radians( latitude ) )* cos( radians( longitude ) - radians(?) )+ sin ( radians(?) ) * sin( radians( latitude )))) AS distance FROM shelter HAVING distance < ? ORDER BY distance asc",nativeQuery = true)
+    List<ShelterDistanceMapping> findAllShelter(BigDecimal a, BigDecimal b , BigDecimal c, Integer dist);
 
 }

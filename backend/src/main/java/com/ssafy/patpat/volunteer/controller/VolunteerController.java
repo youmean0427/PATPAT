@@ -40,19 +40,36 @@ public class VolunteerController {
 
     /**
      * 봉사 공고 조회(전체)
-     * - 파라미터가 gugunCode을 포함하는 경우 구군으로 조회할 때
+     * - 파라미터가 위도 경도로 조회할 때
      * - 파라미터가 shelterId를 포함하는 경우 개인이 보호소 페이지에서 공고볼 때
      * @return
      */
     @GetMapping("/notices")
-    @ApiOperation(value = "봉사 공고 조회", notes = "구군 봉사 공고를 조회(gugunCode)/개인의 보호소 페이지 공고 조회(shelterId)")
-    public ResponseEntity<Object> selectNoticeList(RequestVolunteerDto requestVolunteerDto){
+    @ApiOperation(value = "봉사 공고 조회", notes = "위도 경도로 조회")
+    public ResponseEntity<Object> selectNoticeListByLatLng(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        ResponseListDto responseVolunteerDto = volunteerService.selectNoticeList(requestVolunteerDto);
+        List<VolunteerNoticeDto> responseVolunteerDto = volunteerService.selectNoticeListByLatLng(requestVolunteerDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseVolunteerDto);
     }
+
+    /**
+     * 봉사 공고 조회(전체)
+     * - 파라미터가 위도 경도로 조회할 때
+     * - 파라미터가 shelterId를 포함하는 경우 개인이 보호소 페이지에서 공고볼 때
+     * @return
+     */
+    @GetMapping("/notices/shelter")
+    @ApiOperation(value = "봉사 공고 조회", notes = "개인의 보호소 페이지 공고 조회(shelterId)")
+    public ResponseEntity<Object> selectNoticeListByShelter(RequestVolunteerDto requestVolunteerDto){
+        //서비스 호출 코드
+        ResponseListDto responseVolunteerDto = volunteerService.selectNoticeListByShelter(requestVolunteerDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(responseVolunteerDto);
+    }
+
 
     /**
      * 봉사 공고 등록
