@@ -1,8 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import styles from './PersonalDogDetail.module.scss';
-import Button from '@mui/material/Button';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import PersonalDogDetailContent from 'components/Report/Detail/PersonalDogDetailContent';

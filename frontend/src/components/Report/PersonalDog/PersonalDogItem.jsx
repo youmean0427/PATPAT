@@ -3,9 +3,7 @@ import Card from 'components/Common/Card';
 import React from 'react';
 import { Link } from 'react-router-dom';
 // import test from '../../../assets/images/ear8.png';
-import HtmlReactParser from 'html-react-parser';
-import { useState } from 'react';
-import test from '../../../assets/images/ear8.png';
+
 export default function PersonalDogItem({ item }) {
   const { personalProtectionId, title, content, thumbnail } = item;
   // console.log(item);
@@ -15,7 +13,11 @@ export default function PersonalDogItem({ item }) {
       <Link to={`personal/${personalProtectionId}`} state={{ personalProtectionId }}>
         <Card>
           {/* thumbnail로 변경 */}
-          <img src={test} alt="" />
+          {title.includes('[완료]') === false ? (
+            <img src={`${thumbnail.filePath}`} className={styles.img} alt="" />
+          ) : (
+            <img src={`${thumbnail.filePath}`} className={styles.disabled} alt="" />
+          )}
           <div className={styles.description}>
             <div className={styles.title}>{title}</div>
             <div className={styles.content}>

@@ -79,6 +79,7 @@
 
     & > div {
       display: flex;
+      flex-wrap: wrap;
       width: 100%;
       justify-content: space-between;
 
@@ -103,11 +104,24 @@
     border-style: solid;
     border-color: #cccccc;
     border-radius: 5px;
+
+    & > div {
+      display: flex;
+      flex-direction: row;
+
+      & > div {
+        & > input {
+          margin-right: 5px;
+          margin-left: 5px;
+        }
+      }
+    }
   }
   &-character {
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
+
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
@@ -132,6 +146,13 @@
         }
       }
     }
+  }
+
+  &-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 
@@ -202,6 +223,7 @@
   width: 250px;
   height: 250px;
   object-fit: cover;
+  border-radius: 4px;
   margin-right: 10px;
   border: #cccccc 1px solid;
 }
@@ -209,8 +231,16 @@
   width: 125px;
   height: 125px;
   object-fit: cover;
-
+  border-radius: 4px;
   border: #cccccc 1px solid;
+
+  &Non {
+    width: 125px;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: #cccccc 1px solid;
+  }
 }
 
 .deleteButton {
@@ -220,7 +250,19 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    overflow: hidden;
+    &:hover {
+      border-radius: 4px;
+    }
   }
+  &Color {
+    margin-right: 10px;
+    background-color: white;
+    border-radius: 20px;
+  }
+}
+.quitButton {
+  width: 50px;
 }
 
 .ckEditor {
@@ -274,6 +316,26 @@
       width: 100%;
     }
   }
+  .container-radio {
+    justify-content: flex-start;
+    & > div {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .container-info-picture-inner {
+    flex-direction: column;
+    &-sub {
+      flex-direction: row;
+    }
+  }
+  .pictureButton {
+    width: 300px;
+    margin-bottom: 20px;
+  }
 }
 
 .file {
@@ -300,9 +362,12 @@
 
 .categoryIndex {
   &Ear {
-    z-index: 3;
+    z-index: 4;
   }
   &Pat {
+    z-index: 3;
+  }
+  &Tail {
     z-index: 2;
   }
 }
@@ -312,17 +377,15 @@
   border-radius: 0.5rem;
   display: block;
   text-align: center;
-  padding: 1rem 4rem;
+  padding: 1rem;
+
   transition: all 0.2s;
   background-color: $main-color;
   color: $white-color;
   box-shadow: 0px 5px 0px 0px $main-accent-color;
   margin: 10px 0px 10px 0;
-  &.active {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    background-color: $main-accent-color;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  & > div {
+    font-size: 18px;
   }
   &:hover {
     margin-top: 15px;
@@ -330,4 +393,9 @@
     background-color: $main-accent-color;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
+}
+
+.disabledInput {
+  background-color: #f2f2f2;
+  color: #999999;
 }
