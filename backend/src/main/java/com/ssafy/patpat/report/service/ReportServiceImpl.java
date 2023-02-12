@@ -13,6 +13,8 @@ import com.ssafy.patpat.common.service.ColorService;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
+import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.report.dto.ReportDto;
 import com.ssafy.patpat.report.dto.RequestReportDto;
 import com.ssafy.patpat.report.entity.MissingDog;
@@ -25,7 +27,6 @@ import com.ssafy.patpat.report.repository.MissingDogRepository;
 import com.ssafy.patpat.report.repository.PersonalProtectedDogRepository;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
-import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
@@ -41,7 +42,6 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +72,8 @@ public class ReportServiceImpl implements ReportService{
     @Autowired
     ColorService colorService;
 
+    @Autowired
+    ShelterProtectedDogRepository shelterProtectedDogRepository;
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;
 
@@ -633,6 +635,15 @@ public class ReportServiceImpl implements ReportService{
                         .build());
             }
             /** Color 처리 로직 */
+            /** 프론트에게 다시 줘야하는 #333333 형식의 컬러 코드 리스트를 엔티티리스트에 저장 **/
+            for(String color : reportDto.getCategoryColor()){
+                colors.add(
+                        DogColor.builder()
+                                .colorCode(color)
+                                .build()
+                );
+            }
+            /** 유사도 비교시 사용할 백엔드에서만 사용하는 컬러코드 저장 **/
             Color color = colorService.getColorCode(reportDto.getCategoryColor());
             if(reportDto.getTypeCode() == 1) {
 
@@ -764,6 +775,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+<<<<<<< HEAD
     @Transactional
     public Boolean deleteAll(){
 
@@ -799,5 +811,41 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public HashMap<String, Integer> selectRecommendCount(RequestReportDto requestReportDto) {
         return null;
+=======
+    public ResponseListDto selectRecommendList(Long missingId,RequestReportDto requestReportDto) {
+        ResponseListDto responseListDto = new ResponseListDto();
+        List<ProtectDto> protectDtoList = new ArrayList<>();
+        MissingDog missingDog = missingDogRepository.findByMissingId(missingId);
+        //Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        PageRequest pageRequest = PageRequest.of(requestReportDto.getOffSet(), requestReportDto.getLimit());
+        System.out.println(missingDog);
+        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
+        for(ShelterProtectedDog s : shelterProtectedDogPage){
+            ProtectDto protectDto = new ProtectDto();
+            protectDto.setProtectId(s.getSpDogId());
+            protectDto.setKg(s.getWeight());
+            protectDto.setAge(s.getAge());
+            protectDto.setProtectName(s.getName());
+            protectDto.setBreedId(s.getBreed().getBreedId());
+            protectDto.setBreedName(s.getBreed().getName());
+            if ((s.getImages().size() > 0)) {
+                protectDto.setThumbnail(s.getImages().get(0).getFilePath());
+            } else {
+                protectDto.setThumbnail(fileService.getFileUrl(fileService.getDefaultImage()));
+            }
+            protectDto.setNeuteredCode(s.getNeutered().getCode());
+            protectDto.setNeutered(s.getNeutered().name());
+            protectDto.setStateCode(s.getStateCode().getCode());
+            protectDto.setState(s.getStateCode().name());
+            protectDto.setGenderCode(s.getGender().getCode());
+            protectDto.setGender(s.getGender().name());
+
+            protectDtoList.add(protectDto);
+        }
+        responseListDto.setList(protectDtoList);
+        responseListDto.setTotalPage(shelterProtectedDogPage.getTotalPages());
+        responseListDto.setTotalCount(shelterProtectedDogPage.getTotalElements());
+        return responseListDto;
+>>>>>>> 8656f34f94eb16285f3a213af747d8e859c763b3
     }
 }

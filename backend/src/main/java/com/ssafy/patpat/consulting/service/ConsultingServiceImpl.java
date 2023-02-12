@@ -226,6 +226,20 @@ public class ConsultingServiceImpl implements ConsultingService{
         try{
             Consulting consulting = consultingRepository.findByConsultingId(consultingId);
             consulting.updateConsulting(ConsultingState.of(consultingDto.getStateCode()));
+            /** ---- 경험치 올리기 코드 ----**/
+            if(consultingDto.getStateCode().equals(ConsultingState.완료)){
+                User user = consulting.getUser();
+                user.updateExp(user.getExp()+1);
+                userRepository.save(user);
+            }
+            /** ------------------------**/
+            /** ---- 경험치 내리기 코드 ----**/
+            if(consultingDto.getStateCode().equals(ConsultingState.불참)){
+                User user = consulting.getUser();
+                user.updateExp(user.getExp()-1);
+                userRepository.save(user);
+            }
+            /** ------------------------**/
             consultingRepository.save(consulting);
             responseMessage.setMessage("SUCCESS");
 
