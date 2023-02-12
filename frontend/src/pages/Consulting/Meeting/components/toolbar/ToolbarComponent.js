@@ -21,6 +21,7 @@ import PowerSettingsNew from '@mui/icons-material/PowerSettingsNew';
 import QuestionAnswer from '@mui/icons-material/QuestionAnswer';
 
 import IconButton from '@mui/material/IconButton';
+import store from 'redux/store';
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -76,6 +77,7 @@ export default class ToolbarComponent extends Component {
   render() {
     // const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
+    const isShelter = this.props.isShelter;
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
@@ -125,9 +127,15 @@ export default class ToolbarComponent extends Component {
               onClick={(this.camStatusChanged, this.leaveSession)}
               id="navLeaveButton"
             >
-              <Link to="/">
-                <PowerSettingsNew />
-              </Link>
+              {isShelter ? (
+                <Link to={`/shelters/${String(store.getState().shelter.value.resShelterId)}/consulting`}>
+                  <PowerSettingsNew />
+                </Link>
+              ) : (
+                <Link to="/mypage">
+                  <PowerSettingsNew />
+                </Link>
+              )}
             </IconButton>
             <IconButton sx={{ color: '#f39c12' }} onClick={this.toggleChat} id="navChatButton">
               {this.props.showNotification && <div id="point" className="" />}

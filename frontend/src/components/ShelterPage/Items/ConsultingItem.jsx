@@ -4,7 +4,7 @@ import styles from './ConsultingItem.module.scss';
 import ConsultingImg from 'assets/images/consulting.png';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setConsulting } from 'redux/consulting';
+import { setShelter } from 'redux/shelter';
 import { useMutation } from '@tanstack/react-query';
 
 export default function ConsultingItem({ item }) {
@@ -13,8 +13,7 @@ export default function ConsultingItem({ item }) {
   const [btnState, setBtnState] = useState(stateCode);
   const { mutate } = useMutation((consultingId, data) => updateConsultant(consultingId, data), {
     onSuccess: data => {
-      console.log(data);
-      dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
+      dispatch(setShelter({ resIsShelter: true, resShelterId: shelterId, resUserName: shelterName }));
       navigate('/consulting/meeting');
     },
   });

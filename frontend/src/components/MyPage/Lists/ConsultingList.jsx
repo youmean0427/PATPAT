@@ -11,7 +11,7 @@ export default function ConsultingList({ userId }) {
 
   const { data, isLoading } = useQuery({
     queryKey: ['myConsultingList'],
-    queryFn: () => getMyConsultations(LIMIT, page - 1, userId),
+    queryFn: () => getMyConsultations(LIMIT, page - 1, 7),
   });
 
   const handleClickPrev = () => {
