@@ -75,7 +75,7 @@ public class ConsultingServiceImpl implements ConsultingService{
 //            Integer code = requestConsultingDto.getCode();
             ConsultingState consultingState = null;
             Page<Consulting> consultingList = null;
-            if(requestConsultingDto.getStateCode() == null){
+            if(requestConsultingDto.getStateCode() == 7){
                 pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
                 consultingList = consultingRepository.findByUserAndConsultingDateGreaterThanEqual(user.get(),LocalDate.now(),pageRequest);
             }

@@ -13,5 +13,4 @@ public class RequestConsultingDto {
     private Integer limit;
     private Long shelterId;
     private Integer stateCode;
-    private Integer code;
 }
