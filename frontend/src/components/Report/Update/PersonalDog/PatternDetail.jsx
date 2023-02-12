@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ReportUpdateContent.module.scss';
+import styles from './ReportPersonalDogUpdateContent.module.scss';
 import Pattern1 from 'assets/images/Pattern1.jpg';
 import Pattern2 from 'assets/images/Pattern2.jpg';
 import Pattern3 from 'assets/images/Pattern3.jpg';

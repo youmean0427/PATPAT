@@ -6,19 +6,23 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
-import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
-import Navbar from 'components/ShelterPage/Navbar/Navbar';
+import defaultPicture from '../../../assets/images/volunteer.png';
 
 export default function MissingDogDetailContent({ item, state }) {
+  // const [user, setUser] = useState('');
+  const [file2, setFile2] = useState(0);
+  const [file3, setFile3] = useState(0);
+
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
     queryFn: () => getMissingDogDetail(item),
   });
-
   if (isLoading) return;
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  // console.log(data.userId, user.userId, data.fileUrlList);
+  let user = 'user';
+  if (localStorage.getItem('user')) {
+    user = JSON.parse(localStorage.getItem('user'));
+  }
 
   return (
     <div>
@@ -48,23 +52,69 @@ export default function MissingDogDetailContent({ item, state }) {
         <div className={styles['container-info-picture']}>
           <div className={styles['container-info-picture-inner']}>
             <div>
-              {data.fileUrlList[0] === undefined ? null : (
-                <div className={styles.thumbnail}>
-                  <img src={data.fileUrlList[0].filePath} alt="" />{' '}
-                </div>
-              )}
+              <div className={styles.thumbnail}>
+                {data.fileUrlList[0] === undefined ? (
+                  <div>
+                    <img src={defaultPicture} alt="" />
+                  </div>
+                ) : (
+                  <div>
+                    {file2 === 1 ? (
+                      <img src={data.fileUrlList[1].filePath} alt="" />
+                    ) : file3 === 1 ? (
+                      <img src={data.fileUrlList[2].filePath} alt="" />
+                    ) : (
+                      <img src={data.fileUrlList[0].filePath} alt="" />
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className={styles['container-info-picture-inner-sub']}>
-              <div>{data.fileUrlList[1] === undefined ? null : <img src={data.fileUrlList[1].filePath} alt="" />}</div>
-              <div>{data.fileUrlList[2] === undefined ? null : <img src={data.fileUrlList[2].filePath} alt="" />}</div>
+              <div>
+                {data.fileUrlList[1] === undefined ? (
+                  <img src={defaultPicture} alt="" />
+                ) : (
+                  <img
+                    src={data.fileUrlList[1].filePath}
+                    alt=""
+                    onMouseEnter={() => {
+                      setFile2(1);
+                    }}
+                    onMouseLeave={() => {
+                      setFile2(0);
+                    }}
+                  />
+                )}
+              </div>
+              <div>
+                {data.fileUrlList[2] === undefined ? (
+                  <img src={defaultPicture} alt="" />
+                ) : (
+                  <img
+                    src={data.fileUrlList[2].filePath}
+                    alt=""
+                    onMouseEnter={() => {
+                      setFile3(1);
+                    }}
+                    onMouseLeave={() => {
+                      setFile3(0);
+                    }}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
         <div className={styles['container-content']}>
           <div className={styles['container-content-title']}>
             <div className={styles.name}>{data.name}</div>
-            <div className={styles.stateButtonRed}>실종</div>
+            {data.stateCode === 0 ? (
+              <div className={styles.stateButtonRed}>실종</div>
+            ) : (
+              <div className={styles.stateButtonGreen}>완료</div>
+            )}
           </div>
           <hr />
           <div className={styles['container-content-info']}>
@@ -77,12 +127,12 @@ export default function MissingDogDetailContent({ item, state }) {
               <span>{data.gender}</span>
             </div>
             <div>
-              <div>추정나이</div>
-              <span>{data.age}</span>
+              <div>나이</div>
+              {data.age === 0 ? <span>모름</span> : <span>{data.age}살</span>}
             </div>
             <div>
               <div>몸무게</div>
-              <span>{data.kg}</span>
+              {data.kg === 0 ? <span>모름</span> : <span>{data.age}살</span>}
             </div>
             <div>
               <div>중성화</div>
@@ -100,27 +150,84 @@ export default function MissingDogDetailContent({ item, state }) {
             <span>{data.categoryEar}</span>
           </div>
           <div>
-            <div>털색</div>
-            <span>{data.categoryColor}</span>
-          </div>
-          <div>
-            <div>무늬색</div>
+            <div>무늬</div>
             <span>{data.categoryPattern}</span>
           </div>
-        </div>
-        <div className={styles['container-content-character-list']}>
           <div>
             <div>꼬리</div>
             <span>{data.categoryTail}</span>
           </div>
+        </div>
+
+        <div className={styles['container-content-character-list']}>
           <div>
             <div>옷착용</div>
             <span>{data.categoryCloth}</span>
           </div>
           <div>
-            <div>옷색</div>
-            <span>{data.categoryClothColor}</span>
+            <div>털색</div>
+            <span>
+              {data.categoryPatternCode === 1 ? (
+                <div className={styles.colorPicker}>
+                  <input
+                    className={styles.colorPickerHalf}
+                    type="color"
+                    defaultValue={data.categoryColor[0]}
+                    disabled
+                  />
+                </div>
+              ) : data.categoryPatternCode === 2 ? (
+                <div className={styles.colorPicker}>
+                  <div>
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      defaultValue={data.categoryColor[0]}
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      defaultValue={data.categoryColor[1]}
+                      disabled
+                    />
+                  </div>
+                </div>
+              ) : data.categoryPatternCode === 3 ? (
+                <div className={styles.colorPicker}>
+                  <div>
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      defaultValue={data.categoryColor[0]}
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      defaultValue={data.categoryColor[1]}
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    <input
+                      className={styles.colorPickerHalf}
+                      type="color"
+                      defaultValue={data.categoryColor[2]}
+                      disabled
+                    />
+                  </div>
+                </div>
+              ) : (
+                <span className={styles.noColor}> 없음</span>
+              )}
+            </span>
           </div>
+          <div></div>
         </div>
       </div>
       <div className={styles.subTitle}>실종 장소</div>

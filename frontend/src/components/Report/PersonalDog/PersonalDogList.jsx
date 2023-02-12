@@ -3,22 +3,19 @@ import { getPersonalDogList } from 'apis/api/report';
 import PersonalDogItem from './PersonalDogItem';
 import styles from './PersonalDogList.module.scss';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Select from 'react-select';
-import Button from '@mui/material/Button';
-import { getBreedsList } from 'apis/api/shelter';
-import { changeBreedList } from 'utils/changeSelectTemplate';
-import { useEffect } from 'react';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from 'recoil/atoms/user';
 
 export default function PersonalDogList({ genderCode, breedCode }) {
+  const [isLogin] = useRecoilState(isLoginState);
   const [page, setPage] = useState(1);
   const LIMIT = 8;
 
   const { isLoading, data } = useQuery({
-    queryKey: ['personalDogList', breedCode.value, genderCode.value, page],
+    queryKey: ['PersonalDogList', breedCode.value, genderCode.value, page],
     queryFn: () => getPersonalDogList(breedCode.value, genderCode.value, LIMIT, page - 1),
   });
 
@@ -29,9 +26,9 @@ export default function PersonalDogList({ genderCode, breedCode }) {
   const handleClickNext = () => {
     setPage(prev => prev + 1);
   };
-  console.log(data);
-  if (isLoading) return;
 
+  // console.log(data);
+  if (isLoading) return;
   return (
     <div>
       <div className={styles['container-search']}>
@@ -46,8 +43,10 @@ export default function PersonalDogList({ genderCode, breedCode }) {
             </button>
             <button
               onClick={handleClickNext}
-              className={page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button}
-              disabled={page === data.totalPage ? true : false}
+              className={
+                page === data.totalPage || data.totalPage === 0 ? `${styles.button} ${styles.disabled}` : styles.button
+              }
+              disabled={page === data.totalPage || data.totalPage === 0 ? true : false}
             >
               <MdArrowForwardIos />
             </button>
@@ -55,16 +54,24 @@ export default function PersonalDogList({ genderCode, breedCode }) {
         </div>
       </div>
       <div className={styles.container}>
-        <div className={styles.list}>
-          {data.list.map((item, index) => (
-            <PersonalDogItem key={index} item={item} />
-          ))}
+        {data.totalCount !== 0 ? (
+          <div className={styles.list}>
+            {data.list.map((item, index) => (
+              <PersonalDogItem key={index} item={item} />
+            ))}
+          </div>
+        ) : (
+          <div className={styles.non}>
+            <span>검색결과가 없습니다.</span>
+          </div>
+        )}
+        <div className={styles.navBar}>
+          {isLogin === true ? (
+            <Navbar className={styles.navBar}>
+              <MenuLink move="create" value="글쓰기" />
+            </Navbar>
+          ) : null}
         </div>
-      </div>
-      <div className={styles['container-newButton']}>
-        <Navbar>
-          <MenuLink move="create" value="글쓰기" />
-        </Navbar>
       </div>
     </div>
   );

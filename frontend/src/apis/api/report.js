@@ -110,11 +110,11 @@ export const createReport = async formData => {
 
 /**
  * POST : 실종 ,임보 신고 공고 정보 수정
- * @param {int} reportType 0 : 실종 , 1 : 임보
+ 
  * @param {FormData} formData
  */
-export const updateReport = async (reportType, formData) => {
-  const res = await authInstance.post(`/reports/updates?reportType=${reportType}`, formData, {
+export const updateReport = async formData => {
+  const res = await authInstance.post(`/reports/updates`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return res;

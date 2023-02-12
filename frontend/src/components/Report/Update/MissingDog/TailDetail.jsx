@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ReportUpdateContent.module.scss';
+import styles from './ReportMissingDogUpdateContent.module.scss';
 import Tail1 from 'assets/images/Tail1.jpg';
 import Tail2 from 'assets/images/Tail2.jpg';
 import Tail3 from 'assets/images/Tail3.jpg';

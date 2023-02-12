@@ -2,13 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getMissingDogList } from 'apis/api/report';
 import MissingDogItem from './MissingDogItem';
 import styles from './MissingDogList.module.scss';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Select from 'react-select';
-import Button from '@mui/material/Button';
-import { getBreedsList } from 'apis/api/shelter';
-import { changeBreedList } from 'utils/changeSelectTemplate';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
@@ -17,6 +11,7 @@ import { isLoginState } from 'recoil/atoms/user';
 
 export default function MissingDogList({ genderCode, breedCode }) {
   const [isLogin] = useRecoilState(isLoginState);
+
   const [page, setPage] = useState(1);
   const LIMIT = 8;
 
@@ -49,8 +44,10 @@ export default function MissingDogList({ genderCode, breedCode }) {
             </button>
             <button
               onClick={handleClickNext}
-              className={page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button}
-              disabled={page === data.totalPage ? true : false}
+              className={
+                page === data.totalPage || data.totalPage === 0 ? `${styles.button} ${styles.disabled}` : styles.button
+              }
+              disabled={page === data.totalPage || data.totalPage === 0 ? true : false}
             >
               <MdArrowForwardIos />
             </button>
