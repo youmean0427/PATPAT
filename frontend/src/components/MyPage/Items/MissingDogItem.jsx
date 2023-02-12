@@ -9,7 +9,13 @@ export default function MissingDogItem({ item }) {
 
   return (
     <Card>
-      <div onClick={() => navigate(`/mypage/mymissing/${missingId}`)}>
+      <div
+        onClick={() =>
+          navigate(`/mypage/missing/${missingId}`, {
+            state: { missingId: missingId, name: name, thumbnail: thumbnail },
+          })
+        }
+      >
         <img src={thumbnail.filePath} alt={name} />
         <div className={styles.description}>
           <div className={styles.name}>{name}</div>

@@ -15,7 +15,7 @@ export default function BoardList({ typeCode, count }) {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getBoardListByMe', typeCode],
+    queryKey: ['getBoardListByMe', typeCode, page],
     queryFn: () => {
       return getBoardListByMe(LIMIT, page - 1, typeCode);
     },

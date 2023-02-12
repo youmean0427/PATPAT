@@ -42,9 +42,8 @@ ul.pagination li.active {
   background-color: #a1887f;
 }
 
-ul.pagination li a:hover,
-ul.pagination li a.active {
-  background-color: #a1887f;
+ul.pagination li:hover {
+  transform: translateY(-2px);
 }
 
 .page-selection {

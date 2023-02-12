@@ -76,7 +76,9 @@ export const getPersonalDogDetail = async personalProtectId => {
  * @returns
  */
 export const getSimilarDogList = async (missingId, limit, offset) => {
-  const { data } = await authInstance.get(`/reports/recommends?missingId=${missingId}&limit=${limit}&offSet=${offset}`);
+  const { data } = await authInstance.get(
+    `/reports/recommends/${missingId}?limit=${limit}&missingId=${missingId}&offSet=${offset}`
+  );
   return data;
 };
 

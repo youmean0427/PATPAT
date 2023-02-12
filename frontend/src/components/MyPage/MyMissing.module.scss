@@ -2,51 +2,79 @@
 
 .container {
   margin: auto;
-  padding-top: 10rem;
+  padding-top: 5rem;
+  width: 100%;
 }
-.top-content {
-  display: flex;
-  flex-flow: wrap;
+.missing-detail {
+  width: 90%;
   margin: auto;
+  display: flex;
+  margin-bottom: 5rem;
   justify-content: center;
-}
-.dog-img {
-  height: 20rem;
-}
-.dog-img img {
-  width: 15rem;
-  height: 15rem;
-  border-radius: 50%;
-}
-.comment {
-  padding: 3rem;
-}
-.comment p {
-  font-size: 1.5rem;
-  text-align: center;
-}
-.comment p span {
-  font-size: 2rem;
-  font-weight: 900;
-  color: $map-hover-color;
+  gap: 2rem;
+  & > .dog-img {
+    width: 25vw;
+    height: 25vw;
+    max-width: 23rem;
+    max-height: 23rem;
+  }
+  & > .dog-img > img {
+    width: 25vw;
+    height: 25vw;
+    border-radius: 50%;
+    max-width: 23rem;
+    max-height: 23rem;
+  }
+  & > .content {
+    width: 70%;
+    text-align: center;
+    margin: auto;
+    & > p {
+      font-size: 1.5vw;
+      & > span {
+        color: $map-hover-color;
+        font-size: 1.7vw;
+      }
+    }
+  }
 }
 .line {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  opacity: 50%;
+  background: lightgray;
+  height: 1px;
+  border: 0;
+  margin-bottom: 5rem;
 }
-.botton-content {
+.shelter-list {
+  width: 100%;
+  height: 10rem;
   margin: auto;
 }
-
-@media screen and (max-width: 767px) {
-  .comment p {
-    font-size: 1rem;
-    text-align: center;
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  & > span {
+    color: $main-color;
+    line-height: 1rem;
   }
-  .comment p span {
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: $map-hover-color;
+  & > .button {
+    color: $main-accent-color;
+  }
+  & > .button.disabled {
+    color: $gray-color;
+  }
+}
+
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
