@@ -1,6 +1,7 @@
 package com.ssafy.patpat.volunteer.dto;
 
 import com.ssafy.patpat.common.code.Reservation;
+import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
 import lombok.*;
 
 import java.util.List;
@@ -23,4 +24,14 @@ public class VolunteerNoticeDto {
 
     private String latitude;
     private String longitude;
+
+    public VolunteerNoticeDto(VolunteerNotice volunteerNotice){
+        this.noticeId = volunteerNotice.getNoticeId();
+        this.name = volunteerNotice.getShelter().getName();
+        this.shelterId = volunteerNotice.getShelter().getShelterId();
+        this.volunteerDate = volunteerNotice.getVolunteerDate();
+        this.title = volunteerNotice.getTitle();
+        this.state = volunteerNotice.getReservationStateCode().name();
+        this.stateCode = volunteerNotice.getReservationStateCode().getCode();
+    }
 }
