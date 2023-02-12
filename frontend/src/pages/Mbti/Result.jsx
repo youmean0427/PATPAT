@@ -31,7 +31,7 @@ export default function Result() {
           <span>{title}</span>
         </div>
         <div className={styles['img-box']}>
-          <img src={'/PETBTI/' + state.mbti.toLowerCase() + '.png'} alt="img" />
+          <img src={thumbnail} alt="img" />
         </div>
         <div className={styles.result}>
           <span>{state.mbti.toUpperCase()}</span>
