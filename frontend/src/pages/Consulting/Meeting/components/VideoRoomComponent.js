@@ -14,7 +14,7 @@ import ToolbarComponent from './toolbar/ToolbarComponent';
 import store from 'redux/store';
 
 const localUser = new UserModel();
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5442/';
+const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://i8e104.p.ssafy.io:8081';
 
 class VideoRoomComponent extends Component {
   constructor(props) {
