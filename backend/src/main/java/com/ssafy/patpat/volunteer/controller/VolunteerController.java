@@ -3,6 +3,7 @@ package com.ssafy.patpat.volunteer.controller;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.error.VolunteerException;
+import com.ssafy.patpat.shelter.dto.ShelterLocationDto;
 import com.ssafy.patpat.volunteer.dto.*;
 import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import com.ssafy.patpat.volunteer.service.VolunteerService;
@@ -41,22 +42,35 @@ public class VolunteerController {
     /**
      * 봉사 공고 조회(전체)
      * - 파라미터가 위도 경도로 조회할 때
-     * - 파라미터가 shelterId를 포함하는 경우 개인이 보호소 페이지에서 공고볼 때
      * @return
      */
     @GetMapping("/notices")
     @ApiOperation(value = "봉사 공고 조회", notes = "위도 경도로 조회")
-    public ResponseEntity<Object> selectNoticeListByLatLng(RequestVolunteerDto requestVolunteerDto){
+    public ResponseEntity<Object> selectShelterListByLatLng(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        List<VolunteerNoticeDto> responseVolunteerDto = volunteerService.selectNoticeListByLatLng(requestVolunteerDto);
+        List<ShelterLocationDto> responseVolunteerDto = volunteerService.selectShelterListByLatLng(requestVolunteerDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseVolunteerDto);
     }
 
     /**
+     * 특정 보호소 봉사 공고 리스트 조회
+     * @return
+     */
+    @GetMapping("/notices/details/{shelterId}")
+    @ApiOperation(value = "봉사 공고 상세 조회", notes = "클릭시 해당 보호소 공고 리스트 조회 shelterId 어짜피 최대 7개")
+    public ResponseEntity<Object> detailNoticeByLatLng(@PathVariable Long shelterId){
+        //서비스 호출 코드
+        List<VolunteerNoticeDto> responseVolunteerDto = volunteerService.selectNoticeListByLatLng(shelterId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(responseVolunteerDto);
+    }
+
+
+    /**
      * 봉사 공고 조회(전체)
-     * - 파라미터가 위도 경도로 조회할 때
      * - 파라미터가 shelterId를 포함하는 경우 개인이 보호소 페이지에서 공고볼 때
      * @return
      */
