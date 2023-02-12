@@ -12,7 +12,8 @@ export default function DetailContent({ data }) {
   const [modal, setModal] = useState(false);
   const [modalNum, setModalNum] = useState();
   const [userId, setUserId] = useState();
-  const [favorite, setFavorite] = useState(true);
+  const [favorite, setFavorite] = useState(data.isFavorite);
+
   const openModal = idx => {
     setModalNum(idx);
     setModal(true);
@@ -39,19 +40,21 @@ export default function DetailContent({ data }) {
         <div className={styles['dog-name']}>
           <p>{data.protectName}</p>{' '}
           {userId !== undefined ? (
-            data.isFavorite ? (
-              <PetsIcon
-                className={styles.pressed}
-                onClick={() => handleFavBtn()}
-                sx={{ fontSize: '4rem', color: 'hotpink' }}
-              />
-            ) : (
-              <PetsIcon
-                className={styles.pressed}
-                onClick={() => handleFavBtn()}
-                sx={{ fontSize: '4rem', color: 'lightgray' }}
-              />
-            )
+            <div title={favorite ? '꾹 해제' : '꾹 등록'} className={styles.icon}>
+              {favorite ? (
+                <PetsIcon
+                  className={styles.pressed}
+                  onClick={() => handleFavBtn()}
+                  sx={{ fontSize: '4rem', color: 'hotpink' }}
+                />
+              ) : (
+                <PetsIcon
+                  className={styles.pressed}
+                  onClick={() => handleFavBtn()}
+                  sx={{ fontSize: '4rem', color: 'lightgray' }}
+                />
+              )}
+            </div>
           ) : null}
         </div>
         <div
@@ -82,7 +85,7 @@ export default function DetailContent({ data }) {
           <p>{data.gender}</p>
           <p>{data.age}</p>
           <p>{data.kg}kg</p>
-          <p>{data.neeutered}</p>
+          <p>{data.neutered}</p>
         </div>
       </div>
       <div className={styles.content3}>
@@ -101,7 +104,7 @@ export default function DetailContent({ data }) {
             </p>
           </div>
           <div className={styles['dog-category-ans']}>
-            <p>{data.categoryear}</p>
+            <p>{data.categoryEar}</p>
             <p>{data.categoryPattern}</p>
             <p>{data.categoryCloth}</p>
           </div>
@@ -120,7 +123,9 @@ export default function DetailContent({ data }) {
           </div>
           <div className={styles['dog-category-ans']}>
             <p>{data.categoryTail}</p>
-            <p>{data.categoryColor}</p>
+            <div>
+              <div className={styles['color-box']}></div>
+            </div>
             <p style={{ visibility: 'hidden' }}>None</p>
           </div>
         </div>

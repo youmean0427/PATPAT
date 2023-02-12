@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './consulting';
+import shelterReducer from './shelter';
+import userReducer from './user';
 
 export default configureStore({
   reducer: {
+    shelter: shelterReducer,
     user: userReducer,
   },
 });
