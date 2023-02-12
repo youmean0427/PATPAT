@@ -1,65 +1,21 @@
 @import 'assets/styles/variable.scss';
 
-.card {
-  position: relative;
-  border-radius: 0.4rem;
-  display: flex;
-  flex-direction: column;
-  background-color: $white-color;
-  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  cursor: pointer;
-  &:hover {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  }
-
-  & > img {
-    height: 20rem;
-    margin-bottom: 2rem;
-  }
-}
 .description {
-  display: flex;
   padding: 0 1rem 1rem 1rem;
 }
-.description div {
-  text-align: left;
-}
-.detail {
-  width: 80%;
-}
 .name {
-  font-size: 2rem;
   font-weight: 700;
+  font-size: 1.7rem;
   margin-bottom: 0.6rem;
 }
+
 .kind,
 .gender,
 .age {
   font-size: 1.2rem;
   color: $gray-color;
 }
-.state {
-  position: absolute;
-  top: 3%;
-  right: 5%;
-  padding: 10px;
-}
-.state0 {
-  background-color: $yellow-color;
-}
-.state1 {
-  background-color: $main-accent-color;
-  color: $white-color;
-}
-.state2 {
-  background-color: $main-color;
-  color: $white-color;
-}
-.state3 {
-  background-color: $border-color;
-  color: $white-color;
-}
+
 .fav-icon {
   width: 20%;
   justify-content: center;

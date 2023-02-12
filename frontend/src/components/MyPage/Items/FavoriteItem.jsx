@@ -4,6 +4,7 @@ import Card from 'components/Common/Card';
 import PetsIcon from '@mui/icons-material/Pets';
 import { insertFavProtect, deleteFavProtect } from 'apis/api/user';
 import { useNavigate } from 'react-router-dom';
+import ProtectStateBadge from 'components/Common/Badge/ProtectStateBadge';
 
 export default function FavoriteItem({ item }) {
   const { spDogId, breedName, name, imageUrl, stateCode, state, weight, neutered, gender, age } = item;
@@ -15,28 +16,11 @@ export default function FavoriteItem({ item }) {
     setFavorite(cur => !cur);
   };
 
-  const handleCardClick = () => {
-    navigate(`/protects/${spDogId}`);
-  };
-
   return (
     <Card>
-      <img src={imageUrl} alt={name} onClick={handleCardClick} />
-      <div
-        className={`${styles.state} ${
-          stateCode === 0
-            ? styles.state0
-            : stateCode === 1
-            ? styles.state1
-            : stateCode === 2
-            ? styles.state2
-            : styles.state3
-        }`}
-      >
-        {state}
-      </div>
-      <div className={styles.description}>
-        <div className={styles.detail}>
+      <div onClick={() => navigate(`/protects/${spDogId}`)}>
+        <img src={imageUrl} alt={name} />
+        <div className={styles.description}>
           <div className={styles.name}>{name}</div>
           <div className={styles.kind}>{breedName}</div>
           <div className={styles.gender}>
@@ -46,6 +30,7 @@ export default function FavoriteItem({ item }) {
             {age}살 / {weight}kg
           </div>
         </div>
+        <ProtectStateBadge state={state} stateCode={stateCode} />
         <div className={styles['fav-icon']} title={favorite ? '꾹 해제' : '꾹 등록'}>
           {favorite ? (
             <PetsIcon
