@@ -1,0 +1,33 @@
+@import 'assets/styles/variable.scss';
+
+.badge {
+  position: absolute;
+  top: 11rem;
+  right: 5%;
+  font-size: 1.3rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  font-weight: 900;
+  color: $white-color;
+  &.zero {
+    background-color: $state-con-zero;
+  }
+  &.one {
+    background-color: $state-con-one;
+  }
+  &.two {
+    background-color: $state-con-two;
+  }
+  &.three {
+    background-color: $state-con-three;
+  }
+  &.four {
+    background-color: $state-con-four;
+  }
+  &.five {
+    background-color: $state-con-five;
+  }
+  &.six {
+    background-color: $state-con-six;
+  }
+}

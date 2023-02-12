@@ -1,57 +1,43 @@
 import React from 'react';
-import styles from './ReservationItem.module.scss';
-import ShelterImg from 'assets/images/shelter.png';
-
+import styles from './VolunteerItem.module.scss';
+import ConsultingCard from 'components/Common/Card/ConsultingCard';
+import { formatDate, formatTime } from 'utils/formatDate';
+import UserBadge from 'components/Common/UserBadge/UserBadge';
+import Shelter from 'assets/images/shelter.png';
 export default function VolunteerItem({ item }) {
-  const { reservationId, reservationState, reservationStateCode, scheduleId, shelterAddress, shelterName, startTime } =
-    item;
+  const date = [item.endTime[0], item.endTime[1], item.endTime[2]];
+  const startHour = item.startTime[3] <= 9 ? '0' + item.startTime[3] : item.startTime[3];
+  const startMinute = item.startTime[4] <= 9 ? '0' + item.startTime[4] : item.startTime[4];
+  const endHour = item.endTime[3] <= 9 ? '0' + item.endTime[3] : item.endTime[3];
+  const endMonute = item.endTime[4] <= 9 ? '0' + item.endTime[4] : item.endTime[4];
 
   return (
-    <div className={styles.items}>
-      <div className={styles['consulting-img']}>
-        <img src={ShelterImg} alt="" />
+    <ConsultingCard>
+      <div className={styles.info}>
+        <div className={styles.user}>
+          <img src={Shelter} alt="이미지" />
+        </div>
+        <div className={styles.desc}>
+          <div className={styles['desc-item']}>
+            <span>{item.shelterName}</span>
+          </div>
+          <div className={styles['desc-item']}>
+            <span className={styles.address}>{item.shelterAddress}</span>
+          </div>
+          <div className={styles['res-date']}>
+            <div className={styles['desc-item']}>
+              <span className={styles['desc-item-title']}>{formatDate(date)}</span>
+            </div>
+            <div className={styles['desc-item']}>
+              <span className={styles['desc-item-title']}>
+                {startHour + ':' + startMinute + ' ~ ' + endHour + ':' + endMonute} 예정
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className={styles.contents}>
-        <p className={styles['shelter-name']}>{shelterName}</p>
-        <p className={styles.address}>{shelterAddress}</p>
-        <p className={styles.date}>
-          {startTime[0]}.{startTime[1]}.{startTime[2]}
-        </p>
-        <p className={styles.time}>
-          {startTime[3]}:{startTime[4] <= 9 ? '0' + startTime[4] : startTime[4]}
-        </p>
-      </div>
-      <div className={styles.buttons}>
-        {reservationStateCode === 0 ? (
-          <button
-            className={styles.cancel}
-            onClick={() => {
-              alert('취소되었습니다.');
-            }}
-          >
-            예약 취소
-          </button>
-        ) : (
-          <button className={styles.cancel} style={{ visibility: 'hidden' }}></button>
-        )}
-        <button
-          className={
-            reservationStateCode === 0
-              ? styles.state0
-              : reservationStateCode === 1
-              ? styles.state1
-              : reservationStateCode === 2
-              ? styles.state2
-              : reservationStateCode === 3
-              ? styles.state3
-              : reservationStateCode === 4
-              ? styles.state4
-              : null
-          }
-        >
-          {reservationState}
-        </button>
-      </div>
-    </div>
+      <div className={styles.state}></div>
+      <UserBadge state={item.reservationState} stateCode={item.reservationStateCode} />
+    </ConsultingCard>
   );
 }
