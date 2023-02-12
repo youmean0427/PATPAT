@@ -254,7 +254,7 @@ public class ReportServiceImpl implements ReportService{
                         .build();
             }
             if(personalProtectedDogImageList.size() > 0){
-                FileDto.builder()
+                thumbnail = FileDto.builder()
                         .filePath(fileService.getFileUrl(personalProtectedDogImageList.get(0)))
                         .build();
             }
