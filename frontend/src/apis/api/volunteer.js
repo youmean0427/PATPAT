@@ -39,15 +39,11 @@ export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
 };
 
 /**
- * GET : 위도 & 경도를 통해 반경 30km 내에 위치한 보호소 봉사 공고 리스트
- * @param {String} latitude
- * @param {String} longitude
+ * GET : 보호소의 한달 공고 리스트
  * @returns
  */
-export const getVolNoticePerMonth = async (latitude, longitude) => {
-  const { data } = await defaultInstance.get(
-    `/volunteers/months?limit=4&offSet=0&latitude=${latitude}&longitude=${longitude}`
-  );
+export const getVolNoticePerMonth = async (shelterId, year, month) => {
+  const { data } = await defaultInstance.get(`/volunteers/months?month=${month}&year=${year}&shelterId=${shelterId}`);
   return data;
 };
 
