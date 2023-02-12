@@ -136,7 +136,7 @@ public class ConsultingServiceImpl implements ConsultingService{
             ConsultingState consultingState = null;
             Page<Consulting> consultingList = null;
 
-            if(requestConsultingDto.getStateCode() == null){
+            if(requestConsultingDto.getStateCode() == 7){
                 pageRequest = PageRequest.of(requestConsultingDto.getOffSet(),requestConsultingDto.getLimit(), Sort.by("consultingDate").ascending());
                 consultingList = consultingRepository.findByShelterShelterIdAndConsultingDateGreaterThanEqual(requestConsultingDto.getShelterId(),LocalDate.now(),pageRequest);
             }
