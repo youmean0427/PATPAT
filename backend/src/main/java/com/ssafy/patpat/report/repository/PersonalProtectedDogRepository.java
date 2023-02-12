@@ -20,6 +20,4 @@ public interface PersonalProtectedDogRepository extends JpaRepository<PersonalPr
     Page<PersonalProtectedDog> findByGender(Gender gender, PageRequest pageRequest);
     Page<PersonalProtectedDog> findByBreedBreedId(Long breedId, PageRequest pageRequest);
     PersonalProtectedDog findByPpDogId(Long ppDogId);
-    @Query(value = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( lat ) )* cos( radians( log) - radians(:b) )+ sin ( radians(:c) ) * sin( radians( lat )))) as distance from test where regist_date >= :localDate group by id having distance < 15",nativeQuery = true)
-    List<PersonalProtectedDog> selectBydistance(BigDecimal a, BigDecimal b , BigDecimal c, LocalDate localDate);
 }

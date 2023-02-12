@@ -1,8 +1,6 @@
 package com.ssafy.patpat.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.patpat.common.entity.Image;
-import com.ssafy.patpat.common.entity.Recommend;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.sun.istack.NotNull;
@@ -12,9 +10,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -56,6 +52,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    public void updateExp(Integer exp){
+        this.exp = exp;
+    }
+
     @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
@@ -82,9 +82,6 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "shelter_id")}
     )
     private Shelter shelter;
-
-    @OneToMany(mappedBy = "user")
-    private List<Recommend> recommends;
 
     @OneToOne(mappedBy = "user")
     private Owner owner;

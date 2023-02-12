@@ -1,6 +1,5 @@
 package com.ssafy.patpat.report.service;
 
-import com.ssafy.patpat.common.code.DogType;
 import com.ssafy.patpat.common.code.MissingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -9,7 +8,6 @@ import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.DogColor;
 import com.ssafy.patpat.common.entity.Image;
-import com.ssafy.patpat.common.entity.Recommend;
 import com.ssafy.patpat.common.repository.ImageRepository;
 import com.ssafy.patpat.common.service.ColorService;
 import com.ssafy.patpat.common.service.FileService;
@@ -17,7 +15,6 @@ import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.dto.ProtectDto;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
-import com.ssafy.patpat.report.dto.RecommendDto;
 import com.ssafy.patpat.report.dto.ReportDto;
 import com.ssafy.patpat.report.dto.RequestReportDto;
 import com.ssafy.patpat.report.entity.MissingDog;
@@ -30,7 +27,6 @@ import com.ssafy.patpat.report.repository.MissingDogRepository;
 import com.ssafy.patpat.report.repository.PersonalProtectedDogRepository;
 import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
-import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
@@ -46,7 +42,6 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +74,6 @@ public class ReportServiceImpl implements ReportService{
 
     @Autowired
     ShelterProtectedDogRepository shelterProtectedDogRepository;
-
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;
 
@@ -383,7 +377,7 @@ public class ReportServiceImpl implements ReportService{
                 .age(personalProtectedDog.getAge())
                 .name(personalProtectedDog.getName())
                 .categoryCloth(personalProtectedDog.getCategoryCloth().name())
-                .categoryTailCode(personalProtectedDog.getCategoryCloth().getCode())
+                .categoryClothCode(personalProtectedDog.getCategoryCloth().getCode())
                 .categoryColor(colorCode)
                 .categoryEar(personalProtectedDog.getCategoryEar().name())
                 .categoryEarCode(personalProtectedDog.getCategoryEar().getCode())
@@ -668,9 +662,6 @@ public class ReportServiceImpl implements ReportService{
 
                 missingDogRepository.save(missingDog);
 
-                /** 임보,보호동물 조회 후 추천견종 엔티티에 집어 넣는다. **/
-                insertRecommend(user.get(),missingDog);
-
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
 //                if (uploadFile != null) {
@@ -772,99 +763,41 @@ public class ReportServiceImpl implements ReportService{
         }
         return responseMessage;
     }
-    @Override
-    public void insertRecommend(User user, MissingDog missingDog) {
-        List<PersonalProtectedDog> pProtectList = personalProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getRegistDate());
-        List<ShelterProtectedDog>  sProtectList = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getRegistDate());
-        List<Recommend> recommendList = user.getRecommends();
-
-        for(PersonalProtectedDog p : pProtectList){
-            int count = 0;
-            if(missingDog.getBreed().equals(p.getBreed())) count++;
-            if(missingDog.getGender().equals(p.getGender())) count++;
-            if(missingDog.getCategoryCloth().equals(p.getCategoryCloth())) count++;
-            if(missingDog.getCategoryColor().equals(p.getCategoryColor())) count++;
-            if(missingDog.getCategoryEar().equals(p.getCategoryEar())) count++;
-            if(missingDog.getCategoryPattern().equals(p.getCategoryPattern())) count++;
-            if(missingDog.getCategoryTail().equals(p.getCategoryTail())) count++;
-            if(count >= 4){
-                recommendList.add(
-                        Recommend.builder()
-                                .dogId(p.getPpDogId())
-                                .dogType(DogType.개인보호견)
-                                .user(missingDog.getUser())
-                                .build()
-                );
-            }
-        }
-
-        for(ShelterProtectedDog s : sProtectList){
-            int count = 0;
-            if(missingDog.getBreed().equals(s.getBreed())) count++;
-            if(missingDog.getGender().equals(s.getGender())) count++;
-            if(missingDog.getCategoryCloth().equals(s.getCategoryCloth())) count++;
-            if(missingDog.getCategoryColor().equals(s.getCategoryColor())) count++;
-            if(missingDog.getCategoryEar().equals(s.getCategoryEar())) count++;
-            if(missingDog.getCategoryPattern().equals(s.getCategoryPattern())) count++;
-            if(missingDog.getCategoryTail().equals(s.getCategoryTail())) count++;
-            if(count >= 4){
-                recommendList.add(
-                        Recommend.builder()
-                                .dogId(s.getSpDogId())
-                                .dogType(DogType.보호소보호견)
-                                .user(missingDog.getUser())
-                                .build()
-                );
-            }
-        }
-        userRepository.save(user);
-    }
 
     @Override
-    public List<RecommendDto> selectRecommendList(RequestReportDto requestReportDto) {
-        List<RecommendDto> recommendDtoList = new ArrayList<>();
-        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
-        List<Recommend> recommendList = user.get().getRecommends();
-        for(Recommend r : recommendList){
-            RecommendDto recommendDto = new RecommendDto();
-            if(r.getDogType().getCode()==1){
-                PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(r.getDogId());
-                recommendDto.setPersonalProtectionId(personalProtectedDog.getPpDogId());
-                recommendDto.setKg(personalProtectedDog.getWeight());
-                recommendDto.setAge(personalProtectedDog.getAge());
-                recommendDto.setName(personalProtectedDog.getName());
-                recommendDto.setBreedId(personalProtectedDog.getBreed().getBreedId());
-                recommendDto.setBreedName(personalProtectedDog.getBreed().getName());
-                recommendDto.setThumbnail(
-                        FileDto.builder()
-                                .filePath(personalProtectedDog.getImages().get(0).getFilePath())
-                                .build()
-                );
-                recommendDto.setNeuteredCode(personalProtectedDog.getNeutered().getCode());
-                recommendDto.setNeutered(personalProtectedDog.getNeutered().name());
-            }else if(r.getDogType().getCode()==2){
-                ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(r.getDogId());
-                recommendDto.setProtectId(shelterProtectedDog.getSpDogId());
-                recommendDto.setKg(shelterProtectedDog.getWeight());
-                recommendDto.setAge(shelterProtectedDog.getAge());
-                recommendDto.setName(shelterProtectedDog.getName());
-                recommendDto.setBreedId(shelterProtectedDog.getBreed().getBreedId());
-                recommendDto.setBreedName(shelterProtectedDog.getBreed().getName());
-                recommendDto.setThumbnail(
-                        FileDto.builder()
-                                .filePath(shelterProtectedDog.getImages().get(0).getFilePath())
-                                .build()
-                );
-                recommendDto.setNeuteredCode(shelterProtectedDog.getNeutered().getCode());
-                recommendDto.setNeutered(shelterProtectedDog.getNeutered().name());
+    public ResponseListDto selectRecommendList(Long missingId,RequestReportDto requestReportDto) {
+        ResponseListDto responseListDto = new ResponseListDto();
+        List<ProtectDto> protectDtoList = new ArrayList<>();
+        MissingDog missingDog = missingDogRepository.findByMissingId(missingId);
+        //Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        PageRequest pageRequest = PageRequest.of(requestReportDto.getOffSet(), requestReportDto.getLimit());
+        System.out.println(missingDog);
+        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
+        for(ShelterProtectedDog s : shelterProtectedDogPage){
+            ProtectDto protectDto = new ProtectDto();
+            protectDto.setProtectId(s.getSpDogId());
+            protectDto.setKg(s.getWeight());
+            protectDto.setAge(s.getAge());
+            protectDto.setProtectName(s.getName());
+            protectDto.setBreedId(s.getBreed().getBreedId());
+            protectDto.setBreedName(s.getBreed().getName());
+            if ((s.getImages().size() > 0)) {
+                protectDto.setThumbnail(s.getImages().get(0).getFilePath());
+            } else {
+                protectDto.setThumbnail(fileService.getFileUrl(fileService.getDefaultImage()));
             }
-            recommendDtoList.add(recommendDto);
-        }
-        return recommendDtoList;
-    }
+            protectDto.setNeuteredCode(s.getNeutered().getCode());
+            protectDto.setNeutered(s.getNeutered().name());
+            protectDto.setStateCode(s.getStateCode().getCode());
+            protectDto.setState(s.getStateCode().name());
+            protectDto.setGenderCode(s.getGender().getCode());
+            protectDto.setGender(s.getGender().name());
 
-    @Override
-    public HashMap<String, Integer> selectRecommendCount(RequestReportDto requestReportDto) {
-        return null;
+            protectDtoList.add(protectDto);
+        }
+        responseListDto.setList(protectDtoList);
+        responseListDto.setTotalPage(shelterProtectedDogPage.getTotalPages());
+        responseListDto.setTotalCount(shelterProtectedDogPage.getTotalElements());
+        return responseListDto;
     }
 }

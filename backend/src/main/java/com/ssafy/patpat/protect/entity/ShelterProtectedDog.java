@@ -42,6 +42,8 @@ public class ShelterProtectedDog {
     private Cloth categoryCloth;//
     private String name;//
     private Integer age;//
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 
     private ProtectState stateCode;//
 

@@ -3,6 +3,7 @@ package com.ssafy.patpat.shelter.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.patpat.common.code.MBTI;
+import com.ssafy.patpat.common.code.TimeCode;
 import com.ssafy.patpat.common.dto.FileDto;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
@@ -345,6 +346,19 @@ public class ShelterServiceImpl implements ShelterService{
                     shelter.setOwner(owner);
 
                     shelter = shelterRepository.save(shelter);
+
+                    List<Time> timeList = new ArrayList<>();
+                    for(TimeCode t : TimeCode.values()){
+                        timeList.add(
+                                Time.builder()
+                                        .timeCode(t)
+                                        .active(true)
+                                        .shelter(shelter)
+                                        .build()
+                        );
+                    }
+                    timeRepository.saveAll(timeList);
+
                     userRepository.save(user.get());
                     dto.setShelterId(shelter.getShelterId());
                 }
