@@ -375,7 +375,7 @@ public class ReportServiceImpl implements ReportService{
                 .age(personalProtectedDog.getAge())
                 .name(personalProtectedDog.getName())
                 .categoryCloth(personalProtectedDog.getCategoryCloth().name())
-                .categoryTailCode(personalProtectedDog.getCategoryCloth().getCode())
+                .categoryClothCode(personalProtectedDog.getCategoryCloth().getCode())
                 .categoryColor(colorCode)
                 .categoryEar(personalProtectedDog.getCategoryEar().name())
                 .categoryEarCode(personalProtectedDog.getCategoryEar().getCode())
