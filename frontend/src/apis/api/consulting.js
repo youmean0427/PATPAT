@@ -32,9 +32,9 @@ export const getMyConsultations = async (limit, offset, stateCode) => {
  * @param {*} offset
  * @returns
  */
-export const getShelterConsultations = async (shelterId, limit, offset) => {
+export const getShelterConsultations = async (shelterId, limit, offset, stateCode) => {
   const { data } = await authInstance.get(
-    `/consultations/shelters?limit=${limit}&offSet=${offset}&shelterId=${shelterId}`
+    `/consultations/shelters?limit=${limit}&offSet=${offset}&shelterId=${shelterId}&stateCode=${stateCode}`
   );
   return data;
 };
@@ -72,9 +72,8 @@ export const createConsultant = async data => {
  * @param {json} data
  */
 export const updateConsultant = async (consultingId, data) => {
-  const res = await authInstance.put(`/consultations/${consultingId}`, {
+  const res = await authInstance.put(`/consultations/${consultingId}`, data, {
     headers: { 'Content-Type': 'application/json' },
-    body: { ...data },
   });
   return res;
 };

@@ -6,6 +6,24 @@
   row-gap: 2rem;
   column-gap: 1.5rem;
 }
+
+.filter {
+  display: flex;
+  margin-bottom: 3rem;
+  gap: 1rem;
+  &-item {
+    font-size: 1.4rem;
+    color: $gray-color;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      color: $black-color;
+    }
+    &.active {
+      color: $black-color;
+    }
+  }
+}
 @include breakpoint(md) {
   .list {
     grid-template-columns: repeat(2, minmax(0, 1fr));

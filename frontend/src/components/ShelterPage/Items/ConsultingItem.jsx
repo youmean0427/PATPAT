@@ -1,10 +1,5 @@
-import { updateConsultant } from 'apis/api/consulting';
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './ConsultingItem.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setShelter } from 'redux/shelter';
-import { useMutation } from '@tanstack/react-query';
 import ConsultingCard from 'components/Common/Card/ConsultingCard';
 import { Box, LinearProgress, Typography } from '@mui/material';
 import { formatDate, formatTime } from 'utils/formatDate';
@@ -12,16 +7,8 @@ import ConsultingBadge from 'components/Common/Badge/ConsultingBadge';
 import useModal from 'hooks/useModal';
 import ConsultingStateModal from 'components/Common/Modal/shelters/ConsultingStateModal';
 
-export default function ConsultingItem({ item }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+export default function ConsultingItem({ item, filterCode }) {
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
-  const { mutate } = useMutation((consultingId, data) => updateConsultant(consultingId, data), {
-    onSuccess: data => {
-      dispatch(setShelter({ resIsShelter: true, resShelterId: shelterId, resUserName: shelterName }));
-      navigate('/consulting/meeting');
-    },
-  });
 
   return (
     <ConsultingCard>
@@ -60,6 +47,12 @@ export default function ConsultingItem({ item }) {
           handleClickModalClose={handleClickModalClose}
           state={item.state}
           stateCode={item.stateCode}
+          consultingId={item.consultingId}
+          shelterId={item.shelterId}
+          shelterName={item.shelterName}
+          filterCode={filterCode}
+          userName={item.userName}
+          consultingDate={item.consultingDate}
         />
       )}
     </ConsultingCard>

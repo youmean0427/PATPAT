@@ -1,8 +1,25 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateConsultant } from 'apis/api/consulting';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setConsulting } from 'redux/consulting';
 import ModalConsultingFrame from '../ModalConsultingFrame';
 import ModalFrame from '../ModalFrame';
 import styles from './ConsultingStateModal.module.scss';
-export default function ConsultingStateModal({ isOpen, handleClickModalClose, state, stateCode }) {
+export default function ConsultingStateModal({
+  isOpen,
+  handleClickModalClose,
+  state,
+  stateCode,
+  consultingId,
+  shelterId,
+  shelterName,
+  filterCode,
+  consultingDate,
+}) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleMouseOver = (e, state) => {
     const target = document.querySelector(`.${styles.state}`);
     const orig = e;
@@ -42,6 +59,24 @@ export default function ConsultingStateModal({ isOpen, handleClickModalClose, st
       target.classList.add(styles.six);
     }
   };
+  const handleClick = state => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const date = today.getDate();
+    console.log(consultingDate);
+    if (state === 3) {
+      if (consultingDate[0] === year && consultingDate[1] === month && consultingDate[2] === date) {
+        console.log('aa');
+        mutate({ consultingId, state });
+      } else {
+        console.log('ss');
+        alert('당일에만 가능 합니다.');
+      }
+    } else {
+      mutate({ consultingId, state });
+    }
+  };
   const question = stateCode => {
     if (stateCode === 0) {
       // 대기인 상태
@@ -50,6 +85,7 @@ export default function ConsultingStateModal({ isOpen, handleClickModalClose, st
           <div className={`${styles.select} ${styles.approve}`}>
             <span>1</span>
             <span
+              onClick={() => handleClick(1)}
               className={styles.btn}
               onMouseOver={e => handleMouseOver(e, 'one')}
               onMouseOut={e => handleMouseOut(e)}
@@ -60,6 +96,7 @@ export default function ConsultingStateModal({ isOpen, handleClickModalClose, st
           <div className={`${styles.select} ${styles.reject}`}>
             <span>2</span>
             <span
+              onClick={() => handleClick(2)}
               className={styles.btn}
               onMouseOver={e => handleMouseOver(e, 'two')}
               onMouseOut={e => handleMouseOut(e)}
@@ -74,6 +111,7 @@ export default function ConsultingStateModal({ isOpen, handleClickModalClose, st
       return (
         <div className={`${styles.select} ${styles.open}`}>
           <span
+            onClick={() => handleClick(3)}
             className={styles.btn}
             onMouseOver={e => handleMouseOver(e, 'three')}
             onMouseOut={e => handleMouseOut(e)}
@@ -90,6 +128,7 @@ export default function ConsultingStateModal({ isOpen, handleClickModalClose, st
           <div className={`${styles.select} ${styles.approve}`}>
             <span>1</span>
             <span
+              onClick={() => handleClick(5)}
               className={styles.btn}
               onMouseOver={e => handleMouseOver(e, 'five')}
               onMouseOut={e => handleMouseOut(e)}
@@ -100,6 +139,7 @@ export default function ConsultingStateModal({ isOpen, handleClickModalClose, st
           <div className={`${styles.select} ${styles.reject}`}>
             <span>2</span>
             <span
+              onClick={() => handleClick(6)}
               className={styles.btn}
               onMouseOver={e => handleMouseOver(e, 'six')}
               onMouseOut={e => handleMouseOut(e)}
@@ -111,6 +151,24 @@ export default function ConsultingStateModal({ isOpen, handleClickModalClose, st
       );
     }
   };
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(
+    ['updateConsultingState'],
+    ({ consultingId, state }) => {
+      return updateConsultant(consultingId, { stateCode: state });
+    },
+    {
+      onSuccess: data => {
+        queryClient.invalidateQueries(['getConsultations', filterCode]);
+        handleClickModalClose();
+        if (stateCode === 1) {
+          mutate({ consultingId, state: 4 });
+          dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
+          navigate('/consulting/meeting');
+        }
+      },
+    }
+  );
   const customStyle = () => {
     if (stateCode === 0) {
       return `${styles.state} ${styles.zero}`;
