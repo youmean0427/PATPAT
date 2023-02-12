@@ -9,7 +9,7 @@ import ConsultingStateModal from 'components/Common/Modal/shelters/ConsultingSta
 
 export default function ConsultingItem({ item, filterCode }) {
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
-  console.log(item.consultingDate);
+
   return (
     <ConsultingCard>
       <div className={styles.info}>

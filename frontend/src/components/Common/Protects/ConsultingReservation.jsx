@@ -10,6 +10,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import SelectTime from './SelectTime';
+import { useNavigate } from 'react-router-dom';
 
 export default function ConsultingReservation({ data }) {
   const [modal, setModal] = useState(false);
@@ -18,11 +19,16 @@ export default function ConsultingReservation({ data }) {
   const [timeClick, setTimeClick] = useState(false);
   const [selectTime, setSelectTime] = useState();
   const [click, setClick] = useState([false, false, false, false, false, false]);
-
-  const userId = JSON.parse(localStorage.getItem('user')).userId;
+  const [userId, setUserId] = useState();
+  const navigate = useNavigate();
 
   const openModal = idx => {
-    setModal(true);
+    if (userId === undefined) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/login');
+    } else {
+      setModal(true);
+    }
   };
 
   const closeModal = () => {
@@ -32,7 +38,7 @@ export default function ConsultingReservation({ data }) {
     alert('신청되었습니다.');
     const sendData = {
       consultingDate: moment(value).format('YYYY-MM-DD'),
-      shelterId: 316,
+      shelterId: data.shelterId,
       timeCode: selectTime,
       shelterDogId: data.protectId,
       userid: userId,
@@ -44,6 +50,12 @@ export default function ConsultingReservation({ data }) {
   const saveFunction = selTime => {
     setSelectTime(selTime);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('user') !== null) {
+      setUserId(JSON.parse(localStorage.getItem('user')).userId);
+    }
+  }, []);
 
   return (
     <>

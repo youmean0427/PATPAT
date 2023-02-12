@@ -10,13 +10,6 @@ import ConsultingReservation from './ConsultingReservation';
 
 export default function ProtectsDetail() {
   const protectId = useParams();
-  const [userId, setUserId] = useState();
-
-  useEffect(() => {
-    if (localStorage.getItem('user') !== null) {
-      setUserId(JSON.parse(localStorage.getItem('user')).userId);
-    }
-  }, []);
 
   const { data, isLoading } = useQuery({
     queryKey: ['getProtectDetail'],

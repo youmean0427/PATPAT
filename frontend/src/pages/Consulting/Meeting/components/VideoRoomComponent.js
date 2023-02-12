@@ -19,8 +19,11 @@ const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'htt
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
-    this.createSessionId = String(store.getState().user.value.resShelterId);
-    this.createUserName = store.getState().user.value.resUserName;
+    this.createSessionId = String(store.getState().shelter.value.resShelterId);
+    this.isShelter = store.getState().shelter.value.resUserName;
+    this.createUserName = this.isShelter
+      ? store.getState().shelter.value.resUserName
+      : store.getState().user.value.resUserName;
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     let sessionName = this.props.sessionName ? this.props.sessionName : this.createSessionId;
@@ -519,6 +522,7 @@ class VideoRoomComponent extends Component {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     const chatDisplay = { display: this.state.chatDisplay };
+    const isShelter = this.isShelter;
 
     return (
       <div className="container" id="container">
@@ -534,6 +538,7 @@ class VideoRoomComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          isShelter={isShelter}
         />
 
         <DialogExtensionComponent

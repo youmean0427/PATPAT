@@ -7,30 +7,97 @@
   justify-content: center;
   align-items: center;
 }
+.img {
+  width: 100%;
+}
+$d: 215px;
+$w: $d;
+$h: $d;
+$color-base: rgba(27, 45, 65, 0);
+$color-btn: $main-color;
+$background-ok: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/953/ok_1.svg) no-repeat center center;
+$hover: 650ms;
+$ease: cubic-bezier(0.68, -0.55, 0.265, 1.65);
 
-.volunteer {
-  &-button {
-    width: 100px;
-    background-color: $main-color;
-    color: $white-color;
-    padding: 1rem;
-
-    border-radius: 0.4rem;
-    text-align: center;
-
-    font-style: $spoqa-font;
-    font-size: 20px;
-  }
+.circle {
+  margin-top: -80px;
+  cursor: pointer;
+  width: $w;
+  height: $h;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.mask-b {
+  border-radius: 100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.mask-b {
+  background: $color-base;
+}
+.cursor,
+.cursor::before {
+  background: $background-ok;
+  position: absolute;
+  width: 44px;
+  height: 44px;
 }
 
-@include breakpoint(md) {
-  .img {
-    width: 80vw;
+.cursor {
+  background-position: 0px -31px;
+  top: 11em;
+  left: 12em;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  transition: transform ($hover - 100) ease;
+  &::before {
+    background-position: -43px -30px;
+    content: '';
+    top: -0.3em;
+    left: 0.3em;
+    will-change: transform;
+    transform: translateX(0px) translateZ(0px);
+    transition: transform ($hover - 100) ease;
   }
 }
+//148 70
+.ok-btn {
+  background: $color-btn;
+  border-radius: 0.7em;
+  box-shadow: 0 5px 0 $main-accent-color;
+  color: #fff;
+  font-size: 2em;
+  font-weight: 500;
+  text-shadow: 0 2px 0 $main-accent-color;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 148px;
+  height: 70px;
+  margin-left: -(148px/2);
+  margin-top: -(70px/2);
+  will-change: transform;
+  transform: translateY(0px) translateZ(0px);
+  line-height: 70px;
+  transition: all ($hover - 100) ease;
+}
 
-@include breakpoint(sm) {
-  .img {
-    width: 80vw;
+.circle:hover > .mask-b {
+  > .ok-btn {
+    background: darken($color-btn, 5%);
+    transform: translateY(5px) translateZ(0px);
+    transition: all ($hover - 200) 100ms $ease;
+  }
+  > .cursor {
+    transform: translate3d(-0.3em, 0.5em, 0);
+    transition: transform ($hover - 200) $ease;
+    &::before {
+      transform: translateX(-4px) translateZ(0px);
+      transition: transform ($hover - 200) $ease;
+    }
   }
 }

@@ -3,16 +3,16 @@ import styles from './ReservationItem.module.scss';
 import ConsultingImg from 'assets/images/shelter.png';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setConsulting } from 'redux/consulting';
+import { setUser } from 'redux/user';
 
 export default function Consulting({ item }) {
   const { consultingId, shelterId, shelterName, address, timeCode, consultingDate, stateCode, state } = item;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const name = JSON.parse(localStorage.getItem('user')).userName;
   const startConsulting = () => {
-    dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
+    dispatch(setUser({ resIsShelter: false, resShelterId: shelterId, resUserName: name }));
     navigate('/consulting/meeting');
   };
 
@@ -46,8 +46,8 @@ export default function Consulting({ item }) {
         ) : (
           <button className={styles.cancel} style={{ visibility: 'hidden' }}></button>
         )}
-        {stateCode === 5 ? (
-          <button disabled={true} onClick={startConsulting} className={styles.disabled}>
+        {stateCode === 4 ? (
+          <button onClick={startConsulting} className={styles.state8}>
             방참가
           </button>
         ) : stateCode === 8 ? (

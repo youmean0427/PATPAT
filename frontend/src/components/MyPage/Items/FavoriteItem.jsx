@@ -20,8 +20,8 @@ export default function FavoriteItem({ item }) {
   };
 
   return (
-    <div className={styles.card} onClick={handleCardClick}>
-      <img src={imageUrl} alt={name} />
+    <Card>
+      <img src={imageUrl} alt={name} onClick={handleCardClick} />
       <div
         className={`${styles.state} ${
           stateCode === 0
@@ -46,14 +46,22 @@ export default function FavoriteItem({ item }) {
             {age}살 / {weight}kg
           </div>
         </div>
-        <div className={styles['fav-icon']}>
+        <div className={styles['fav-icon']} title={favorite ? '꾹 해제' : '꾹 등록'}>
           {favorite ? (
-            <PetsIcon onClick={() => handleFavBtn()} sx={{ fontSize: '55px', color: 'hotpink' }} />
+            <PetsIcon
+              className={styles.icon}
+              onClick={() => handleFavBtn()}
+              sx={{ fontSize: '55px', color: 'hotpink' }}
+            />
           ) : (
-            <PetsIcon onClick={() => handleFavBtn()} sx={{ fontSize: '55px', color: 'lightgray' }} />
+            <PetsIcon
+              className={styles.icon}
+              onClick={() => handleFavBtn()}
+              sx={{ fontSize: '55px', color: 'lightgray' }}
+            />
           )}
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
