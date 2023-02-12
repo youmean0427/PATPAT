@@ -9,6 +9,7 @@ import com.ssafy.patpat.report.service.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -92,35 +93,13 @@ public class ReportController {
      * 내가 잃어버린 강아지로 의심되는 보호견 리스트
      * @return
      */
-    @GetMapping("/recommends")
+    @GetMapping("/recommends/{missingId}")
     @ApiOperation(value = "유사견종 조회", notes = "실종된 견종과 유사한 견종 조회")
-    public ResponseEntity<Object> selectRecommendList(RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectRecommendList(Long missingId,RequestReportDto requestReportDto){
         //서비스 호출 코드
-        List<ProtectDto> protectDtoList = service.selectRecommendList(requestReportDto);
-        if(protectDtoList.size() > 0){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(protectDtoList);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
-    }
-    /**
-     * 내가 잃어버린 강아지로 의심되는 보호견 갯수
-     * @return
-     */
-    @GetMapping("/recommends/count")
-    @ApiOperation(value = "유사견종 마리수 조회", notes = "유사견종 갯수 조회")
-    public ResponseEntity<Object> selectRecommendCount(RequestReportDto requestReportDto){
-        //서비스 호출 코드
-        HashMap<String, Integer> map = service.selectRecommendCount(requestReportDto);
-        if(map.size() > 0){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(map);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseMessage("FAIL"));
-        }
+        ResponseListDto responseListDto = service.selectRecommendList(missingId,requestReportDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(responseListDto);
     }
 
     /**

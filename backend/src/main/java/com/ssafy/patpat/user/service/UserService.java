@@ -4,11 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
-import com.ssafy.patpat.common.entity.Recommend;
 import com.ssafy.patpat.common.redis.RedisService;
-import com.ssafy.patpat.common.redis.RefreshRedis;
-import com.ssafy.patpat.common.redis.RefreshRedisRepository;
-import com.ssafy.patpat.common.security.filter.JwtFilter;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
@@ -23,10 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -130,8 +124,6 @@ public class UserService {
 
         List<ShelterProtectedDog> favoriteDogs = new ArrayList<>();
 
-        List<Recommend> recommends = new ArrayList<>();
-
         String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
         Image image = fileService.insertFileUrl(userDto.getProfileImageUrl(), userDto.getProvider());
@@ -146,7 +138,6 @@ public class UserService {
                 .image(image)
                 .authorities(list)
                 .favoriteDogs(favoriteDogs)
-                .recommends(recommends)
                 .build();
 
         return userRepository.save(user);

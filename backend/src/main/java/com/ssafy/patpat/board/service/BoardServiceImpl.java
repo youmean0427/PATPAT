@@ -247,6 +247,8 @@ public class BoardServiceImpl implements BoardService{
                     .images(images)
                     .build();
             boardRepository.save(board);
+            user.get().updateExp(user.get().getExp()+1);
+            userRepository.save(user.get());
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
 //            if(!uploadDir.exists()) uploadDir.mkdir();

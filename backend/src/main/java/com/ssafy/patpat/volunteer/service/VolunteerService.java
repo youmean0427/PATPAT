@@ -1,5 +1,6 @@
 package com.ssafy.patpat.volunteer.service;
 
+import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.error.VolunteerException;
@@ -636,6 +637,24 @@ public class VolunteerService {
                 }
             }
 
+        }
+        if(reservationDto.getStateCode() == 4){
+            vr.setReservationStateCode(Reservation.완료);
+            volunteerReservationRepository.save(vr);
+            /** ---- 경험치 올리기 코드 ----**/
+                User user = vr.getUser();
+                user.updateExp(user.getExp()+1);
+                userRepository.save(user);
+            /** ------------------------**/
+        }
+        if(reservationDto.getStateCode() == 3){
+            vr.setReservationStateCode(Reservation.불참);
+            volunteerReservationRepository.save(vr);
+            /** ---- 경험치 올리기 코드 ----**/
+            User user = vr.getUser();
+            user.updateExp(user.getExp()-1);
+            userRepository.save(user);
+            /** ------------------------**/
         }
 
         return true;
