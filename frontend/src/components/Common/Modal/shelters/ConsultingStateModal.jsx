@@ -161,7 +161,6 @@ export default function ConsultingStateModal({
         queryClient.invalidateQueries(['getConsultations', filterCode]);
         handleClickModalClose();
         if (stateCode === 1) {
-          mutate({ consultingId, state: 4 });
           dispatch(setShelter({ resIsShelter: true, resShelterId: shelterId, resUserName: shelterName }));
           navigate('/consulting/meeting');
         }

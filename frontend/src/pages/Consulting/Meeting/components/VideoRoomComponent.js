@@ -14,13 +14,16 @@ import ToolbarComponent from './toolbar/ToolbarComponent';
 import store from 'redux/store';
 
 const localUser = new UserModel();
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://i8e104.p.ssafy.io:8081';
+const APPLICATION_SERVER_URL = process.env.REACT_APP_APPLICATION_SERVER_URL;
 
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
-    this.createSessionId = String(store.getState().shelter.value.resShelterId);
-    this.isShelter = store.getState().shelter.value.resUserName;
+    this.isShelter = store.getState().shelter.value.resIsShelter;
+    this.createSessionId = this.isShelter
+      ? String(store.getState().shelter.value.resShelterId)
+      : String(store.getState().user.value.resShelterId);
+    this.isShelter = store.getState().shelter.value.resIsShelter;
     this.createUserName = this.isShelter
       ? store.getState().shelter.value.resUserName
       : store.getState().user.value.resUserName;
@@ -600,6 +603,7 @@ class VideoRoomComponent extends Component {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+    console.log(response.data);
     return response.data; // The sessionId
   }
 
