@@ -6,6 +6,7 @@ import { authInstance } from 'apis/utils';
  * GET : 나의 상담 내역 조회 리스트
  * @param {int} limit
  * @param {int} offset
+ * @param {int} stateCode
  * @returns
  * [
     {
