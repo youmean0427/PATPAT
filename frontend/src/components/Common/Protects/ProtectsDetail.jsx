@@ -10,10 +10,11 @@ import ConsultingReservation from './ConsultingReservation';
 
 export default function ProtectsDetail() {
   const protectId = useParams();
-
+  const userInfo = JSON.parse(localStorage.getItem('user'));
+  const isLogin = userInfo === null ? false : true;
   const { data, isLoading } = useQuery({
     queryKey: ['getProtectDetail'],
-    queryFn: () => getProtectDetail(protectId.id),
+    queryFn: () => getProtectDetail(protectId.id, isLogin),
   });
 
   if (isLoading) return;
