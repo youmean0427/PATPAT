@@ -3,9 +3,8 @@ import { updateConsultant } from 'apis/api/consulting';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setConsulting } from 'redux/consulting';
+import { setShelter } from 'redux/shelter';
 import ModalConsultingFrame from '../ModalConsultingFrame';
-import ModalFrame from '../ModalFrame';
 import styles from './ConsultingStateModal.module.scss';
 export default function ConsultingStateModal({
   isOpen,
@@ -163,7 +162,7 @@ export default function ConsultingStateModal({
         handleClickModalClose();
         if (stateCode === 1) {
           mutate({ consultingId, state: 4 });
-          dispatch(setConsulting({ resShelterId: shelterId, resUserName: shelterName }));
+          dispatch(setShelter({ resIsShelter: true, resShelterId: shelterId, resUserName: shelterName }));
           navigate('/consulting/meeting');
         }
       },

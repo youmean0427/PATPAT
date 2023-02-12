@@ -1,5 +1,5 @@
 import { createConsultant } from 'apis/api/consulting';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './ConsultingReservation.module.scss';
 import DetailModal from 'components/Common/DetailModal';
 import Calendar from 'react-calendar';
