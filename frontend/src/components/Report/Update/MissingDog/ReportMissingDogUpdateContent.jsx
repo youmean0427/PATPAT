@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createReport } from 'apis/api/report';
+import { updateReport } from 'apis/api/report';
 import React, { useEffect, useState } from 'react';
-import styles from './ReportCreateContent.module.scss';
+import styles from './ReportMissingDogUpdateContent.module.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select';
-import Test from '../../../assets/images/volunteer.png';
+import Test from '../../../../assets/images/volunteer.png';
 import { getBreedsList } from 'apis/api/shelter';
 import { changeBreedList } from 'utils/changeSelectTemplate';
 import './ckeditor.scss';
@@ -21,39 +21,39 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { CgCloseO } from 'react-icons/cg';
 
-export default function ReportCreateContent() {
-  // info
+export default function ReportMissingDogUpdateContent({ items }) {
+  const item = items;
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [name, setName] = useState('');
-  const [age, setAge] = useState(0);
-  const [typeCode, setTypeCode] = useState({ value: 0 });
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
-  const [genderCode, setGenderCode] = useState(3);
-  const [breedId, setBreedId] = useState({ value: 0 });
-  const [kg, setKg] = useState(0);
-  const [neuteredCode, setNeuteredCode] = useState({ value: 0 });
-  const [content, setContent] = useState('');
+  // info
+  const [title, setTitle] = useState(item.title);
+  const [name, setName] = useState(item.name);
+  const [age, setAge] = useState(item.age);
+  const [stateCode, setStateCode] = useState({ value: item.stateCode });
+  const [lat, setLat] = useState(item.latitude);
+  const [lng, setLng] = useState(item.longitude);
+  const [position, setPosition] = useState({ lat: lat, lng: lng });
 
+  const [genderCode, setGenderCode] = useState(item.genderCode);
+  const [breedId, setBreedId] = useState({ value: item.breedId });
+  const [kg, setKg] = useState(item.kg);
+  const [neuteredCode, setNeuteredCode] = useState({ value: item.neuteredCode });
+  const [content, setContent] = useState(item.content);
   // category
-  const [categoryEar, setCategoryEar] = useState({ value: 0 });
-  const [categoryColor, setCategoryColor] = useState([]);
-  const [categoryPattern, setCategoryPattern] = useState({ value: 0 });
-  const [categoryTail, setCategoryTail] = useState({ value: 0 });
-  const [categoryCloth, setCategoryCloth] = useState({ value: 0 });
-  const [categoryClothColor, setCategoryClothColor] = useState({ value: 0 });
+  const [categoryEar, setCategoryEar] = useState({ value: item.categoryEarCode });
+  const [categoryColor, setCategoryColor] = useState(item.categoryColor);
+  const [categoryPattern, setCategoryPattern] = useState({ value: item.categoryPatternCode });
+  const [categoryTail, setCategoryTail] = useState({ value: item.categoryTailCode });
+  const [categoryCloth, setCategoryCloth] = useState({ value: item.categoryClothCode });
+
   const [color1, setColor1] = useState('#000000');
   const [color2, setColor2] = useState('#000000');
   const [color3, setColor3] = useState('#000000');
 
   // Picture
-  const [preFile, setPreFile] = useState([]);
-  const [fileList, setFileList] = useState([]);
+  const [preFile, setPreFile] = useState(item.fileUrlList);
+  const [fileList, setFileList] = useState(item.fileUrlList);
   const [file2, setFile2] = useState(0);
   const [file3, setFile3] = useState(0);
 
@@ -62,32 +62,21 @@ export default function ReportCreateContent() {
   const [modalNum, setModalNum] = useState();
   const reader = new FileReader();
 
-  let now = new Date();
-  let todayYear = now.getFullYear();
-  let todayMonth = now.getMonth() + 1;
-  let todayDate = now.getDate();
-
-  const registDate = todayYear + '.' + todayMonth + '.' + todayDate;
-  console.log(registDate);
-
   // Alert
   const [titleAlertOpen, setTitleAlertOpen] = useState(0);
   const [fileListAlertOpen, setFileListAlertOpen] = useState(0);
   const [nameAlertOpen, setNameAlertOpen] = useState(0);
-  const [typeCodeAlertOpen, setTypeCodeAlertOpen] = useState(0);
   const [breedAlertOpen, setBreedAlertOpen] = useState(0);
   const [positionAlertOpen, setPositionAlertOpen] = useState(0);
   const [contentAlertOpen, setContentAlertOpen] = useState(0);
-  const [neuteredAlertOpen, setNeuteredAlertOpen] = useState(0);
 
   const titleInput = useRef();
   const fileListInput = useRef();
   const nameInput = useRef();
-  const typeCodeInput = useRef();
+
   const breedInput = useRef();
   const positionInput = useRef();
   const contentInput = useRef();
-  const neuteredInput = useRef();
 
   // useEffect
 
@@ -103,22 +92,10 @@ export default function ReportCreateContent() {
   }, [title]);
 
   useEffect(() => {
-    if (preFile.length !== 0) {
-      setFileListAlertOpen(0);
-    }
-  }, [preFile]);
-
-  useEffect(() => {
     if (name !== '') {
       setNameAlertOpen(0);
     }
   }, [name]);
-
-  useEffect(() => {
-    if (typeCode.value !== 0) {
-      setTypeCodeAlertOpen(0);
-    }
-  }, [typeCode]);
 
   useEffect(() => {
     if (breedId.value !== 0) {
@@ -138,20 +115,16 @@ export default function ReportCreateContent() {
   }, [content]);
 
   useEffect(() => {
-    if (neuteredCode.value !== 0) {
-      setNeuteredAlertOpen(0);
-    }
-  }, [neuteredCode]);
-
-  useEffect(() => {
     setCategoryColor([color1, color2, color3]);
   }, [color1, color2, color3]);
 
   // Picture
+
   const handleAddImages = e => {
     const imageFileList = [...fileList];
     let imageUrlLists = [...preFile];
     const imageLists = e.target.files;
+
     for (let i = 0; i < imageLists.length; i++) {
       imageFileList.push(imageLists[i]);
     }
@@ -172,7 +145,11 @@ export default function ReportCreateContent() {
 
   // FormData
   let formData = new FormData();
-  formData.append('title', title);
+  if (stateCode.value === 1 && title.includes('[완료]') === false) {
+    formData.append('title', `[완료] ${title}`);
+  } else {
+    formData.append('title', title);
+  }
   formData.append('name', name);
   formData.append('age', age);
   formData.append('genderCode', genderCode);
@@ -180,23 +157,31 @@ export default function ReportCreateContent() {
   formData.append('kg', kg);
   formData.append('neuteredCode', neuteredCode.value);
   formData.append('content', content);
+  formData.append('typeCode', 1);
   formData.append('categoryEarCode', categoryEar.value);
   formData.append('categoryColor', categoryColor);
   formData.append('categoryPatternCode', categoryPattern.value);
   formData.append('categoryTailCode', categoryTail.value);
   formData.append('categoryClothCode', categoryCloth.value);
-  formData.append('typeCode', typeCode.value);
+
   formData.append('latitude', lat);
   formData.append('longitude', lng);
-  formData.append('staeCode', 0);
-  // formData.append('date', registDate);
-  // POST (등록)
-  for (let i = 0; i < fileList.length; i++) {
-    formData.append('uploadFile', fileList[i]);
+  if (items.missingId !== null) {
+    formData.append('missingId', items.missingId);
   }
+
+  if (items.personalProtectionId !== null) {
+    formData.append('personalProtectionId', items.personalProtectionId);
+  }
+  formData.append('stateCode', stateCode.value);
+
+  // POST (등록)
+  // for (let i = 0; i < fileList.length; i++) {
+  //   formData.append('uploadFile', fileList[i]);
+  // }
   // formData.append('uploadFile', preFile);
-  const { mutate: mutation } = useMutation(['createReport'], () => {
-    return createReport(formData);
+  const { mutate: mutation } = useMutation(['updateReport'], () => {
+    return updateReport(formData);
   });
 
   // GET (견종 리스트)
@@ -205,15 +190,13 @@ export default function ReportCreateContent() {
     queryFn: () => getBreedsList(),
   });
   const breedData = data;
-  // console.log(uploadFile);
   if (isLoading) return;
 
   // Select Data
-  // console.log(fileList);
 
   const stateOpt = [
-    { value: 1, label: '실종' },
-    { value: 2, label: '임시보호' },
+    { value: 0, label: '실종' },
+    { value: 1, label: '완료' },
   ];
 
   const neuteredOpt = [
@@ -240,7 +223,6 @@ export default function ReportCreateContent() {
     { value: 3, label: '당근꼬리' },
     { value: 4, label: '단발꼬리' },
   ];
-
   const categoryPatternOpt = [
     { value: 0, label: '모름' },
     { value: 1, label: '솔리드' },
@@ -259,7 +241,6 @@ export default function ReportCreateContent() {
     { value: 1, label: 'O' },
   ];
 
-  // Modal
   const openModal = idx => {
     setModalNum(idx);
     setModal(true);
@@ -268,10 +249,10 @@ export default function ReportCreateContent() {
   const closeModal = () => {
     setModal(false);
   };
+
   // Console
 
-  // console.log('fL', fileList);
-  // console.log('pre', preFile);
+  // console.log(fileList, preFile);
 
   // Submit
   const handleSubmit = () => {
@@ -287,13 +268,13 @@ export default function ReportCreateContent() {
       setBreedAlertOpen(1);
       breedInput.current.focus();
     }
-    if (preFile.length === 0) {
+    if (fileList[0] === '') {
       setFileListAlertOpen(1);
     }
-    if (typeCode.value === 0) {
-      setTypeCodeAlertOpen(1);
-      typeCodeInput.current.focus();
-    }
+    // if (typeCode.value === 0) {
+    //   setTypeCodeAlertOpen(1);
+    //   typeCodeInput.current.focus();
+    // }
     if (name === '') {
       setNameAlertOpen(1);
       nameInput.current.focus();
@@ -302,23 +283,18 @@ export default function ReportCreateContent() {
       setTitleAlertOpen(1);
       titleInput.current.focus();
     }
-    if (neuteredCode.value === 0) {
-      setNeuteredAlertOpen(1);
-      neuteredInput.current.focus();
-    }
 
     if (
       lat !== 0 &&
       lng !== 0 &&
       content !== '' &&
       breedId.value !== 0 &&
-      typeCode.value !== 0 &&
-      (name !== '') & (title !== '') &&
-      neuteredCode.value !== 0
+      // typeCode.value !== 0 &&
+      (name !== '') & (title !== '')
     ) {
       mutation();
       // navigate('/report');
-      alert('등록되었습니다.');
+      alert('수정되었습니다.');
       window.location.replace('/report');
     }
   };
@@ -332,7 +308,7 @@ export default function ReportCreateContent() {
       >
         <div className={styles.container}>
           <div className={styles.title}>
-            <input ref={titleInput} type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <input type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} value={title} />
             <div>
               {titleAlertOpen === 0 ? null : (
                 <div>
@@ -354,17 +330,13 @@ export default function ReportCreateContent() {
                   ) : (
                     <div>
                       {file2 === 1 ? (
-                        <img className={styles.thumbnail} src={preFile[1]} alt="" />
+                        <img className={styles.thumbnail} src={preFile[1].filePath} alt="" />
                       ) : file3 === 1 ? (
-                        <img className={styles.thumbnail} src={preFile[2]} alt="" />
+                        <img className={styles.thumbnail} src={preFile[2].filePath} alt="" />
                       ) : (
                         <div>
-                          <div className={styles['deleteButton-box']}>
-                            <button className={styles.deleteButton} onClick={() => handleDeleteImage(0)}>
-                              <CgCloseO className={styles.deleteButtonColor} />
-                            </button>
-                          </div>
-                          <img className={styles.thumbnail} src={preFile[0]} alt="" />
+                          <div className={styles['deleteButton-box']}></div>
+                          <img className={styles.thumbnail} src={preFile[0].filePath} alt="" />
                         </div>
                       )}
                     </div>
@@ -375,13 +347,9 @@ export default function ReportCreateContent() {
                       <img className={styles.subPictureNon} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
-                        <button className={styles.deleteButton} onClick={() => handleDeleteImage(1)}>
-                          <CgCloseO />
-                        </button>
-
                         <img
                           className={styles.subPicture}
-                          src={preFile[1]}
+                          src={preFile[1].filePath}
                           alt={1}
                           onMouseEnter={() => {
                             setFile2(1);
@@ -402,13 +370,10 @@ export default function ReportCreateContent() {
                       <img className={styles.subPictureNon} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
-                        <button className={styles.deleteButton} onClick={() => handleDeleteImage(2)}>
-                          <CgCloseO />
-                        </button>
                         <div className={styles['subPicture-cont']}>
                           <img
                             className={styles.subPicture}
-                            src={preFile[2]}
+                            src={preFile[2].filePath}
                             alt={2}
                             onMouseEnter={() => {
                               setFile3(1);
@@ -428,7 +393,7 @@ export default function ReportCreateContent() {
                     )}
                   </div>
                 </div>
-                <div className={styles.pictureButtonCont}>
+                {/* <div className={styles.pictureButtonCont}>
                   {preFile.length < 3 ? (
                     <label htmlFor="file" onChange={handleAddImages}>
                       <div className={styles.pictureButton}>
@@ -455,14 +420,20 @@ export default function ReportCreateContent() {
                       </Stack>
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
 
             <div className={styles['container-info-content']}>
               <div>
                 <div>
-                  <input ref={nameInput} type="text" placeholder="이름" onChange={e => setName(e.target.value)} />
+                  <input
+                    ref={nameInput}
+                    type="text"
+                    placeholder="이름"
+                    onChange={e => setName(e.target.value)}
+                    value={name}
+                  />
                   {nameAlertOpen === 0 ? null : (
                     <div>
                       <Stack sx={{ width: '100%' }} spacing={2}>
@@ -474,16 +445,12 @@ export default function ReportCreateContent() {
                   )}
                 </div>
                 <div>
-                  <Select options={stateOpt} ref={typeCodeInput} onChange={setTypeCode} placeholder="상태" />
-                  {typeCodeAlertOpen === 0 ? null : (
-                    <div>
-                      <Stack sx={{ width: '100%' }} spacing={2}>
-                        <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
-                          상태를 선택해주세요.
-                        </Alert>
-                      </Stack>
-                    </div>
-                  )}
+                  <Select
+                    options={stateOpt}
+                    onChange={setStateCode}
+                    placeholder="상태"
+                    defaultValue={stateOpt[stateCode.value]}
+                  />
                 </div>
               </div>
 
@@ -491,9 +458,10 @@ export default function ReportCreateContent() {
                 <div>
                   <Select
                     options={changeBreedList(breedData)}
-                    ref={breedInput}
                     onChange={setBreedId}
                     placeholder="견종"
+                    ref={breedInput}
+                    defaultValue={changeBreedList(breedData)[breedId.value]}
                   />
                   {breedAlertOpen === 0 ? null : (
                     <div>
@@ -545,27 +513,21 @@ export default function ReportCreateContent() {
                   </div>
                 </div>
                 <div>
-                  <input type="number" placeholder="나이" onChange={e => setAge(e.target.value)} />
+                  <input type="number" placeholder="나이" onChange={e => setAge(e.target.value)} value={age} />
                 </div>
               </div>
               <div>
                 <div>
-                  <input type="number" placeholder="몸무게" onChange={e => setKg(e.target.value)} />
+                  <input type="number" placeholder="몸무게" onChange={e => setKg(e.target.value)} value={kg} />
                 </div>
                 <div>
                   <div>
-                    <Select ref={neuteredInput} options={neuteredOpt} onChange={setNeuteredCode} placeholder="중성화" />
-                    <div>
-                      {neuteredAlertOpen === 0 ? null : (
-                        <div>
-                          <Stack sx={{ width: '100%' }} spacing={2}>
-                            <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
-                              중성화를 선택해주세요.
-                            </Alert>
-                          </Stack>
-                        </div>
-                      )}
-                    </div>
+                    <Select
+                      options={neuteredOpt}
+                      onChange={setNeuteredCode}
+                      placeholder="중성화"
+                      defaultValue={neuteredOpt[neuteredCode.value]}
+                    />
                   </div>
                 </div>
               </div>
@@ -574,7 +536,6 @@ export default function ReportCreateContent() {
         </div>
 
         <div className={styles.subTitle}>카테고리 등록 (선택사항)</div>
-
         <hr />
         <div className={styles.container}>
           <div className={styles['container-character']}>
@@ -637,7 +598,12 @@ export default function ReportCreateContent() {
                   ) : categoryPattern.value === 3 ? (
                     <input className={styles.colorPickerThree} type="color" onChange={e => setColor1(e.target.value)} />
                   ) : (
-                    <input className={styles.colorPickerDisabled} type="color" disabled />
+                    <input
+                      className={styles.colorPickerDisabled}
+                      type="color"
+                      onChange={e => setColor1(e.target.value)}
+                      disabled
+                    />
                   )}
                   {categoryPattern.value === 2 ? (
                     <input className={styles.colorPickerHalf} type="color" onChange={e => setColor2(e.target.value)} />
@@ -663,25 +629,17 @@ export default function ReportCreateContent() {
             </Stack>
           </div>
         )}
-        <div className={styles.map} ref={positionInput}>
-          <Map
-            // 지도를 표시할 Container
-            center={{
+        <div className={styles.map}>
+          <Map // 지도를 표시할 Container
+            center={
               // 지도의 중심좌표
-              lat: 35.95,
-              lng: 128.25,
-            }}
+              position
+            }
             style={{
               width: '100%',
               height: '100%',
             }}
-            level={13} // 지도의 확대 레벨
-            onClick={(_t, mouseEvent) =>
-              setPosition({
-                lat: mouseEvent.latLng.getLat(),
-                lng: mouseEvent.latLng.getLng(),
-              })
-            }
+            level={4} // 지도의 확대 레벨
           >
             {position && (
               <MapMarker
@@ -703,10 +661,7 @@ export default function ReportCreateContent() {
             )}
           </Map>
         </div>
-
-        <div className={styles.subTitle} ref={contentInput}>
-          상세특징
-        </div>
+        <div className={styles.subTitle}>상세특징</div>
         <hr />
         <div>
           {contentAlertOpen === 0 ? null : (
@@ -720,6 +675,7 @@ export default function ReportCreateContent() {
           )}
           <div className={styles.ckEditor}>
             <CKEditor
+              data={item.content}
               editor={ClassicEditor}
               onReady={editor => {
                 // You can store the "editor" and use when it is needed.
@@ -740,7 +696,7 @@ export default function ReportCreateContent() {
         <div>
           <div className={styles['container-button']}>
             <button onClick={handleSubmit} className={styles.button}>
-              <div>등록</div>
+              <div>수정</div>
             </button>
             <Link to="/report" className="links">
               <button className={styles.button}>

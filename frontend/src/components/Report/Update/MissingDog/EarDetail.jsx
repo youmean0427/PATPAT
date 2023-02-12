@@ -7,7 +7,7 @@ import Ear5 from 'assets/images/ear5.png';
 import Ear6 from 'assets/images/ear6.png';
 import Ear7 from 'assets/images/ear7.png';
 import Ear8 from 'assets/images/ear8.png';
-import styles from './ReportUpdateContent.module.scss';
+import styles from './ReportMissingDogUpdateContent.module.scss';
 
 export default function EarDetail() {
   return (

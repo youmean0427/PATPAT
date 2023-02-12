@@ -9,6 +9,7 @@ export default function MissingDogDetail() {
   const location = useLocation();
   const item = location.state.missingId;
   const state = 0;
+
   return (
     <div>
       <MissingDogDetailContent item={item} state={state} />

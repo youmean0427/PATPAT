@@ -27,7 +27,6 @@ import ReportCreate from 'pages/Report/Create/ReportCreate';
 import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
 import NaverLogin from 'pages/Login/SNSLogin/Naver/NaverLogin';
 import GoogleLogin from 'pages/Login/SNSLogin/Google/GoogleLogin';
-import ReportUpdate from 'pages/Report/Update/ReportUpdate';
 import Shelter from 'pages/Shelter/Shelter';
 import SearchShelter from 'pages/SearchShelter/SearchShelter';
 import PersonalDogDetail from 'pages/Report/PersonalDog/PersonalDogDetail';
@@ -47,6 +46,8 @@ import FreeShareUpdate from 'components/Community/FreeShare/FreeShareUpdate';
 import InfoWrite from 'components/Community/Info/InfoWrite';
 import FreeShareWrite from 'components/Community/FreeShare/FreeShareWrite';
 import AdoptionReviewWrite from 'components/Community/AdoptionReview/AdoptionReviewWrite';
+import ReportPersonalDogUpdate from 'pages/Report/Update/PersonalDog/ReportPersonalDogUpdate';
+import ReportMissingDogUpdate from 'pages/Report/Update/MissingDog/ReportMissingDogUpdate';
 
 const router = createBrowserRouter([
   {
@@ -89,8 +90,8 @@ const router = createBrowserRouter([
       { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
       { path: 'report/missing/:id', element: <MissingDogDetail /> },
       { path: 'report/personal/:id', element: <PersonalDogDetail /> },
-      { path: 'report/personal/:id/update', element: <ReportUpdate /> },
-      { path: 'report/missing/:id/update', element: <ReportUpdate /> },
+      { path: 'report/personal/:id/update', element: <ReportPersonalDogUpdate /> },
+      { path: 'report/missing/:id/update', element: <ReportMissingDogUpdate /> },
       { path: 'report/create', element: <ReportCreate /> },
       { path: 'community/freeshareupdate/:id', element: <FreeShareUpdate /> },
       { path: 'community/infoupdate/:id', element: <InfoUpdate /> },
