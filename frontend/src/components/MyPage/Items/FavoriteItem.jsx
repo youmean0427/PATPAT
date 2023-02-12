@@ -18,7 +18,7 @@ export default function FavoriteItem({ item }) {
 
   return (
     <Card>
-      <div onClick={() => navigate(`/protects/${spDogId}`)}>
+      <div className={styles.card} onClick={() => navigate(`/protects/${spDogId}`)}>
         <img src={imageUrl} alt={name} />
         <div className={styles.description}>
           <div className={styles.name}>{name}</div>
