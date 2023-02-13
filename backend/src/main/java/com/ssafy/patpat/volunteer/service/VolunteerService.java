@@ -242,29 +242,29 @@ public class VolunteerService {
         // notice 정보
         VolunteerNotice volunteerNotice = VolunteerNotice.builder()
                 .title(noticeDto.getTitle())
-                .volunteerDate(LocalDate.now().toString())
+                .volunteerDate(noticeDto.getVolunteerDate().toString())
                 .shelter(s.get())
                 .build();
         VolunteerNotice v = volunteerNoticeRepository.save(volunteerNotice);
 
         // schedule 정보
-        List<VolunteerSchedule> volunteerSchedules = new ArrayList<>();
-        if(noticeDto.getList().isEmpty()){
-            // 아무 등록이 없을 때
-            LOGGER.info("등록된 봉사 일정이 없습니다.");
-            return false;
-        }
-        for (VolunteerScheduleDto vs:
-                noticeDto.getList()) {
-            volunteerSchedules.add(VolunteerSchedule.builder()
-                    .capacity(vs.getTotalCapacity())
-                    .startTime(vs.getStartTime())
-                    .endTime(vs.getEndTime())
-                    .guideLine(vs.getGuideLine())
-                    .volunteerNotice(v)
-                    .build());
-        }
-        volunteerScheduleRepository.saveAll(volunteerSchedules);
+//        List<VolunteerSchedule> volunteerSchedules = new ArrayList<>();
+//        if(noticeDto.getList().isEmpty()){
+//            // 아무 등록이 없을 때
+//            LOGGER.info("등록된 봉사 일정이 없습니다.");
+//            return false;
+//        }
+//        for (VolunteerScheduleDto vs:
+//                noticeDto.getList()) {
+//            volunteerSchedules.add(VolunteerSchedule.builder()
+//                    .capacity(vs.getTotalCapacity())
+//                    .startTime(vs.getStartTime())
+//                    .endTime(vs.getEndTime())
+//                    .guideLine(vs.getGuideLine())
+//                    .volunteerNotice(v)
+//                    .build());
+//        }
+//        volunteerScheduleRepository.saveAll(volunteerSchedules);
 
         return true;
     }
