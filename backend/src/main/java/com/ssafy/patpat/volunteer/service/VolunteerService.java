@@ -195,11 +195,12 @@ public class VolunteerService {
     @Transactional
     public List<VolunteerNoticeDto> selectNoticeListByMonth(VolunteerMonthDto volunteerMonthDto){
         List<VolunteerNotice> volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(volunteerMonthDto.getShelterId(), volunteerMonthDto.getYear()+"-"+volunteerMonthDto.getMonth()+"%");
+        List<VolunteerNoticeDto> list = new ArrayList<>();
         if(volunteerNotices.isEmpty()){
             LOGGER.info("봉사 공고가 비었습니다.");
             return null;
         }
-        List<VolunteerNoticeDto> list = new ArrayList<>();
+
         for (VolunteerNotice vn:
                 volunteerNotices) {
             List<Long> scheduleId = new ArrayList<>();

@@ -203,12 +203,16 @@ public class BoardServiceImpl implements BoardService{
                             .build()
             );
         }
+        /** 조회수 증가 */
+        int count = board.getCount();
+        count++;
+        boardRepository.save(board);
         BoardDto boardDto = BoardDto.builder()
                 .boardId(board.getBoardId())
                 .author(board.getUser().getNickname())
                 .registDate(board.getDateTime().toLocalDate())
                 .title(board.getTitle())
-                .count(board.getCount())
+                .count(count)
                 .content(board.getContent())
                 .commentList(commentDtoList)
                 .fileUrlList(fileDtoList)
