@@ -1,6 +1,7 @@
 package com.ssafy.patpat.protect.service;
 
 //import com.ssafy.patpat.board.entity.PostImage;
+import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.category.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -67,6 +68,9 @@ public class ProtectServiceImpl implements ProtectService{
     ShelterProtectedDogRepository shelterProtectedDogRepository;
 //    @Autowired
 //    ShelterDogImageRepository shelterDogImageRepository;
+    @Autowired
+    NotificationService notificationService;
+
 
     @Autowired
     ShelterRepository shelterRepository;
@@ -426,6 +430,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .longitude(shelter.getLongitude())
                     .build();
             shelterProtectedDogRepository.save(shelterProtectedDog);
+            notificationService.notifyAddProtectDogEvent(shelterProtectedDog.getSpDogId());
             responseMessage.setMessage("SUCCESS");
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.report.service;
 
+import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.MissingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -71,6 +72,8 @@ public class ReportServiceImpl implements ReportService{
     UserService userService;
     @Autowired
     ColorService colorService;
+    @Autowired
+    NotificationService notificationService;
 
     @Autowired
     ShelterProtectedDogRepository shelterProtectedDogRepository;
@@ -671,7 +674,7 @@ public class ReportServiceImpl implements ReportService{
                         .build();
 
                 missingDogRepository.save(missingDog);
-
+                notificationService.notifyAddMissingDogEvent(missingDog.getMissingId());
 //                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 //                if (!uploadDir.exists()) uploadDir.mkdir();
 //                if (uploadFile != null) {
@@ -811,9 +814,14 @@ public class ReportServiceImpl implements ReportService{
         //Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         PageRequest pageRequest = PageRequest.of(requestReportDto.getOffSet(), requestReportDto.getLimit());
         System.out.println(missingDog);
-        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
-        for(ShelterProtectedDog s : shelterProtectedDogPage){
+//        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
+        List<ShelterProtectedDog> shelterProtectedDogList = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
+
+        Long totalCount = shelterProtectedDogRepository.countDogByDistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
+
+        for(ShelterProtectedDog s : shelterProtectedDogList){
             ProtectDto protectDto = new ProtectDto();
+            System.out.println(s);
             protectDto.setProtectId(s.getSpDogId());
             protectDto.setKg(s.getWeight());
             protectDto.setAge(s.getAge());
@@ -834,9 +842,11 @@ public class ReportServiceImpl implements ReportService{
 
             protectDtoList.add(protectDto);
         }
+        Long totalPage = totalCount % requestReportDto.getLimit() == 0 ? totalCount / requestReportDto.getLimit()
+                : (totalCount / requestReportDto.getLimit()) +1;
         responseListDto.setList(protectDtoList);
-        responseListDto.setTotalPage(shelterProtectedDogPage.getTotalPages());
-        responseListDto.setTotalCount(shelterProtectedDogPage.getTotalElements());
+        responseListDto.setTotalPage(Math.toIntExact(totalPage));
+        responseListDto.setTotalCount(totalCount);
         return responseListDto;
     }
 }
