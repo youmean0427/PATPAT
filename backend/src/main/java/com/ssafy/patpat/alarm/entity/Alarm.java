@@ -20,9 +20,13 @@ public class Alarm {
 
     private MsgCode msgCode;
 
-    private Boolean read;
+    private Boolean checkRead;
 
     private LocalDateTime registDate;
+
+    private Long missingId;
+
+    private Long shelterId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

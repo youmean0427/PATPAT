@@ -6,9 +6,10 @@ import lombok.*;
 @Data
 @Setter
 @Getter
+@NoArgsConstructor
 public class AlarmDto {
     private Long alarmId;
-    private Boolean read;
+    private Boolean checkRead;
     private String msg;
     private Integer msgCode;
     private Long missingId;
@@ -16,7 +17,7 @@ public class AlarmDto {
 
     public AlarmDto(Alarm alarm){
         this.alarmId = alarm.getAlarmId();
-        this.read = alarm.getRead();
+        this.checkRead = alarm.getCheckRead();
         this.msg = alarm.getMsgCode().getMsg();
         this.msgCode = alarm.getMsgCode().getCode();
     }

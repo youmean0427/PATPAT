@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.ssafy.patpat.common.error.LogoutException;
 import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.redis.RefreshRedis;
 import com.ssafy.patpat.common.redis.RefreshRedisRepository;
@@ -28,6 +29,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
@@ -104,7 +106,7 @@ public class TokenProvider implements InitializingBean {
     }
 
     /** access token 재발급 체크 */
-    public boolean checkRefreshToken(String refreshToken){
+    public boolean checkRefreshToken(String refreshToken) throws LogoutException {
 
         String token = resolveToken(refreshToken);
 
@@ -112,7 +114,7 @@ public class TokenProvider implements InitializingBean {
 
         if(!email.isPresent()){
             LOGGER.info("refreshToken이 존재하지 않습니다.");
-            return false;
+            throw new LogoutException("리프레쉬 만료 다시 로그인 해주세요.");
         }
 
         try{
