@@ -36,10 +36,10 @@ public class AlarmController {
     public SseEmitter subscribe(@RequestParam Long userId) {
         LOGGER.info("오나? {}",userId);
 //        Long userId = notificationService.getUserId();
-        
+
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
-            sseEmitter.send(SseEmitter.event().name("connect"));
+            sseEmitter.send(SseEmitter.event().name("connect").data("연결도ㅒㅆ다 임마"));
         } catch (Exception e) {
             e.printStackTrace();
         }
