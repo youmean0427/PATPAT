@@ -50,7 +50,7 @@ export default function MenuList({ handleClickModalOpen }) {
       <ul className={isOpen ? `${styles.menu} ${styles.active}` : styles.menu}>
         <MenuItem move="intro" value="소개" dropdown={intro} />
         <MenuItem move="shelter/search" value="보호소" dropdown={shelter} />
-        <MenuItem move="report" value="신고" />
+        <MenuItem move="report" value="실종 신고" />
         <MenuItem move="volunteer" value="봉사" />
         <MenuItem move="community" value="커뮤니티" />
         {!isLogin ? (

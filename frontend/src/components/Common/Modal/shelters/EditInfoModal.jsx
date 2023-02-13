@@ -81,7 +81,7 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   };
 
   return (
-    <ModalFrame isOpen={isOpen} handleClickModalClose={handleClickModalClose}>
+    <ModalFrame isOpen={isOpen} handleClickModalClose={handleClickModalClose} width={700} height={600}>
       <div className={styles.title}>보호소 정보 수정</div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles['input-box']}>

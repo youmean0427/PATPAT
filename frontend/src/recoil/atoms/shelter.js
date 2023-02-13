@@ -29,3 +29,8 @@ export const searchShelterPageState = atom({
   key: 'recoilShelterPageState',
   default: 1,
 });
+
+export const currentYearMonthState = atom({
+  key: 'recoilCurrentYear',
+  default: { month: 2, year: 2023 },
+});
