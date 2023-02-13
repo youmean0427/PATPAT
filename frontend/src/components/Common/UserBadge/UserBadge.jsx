@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { setUser } from 'redux/user';
 import { updateConsultant } from 'apis/api/consulting';
 
-export default function ConsultingBadge({ state, stateCode, data }) {
+export default function ConsultingBadge({ state, stateCode, items }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,26 +28,26 @@ export default function ConsultingBadge({ state, stateCode, data }) {
   };
 
   const handleConsulting = () => {
-    dispatch(setUser({ resIsShelter: false, resShelterId: data.shelterId, resUserName: data.shelterName }));
-    const newData = {
-      address: data.address,
-      consultingDate: data.consultingDate,
-      consultingId: data.consultingId,
-      registDate: data.registDate,
-      shelterDogId: data.shelterDogId,
-      shelterDogName: data.shelterDogName,
-      shelterId: data.shelterId,
-      shelterName: data.shelterName,
-      state: data.state,
+    dispatch(setUser({ resIsShelter: false, resShelterId: items.shelterId, resUserName: items.shelterName }));
+    const newitems = {
+      address: items.address,
+      consultingDate: items.consultingDate,
+      consultingId: items.consultingId,
+      registDate: items.registDate,
+      shelterDogId: items.shelterDogId,
+      shelterDogName: items.shelterDogName,
+      shelterId: items.shelterId,
+      shelterName: items.shelterName,
+      state: items.state,
       stateCode: 4,
-      time: data.time,
-      timeCode: data.timeCode,
-      userExp: data.userExp,
-      userId: data.userId,
-      userName: data.userName,
-      userProfileUrl: data.userProfileUrl,
+      time: items.time,
+      timeCode: items.timeCode,
+      userExp: items.userExp,
+      userId: items.userId,
+      userName: items.userName,
+      userProfileUrl: items.userProfileUrl,
     };
-    updateConsultant(data.consultingId, newData);
+    updateConsultant(items.consultingId, newitems);
     navigate('/consulting/meeting');
   };
 

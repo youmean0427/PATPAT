@@ -33,6 +33,7 @@ export default function MyMissing() {
 
   if (isLoading) return;
 
+  console.log(data);
   return (
     <div className={styles.container}>
       <div className={styles['missing-detail']}>
@@ -82,7 +83,7 @@ export default function MyMissing() {
             </div>
             <div className={styles.list}>
               {data.list.map(item => {
-                return <SearchShelterItem key={item.shelterId} item={item} />;
+                return <SearchShelterItem key={item.spDogId} item={item} />;
               })}
             </div>
           </>

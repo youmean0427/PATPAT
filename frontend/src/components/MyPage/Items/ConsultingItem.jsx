@@ -25,8 +25,7 @@ export default function ConsultingItem({ item }) {
           </div>
         </div>
       </div>
-      <div className={styles.state}></div>
-      <UserBadge state={item.state} stateCode={item.stateCode} data={item} />
+      <UserBadge state={item.state} stateCode={item.stateCode} items={item} />
     </ConsultingCard>
   );
 }
