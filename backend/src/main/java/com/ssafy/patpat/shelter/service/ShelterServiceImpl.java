@@ -22,6 +22,7 @@ import com.ssafy.patpat.shelter.entity.*;
 import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
 import com.ssafy.patpat.shelter.repository.*;
 import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.OwnerRepository;
@@ -454,10 +455,15 @@ public class ShelterServiceImpl implements ShelterService{
         Optional<Shelter> s = shelterRepository.findById(shelterId);
         if(!s.isPresent()){
             if(passwordEncoder.matches(s.get().getRegNumber(),authCode)){
-                UserDto user = userService.getUserWithAuthorities();
-                Optional<User> u = userRepository.findById(user.getUserId());
-                u.get().setShelter(s.get());
-                userRepository.save(u.get());
+                Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+                user.get().setShelter(s.get());
+
+                List<Authority> authorities = user.get().getAuthorities();
+                authorities.add(Authority.builder()
+                            .authorityName("ROLE_ADMIN")
+                            .build());
+                user.get().setAuthorities(authorities);
+                userRepository.save(user.get());
             }
             else return new ResponseMessage("FAIL");
         }else return new ResponseMessage("FAIL");
@@ -530,9 +536,10 @@ public class ShelterServiceImpl implements ShelterService{
 
     @Override
     public Boolean deleteShelter(Long shelterId) {
+        LOGGER.info("shelterId : {}", shelterId);
         Shelter shelter = shelterRepository.findByShelterId(shelterId);
         shelterRepository.delete(shelter);
-        return null;
+        return true;
     }
 
 

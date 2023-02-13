@@ -90,7 +90,7 @@ public class ProtectServiceImpl implements ProtectService{
             PageRequest pageRequest;
             Page<ShelterProtectedDog> shelterProtectedDogList;
             List<ProtectState> filterList = new ArrayList<>();
-            filterList.add(ProtectState.입양);
+            filterList.add(ProtectState.입양완료);
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
             LOGGER.info("여기와? {} : ",requestProtectDto);
@@ -193,7 +193,7 @@ public class ProtectServiceImpl implements ProtectService{
             PageRequest pageRequest;
             Page<ShelterProtectedDog> shelterProtectedDogList;
             List<ProtectState> filterList = new ArrayList<>();
-            filterList.add(ProtectState.입양);
+            filterList.add(ProtectState.입양완료);
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
 
