@@ -33,10 +33,10 @@ public class AlarmController {
     NotificationService notificationService;
 
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
-    public SseEmitter subscribe(@RequestParam String token) {
-        LOGGER.info("오나? {}",token);
-        Long userId = notificationService.getUserId();
-
+    public SseEmitter subscribe(@RequestParam Long userId) {
+        LOGGER.info("오나? {}",userId);
+//        Long userId = notificationService.getUserId();
+        
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
