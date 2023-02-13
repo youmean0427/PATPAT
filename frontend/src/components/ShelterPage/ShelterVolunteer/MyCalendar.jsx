@@ -17,17 +17,18 @@ export default function MyCalendar() {
   const [date, setDate] = useState({ year: 2023, month: 2 });
   const [data, setData] = useState([]);
   const [click, setClick] = useState(false);
+  const [selectDate, setSelectDate] = useState();
   useEffect(() => {
     getVolNoticePerMonth(myShelterId, date.year, date.month).then(res => setData(res));
   }, [click]);
   moment.locale('ko-KR');
   const localizer = momentLocalizer(moment);
-  const handleClickSelect = ({ start }) => {
-    const year = start.getFullYear();
-    const month = start.getMonth() + 1;
-    const date = start.getDate();
+  const handleClickSlot = ({ start }) => {
+    console.log(start);
+    setSelectDate(start);
     handleClickModalOpen();
   };
+  const handleClickSelect = () => {};
   const handleClickNavigate = date => {
     setDate({ year: date.getFullYear(), month: date.getMonth() + 1 });
     setClick(prev => !prev);
@@ -43,11 +44,13 @@ export default function MyCalendar() {
         style={{ height: 500 }}
         components={{ toolbar: Toolbar }}
         selectable
-        onSelectSlot={handleClickSelect}
-        onSelectEvent={e => console.log(e)}
+        onSelectSlot={handleClickSlot}
+        onSelectEvent={handleClickSelect}
         onNavigate={handleClickNavigate}
       />
-      {isOpen && <EnrollVolunteerModal isOpen={isOpen} handleClickModalClose={handleClickModalClose} />}
+      {isOpen && (
+        <EnrollVolunteerModal date={selectDate} isOpen={isOpen} handleClickModalClose={handleClickModalClose} />
+      )}
     </>
   );
 }
