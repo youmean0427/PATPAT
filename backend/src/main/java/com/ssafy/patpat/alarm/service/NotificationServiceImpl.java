@@ -1,11 +1,14 @@
 package com.ssafy.patpat.alarm.service;
 
+import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
 import com.ssafy.patpat.report.entity.MissingDog;
 import com.ssafy.patpat.report.repository.MissingDogRepository;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ssafy.patpat.alarm.controller.AlarmController.sseEmitters;
 
@@ -24,6 +28,9 @@ public class NotificationServiceImpl implements NotificationService{
     MissingDogRepository missingDogRepository;
     @Autowired
     ShelterRepository shelterRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public void notifyAddProtectDogEvent(Long spDogId){
         ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(spDogId);
@@ -71,6 +78,11 @@ public class NotificationServiceImpl implements NotificationService{
                 }
             }
         }
+    }
+
+    public Long getUserId(){
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        return user.get().getUserId();
     }
 
 }

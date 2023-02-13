@@ -26,7 +26,7 @@ public interface MissingDogRepository extends JpaRepository<MissingDog,Long> {
     @Query(nativeQuery = true,
             value = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( latitude ) )* cos( radians( longitude )" +
                     " - radians(:b) )+ sin ( radians(:c) ) * sin( radians( latitude ))))" +
-                    " as distance from MissingDog group by missing_id having distance < 15"
+                    " as distance from missing_dog group by missing_id having distance < 15"
     )
     List<MissingDog> selectBydistance(BigDecimal a, BigDecimal b , BigDecimal c);
 }

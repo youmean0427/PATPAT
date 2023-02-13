@@ -28,14 +28,22 @@ public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProt
 
     List<ShelterIdMapping> findDistinctByShelterSidoCodeAndShelterGugunCodeAndBreedBreedId(String sidoCode,String gugunCode,Long breedId);
 
-    @Query(nativeQuery = true,
-            value = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( latitude ) )* cos( radians( longitude )" +
-                    " - radians(:b) )+ sin ( radians(:c) ) * sin( radians( latitude ))))" +
-                    " as distance from shelter_protected_dog where regist_date >= :localDate group by sp_dog_id having distance < 15"
-//            countQuery = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( latitude ) )* cos( radians( longitude)" +
-//                    " - radians(:b) )+ sin ( radians(:c) ) * sin( radians( latitude ))))" +
-//                    " as distance from shelter_protected_dog where regist_date >= :localDate group by sp_dog_id having distance < 15"
+    @Query(
+            value = "select * , (6371 * acos ( cos ( radians(?) )* cos( radians( latitude ) )* cos( radians( longitude )- radians(?) )+ sin ( radians(?) ) * sin( radians( latitude )))) as distance from shelter_protected_dog where regist_date >= ? group by sp_dog_id having distance < 15",
+            nativeQuery = true
     )
-    Page<ShelterProtectedDog> selectBydistance(BigDecimal a, BigDecimal b , BigDecimal c, LocalDate localDate, PageRequest pageRequest);
+    List<ShelterProtectedDog> selectBydistance(BigDecimal a, BigDecimal b , BigDecimal c, LocalDate localDate);
+
+    @Query(nativeQuery = true,
+        value = "select count(*) from (select" +
+                " *," +
+                " (6371 * acos ( cos ( radians(:a ) )* cos( radians( latitude ) )* cos( radians( longitude )- radians( :b ) )+ sin ( radians( :c ) ) * sin( radians( latitude )))) as distance" +
+                " from" +
+                " shelter_protected_dog" +
+                " where" +
+                " regist_date >= :localDate" +
+                " having" +
+                " distance < 15) as sc")
+    Long countDogByDistance(BigDecimal a, BigDecimal b , BigDecimal c, LocalDate localDate);
 
 }

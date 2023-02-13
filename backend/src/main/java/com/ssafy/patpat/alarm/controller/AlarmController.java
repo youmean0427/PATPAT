@@ -1,6 +1,7 @@
 package com.ssafy.patpat.alarm.controller;
 
 import com.ssafy.patpat.alarm.service.NotificationService;
+import com.ssafy.patpat.alarm.service.NotificationServiceImpl;
 import com.ssafy.patpat.protect.service.ProtectService;
 import com.ssafy.patpat.report.service.ReportService;
 import com.ssafy.patpat.user.service.UserService;
@@ -20,16 +21,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @Slf4j
-@RestController
+@RestController("/api/alarm")
 public class AlarmController {
     public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
     @Autowired
     UserService userService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @CrossOrigin
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(@RequestParam String token) {
-        Long userId = userService.getUserWithAuthorities().getUserId();
+        Long userId = notificationService.getUserId();
 
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
