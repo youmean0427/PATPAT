@@ -303,6 +303,12 @@ public class ProtectServiceImpl implements ProtectService{
                                     .build()
                     );
                 }
+            }else{
+                fileDtoList.add(
+                        FileDto.builder()
+                                .filePath(fileService.getFileUrl(fileService.getDefaultImage()))
+                                .build()
+                );
             }
             /** 로그인했는지 판단 */
             boolean ok = false;
