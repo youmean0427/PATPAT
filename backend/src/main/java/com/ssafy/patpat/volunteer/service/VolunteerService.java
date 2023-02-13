@@ -239,6 +239,7 @@ public class VolunteerService {
             return false;
         }
 
+        LOGGER.info("date {}",noticeDto.getVolunteerDate());
         // notice 정보
         VolunteerNotice volunteerNotice = VolunteerNotice.builder()
                 .title(noticeDto.getTitle())
