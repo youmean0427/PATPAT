@@ -583,6 +583,8 @@ public class ProtectServiceImpl implements ProtectService{
             //리스트에 동물이 들어간 이후 등록
             for(ShelterProtectedDog dog : list){
                 shelterProtectedDogRepository.save(dog);
+                /** 비동기로 가야하나... ?? **/
+                notificationService.notifyAddProtectDogEvent(dog.getSpDogId());
             }
             //만약 10번에 등록된 강아지다 ~ 8개 등록되어있는 상황이면 18번까지있음
             long startIdx = list.get(0).getSpDogId();
