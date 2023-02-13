@@ -68,7 +68,7 @@ export default function ReportCreateContent() {
   let todayDate = now.getDate();
 
   const registDate = todayYear + '.' + todayMonth + '.' + todayDate;
-  console.log(registDate);
+  // console.log(registDate);
 
   // Alert
   const [titleAlertOpen, setTitleAlertOpen] = useState(0);
@@ -322,7 +322,7 @@ export default function ReportCreateContent() {
       window.location.replace('/report');
     }
   };
-
+  console.log(color1);
   return (
     <div>
       <form
