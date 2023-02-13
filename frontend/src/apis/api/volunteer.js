@@ -9,8 +9,10 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @param {int} offset
  * @returns
  */
-export const getVolNoticeList = async (keyword, limit, offset) => {
-  const { data } = await defaultInstance.get(`/volunteers/notices?keyword=${keyword}&limit=${limit}&offSet=${offset}`);
+export const getVolNoticeList = async (keyword, limit, offset, latitude, longitude) => {
+  const { data } = await defaultInstance.get(
+    `/volunteers/notices?keyword=${keyword}&limit=${limit}&offSet=${offset}&latitude=${latitude}&longitude=${longitude}`
+  );
   return data;
 };
 
