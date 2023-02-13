@@ -621,7 +621,7 @@ public class ReportServiceImpl implements ReportService{
 //        UserDto userDto = userService.getUserWithAuthorities();
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
-        System.out.println(uploadFile);
+        //System.out.println(uploadFile);
         try{
             List<Image> images = new ArrayList<>();
             if(uploadFile != null){
@@ -813,17 +813,16 @@ public class ReportServiceImpl implements ReportService{
         MissingDog missingDog = missingDogRepository.findByMissingId(missingId);
         //Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         PageRequest pageRequest = PageRequest.of(requestReportDto.getOffSet(), requestReportDto.getLimit());
-        System.out.println(missingDog);
+        //System.out.println(missingDog);
 //        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
         List<ShelterProtectedDog> shelterProtectedDogList = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
-
+        //System.out.println(shelterProtectedDogList.size());
         //Long totalCount = shelterProtectedDogRepository.countDogByDistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
 
         for(ShelterProtectedDog s : shelterProtectedDogList){
             /** 유사도 코드 **/
             if(isResemble(missingDog,s)){
                 ProtectDto protectDto = new ProtectDto();
-                System.out.println(s);
                 protectDto.setProtectId(s.getSpDogId());
                 protectDto.setKg(s.getWeight());
                 protectDto.setAge(s.getAge());
