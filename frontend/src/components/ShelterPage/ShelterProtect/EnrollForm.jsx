@@ -24,6 +24,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createProtect } from 'apis/api/protect';
 import { myShelterIdState } from 'recoil/atoms/user';
+import { toast } from 'react-toastify';
 export default function EnrollForm() {
   const { handleSubmit, control, register } = useForm({ mode: onchange });
   const [count, setCount] = useState(0);
@@ -37,8 +38,7 @@ export default function EnrollForm() {
   const myShelterId = useRecoilValue(myShelterIdState);
   const { mutate } = useMutation(['enrollShelterProtect'], formdata => createProtect(formdata), {
     onSuccess: data => {
-      console.log(data);
-      alert('등록되었습니다.');
+      toast('동물이 등록되었습니다.', { type: 'success' });
     },
   });
 

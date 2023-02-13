@@ -4,6 +4,7 @@ import { logout } from 'apis/utils/auth';
 import useModal from 'hooks/useModal';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState, myShelterIdState } from 'recoil/atoms/user';
 import { isHaveShelter } from 'utils/checkMyShelter';
@@ -48,6 +49,7 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
                   if (item.path === '/') {
                     logout();
                     setIsLogin(false);
+                    toast('로그아웃 완료', { type: 'success' });
                   } else if (item.path === '') {
                     handleClickModalOpen();
                   }
