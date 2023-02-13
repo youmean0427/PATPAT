@@ -141,6 +141,16 @@ public class VolunteerController {
                     .body(volunteerScheduleDto);
     }
 
+    @GetMapping("/schedules/{scheduleId}")
+    @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 scheduleId")
+    public ResponseEntity<Object> detailSchedule(@PathVariable Long scheduleId){
+        //서비스 호출 코드
+        VolunteerScheduleDto volunteerScheduleDto = volunteerService.detailSchedule(scheduleId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(volunteerScheduleDto);
+    }
+
     @PostMapping("/schedules")
     @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가")
     public ResponseEntity<Object> insertSchedule(@RequestBody NoticeDto noticeDto){

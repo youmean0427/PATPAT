@@ -382,6 +382,32 @@ public class VolunteerService {
     }
 
     @Transactional
+    public VolunteerScheduleDto detailSchedule(Long scheduleId){
+
+        Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(scheduleId);
+        if(!volunteerSchedule.isPresent()){
+            LOGGER.info("봉사 일정이 비었습니다.");
+            return null;
+        }
+
+        VolunteerSchedule vs = volunteerSchedule.get();
+
+        VolunteerScheduleDto volunteerScheduleDto = VolunteerScheduleDto.builder()
+                .scheduleId(vs.getScheduleId())
+                .noticeId(vs.getVolunteerNotice().getNoticeId())
+                .startTime(vs.getStartTime())
+                .endTime(vs.getEndTime())
+                .totalCapacity(vs.getCapacity())
+                .capacity(vs.getCapacity())
+                .guideLine(vs.getGuideLine())
+                .reservationState(vs.getReservationStateCode().name())
+                .reservationStateCode(vs.getReservationStateCode().getCode())
+                .build();
+        return volunteerScheduleDto;
+
+    }
+
+    @Transactional
     public boolean insertSchedule(NoticeDto noticeDto){
 
         Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(noticeDto.getNoticeId());
