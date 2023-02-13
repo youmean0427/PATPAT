@@ -206,6 +206,7 @@ public class BoardServiceImpl implements BoardService{
         /** 조회수 증가 */
         int count = board.getCount();
         count++;
+        board.setCount(count);
         boardRepository.save(board);
         BoardDto boardDto = BoardDto.builder()
                 .boardId(board.getBoardId())
