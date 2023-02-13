@@ -570,6 +570,8 @@ public class ProtectServiceImpl implements ProtectService{
                     shelterProtectedDog.setRegistDate(LocalDate.now());
                     shelterProtectedDog.setImages(images);
                     shelterProtectedDog.setColors(colors);
+                    shelterProtectedDog.setLatitude(shelter.getLatitude());
+                    shelterProtectedDog.setLongitude(shelter.getLongitude());
                     Collections.sort(strList);
                     StringBuilder sb = new StringBuilder();
                     for(int i=0; i<strList.size(); i++){
