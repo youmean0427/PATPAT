@@ -122,10 +122,13 @@
   opacity: 0.6;
   margin: auto;
 }
+.colors {
+  display: flex;
+  gap: 0.5rem;
+}
 .color-box {
   width: 20px;
   height: 20px;
-  background-color: white;
 }
 .icon:hover {
   transform: translateY(-3px);
