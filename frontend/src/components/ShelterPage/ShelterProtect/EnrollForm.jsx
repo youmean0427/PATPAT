@@ -72,6 +72,8 @@ export default function EnrollForm() {
       uploadImages,
     } = nData;
     console.log(nData);
+    const categoryColors = [];
+    categoryColors.push(categoryColor);
     const formData = new FormData();
     formData.append('protectName', protectName);
     formData.append('breedId', breed.value);
@@ -79,11 +81,11 @@ export default function EnrollForm() {
     formData.append('kg', kg);
     formData.append('neuteredCode', neutered.value);
     formData.append('age', age);
-    formData.append('categoryEar', categoryEar.value);
-    formData.append('categoryTail', categoryTail.value);
-    formData.append('categoryPattern', categoryPattern.value);
-    formData.append('categoryColor', 1);
-    formData.append('categoryCloth', categoryCloth.value);
+    formData.append('categoryEarCode', categoryEar.value);
+    formData.append('categoryTailCode', categoryTail.value);
+    formData.append('categoryPatternCode', categoryPattern.value);
+    formData.append('categoryColor', categoryColors);
+    formData.append('categoryClothCode', categoryCloth.value);
     formData.append('shelterId', myShelterId);
     Array.from(uploadImages).forEach(item => {
       formData.append('uploadFile', item);

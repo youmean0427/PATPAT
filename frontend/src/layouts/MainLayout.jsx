@@ -12,7 +12,6 @@ const MainLayout = () => {
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
   return (
     <div className={styles.layout}>
-      <ScrollToTop />
       <Header handleClickModalOpen={handleClickModalOpen} />
       <main className={styles['layout-main']}>
         <Container>
