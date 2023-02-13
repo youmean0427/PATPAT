@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Entity
@@ -28,6 +29,9 @@ public class VolunteerReservation {
 
     @Column(name = "reservation_state_code")
     private Reservation reservationStateCode;
+
+    @Column(name = "volunteer_date")
+    private String volunteerDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
