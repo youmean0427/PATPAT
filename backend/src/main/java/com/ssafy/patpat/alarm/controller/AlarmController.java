@@ -47,7 +47,7 @@ public class AlarmController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return sseEmitter;
     }
 }

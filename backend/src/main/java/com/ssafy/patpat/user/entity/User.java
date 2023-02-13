@@ -1,5 +1,6 @@
 package com.ssafy.patpat.user.entity;
 
+import com.ssafy.patpat.alarm.entity.Alarm;
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
@@ -88,6 +89,9 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Owner owner;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Alarm> alarms;
 
     @PrePersist
     public void prePersist() {
