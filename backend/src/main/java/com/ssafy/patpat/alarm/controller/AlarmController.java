@@ -38,18 +38,16 @@ public class AlarmController {
 //        Long userId = notificationService.getUserId();
 
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+        sseEmitter.onCompletion(() -> sseEmitters.remove(userId));
+        sseEmitter.onTimeout(() -> sseEmitters.remove(userId));
+        sseEmitter.onError((e) -> sseEmitters.remove(userId));
         sseEmitters.put(userId, sseEmitter);
         try {
             sseEmitter.send(SseEmitter.event().name("connect").data("ok good you good"));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        sseEmitter.onCompletion(() -> sseEmitters.remove(userId));
-        sseEmitter.onTimeout(() -> sseEmitters.remove(userId));
-        sseEmitter.onError((e) -> sseEmitters.remove(userId));
-
+        
         return sseEmitter;
     }
 }
