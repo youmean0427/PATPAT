@@ -194,7 +194,9 @@ public class VolunteerService {
 
     @Transactional
     public List<VolunteerNoticeDto> selectNoticeListByMonth(VolunteerMonthDto volunteerMonthDto){
-        List<VolunteerNotice> volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(volunteerMonthDto.getShelterId(), volunteerMonthDto.getYear()+"-"+volunteerMonthDto.getMonth()+"%");
+        String year = volunteerMonthDto.getYear().toString();
+        String month = volunteerMonthDto.getMonth() < 10 ? "0"+volunteerMonthDto.getMonth().toString() : volunteerMonthDto.getMonth().toString();
+        List<VolunteerNotice> volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(volunteerMonthDto.getShelterId(), year+"-"+month+"%");
         List<VolunteerNoticeDto> list = new ArrayList<>();
         if(volunteerNotices.isEmpty()){
             LOGGER.info("봉사 공고가 비었습니다.");

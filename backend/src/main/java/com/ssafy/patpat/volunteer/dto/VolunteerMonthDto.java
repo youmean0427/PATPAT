@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 public class VolunteerMonthDto {
 
-    private String year;
-    private String month;
+    private Integer year;
+    private Integer month;
     private Long shelterId;
 }
