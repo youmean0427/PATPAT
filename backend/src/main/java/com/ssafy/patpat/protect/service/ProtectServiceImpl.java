@@ -303,6 +303,12 @@ public class ProtectServiceImpl implements ProtectService{
                                     .build()
                     );
                 }
+            }else{
+                fileDtoList.add(
+                        FileDto.builder()
+                                .filePath(fileService.getFileUrl(fileService.getDefaultImage()))
+                                .build()
+                );
             }
             /** 로그인했는지 판단 */
             boolean ok = false;
@@ -385,10 +391,19 @@ public class ProtectServiceImpl implements ProtectService{
                         .colorCode(c)
                         .build());
             }
-            /** color 처리 로직 필요 */
-
+            /** Color 처리 로직 */
+            /** 프론트에게 다시 줘야하는 #333333 형식의 컬러 코드 리스트를 엔티티리스트에 저장 **/
+            for(String color : protectDto.getCategoryColor()){
+                colors.add(
+                        DogColor.builder()
+                                .colorCode(color)
+                                .build()
+                );
+            }
+            /** 유사도 비교시 사용할 백엔드에서만 사용하는 컬러코드 저장 **/
             Color color = colorService.getColorCode(protectDto.getCategoryColor());
-
+            System.out.println("here"
+            );
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
                     .breed(breed)
@@ -407,6 +422,8 @@ public class ProtectServiceImpl implements ProtectService{
                     .categoryEar(Ear.of(protectDto.getCategoryEarCode()))
                     .categoryColor(color)
                     .colors(colors)
+                    .latitude(shelter.getLatitude())
+                    .longitude(shelter.getLongitude())
                     .build();
             shelterProtectedDogRepository.save(shelterProtectedDog);
             responseMessage.setMessage("SUCCESS");
@@ -419,16 +436,16 @@ public class ProtectServiceImpl implements ProtectService{
     @Override
     public ResponseMessage insertBatchesProtect(ShelterDto shelterDto, MultipartFile uploadFile) throws IOException {
         ResponseMessage responseMessage = new ResponseMessage();
-        HashMap<String, String> map = new HashMap<>();
-        map.put("적색", "R");
-        map.put("녹색", "G");
-        map.put("청색", "B");
-        map.put("자색", "V");
-        map.put("황색", "Y");
-        map.put("청록", "E");
-        map.put("흰색", "W");
-        map.put("회색", "H");
-        map.put("검정", "K");
+        HashMap<String, String[]> map = new HashMap<>();
+        map.put("적색", new String[] {"R","#3D0A0A"});
+        map.put("녹색", new String[] {"G","#0A3D0A"});
+        map.put("청색", new String[] {"B","#0A0A3D"});
+        map.put("자색", new String[] {"V","#5A3C5A"});
+        map.put("황색", new String[] {"Y","#C8C896"});
+        map.put("청록", new String[] {"E","#3C5A5A"});
+        map.put("흰색", new String[] {"W","#FFFFFF"});
+        map.put("회색", new String[] {"K","#000000"});
+        map.put("검정", new String[] {"H","#666666"});
         Workbook workbook = null;
         try {
             //보호소 정보 불러오기
@@ -464,6 +481,7 @@ public class ProtectServiceImpl implements ProtectService{
                     ShelterProtectedDog shelterProtectedDog = new ShelterProtectedDog();
                     ProtectDto protectDto = new ProtectDto();
                     ArrayList<String> strList = new ArrayList<>();
+                    List<DogColor> colors = new ArrayList<>();
                     while(cellIterator.hasNext()){
                         Cell cell = cellIterator.next();
                         switch (col){
@@ -491,7 +509,11 @@ public class ProtectServiceImpl implements ProtectService{
                                     break;
                                 }
                                 else{
-                                    strList.add(map.get(cell.getStringCellValue()));
+                                    strList.add(map.get(cell.getStringCellValue())[0]);
+                                    colors.add(DogColor.builder()
+                                                    .colorCode(map.get(cell.getStringCellValue())[1])
+                                                    .build()
+                                    );
                                 }
                                 break;
                             case 7 :
@@ -499,7 +521,11 @@ public class ProtectServiceImpl implements ProtectService{
                                     break;
                                 }
                                 else{
-                                    strList.add(map.get(cell.getStringCellValue()));
+                                    strList.add(map.get(cell.getStringCellValue())[0]);
+                                    colors.add(DogColor.builder()
+                                            .colorCode(map.get(cell.getStringCellValue())[1])
+                                            .build()
+                                    );
                                 }
                                 break;
                             case 8 :
@@ -507,7 +533,11 @@ public class ProtectServiceImpl implements ProtectService{
                                     break;
                                 }
                                 else{
-                                    strList.add(map.get(cell.getStringCellValue()));
+                                    strList.add(map.get(cell.getStringCellValue())[0]);
+                                    colors.add(DogColor.builder()
+                                            .colorCode(map.get(cell.getStringCellValue())[1])
+                                            .build()
+                                    );
                                 }
                                 break;
                             case 9 :
@@ -529,7 +559,6 @@ public class ProtectServiceImpl implements ProtectService{
                         col++;
                     }
                     List<Image> images = new ArrayList<>();
-                    List<DogColor> colors = new ArrayList<>();
 
                     shelterProtectedDog.setShelter(shelter);
                     shelterProtectedDog.setStateCode(ProtectState.공고중);

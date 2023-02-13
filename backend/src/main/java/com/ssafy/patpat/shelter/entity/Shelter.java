@@ -65,4 +65,7 @@ public class Shelter {
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     private List<Image> images;
 
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
+    private List<Time> times;
+
 }
