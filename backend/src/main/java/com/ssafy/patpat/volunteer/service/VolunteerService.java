@@ -246,7 +246,7 @@ public class VolunteerService {
                 .shelter(s.get())
                 .build();
         VolunteerNotice v = volunteerNoticeRepository.save(volunteerNotice);
-
+        LOGGER.info("수정");
         // schedule 정보
 //        List<VolunteerSchedule> volunteerSchedules = new ArrayList<>();
 //        if(noticeDto.getList().isEmpty()){
