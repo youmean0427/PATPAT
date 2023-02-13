@@ -95,7 +95,7 @@ public class ReportController {
      */
     @GetMapping("/recommends/{missingId}")
     @ApiOperation(value = "유사견종 조회", notes = "실종된 견종과 유사한 견종 조회")
-    public ResponseEntity<Object> selectRecommendList(Long missingId,RequestReportDto requestReportDto){
+    public ResponseEntity<Object> selectRecommendList(@PathVariable Long missingId,RequestReportDto requestReportDto){
         //서비스 호출 코드
         ResponseListDto responseListDto = service.selectRecommendList(missingId,requestReportDto);
         return ResponseEntity.status(HttpStatus.OK)
