@@ -37,7 +37,7 @@ export default function VolunteerItem({ item }) {
         </div>
       </div>
       <div className={styles.state}></div>
-      <UserBadge state={item.reservationState} stateCode={item.reservationStateCode} />
+      <UserBadge state={item.reservationState} stateCode={item.reservationStateCode} data={null} />
     </ConsultingCard>
   );
 }
