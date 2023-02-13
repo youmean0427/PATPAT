@@ -38,13 +38,14 @@ public class AlarmController {
 //        Long userId = notificationService.getUserId();
 
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+        sseEmitters.put(userId, sseEmitter);
         try {
             sseEmitter.send(SseEmitter.event().name("connect").data("연결도ㅒㅆ다 임마"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        sseEmitters.put(userId, sseEmitter);
+
         sseEmitter.onCompletion(() -> sseEmitters.remove(userId));
         sseEmitter.onTimeout(() -> sseEmitters.remove(userId));
         sseEmitter.onError((e) -> sseEmitters.remove(userId));
