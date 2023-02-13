@@ -1,28 +1,31 @@
 import { useQuery } from '@tanstack/react-query';
-import { getVolNoticePerMonth } from 'apis/api/volunteer';
+import { getVolNoticeList } from 'apis/api/volunteer';
 import React, { useState, useEffect } from 'react';
 import { Map, MapMarker, Circle } from 'react-kakao-maps-sdk';
 import styles from './SearchVolunteer.module.scss';
+import SearchVolunteerMark from 'components/Volunteer/Search/SearchVolunteerMark';
 export default function SearchVolunteer() {
   const [state, setState] = useState({
     center: {
-      lat: 33.450701,
-      lng: 126.570667,
+      lat: 0,
+      lng: 0,
     },
   });
-  const [shelters, setShelters] = useState([
-    {
-      center: {
-        lat: 35.10134025316836,
-        lng: 129.0167898528306,
-      },
-    },
-  ]);
+
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ['getVolNoticePerMonth', state],
+  //   queryFn: () => getVolNoticePerMonth(state.center.lat.toString(), state.center.lng.toString()),
+  // });
 
   const { data, isLoading } = useQuery({
     queryKey: ['getVolNoticePerMonth', state],
-    queryFn: () => getVolNoticePerMonth(state.center.lat.toString(), state.center.lng.toString()),
+    queryFn: () => getVolNoticeList(0, 0, 0, state.center.lat.toString(), state.center.lng.toString()),
   });
+
+  // const { shelterdata } = useQuery({
+  //   queryKey: ['getShelterDetail', shelterId],
+  //   queryFn: () => getShelterDetail(shelterId),
+  // });
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -44,58 +47,60 @@ export default function SearchVolunteer() {
       }));
     }
   }, []);
-
   if (isLoading) return;
-  console.log(data);
+
+  console.log('data', data);
+  console.log(state);
+
   return (
-    <Map
-      className={styles.map}
-      center={state.center}
-      level={10}
-      onClick={(_t, mouseEvent) =>
-        setState({
-          center: {
-            lat: mouseEvent.latLng.getLat(),
-            lng: mouseEvent.latLng.getLng(),
-          },
-        })
-      }
-    >
-      <Circle
+    <div>
+      <Map
+        className={styles.map}
         center={state.center}
-        radius={30000}
-        strokeWeight={1}
-        strokeColor={'#ffd80b'}
-        strokeOpacity={0.1}
-        strokeStyle={'solid'}
-        fillColor={'#ffd80b'}
-        fillOpacity={0.2}
-      />
-      {!state.isLoading && (
-        <MapMarker
-          position={state.center}
-          image={{
-            src: 'https://i.ibb.co/z42FXX4/002-2.png',
-            size: {
-              width: 34,
-              height: 36,
+        level={10}
+        onClick={(_t, mouseEvent) =>
+          setState({
+            center: {
+              lat: mouseEvent.latLng.getLat(),
+              lng: mouseEvent.latLng.getLng(),
             },
-          }}
-        ></MapMarker>
-      )}
-      {shelters.map((position, index) => (
-        <MapMarker
-          key={index}
-          position={position.center}
-          image={{
-            src: 'https://i.ibb.co/XCjM1ss/003.png',
-            size: {
-              width: 34,
-              height: 36,
-            },
-          }}
+          })
+        }
+      >
+        <Circle
+          center={state.center}
+          radius={30000}
+          strokeWeight={1}
+          strokeColor={'#ffd80b'}
+          strokeOpacity={0.1}
+          strokeStyle={'solid'}
+          fillColor={'#ffd80b'}
+          fillOpacity={0.2}
         />
-      ))}
-    </Map>
+        {!state.isLoading && (
+          <MapMarker
+            position={state.center}
+            image={{
+              src: 'https://i.ibb.co/z42FXX4/002-2.png',
+              size: {
+                width: 34,
+                height: 36,
+              },
+            }}
+          ></MapMarker>
+        )}
+        {data
+          ? data.map((item, index) => (
+              <SearchVolunteerMark
+                latitude={item.latitude}
+                longitude={item.longitude}
+                shelterId={item.shelterId}
+                name={item.name}
+                key={index}
+              />
+            ))
+          : null}
+      </Map>
+    </div>
   );
 }

@@ -1,0 +1,34 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  &-dateState {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  & > div {
+    margin: 5px;
+  }
+}
+
+.volunteerDate {
+  font-size: 15px;
+}
+
+.state {
+  font-size: 15px;
+}
+
+.title {
+  font-size: 15px;
+}
+
+.Modal {
+  position: relative;
+  z-index: 10;
+}

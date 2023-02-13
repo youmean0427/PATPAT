@@ -1,0 +1,14 @@
+@import 'assets/styles/variable.scss';
+
+.infoContainer {
+  padding: 10px;
+  width: 360.4px;
+  height: 310.8px;
+  // border: solid 1px $main-color;
+}
+
+.shelterName {
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: $main-accent-color;
+}

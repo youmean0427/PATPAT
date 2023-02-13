@@ -1,0 +1,37 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  font-size: 20px;
+  & > div {
+    margin-bottom: 5px;
+  }
+  &-inner {
+    display: flex;
+  }
+}
+
+.address {
+  font-size: 10px;
+}
+.phoneNumber {
+  font-size: 10px;
+}
+.infoContent {
+  font-size: 10px;
+}
+
+.image {
+  width: 100px;
+  object-fit: cover;
+  margin: 5px;
+  & > img {
+    width: 100%;
+  }
+}
+
+.info {
+  margin: 5px;
+  & > div {
+    margin-bottom: 5px;
+  }
+}
