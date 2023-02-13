@@ -817,36 +817,96 @@ public class ReportServiceImpl implements ReportService{
 //        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
         List<ShelterProtectedDog> shelterProtectedDogList = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
 
-        Long totalCount = shelterProtectedDogRepository.countDogByDistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
+        //Long totalCount = shelterProtectedDogRepository.countDogByDistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
 
         for(ShelterProtectedDog s : shelterProtectedDogList){
-            ProtectDto protectDto = new ProtectDto();
-            System.out.println(s);
-            protectDto.setProtectId(s.getSpDogId());
-            protectDto.setKg(s.getWeight());
-            protectDto.setAge(s.getAge());
-            protectDto.setProtectName(s.getName());
-            protectDto.setBreedId(s.getBreed().getBreedId());
-            protectDto.setBreedName(s.getBreed().getName());
-            if ((s.getImages().size() > 0)) {
-                protectDto.setThumbnail(s.getImages().get(0).getFilePath());
-            } else {
-                protectDto.setThumbnail(fileService.getFileUrl(fileService.getDefaultImage()));
-            }
-            protectDto.setNeuteredCode(s.getNeutered().getCode());
-            protectDto.setNeutered(s.getNeutered().name());
-            protectDto.setStateCode(s.getStateCode().getCode());
-            protectDto.setState(s.getStateCode().name());
-            protectDto.setGenderCode(s.getGender().getCode());
-            protectDto.setGender(s.getGender().name());
+            /** 유사도 코드 **/
+            if(isResemble(missingDog,s)){
+                ProtectDto protectDto = new ProtectDto();
+                System.out.println(s);
+                protectDto.setProtectId(s.getSpDogId());
+                protectDto.setKg(s.getWeight());
+                protectDto.setAge(s.getAge());
+                protectDto.setProtectName(s.getName());
+                protectDto.setBreedId(s.getBreed().getBreedId());
+                protectDto.setBreedName(s.getBreed().getName());
+                if ((s.getImages().size() > 0)) {
+                    protectDto.setThumbnail(s.getImages().get(0).getFilePath());
+                } else {
+                    protectDto.setThumbnail(fileService.getFileUrl(fileService.getDefaultImage()));
+                }
+                protectDto.setNeuteredCode(s.getNeutered().getCode());
+                protectDto.setNeutered(s.getNeutered().name());
+                protectDto.setStateCode(s.getStateCode().getCode());
+                protectDto.setState(s.getStateCode().name());
+                protectDto.setGenderCode(s.getGender().getCode());
+                protectDto.setGender(s.getGender().name());
 
-            protectDtoList.add(protectDto);
+                protectDtoList.add(protectDto);
+            }
         }
+        Long totalCount = Long.valueOf(protectDtoList.size());
         Long totalPage = totalCount % requestReportDto.getLimit() == 0 ? totalCount / requestReportDto.getLimit()
                 : (totalCount / requestReportDto.getLimit()) +1;
         responseListDto.setList(protectDtoList);
         responseListDto.setTotalPage(Math.toIntExact(totalPage));
         responseListDto.setTotalCount(totalCount);
         return responseListDto;
+    }
+
+    private boolean isResemble(MissingDog missingDog, ShelterProtectedDog s) {
+        int count = 0;
+        int total = 7;
+        /** 견종 여부 **/
+        if(missingDog.getBreed().getBreedId()==s.getBreed().getBreedId()){
+            count++;
+        }
+        /** 성별 여부 **/
+        if(missingDog.getGender().getCode()!=3 && s.getGender().getCode()!=3){
+            if(missingDog.getGender().equals(s.getGender())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        /** 옷 입었는지 여부 **/
+        if(missingDog.getCategoryCloth().equals(s.getCategoryCloth())){
+            count++;
+        }
+        /** 색깔 여부 **/
+        if(missingDog.getCategoryColor().equals(s.getCategoryColor())){
+            count++;
+        }
+        /** 귀 여부 **/
+        if(missingDog.getCategoryEar().getCode()!=0 && s.getCategoryEar().getCode()!=0){
+            if(missingDog.getCategoryEar().equals(s.getCategoryEar())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        /** 패턴 여부 **/
+        if(missingDog.getCategoryPattern().getCode()!=0 && s.getCategoryPattern().getCode()!=0){
+            if(missingDog.getCategoryPattern().equals(s.getCategoryPattern())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        /** 꼬리 여부 **/
+        if(missingDog.getCategoryTail().getCode()!=0 && s.getCategoryTail().getCode()!=0){
+            if(missingDog.getCategoryPattern().equals(s.getCategoryPattern())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        double percentage = (double)count/(double) total;
+        if(percentage > 0.6){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
