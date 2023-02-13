@@ -6,6 +6,7 @@ import styles from './MyMissing.module.scss';
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
 import NoData from 'components/Common/NoData';
 import SearchShelterItem from './Items/SearchShelterItem';
+import ShelterContainer from 'containers/ShelterContainer';
 
 export default function MyMissing() {
   const [page, setPage] = useState(1);
@@ -33,7 +34,6 @@ export default function MyMissing() {
 
   if (isLoading) return;
 
-  console.log(data);
   return (
     <div className={styles.container}>
       <div className={styles['missing-detail']}>
@@ -55,9 +55,9 @@ export default function MyMissing() {
         </div>
       </div>
       <hr className={styles.line} />
-      <div className={styles['shelter-list']}>
+      <ShelterContainer title="유사견종 조회">
         {data.totalCount === 0 ? (
-          <NoData>검색된 보호소가 없습니다.</NoData>
+          <NoData>꾹 등록 정보가 없습니다.</NoData>
         ) : (
           <>
             <div className={styles.pagination}>
@@ -83,12 +83,12 @@ export default function MyMissing() {
             </div>
             <div className={styles.list}>
               {data.list.map(item => {
-                return <SearchShelterItem key={item.spDogId} item={item} />;
+                return <SearchShelterItem key={item.protectId} item={item} />;
               })}
             </div>
           </>
         )}
-      </div>
+      </ShelterContainer>
     </div>
   );
 }

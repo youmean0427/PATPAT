@@ -44,10 +44,11 @@
   border: 0;
   margin-bottom: 5rem;
 }
-.shelter-list {
-  width: 100%;
-  height: 10rem;
-  margin: auto;
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5rem;
 }
 .pagination {
   display: flex;
@@ -77,4 +78,8 @@
   .list {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
+}
+.no-data {
+  text-align: center;
+  font-size: 2rem;
 }

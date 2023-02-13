@@ -1,36 +1,17 @@
 @import 'assets/styles/variable.scss';
 
-.info {
-  display: flex;
-  gap: 2rem;
-  & > .user {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    .user-name {
-      width: 10rem;
-      font-size: 1.6rem;
-      font-weight: 700;
-      text-align: center;
-      padding: 0.5rem 2rem;
-      border-radius: 0.4rem;
-      color: $black-color;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    & > img {
-      width: 10rem;
-      height: 10rem;
-      border-radius: 0.4rem;
-    }
-  }
+.description {
+  padding: 0 1rem 1rem 1rem;
+}
+.name {
+  font-weight: 700;
+  font-size: 1.7rem;
+  margin-bottom: 0.6rem;
+}
 
-  & > .desc {
-    margin-top: 1rem;
-    flex: 1;
-    font-size: 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
+.kind,
+.gender,
+.age {
+  font-size: 1.2rem;
+  color: $gray-color;
 }
