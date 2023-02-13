@@ -17,6 +17,9 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
     onSuccess: data => {
       setMyShelterId(data.shelterId);
     },
+    onError: e => {
+      console.error(e);
+    },
   });
   if (isLoading) return;
 
@@ -32,7 +35,7 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
     { title: '로그아웃', path: '/' },
   ];
   return (
-    <li className={styles['profile']}>
+    <li className={styles.profile}>
       <div className={styles['profile-name']}>{data.username}님</div>
       <img className={styles['profile-img']} src={data.profileImageUrl} alt="profile" />
 
