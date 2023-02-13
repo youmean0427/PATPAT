@@ -22,8 +22,10 @@ export const getProtectList = async (code, stateCode, limit, offset) => {
  * @param {*} protectId
  * @returns protectId에 해당하는 보호동물의 데이터
  */
-export const getProtectDetail = async protectId => {
-  const { data } = await defaultInstance.get(`/protects/${protectId}`);
+export const getProtectDetail = async (protectId, isLogin) => {
+  const { data } = isLogin
+    ? await authInstance.get(`/protects/${protectId}`)
+    : await defaultInstance.get(`/protects/${protectId}`);
   return data;
 };
 

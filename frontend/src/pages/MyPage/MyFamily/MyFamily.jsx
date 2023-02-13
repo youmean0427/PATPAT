@@ -1,14 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMyConsultations } from 'apis/api/consulting';
 import React, { useState } from 'react';
-import ConsultingItem from '../Items/ConsultingItem';
+import { getMissingDogListOfUser } from 'apis/api/report';
+import MissingDogItem from 'components/MyPage/Items/MissingDogItem';
+import styles from './MyFamily.module.scss';
+import ShelterContainer from 'containers/ShelterContainer';
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
-import styles from './ConsultingList.module.scss';
 import NoData from 'components/Common/NoData';
 
-export default function ConsultingList({ stateCode }) {
+export default function MyFamily() {
   const [page, setPage] = useState(1);
   const LIMIT = 8;
+
+  const { data, isLoading } = useQuery(['getMissingDogListOfUser', page], () => {
+    return getMissingDogListOfUser(LIMIT, page - 1);
+  });
 
   const handleClickPrev = () => {
     setPage(prev => prev - 1);
@@ -17,19 +22,12 @@ export default function ConsultingList({ stateCode }) {
   const handleClickNext = () => {
     setPage(prev => prev + 1);
   };
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['getMyConsultations', stateCode],
-    queryFn: () => {
-      return getMyConsultations(LIMIT, page - 1, stateCode);
-    },
-  });
-
   if (isLoading) return;
+
   return (
-    <div>
+    <ShelterContainer title="내 가족 찾기">
       {data.totalCount === 0 ? (
-        <NoData>신청된 상담 내역이 없습니다.</NoData>
+        <NoData>등록된 실종 공고가 없습니다.</NoData>
       ) : (
         <>
           <div className={styles.pagination}>
@@ -52,12 +50,12 @@ export default function ConsultingList({ stateCode }) {
             </button>
           </div>
           <div className={styles.list}>
-            {data.list.map(item => (
-              <ConsultingItem key={item.consultingId} item={item} filterCode={stateCode} />
-            ))}
+            {data.list.map(item => {
+              return <MissingDogItem key={item.missingId} item={item} />;
+            })}
           </div>
         </>
       )}
-    </div>
+    </ShelterContainer>
   );
 }

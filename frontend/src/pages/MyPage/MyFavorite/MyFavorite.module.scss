@@ -6,16 +6,6 @@
   row-gap: 2rem;
   column-gap: 1.5rem;
 }
-.container {
-  width: 100%;
-  margin-bottom: 50px;
-}
-.no-data {
-  width: 100%;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: auto;
-}
 .pagination {
   display: flex;
   justify-content: flex-end;
@@ -44,4 +34,8 @@
   .list {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
+}
+.no-data {
+  text-align: center;
+  font-size: 2rem;
 }

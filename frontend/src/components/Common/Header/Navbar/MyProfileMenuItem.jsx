@@ -27,7 +27,7 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
   ];
 
   const normalUser = [
-    { title: '마이페이지', path: 'mypage' },
+    { title: '마이페이지', path: 'mypage/missing' },
     { title: '보호소 등록', path: '' },
     { title: '로그아웃', path: '/' },
   ];

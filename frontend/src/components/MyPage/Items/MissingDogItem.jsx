@@ -5,59 +5,29 @@ import { useNavigate } from 'react-router-dom';
 
 export default function MissingDogItem({ item }) {
   const navigate = useNavigate();
-  const {
-    typeCode,
-    missingId,
-    personalProtectionId,
-    userId,
-    genderCode,
-    gender,
-    latitude,
-    longitude,
-    title,
-    content,
-    breedId,
-    breedName,
-    name,
-    kg,
-    age,
-    categoryEar,
-    categoryTail,
-    categoryColor,
-    categoryPattern,
-    categoryCloth,
-    categoryClothColor,
-    fileUrlList,
-    thumbnail,
-    findDate,
-    stateCode,
-    neutered,
-  } = item;
+  const { missingId, gender, breedName, name, kg, age, thumbnail, neutered } = item;
 
   return (
-    <div
-      className={styles.list}
-      onClick={() =>
-        navigate(`/mypage/mymissing/${missingId}`, {
-          state: { missingId: missingId, name: name, thumbnail: thumbnail },
-        })
-      }
-    >
-      {typeCode === 0 ? (
-        <Card>
-          <img src={thumbnail} alt={name} />
-          <div className={styles.description}>
-            <div className={styles.name}>{name}</div>
-            <div className={styles.kind}>{breedName}</div>
-            <div className={styles.gender}>
-              {gender}(중성화 {neutered ? 'O' : 'X'})
-            </div>
-            <div className={styles.age}>
-              {age}살 / {kg}kg
-            </div>
+    <Card>
+      <div
+        onClick={() =>
+          navigate(`/mypage/missing/${missingId}`, {
+            state: { missingId: missingId, name: name, thumbnail: thumbnail },
+          })
+        }
+      >
+        <img src={thumbnail.filePath} alt={name} />
+        <div className={styles.description}>
+          <div className={styles.name}>{name}</div>
+          <div className={styles.kind}>{breedName}</div>
+          <div className={styles.gender}>
+            {gender}(중성화 {neutered ? 'O' : 'X'})
           </div>
-        </Card>
-      ) : null}
-    </div>
+          <div className={styles.age}>
+            {age}살 / {kg}kg
+          </div>
+        </div>
+      </div>
+    </Card>
   );
 }
