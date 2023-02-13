@@ -830,7 +830,7 @@ public class ReportServiceImpl implements ReportService{
                 protectDto.setBreedId(s.getBreed().getBreedId());
                 protectDto.setBreedName(s.getBreed().getName());
                 if ((s.getImages().size() > 0)) {
-                    protectDto.setThumbnail(s.getImages().get(0).getFilePath());
+                    protectDto.setThumbnail(fileService.getFileUrl(s.getImages().get(0)));
                 } else {
                     protectDto.setThumbnail(fileService.getFileUrl(fileService.getDefaultImage()));
                 }

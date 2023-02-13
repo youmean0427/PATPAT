@@ -30,7 +30,6 @@ public class AlarmController {
     @Autowired
     NotificationService notificationService;
 
-    @CrossOrigin
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(@RequestParam String token) {
         Long userId = notificationService.getUserId();
