@@ -40,7 +40,7 @@ public class AlarmController {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         sseEmitters.put(userId, sseEmitter);
         try {
-            sseEmitter.send(SseEmitter.event().name("connect").data("ㅗㅗㅜㅜㅏㅏㅛㅛ",MediaType.ALL));
+            sseEmitter.send(SseEmitter.event().name("connect").data("ok good you good"));
         } catch (Exception e) {
             e.printStackTrace();
         }
