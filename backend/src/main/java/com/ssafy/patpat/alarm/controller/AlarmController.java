@@ -5,8 +5,11 @@ import com.ssafy.patpat.alarm.service.NotificationServiceImpl;
 import com.ssafy.patpat.protect.service.ProtectService;
 import com.ssafy.patpat.report.service.ReportService;
 import com.ssafy.patpat.user.service.UserService;
+import com.ssafy.patpat.volunteer.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @RestController("/api/alarm")
 public class AlarmController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlarmController.class);
     public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
     @Autowired
     UserService userService;
@@ -33,6 +37,7 @@ public class AlarmController {
     @CrossOrigin
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(@RequestParam String token) {
+        LOGGER.info("오나? {}",token);
         Long userId = notificationService.getUserId();
 
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
