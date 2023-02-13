@@ -528,5 +528,12 @@ public class ShelterServiceImpl implements ShelterService{
         return shelterNameDtos;
     }
 
+    @Override
+    public Boolean deleteShelter(Long shelterId) {
+        Shelter shelter = shelterRepository.findByShelterId(shelterId);
+        shelterRepository.delete(shelter);
+        return null;
+    }
+
 
 }

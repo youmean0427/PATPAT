@@ -215,4 +215,12 @@ public class ShelterController {
                     .body(responseMessage);
         }
     }
+
+    @DeleteMapping("/delete/{shelterId}")
+    @ApiOperation(value = "보호소 인증", notes = "보호소 삭제")
+    public ResponseEntity<ResponseMessage> deleteShelter(@PathVariable Long shelterId){
+        service.deleteShelter(shelterId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("SUCCESS"));
+    }
 }
