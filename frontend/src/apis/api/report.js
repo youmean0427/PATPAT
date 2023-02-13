@@ -24,15 +24,11 @@ export const getMissingDogList = async (breedId, gender, limit, offset) => {
 
 /**
  * GET : 현재 유저의 실종견 등록 공고 리스트
- * @param {int} userId
+ * @param {int} limit
+ * @param {int} offset
  * @returns
  */
 export const getMissingDogListOfUser = async (limit, offset) => {
-  const { data } = await authInstance.get(`/reports/missings/me?limit=${limit}&offSet=${offset}`);
-  return data;
-};
-
-export const getMissingDogListOfMy = async (limit, offset) => {
   const { data } = await authInstance.get(`/reports/missings/me?limit=${limit}&offSet=${offset}`);
   return data;
 };
@@ -80,7 +76,9 @@ export const getPersonalDogDetail = async personalProtectId => {
  * @returns
  */
 export const getSimilarDogList = async (missingId, limit, offset) => {
-  const { data } = await authInstance.get(`/reports/recommends?missingId=${missingId}&limit=${limit}&offSet=${offset}`);
+  const { data } = await authInstance.get(
+    `/reports/recommends/${missingId}?limit=${limit}&missingId=${missingId}&offSet=${offset}`
+  );
   return data;
 };
 

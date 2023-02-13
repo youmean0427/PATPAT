@@ -45,7 +45,10 @@
 }
 .user-profile {
   position: absolute;
-  width: 13%;
+  width: 8vw;
+  height: 8vw;
+  max-width: 100px;
+  max-height: 100px;
   right: 0;
   border-radius: 50%;
   bottom: 20px;
@@ -81,11 +84,13 @@
 }
 .mmodal-profile {
   width: 10rem;
+  height: 10rem;
   border-radius: 50%;
   cursor: pointer;
 }
 .modal-profile img {
   width: 10rem;
+  height: 10rem;
   border-radius: 50%;
   cursor: pointer;
 }

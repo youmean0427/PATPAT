@@ -17,7 +17,12 @@ import Waiting from 'pages/Consulting/Waiting/Waiting';
 import Volunteer from 'pages/Volunteer/Volunteer';
 import SearchVolunteer from 'pages/Volunteer/SearchVolunteer';
 import MyPage from 'pages/MyPage/MyPage';
+import MyFamily from 'pages/MyPage/MyFamily/MyFamily';
 import MyMissing from 'components/MyPage/MyMissing';
+import MyFavorite from 'pages/MyPage/MyFavorite/MyFavorite';
+import MyBoard from 'pages/MyPage/MyBoard/MyBoard';
+import MyVolunteer from 'pages/MyPage/MyVolunteer/MyVolunteer';
+import MyConsulting from 'pages/MyPage/MyConsulting/MyConsulting';
 import Report from 'pages/Report/Report';
 import MoreInfo from 'pages/Mbti/MoreInfo';
 import InfoDetail from 'components/Community/Info/InfoDetail';
@@ -60,8 +65,18 @@ const router = createBrowserRouter([
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
-      { path: 'mypage', element: <MyPage /> },
-      { path: 'mypage/mymissing/:id', element: <MyMissing /> },
+      { path: 'mypage/missing/:id', element: <MyMissing /> },
+      {
+        path: 'mypage',
+        element: <MyPage />,
+        children: [
+          { path: 'missing', element: <MyFamily /> },
+          { path: 'favorite', element: <MyFavorite /> },
+          { path: 'boards', element: <MyBoard /> },
+          { path: 'volunteer', element: <MyVolunteer /> },
+          { path: 'consulting', element: <MyConsulting /> },
+        ],
+      },
       { path: 'volunteer/search', element: <SearchVolunteer /> },
       { path: 'report', element: <Report /> },
       { path: 'shelter/search', element: <SearchShelter /> },

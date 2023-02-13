@@ -1,14 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
-import { getMyConsultations } from 'apis/api/consulting';
+import { getVolReservationOfUser } from 'apis/api/volunteer';
 import React, { useState } from 'react';
-import ConsultingItem from '../Items/ConsultingItem';
+import VolunteerItem from 'components/MyPage/Items/VolunteerItem';
+import styles from './MyVolunteer.module.scss';
+import ShelterContainer from 'containers/ShelterContainer';
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
-import styles from './ConsultingList.module.scss';
 import NoData from 'components/Common/NoData';
 
-export default function ConsultingList({ stateCode }) {
+export default function MyVolunteer() {
+  const userId = JSON.parse(localStorage.getItem('user')).userId;
   const [page, setPage] = useState(1);
   const LIMIT = 8;
+
+  const { data, isLoading } = useQuery(['getVolReservationOfUser', page], () => {
+    return getVolReservationOfUser(LIMIT, page - 1, userId);
+  });
 
   const handleClickPrev = () => {
     setPage(prev => prev - 1);
@@ -18,18 +24,12 @@ export default function ConsultingList({ stateCode }) {
     setPage(prev => prev + 1);
   };
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['getMyConsultations', stateCode],
-    queryFn: () => {
-      return getMyConsultations(LIMIT, page - 1, stateCode);
-    },
-  });
-
   if (isLoading) return;
+
   return (
-    <div>
+    <ShelterContainer title="봉사 관리">
       {data.totalCount === 0 ? (
-        <NoData>신청된 상담 내역이 없습니다.</NoData>
+        <NoData>신청된 봉사 내역이 없습니다.</NoData>
       ) : (
         <>
           <div className={styles.pagination}>
@@ -52,12 +52,16 @@ export default function ConsultingList({ stateCode }) {
             </button>
           </div>
           <div className={styles.list}>
-            {data.list.map(item => (
-              <ConsultingItem key={item.consultingId} item={item} filterCode={stateCode} />
-            ))}
+            {data.totalCount === 0 ? (
+              <div>봉사 신청 내역이 없습니다.</div>
+            ) : (
+              data.list.map(item => {
+                return <VolunteerItem key={item.reservationId} item={item} />;
+              })
+            )}
           </div>
         </>
       )}
-    </div>
+    </ShelterContainer>
   );
 }

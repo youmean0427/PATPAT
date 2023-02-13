@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getProtectDetail } from 'apis/api/protect';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router';
 import styles from './ProtectsDetail.module.scss';
 import ShelterContainer from 'containers/ShelterContainer';
@@ -10,10 +10,11 @@ import ConsultingReservation from './ConsultingReservation';
 
 export default function ProtectsDetail() {
   const protectId = useParams();
-
+  const userInfo = JSON.parse(localStorage.getItem('user'));
+  const isLogin = userInfo === null ? false : true;
   const { data, isLoading } = useQuery({
     queryKey: ['getProtectDetail'],
-    queryFn: () => getProtectDetail(protectId.id),
+    queryFn: () => getProtectDetail(protectId.id, isLogin),
   });
 
   if (isLoading) return;

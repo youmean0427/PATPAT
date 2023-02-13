@@ -39,7 +39,7 @@ export default function Result() {
         </div>
       </div>
       <div className={styles['desc-box']}>
-        <span>{description}</span>
+        <p dangerouslySetInnerHTML={{ __html: description }}></p>
         <div className={styles['btn-box']}>
           <button
             onClick={() => {
