@@ -5,10 +5,11 @@
   border-radius: 5px;
   margin-top: 10px;
   margin-bottom: 10px;
+  padding: 5px;
 
   &-dateState {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 
   & > div {
@@ -21,7 +22,16 @@
 }
 
 .state {
-  font-size: 15px;
+  font-size: 12px;
+  background-color: orange;
+  border-radius: 5px;
+  padding: 5px;
+  &Code0 {
+    font-size: 12px;
+    background-color: orange;
+    border-radius: 5px;
+    padding: 5px;
+  }
 }
 
 .title {

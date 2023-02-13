@@ -1,4 +1,12 @@
+@import 'assets/styles/variable.scss';
+
 .map {
   width: 100%;
   height: 80vh;
+}
+.map {
+  & > div > div > div > div {
+    border: 2px solid $gray-color !important;
+    border-radius: 10px;
+  }
 }

@@ -1,14 +1,29 @@
 @import 'assets/styles/variable.scss';
 
-.infoContainer {
-  padding: 10px;
-  width: 360.4px;
-  height: 310.8px;
-  // border: solid 1px $main-color;
-}
+// .infoContainer {
+//   padding: 10px;
+//   width: 400px;
+//   height: 300px;
+//   background-color: $white-color;
+//   border: solid 1px $gray-color;
+//   // border-radius: 10px;
+//   cursor: default;
+// }
 
 .shelterName {
   font-size: 20px;
   margin-bottom: 5px;
   color: $main-accent-color;
+}
+
+.test {
+  width: 400px !important;
+  height: 300px !important;
+  padding: 10px;
+}
+
+.closeButton {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
 }

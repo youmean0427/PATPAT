@@ -10,20 +10,28 @@
   }
 }
 
+.name {
+  color: $main-accent-color;
+}
 .address {
-  font-size: 10px;
+  font-size: 12px;
 }
 .phoneNumber {
-  font-size: 10px;
+  font-size: 12px;
 }
 .infoContent {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .image {
   width: 100px;
-  object-fit: cover;
+
   margin: 5px;
+  border: 1px solid $gray-color;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+
   & > img {
     width: 100%;
   }
@@ -31,7 +39,14 @@
 
 .info {
   margin: 5px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   & > div {
     margin-bottom: 5px;
+    margin-top: 5px;
+    & > div {
+      margin-bottom: 5px;
+    }
   }
 }

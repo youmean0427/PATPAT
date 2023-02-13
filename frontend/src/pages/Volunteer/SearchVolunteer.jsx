@@ -4,7 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Map, MapMarker, Circle } from 'react-kakao-maps-sdk';
 import styles from './SearchVolunteer.module.scss';
 import SearchVolunteerMark from 'components/Volunteer/Search/SearchVolunteerMark';
+import DetailModal from 'components/Common/DetailModal';
+import Volunteer from './Volunteer';
+import VolunteerDetail from './VolunteerDetail';
 export default function SearchVolunteer() {
+  const [modal, setModal] = useState(false);
+  const [modalData, setModalData] = useState();
   const [state, setState] = useState({
     center: {
       lat: 0,
@@ -47,10 +52,21 @@ export default function SearchVolunteer() {
       }));
     }
   }, []);
-  if (isLoading) return;
 
-  console.log('data', data);
+  // console.log('data', data);
   console.log(state);
+
+  const markToPage = x => {
+    setModalData(x);
+    if (x !== undefined) {
+      setModal(true);
+    }
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
+  if (isLoading) return;
 
   return (
     <div>
@@ -97,10 +113,20 @@ export default function SearchVolunteer() {
                 shelterId={item.shelterId}
                 name={item.name}
                 key={index}
+                markToPage={markToPage}
               />
             ))
           : null}
       </Map>
+      {modalData ? (
+        <DetailModal open={modal} close={closeModal} title={modalData.name}>
+          <VolunteerDetail items={modalData} />
+        </DetailModal>
+      ) : (
+        <DetailModal open={modal} close={closeModal}>
+          <VolunteerDetail items={modalData} />
+        </DetailModal>
+      )}
     </div>
   );
 }
