@@ -67,6 +67,16 @@ export const getVolReservationOfShelter = async shelterId => {
   return data;
 };
 
+/**
+ * GET : 봉사 신청내역 상세 조회
+ * @param {int} scheduleId
+ * @returns
+ */
+export const getVolReservationOfUserDetail = async scheduleId => {
+  const { data } = await authInstance.get(`/volunteers/schedules/${scheduleId}`);
+  return data;
+};
+
 // POST
 
 /**

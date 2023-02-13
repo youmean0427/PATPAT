@@ -1,33 +1,28 @@
 import React from 'react';
-import styles from './VolunteerItem.module.scss';
-import ConsultingCard from 'components/Common/Card/ConsultingCard';
+import styles from './SearchShelterItem.module.scss';
+import Card from 'components/Common/Card';
+import ProtectStateBadge from 'components/Common/Badge/ProtectStateBadge';
+import { useNavigate } from 'react-router';
 
 export default function SearchShelterItem({ item }) {
+  const navigate = useNavigate();
+
   return (
-    <ConsultingCard>
-      <div className={styles.info}>
-        <div className={styles.user}>
-          <img src="" alt="이미지" />
-        </div>
-        <div className={styles.desc}>
-          {/* <div className={styles['desc-item']}>
-            <span>{item.shelterName}</span>
+    <Card>
+      <div className={styles.card} onClick={() => navigate(`/protects/${item.protectId}`)}>
+        <img src={item.thumbnail} alt={item.protectName} />
+        <div className={styles.description}>
+          <div className={styles.name}>{item.protectName}</div>
+          <div className={styles.kind}>{item.breedName}</div>
+          <div className={styles.gender}>
+            {item.gender}(중성화 {item.neutered})
           </div>
-          <div className={styles['desc-item']}>
-            <span className={styles.address}>{item.shelterAddress}</span>
+          <div className={styles.age}>
+            {item.age}살 / {item.weight}kg
           </div>
-          <div className={styles['res-date']}>
-            <div className={styles['desc-item']}>
-              <span className={styles['desc-item-title']}>{formatDate(date)}</span>
-            </div>
-            <div className={styles['desc-item']}>
-              <span className={styles['desc-item-title']}>
-                {startHour + ':' + startMinute + ' ~ ' + endHour + ':' + endMonute} 예정
-              </span>
-            </div>
-          </div> */}
         </div>
+        <ProtectStateBadge state={item.state} stateCode={item.stateCode} />
       </div>
-    </ConsultingCard>
+    </Card>
   );
 }

@@ -3,8 +3,9 @@ import styles from './UserBadge.module.scss';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setUser } from 'redux/user';
+import { updateConsultant } from 'apis/api/consulting';
 
-export default function ConsultingBadge({ state, stateCode, shelterId, shelterName }) {
+export default function ConsultingBadge({ state, stateCode, items }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,12 +28,31 @@ export default function ConsultingBadge({ state, stateCode, shelterId, shelterNa
   };
 
   const handleConsulting = () => {
-    dispatch(setUser({ resIsShelter: false, resShelterId: shelterId, resUserName: shelterName }));
+    dispatch(setUser({ resIsShelter: false, resShelterId: items.shelterId, resUserName: items.shelterName }));
+    const newitems = {
+      address: items.address,
+      consultingDate: items.consultingDate,
+      consultingId: items.consultingId,
+      registDate: items.registDate,
+      shelterDogId: items.shelterDogId,
+      shelterDogName: items.shelterDogName,
+      shelterId: items.shelterId,
+      shelterName: items.shelterName,
+      state: items.state,
+      stateCode: 4,
+      time: items.time,
+      timeCode: items.timeCode,
+      userExp: items.userExp,
+      userId: items.userId,
+      userName: items.userName,
+      userProfileUrl: items.userProfileUrl,
+    };
+    updateConsultant(items.consultingId, newitems);
     navigate('/consulting/meeting');
   };
 
   return (
-    <div className={customStyle()} onClick={stateCode === 3 ? handleConsulting() : null}>
+    <div className={customStyle()} onClick={stateCode === 3 ? handleConsulting : null}>
       {state === '방생성' ? '방참가' : state}
     </div>
   );

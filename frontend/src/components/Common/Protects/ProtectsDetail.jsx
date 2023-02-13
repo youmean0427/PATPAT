@@ -13,7 +13,7 @@ export default function ProtectsDetail() {
   const userInfo = JSON.parse(localStorage.getItem('user'));
   const isLogin = userInfo === null ? false : true;
   const { data, isLoading } = useQuery({
-    queryKey: ['getProtectDetail'],
+    queryKey: ['getProtectDetail', protectId.id],
     queryFn: () => getProtectDetail(protectId.id, isLogin),
   });
 
