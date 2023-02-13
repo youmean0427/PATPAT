@@ -34,7 +34,6 @@ public class AlarmController {
     @Autowired
     NotificationService notificationService;
 
-    @CrossOrigin
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(@RequestParam String token) {
         LOGGER.info("오나? {}",token);
