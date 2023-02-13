@@ -65,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService{
 
         if(shelterList.size() > 0){
             for(Shelter s : shelterList){
-                Long userId = s.getOwner().getOwnerId();
+                Long userId = s.getOwner().getUser().getUserId();
 
                 if(sseEmitters.containsKey(userId)){
                     SseEmitter sseEmitter = sseEmitters.get(userId);

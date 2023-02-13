@@ -1,6 +1,7 @@
 package com.ssafy.patpat.user.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.patpat.alarm.entity.Alarm;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
@@ -124,6 +125,8 @@ public class UserService {
 
         List<ShelterProtectedDog> favoriteDogs = new ArrayList<>();
 
+        List<Alarm> alarms = new ArrayList<>();
+
         String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
         Image image = fileService.insertFileUrl(userDto.getProfileImageUrl(), userDto.getProvider());
@@ -138,6 +141,7 @@ public class UserService {
                 .image(image)
                 .authorities(list)
                 .favoriteDogs(favoriteDogs)
+                .alarms(alarms)
                 .build();
 
         return userRepository.save(user);
