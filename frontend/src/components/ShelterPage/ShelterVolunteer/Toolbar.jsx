@@ -1,7 +1,6 @@
 import React from 'react';
 
 function Toolbar({ onNavigate, date }) {
-  console.log('Toolbar', date);
   const navigate = action => {
     onNavigate(action);
   };

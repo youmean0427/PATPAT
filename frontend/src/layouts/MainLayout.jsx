@@ -1,12 +1,12 @@
 import Footer from 'components/Common/Footer/Footer';
 import { Outlet } from 'react-router-dom';
 import Header from 'components/Common/Header/Header';
-import styles from './MainLayout.module.scss';
 import Container from 'containers/Container';
-import ScrollToTop from 'routes/ScrollToTop';
 import useModal from 'hooks/useModal';
-import EditInfoModal from 'components/Common/Modal/shelters/EditInfoModal';
 import EnrollShelterModal from 'components/Common/Modal/shelters/EnrollShelterModal';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import styles from './MainLayout.module.scss';
 
 const MainLayout = () => {
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
@@ -20,6 +20,7 @@ const MainLayout = () => {
       </main>
       {isOpen && <EnrollShelterModal isOpen={isOpen} handleClickModalClose={handleClickModalClose} />}
       <Footer />
+      <ToastContainer position="bottom-center" limit={2} closeButton={false} autoClose={2000} hideProgressBar />
     </div>
   );
 };

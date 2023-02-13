@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-
 const axiosApi = baseURL => {
   const instance = axios.create({
     baseURL,
@@ -44,17 +45,28 @@ const axiosAuthApi = baseURL => {
           const refreshToken = localStorage.getItem('refreshToken');
           const accessToken = localStorage.getItem('accessToken');
           // token refresh 요청
-          const data = await axios.get(`${process.env.REACT_APP_API_URL}/user/refresh`, {
-            headers: { RefreshToken: `Bearer ${refreshToken}`, AccessToken: `Bearer ${accessToken}` },
-          });
+          const data = await axios
+            .get(`${process.env.REACT_APP_API_URL}/user/refresh`, {
+              headers: { RefreshToken: `Bearer ${refreshToken}`, AccessToken: `Bearer ${accessToken}` },
+            })
+            .then(data => {
+              console.log(data);
+              const {
+                data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
+              } = data;
+              localStorage.setItem('accessToken', newAccessToken);
+              localStorage.setItem('refreshToken', newRefreshToken);
+              originalRequest.headers.AccessToken = `Bearer ${newAccessToken}`;
+            })
+            .catch(error => {
+              if (error.response.data.code === '008') {
+                window.location.href = '/login';
+                toast('토큰이 만료되었습니다. 다시 로그인해주세요', { type: 'info' });
+              }
+            });
           // 요청 후 새롭게 받은 access token과 refresh token 을 다시 저장
           // localStorage에도 변경 해야하고 현재 request의 header도 변경
-          const {
-            data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
-          } = data;
-          localStorage.setItem('accessToken', newAccessToken);
-          localStorage.setItem('refreshToken', newRefreshToken);
-          originalRequest.headers.AccessToken = `Bearer ${newAccessToken}`;
+
           return axios(originalRequest);
         }
       }

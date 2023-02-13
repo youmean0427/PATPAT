@@ -4,6 +4,7 @@ import { logout } from 'apis/utils/auth';
 import useModal from 'hooks/useModal';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState, myShelterIdState } from 'recoil/atoms/user';
 import { isHaveShelter } from 'utils/checkMyShelter';
@@ -16,6 +17,9 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
   const { data, isLoading } = useQuery(['getUserInfo'], getUserInfo, {
     onSuccess: data => {
       setMyShelterId(data.shelterId);
+    },
+    onError: e => {
+      console.error(e);
     },
   });
   if (isLoading) return;
@@ -32,7 +36,7 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
     { title: '로그아웃', path: '/' },
   ];
   return (
-    <li className={styles['profile']}>
+    <li className={styles.profile}>
       <div className={styles['profile-name']}>{data.username}님</div>
       <img className={styles['profile-img']} src={data.profileImageUrl} alt="profile" />
 
@@ -45,6 +49,7 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
                   if (item.path === '/') {
                     logout();
                     setIsLogin(false);
+                    toast('로그아웃 완료', { type: 'success' });
                   } else if (item.path === '') {
                     handleClickModalOpen();
                   }
