@@ -1,0 +1,12 @@
+@import 'assets/styles/variable.scss';
+
+.image-gallery-swipe {
+  width: 600px;
+  transition: all $response-transition-time;
+}
+
+@media (max-width: $md) {
+  .image-gallery-swipe {
+    width: 100%;
+  }
+}

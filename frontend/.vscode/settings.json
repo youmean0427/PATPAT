@@ -1,12 +1,16 @@
 {
-  "edtitor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tokenColorCustomizations": {
+    "comments": "#EF8032"
+  },
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll": true
   },
   "javascript.format.enable": false,
-  "eslint.alwaysShowStatus": true,
-  "files.autoSave": "onFocusChange"
+  "files.autoSave": "onFocusChange",
+  "eslint.enable": true,
+  "eslint.validate": ["javascript", "javascriptreact"]
 }

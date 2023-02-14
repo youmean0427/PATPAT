@@ -1,0 +1,99 @@
+@import 'assets/styles/variable.scss';
+.container {
+  position: relative;
+  width: 90%;
+  text-align: center;
+  margin: auto;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+}
+.btn-click {
+  width: 10rem;
+  height: 3rem;
+  background-color: $main-color;
+  margin: 3px;
+  color: white;
+  border: 3px solid $main-color;
+  font-size: 1.5rem;
+}
+.btn {
+  width: 10rem;
+  height: 3rem;
+  background-color: white;
+  margin: 3px;
+  color: $main-color;
+  border: 3px solid $main-color;
+  font-size: 1.5rem;
+}
+.btn:hover {
+  width: 10rem;
+  height: 3rem;
+  background-color: $main-color;
+  margin: 3px;
+  color: white;
+  border: 3px solid $main-color;
+  font-size: 1.5rem;
+}
+.contents {
+  display: flex;
+  width: 100%;
+  margin: auto;
+  margin-top: 3%;
+  justify-content: center;
+}
+.manage {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: 6rem;
+  height: 3rem;
+  background-color: #1f3294;
+  color: white;
+}
+.manage:hover {
+  transform: translateY(-2px);
+}
+.modal-content {
+  padding-left: 20px;
+}
+.modal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: left;
+}
+.modal-line {
+  width: 90%;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  background: lightgray;
+  height: 1px;
+  border: 0;
+}
+.morning {
+  margin-bottom: 30px;
+}
+.modal-line2 {
+  width: 70%;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  background: lightgray;
+  height: 1px;
+  border: 0;
+}
+.modal-time {
+  text-align: left;
+  padding: 5px;
+}
+.modal-select {
+  padding: 8px;
+  text-align: left;
+}
+.modal-time {
+  font-size: 1.5rem;
+}
+.check-box {
+  cursor: pointer;
+}

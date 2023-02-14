@@ -1,0 +1,81 @@
+@import 'assets/styles/variable.scss';
+
+.wrap {
+}
+
+.link-box {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.more {
+  font-size: 1.2rem;
+  color: $gray-color;
+  transition-duration: 0.3s;
+  &:hover {
+    color: $black-color;
+  }
+}
+
+.inner {
+  position: relative;
+  margin: 5rem 0;
+  padding: 0 6rem;
+  display: flex;
+  transition-duration: 0.3s;
+  @include breakpoint(md) {
+    padding: 0;
+  }
+  & > div:nth-child(2) {
+    margin-left: 20rem;
+  }
+}
+.title {
+  font-size: 4rem;
+  font-weight: 700;
+  &:after {
+    content: '';
+    display: block;
+    width: 300px;
+    border-bottom: 5px solid $main-color;
+    margin: 20px 0px;
+  }
+}
+.desc {
+  & > div:first-child {
+    margin-bottom: 1rem;
+  }
+  & > div {
+    font-size: 2rem;
+    font-weight: 700;
+    & > span {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: $main-color;
+    }
+  }
+}
+
+.logo-img {
+  width: 20rem;
+  margin-top: 4rem;
+  transition-duration: 0.3s;
+  opacity: 1;
+  @include breakpoint(md) {
+    opacity: 0;
+  }
+}
+
+.triangle {
+  position: absolute;
+  right: -200px;
+  bottom: -50px;
+  width: 0;
+  height: 0;
+  z-index: -3;
+  border-bottom: 300px solid $main-color;
+  border-top: 200px solid transparent;
+  border-left: 200px solid transparent;
+  border-right: 200px solid transparent;
+}

@@ -1,0 +1,10 @@
+@import 'assets/styles/variable.scss';
+
+.button {
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: all 0.3s;
+  &:hover {
+    color: $black-color;
+  }
+}

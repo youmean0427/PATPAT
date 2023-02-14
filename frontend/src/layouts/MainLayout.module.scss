@@ -1,0 +1,17 @@
+@import 'assets/styles/variable.scss';
+
+.layout {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+}
+.layout-main {
+  width: 100%;
+  position: relative;
+  flex: 1;
+}

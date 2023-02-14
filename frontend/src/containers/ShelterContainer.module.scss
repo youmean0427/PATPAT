@@ -1,0 +1,33 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  margin: 4rem 0;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: $main-accent-color;
+  margin-bottom: 2rem;
+  &::after {
+    margin-top: 2rem;
+    display: block;
+    content: '';
+    width: 100%;
+    border: 0.5px solid $gray-color;
+  }
+}
+
+@include breakpoint(md) {
+  .container {
+    margin: 3rem 0;
+  }
+}
+
+@include breakpoint(sm) {
+  .container {
+    margin: 2rem 0;
+  }
+}

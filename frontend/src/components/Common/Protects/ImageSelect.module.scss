@@ -1,0 +1,44 @@
+.main-image {
+  position: relative;
+  width: 35rem;
+  height: 35rem;
+  z-index: -1;
+}
+.pressed {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  z-index: 0;
+}
+.sub-image {
+  position: relative;
+  display: flex;
+  width: 45%;
+  justify-content: center;
+  gap: 1rem;
+}
+.sub-image {
+  text-align: center;
+}
+.sub-image1,
+.sub-image2,
+.sub-image3 {
+  position: relative;
+  width: 11rem;
+  height: 11rem;
+  cursor: pointer;
+}
+.empty-image {
+  position: relative;
+  width: 11rem;
+  height: 11rem;
+  pointer-events: none;
+  background-color: white;
+}
+.non-click {
+  position: relative;
+  width: 11rem;
+  height: 11rem;
+  opacity: 0.3;
+  cursor: pointer;
+}

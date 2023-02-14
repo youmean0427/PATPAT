@@ -1,0 +1,49 @@
+@import 'assets/styles/variable.scss';
+
+.main-container {
+  width: 60%;
+  max-width: 400px;
+  padding: 4rem;
+  border: 1px solid $border-color;
+  border-radius: 0.8rem;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: $bdja-font;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > img {
+    width: 20rem;
+  }
+}
+
+.header-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  & > span:last-child {
+    font-size: 1.4rem;
+    color: $gray-color;
+    margin-top: 0.7rem;
+  }
+}
+
+.button-box {
+  display: flex;
+}
+.button {
+  & > img {
+    width: 70px;
+  }
+  &:nth-child(2) {
+    margin: 0 1rem;
+  }
+}
