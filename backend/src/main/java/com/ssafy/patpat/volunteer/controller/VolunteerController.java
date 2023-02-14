@@ -209,6 +209,27 @@ public class VolunteerController {
                 .body(responseVolunteerDto);
 
     }
+
+    /**
+     * 봉사 지원서 가능 여부 조회
+     * @return
+     */
+    @GetMapping("/reservations/check/{scheduleId}")
+    @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회 pathValue : scheduleId")
+    public ResponseEntity<Object> checkReservationPossible(@PathVariable Long scheduleId){
+        //서비스 호출 코드
+//      responseVolunteerDto = volunteerService.checkReservationPossible(requestVolunteerDto);
+        if(volunteerService.checkReservationPossible(scheduleId)){
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }else{
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("FAIL"));
+        }
+
+
+    }
+
     /**
      * 봉사 지원서 조회(보호소) 이건 위에 스케쥴과 함께
      * @return

@@ -3,6 +3,7 @@ package com.ssafy.patpat.volunteer.repository;
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
+import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,5 +30,7 @@ public interface VolunteerReservationRepository extends JpaRepository<VolunteerR
      * 3, 0, 1, 5 중에서만
      * */
     Optional<Long> countWithUserByUserUserIdAndReservationStateCodeIn(Long userId, List<Reservation> reservations);
+
+    List<VolunteerReservation> findByUserAndVolunteerSchedule(User user, VolunteerSchedule volunteerSchedule);
 
 }

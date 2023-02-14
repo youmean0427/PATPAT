@@ -627,6 +627,25 @@ public class VolunteerService {
         return responseVolunteerDto;
     }
 
+    @Transactional
+    public boolean checkReservationPossible(Long scheduleId){
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        if(!user.isPresent()){
+            return false;
+        }
+        Optional<VolunteerSchedule> vs = volunteerScheduleRepository.findById(scheduleId);
+        if(!vs.isPresent()){
+            return false;
+        }
+        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findByUserAndVolunteerSchedule(user.get(), vs.get());
+        if(volunteerReservations.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     /** 예약 등록 */
     @Transactional
     public boolean insertReservation(ReservationDto reservationDto) throws VolunteerException {

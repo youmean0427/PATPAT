@@ -40,7 +40,13 @@ public class AlarmService {
         List<Alarm> alarms = alarmRepository.findByUserUserId(user.get().getUserId());
         Integer noRead = alarmRepository.countByUserUserIdAndCheckRead(user.get().getUserId(), false);
         List<AlarmDto> alarmDtoList =  alarms.stream()
-                .map(AlarmDto::new).collect(Collectors.toList());
+                .map(alarm -> {
+                    AlarmDto alarmDto = new AlarmDto(alarm);
+                    if(alarm.getMsgCode().getCode() == 0 || alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setMissingId(alarm.getShelterId());
+                    if(alarm.getMsgCode().getCode() == 3) alarmDto.setShelterId(alarm.getMissingId());
+                    return alarmDto;
+                }).collect(Collectors.toList());
+
 
         AlarmListDto alarmListDto = new AlarmListDto();
         alarmListDto.setList(alarmDtoList);
