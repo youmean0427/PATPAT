@@ -2,6 +2,7 @@ package com.ssafy.patpat.alarm.service;
 
 import com.ssafy.patpat.alarm.controller.AlarmController;
 import com.ssafy.patpat.alarm.dto.AlarmDto;
+import com.ssafy.patpat.alarm.dto.AlarmListDto;
 import com.ssafy.patpat.alarm.dto.RequestAlarmDto;
 import com.ssafy.patpat.alarm.entity.Alarm;
 import com.ssafy.patpat.alarm.repository.AlarmRepository;
@@ -31,19 +32,21 @@ public class AlarmService {
 
     /** 알람 목록 보기 */
     @Transactional
-    public ResponseListDto selectAlarmList(RequestAlarmDto requestAlarmDto){
+    public AlarmListDto selectAlarmList(RequestAlarmDto requestAlarmDto){
         PageRequest pageRequest = PageRequest.of(requestAlarmDto.getOffSet(), requestAlarmDto.getLimit(), Sort.by("registDate").descending());
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+
         Page<Alarm> alarms =  alarmRepository.findByUserUserId(user.get().getUserId(), pageRequest);
+        Integer noRead = alarmRepository.countByUserUserIdAndCheckRead(user.get().getUserId(), false);
         List<AlarmDto> alarmDtoList =  alarms.toList().stream()
                 .map(AlarmDto::new).collect(Collectors.toList());
 
-        ResponseListDto responseListDto = new ResponseListDto();
-        responseListDto.setList(alarmDtoList);
-        responseListDto.setTotalPage(alarms.getTotalPages());
-        responseListDto.setTotalCount(alarms.getTotalElements());
-
-        return responseListDto;
+        AlarmListDto alarmListDto = new AlarmListDto();
+        alarmListDto.setList(alarmDtoList);
+        alarmListDto.setTotalPage(alarms.getTotalPages());
+        alarmListDto.setTotalCount(alarms.getTotalElements());
+        alarmListDto.setCntNoRead(noRead);
+        return alarmListDto;
     }
 
     /** 알람 상세보기 */

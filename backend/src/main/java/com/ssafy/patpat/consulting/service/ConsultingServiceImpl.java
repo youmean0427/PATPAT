@@ -68,6 +68,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     NotificationService notificationService;
 
     @Override
+    @Transactional
     public ResponseListDto selectConsultingList(RequestConsultingDto requestConsultingDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
@@ -129,6 +130,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     }
 
     @Override
+    @Transactional
     public ResponseListDto selectConsultingListByShelter(RequestConsultingDto requestConsultingDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         List<ConsultingDto> consultingDtoList = new ArrayList<>();
@@ -199,6 +201,7 @@ public class ConsultingServiceImpl implements ConsultingService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage insertConsulting(ConsultingDto consultingDto) {
         ResponseMessage responseMessage = new ResponseMessage();
         Shelter shelter = shelterRepository.findByShelterId(consultingDto.getShelterId());
@@ -225,6 +228,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     }
 
     @Override
+    @Transactional
     public ResponseMessage updateConsulting(Long consultingId, ConsultingDto consultingDto) {
         ResponseMessage responseMessage = new ResponseMessage();
         System.out.println(consultingDto);
@@ -393,6 +397,7 @@ public class ConsultingServiceImpl implements ConsultingService{
     }
 
     @Override
+    @Transactional
     public RoomDto selectRoomDto(Long shelterId,Long consultingId) {
         Shelter shelter = shelterRepository.findByShelterId(shelterId);
         //유저이름 보내주기
