@@ -773,6 +773,17 @@ public class VolunteerService {
                 if(totalCapacity == capacity + vr.getCapacity()){
                     volunteerSchedule.setReservationStateCode(Reservation.승인);
 
+                    // 나머지 예약들 거절 시키기
+                    List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+                    for (VolunteerReservation vrs:
+                            volunteerReservations) {
+                        if(vrs.getReservationId() != vr.getReservationId()){
+                            vrs.setReservationStateCode(Reservation.거절);
+                            volunteerReservationRepository.save(vrs);
+                            notificationService.notifyDenyVolunteerEvent(vrs.getReservationId());
+                        }
+                    }
+
                     // 전체 공고 체크 필요
                     VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
                     boolean ok = true;
@@ -789,16 +800,7 @@ public class VolunteerService {
                 volunteerScheduleRepository.save(volunteerSchedule);
             }
 
-            // 나머지 예약들 거절 시키기
-            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
-            for (VolunteerReservation vrs:
-                 volunteerReservations) {
-                if(vrs.getReservationId() != vr.getReservationId()){
-                    vrs.setReservationStateCode(Reservation.거절);
-                    volunteerReservationRepository.save(vrs);
-                    notificationService.notifyDenyVolunteerEvent(vrs.getReservationId());
-                }
-            }
+
         }
 
         // 거절시
@@ -815,6 +817,17 @@ public class VolunteerService {
             if(volunteerSchedule.getReservationStateCode() == Reservation.승인){
                 volunteerSchedule.setReservationStateCode(Reservation.대기중);
 
+                // 나머지 예약들 대기중 바꾸기
+                List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
+                for (VolunteerReservation vrs:
+                        volunteerReservations) {
+                    if(vrs.getReservationId() != vr.getReservationId()){
+                        if(vrs.getReservationStateCode() == Reservation.거절){
+                            vrs.setReservationStateCode(Reservation.대기중);
+                            volunteerReservationRepository.save(vrs);
+                        }
+                    }
+                }
 
                 // 전체 공고 체크 필요
                 VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
@@ -824,17 +837,7 @@ public class VolunteerService {
                 }
             }
             volunteerScheduleRepository.save(volunteerSchedule);
-            // 나머지 예약들 대기중 바꾸기
-            List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
-            for (VolunteerReservation vrs:
-                    volunteerReservations) {
-                if(vrs.getReservationId() != vr.getReservationId()){
-                    if(vrs.getReservationStateCode() == Reservation.거절){
-                        vrs.setReservationStateCode(Reservation.대기중);
-                        volunteerReservationRepository.save(vrs);
-                    }
-                }
-            }
+
 
         }
         if(reservationDto.getStateCode() == 4){
