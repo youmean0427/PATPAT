@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './MissingDogDetailContent.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import { getMissingDogDetail } from 'apis/api/report';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';

@@ -1,0 +1,89 @@
+@import 'assets/styles/variable.scss';
+
+.notify {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes fadeOutUp {
+  100% {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+.messages {
+  margin-top: 23px;
+  animation: fadeInDown 1s;
+  z-index: -1;
+  position: absolute;
+  right: 0%;
+  width: 250px;
+  max-height: 200px;
+  background-color: white;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  border-radius: 0 0 5px 5px;
+  overflow: auto;
+}
+.messages-hide {
+  margin-top: 21px;
+  animation: fadeOutUp 1s;
+  animation-fill-mode: forwards;
+  z-index: -1;
+  position: absolute;
+  right: 0%;
+  width: 250px;
+  max-height: 400px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.alarm-content {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  padding: 7px;
+  & > .alarm-message {
+    width: 90%;
+  }
+  & > .alarm-message > span:hover {
+    border-bottom: 2px solid $main-color;
+  }
+  & > .close {
+    width: 10%;
+    text-align: right;
+    justify-content: center;
+  }
+  & > .close:hover {
+    transform: translateY(-2px);
+  }
+}
+.delete-all {
+  display: absolute;
+  bottom: 0%;
+  text-align: right;
+  color: $border-color;
+  font-size: 8px;
+  padding: 5px;
+}
+.delete-all:hover {
+  transform: translateY(-2px);
+}
+.alarm-message-read {
+  color: lightgray;
+}

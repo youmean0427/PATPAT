@@ -13,6 +13,8 @@ import { myShelterIdState } from 'recoil/atoms/user';
 import { useQuery } from '@tanstack/react-query';
 import { getAuthShelterList } from 'apis/api/shelter';
 import { getUserInfo } from 'apis/api/user';
+import Alarm from '../Alarm';
+
 export default function MenuList({ handleClickModalOpen }) {
   const [isLogin, setIsLogin] = useAuth();
   const [isOpen, setIsOpen] = useRecoilState(isMobileMenuOpenState);
@@ -45,7 +47,11 @@ export default function MenuList({ handleClickModalOpen }) {
   return (
     <>
       <div onClick={handleClickMobileMenu} className={styles['mobile-menu']}>
-        {isOpen ? <GiSittingDog color="#a1887f" size="3rem" /> : <FaDog color="#a1887f" size="3rem" />}
+        {isOpen ? (
+          <GiSittingDog color="#a1887f" size="3rem" />
+        ) : (
+          <FaDog className={styles['fa-dog']} color="#a1887f" size="3rem" />
+        )}
       </div>
       <ul className={isOpen ? `${styles.menu} ${styles.active}` : styles.menu}>
         <MenuItem move="intro" value="소개" dropdown={intro} />
@@ -53,6 +59,7 @@ export default function MenuList({ handleClickModalOpen }) {
         <MenuItem move="report" value="실종 신고" />
         <MenuItem move="volunteer" value="봉사" />
         <MenuItem move="community" value="커뮤니티" />
+        {isLogin ? <Alarm /> : null}
         {!isLogin ? (
           <MenuItem move="login" value="로그인" />
         ) : (
