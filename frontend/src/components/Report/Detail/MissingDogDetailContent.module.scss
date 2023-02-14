@@ -351,3 +351,12 @@
     }
   }
 }
+.info-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.info-icon:hover {
+  transform: translateY(-3px);
+}

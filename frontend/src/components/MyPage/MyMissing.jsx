@@ -42,10 +42,10 @@ export default function MyMissing() {
         </div>
         <div className={styles.content}>
           <p>
-            <span>{userName}</span>님이 찾고 계신 <span>{dogName}</span>이(가) 있을만한 보호소입니다.
+            <span>{userName}</span>님이 찾고 계신 <span>{dogName}</span>와(과) 유사한 견종입니다.
           </p>
           <p>
-            반경 10km 내의 보호소 중 총 <span>{data.totalCount}</span>개가 검색되었습니다.
+            반경 10km 내의 보호소 중 총 <span>{data.totalCount}</span>건이 검색되었습니다.
           </p>
           <br />
           <p>해당 보호소 페이지로 이동하여 화상 상담을 신청할 수 있습니다.</p>
@@ -57,7 +57,7 @@ export default function MyMissing() {
       <hr className={styles.line} />
       <ShelterContainer title="유사견종 조회">
         {data.totalCount === 0 ? (
-          <NoData>꾹 등록 정보가 없습니다.</NoData>
+          <NoData>검색된 결과가 없습니다.</NoData>
         ) : (
           <>
             <div className={styles.pagination}>

@@ -11,6 +11,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import SelectTime from './SelectTime';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function ConsultingReservation({ data }) {
   const [modal, setModal] = useState(false);
@@ -24,7 +25,7 @@ export default function ConsultingReservation({ data }) {
 
   const openModal = idx => {
     if (userId === undefined) {
-      alert('로그인이 필요한 서비스입니다.');
+      toast('로그인이 필요한 서비스입니다.', { type: 'info' });
       navigate('/login');
     } else {
       setModal(true);
@@ -35,7 +36,7 @@ export default function ConsultingReservation({ data }) {
     setModal(false);
   };
   const save = () => {
-    alert('신청되었습니다.');
+    toast('신청되었습니다.', { type: 'success' });
     const sendData = {
       consultingDate: moment(value).format('YYYY-MM-DD'),
       shelterId: data.shelterId,
