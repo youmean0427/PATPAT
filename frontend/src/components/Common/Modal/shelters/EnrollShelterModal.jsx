@@ -21,7 +21,6 @@ export default function EnrollShelterModal({ isOpen, handleClickModalClose }) {
   });
 
   const handleChangeOnShelter = useCallback(selected => {
-    console.log(selected);
     setName(selected.label);
   });
   const handleSubmit = e => {

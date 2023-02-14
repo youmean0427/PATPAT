@@ -12,7 +12,6 @@ export default function MoreInfo() {
   } = useLocation();
   const { data, isLoading } = useQuery(['searchBreedCountPerRegion'], () => getCountShelterByBreed(breedId));
   if (isLoading) return;
-  console.log(data);
   return (
     <MbtiContainer>
       <div className={styles.card}>

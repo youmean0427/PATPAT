@@ -7,7 +7,6 @@ import ImageSlide from 'components/ShelterPage/ImageSlide';
 export default function ReviewModal({ isOpen, handleClickModalClose, boardId }) {
   const { data, isLoading } = useQuery(['getBoardDetail', boardId], () => getBoardDetail(boardId));
   if (isLoading) return;
-  console.log(data);
   return (
     <ReviewFrame isOpen={isOpen} handleClickModalClose={handleClickModalClose}>
       <ImageSlide imageList={data.fileUrlList} />

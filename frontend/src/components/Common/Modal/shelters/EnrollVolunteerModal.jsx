@@ -17,9 +17,7 @@ export default function EnrollVolunteerModal({ date, isOpen, handleClickModalClo
       handleClickModalClose();
       toast(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}일 공고 등록 완료`, { type: 'success' });
     },
-    onError: error => {
-      console.log(error);
-    },
+    onError: error => {},
   });
   const handleChange = e => {
     setValue(e.target.value);

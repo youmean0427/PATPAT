@@ -13,7 +13,6 @@ export default function SearchVolunteerItem({ item, itemToList }) {
         className={styles.container}
         onClick={() => {
           itemToList(itemData);
-          console.log('click');
         }}
       >
         <div className={styles.title}>{item.title}</div>

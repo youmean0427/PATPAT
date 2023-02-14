@@ -44,7 +44,6 @@ export default function EnrollForm() {
 
   useEffect(() => {
     if (files) {
-      console.log(files);
       let count = 0;
       setBase64s([]);
       Array.from(files).forEach(image => {
@@ -71,7 +70,6 @@ export default function EnrollForm() {
       categoryCloth,
       uploadImages,
     } = nData;
-    console.log(nData);
     const categoryColors = [];
     categoryColors.push(categoryColor);
     const formData = new FormData();

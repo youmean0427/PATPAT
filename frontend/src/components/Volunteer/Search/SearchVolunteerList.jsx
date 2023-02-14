@@ -6,13 +6,11 @@ import SearchVolunteerItem from './SearchVolunteerItem';
 import styles from './SearchVolunteerList.module.scss';
 
 export default function SearchVolunteerList({ items, listToMark }) {
-  // console.log('list', items);
   const [itemData, setItemData] = useState();
   const itemToList = x => {
     // setItemData(x);
     listToMark(x);
   };
-  // console.log(items);
   // useQuery
 
   const { data, isLoading } = useQuery({

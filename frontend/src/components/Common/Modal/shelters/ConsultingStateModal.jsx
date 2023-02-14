@@ -63,13 +63,10 @@ export default function ConsultingStateModal({
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
     const date = today.getDate();
-    console.log(consultingDate);
     if (state === 3) {
       if (consultingDate[0] === year && consultingDate[1] === month && consultingDate[2] === date) {
-        console.log('aa');
         mutate({ consultingId, state });
       } else {
-        console.log('ss');
         alert('당일에만 가능 합니다.');
       }
     } else {

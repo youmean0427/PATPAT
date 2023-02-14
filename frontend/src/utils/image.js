@@ -1,5 +1,4 @@
 export const encodeFileToBase64 = image => {
-  console.log(image);
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(image);

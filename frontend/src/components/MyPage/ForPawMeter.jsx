@@ -26,9 +26,7 @@ export default function ForPawMeter({ data }) {
       queryClient.invalidateQueries({ queryKey: ['getUserInfo'] });
       closeModal();
     },
-    onError: error => {
-      console.log(error);
-    },
+    onError: error => {},
   });
 
   useEffect(() => {

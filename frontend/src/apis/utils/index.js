@@ -50,7 +50,6 @@ const axiosAuthApi = baseURL => {
               headers: { RefreshToken: `Bearer ${refreshToken}`, AccessToken: `Bearer ${accessToken}` },
             })
             .then(data => {
-              console.log(data);
               const {
                 data: { accessToken: newAccessToken, refreshToken: newRefreshToken },
               } = data;

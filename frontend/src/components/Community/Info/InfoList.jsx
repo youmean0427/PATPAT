@@ -31,7 +31,6 @@ export default function InfoList() {
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
-  console.log(newData);
   const handleSubmit = event => {
     event.preventDefault();
     setFilteredData(newData.filter(row => row.title.toLowerCase().includes(searchTerm.toLowerCase())));

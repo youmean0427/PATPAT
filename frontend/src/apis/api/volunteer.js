@@ -96,8 +96,8 @@ export const changeReservationState = async (userId, reservationId, stateCode) =
     `/volunteers/reservations/state?userId=${userId}&reservationId=${reservationId}&stateCode=${stateCode}`
   );
   return res;
-}
-/** 
+};
+/**
  * GET : user가 지원한 봉사 지원서 조회 확인
  * @param {int} noticeId
  * @returns

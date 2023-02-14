@@ -5,15 +5,12 @@ import { getVolReservationOfUserDetail } from 'apis/api/volunteer';
 import ScheduleItem from 'components/Volunteer/Schedule/ScheduleItem';
 
 export default function VolunteerDetail({ items }) {
-  // console.log('Modalitem', items);
-
   // useState
 
   const [scheduleId, setScheduleId] = useState(items.scheduleId);
   // const [scheduleId, setScheduleId] = useState(1);
   const [open, setOpen] = useState(0);
 
-  // console.log('detail', items);
   const handleButtonClick = index => {};
   return (
     <div className={styles.container}>

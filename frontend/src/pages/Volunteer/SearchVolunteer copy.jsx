@@ -45,8 +45,7 @@ export default function SearchVolunteer() {
   }, []);
 
   // Console
-  // console.log('data', data);
-  // console.log(state);
+  //
 
   const markToPage = x => {
     setModalData(x);

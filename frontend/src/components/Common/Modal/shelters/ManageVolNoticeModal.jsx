@@ -163,10 +163,8 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
       }
     },
   });
-  console.log(schedules);
   const { mutate: enrollMutate } = useMutation(['createSchedule'], data => createVolNoticeSchedule(data), {
     onSuccess: ({ data }) => {
-      console.log(data);
       if (data.code) {
         toast(data.message, { type: 'error' });
       } else {

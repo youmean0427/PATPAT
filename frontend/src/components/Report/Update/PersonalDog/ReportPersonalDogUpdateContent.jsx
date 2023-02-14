@@ -251,8 +251,6 @@ export default function ReportPersonalDogUpdateContent({ items }) {
 
   // Console
 
-  // console.log(fileList, preFile);
-
   // Submit
   const handleSubmit = () => {
     if (content === '') {
@@ -673,14 +671,12 @@ export default function ReportPersonalDogUpdateContent({ items }) {
               editor={ClassicEditor}
               onReady={editor => {
                 // You can store the "editor" and use when it is needed.
-                // console.log('Editor is ready to use!', editor);
               }}
               config={{
                 placeholder: '강아지 상세정보 / 신고자 연락처',
               }}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                // console.log({ event, editor, data });
                 setContent(data);
               }}
             />

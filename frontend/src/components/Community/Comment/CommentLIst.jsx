@@ -27,7 +27,6 @@ export default function CommentList(props) {
 
   // 대댓글 생성
   const { mutate: mutation2 } = useMutation(['replyList'], () => {
-    console.log(replyForm);
     return CreateReply(replyForm);
   });
 
@@ -35,13 +34,11 @@ export default function CommentList(props) {
   const onReplyDelete = replyId => {
     DeleteReply(replyId).then(res => {
       refetch();
-      // console.log('refatch 왜 이렇게 되노');
     });
   };
 
   // 대댓글 수정
   const onReplyUpdate = (replyId, replyForm) => {
-    console.log(replyForm);
     UpdateReply(replyId, replyForm).then(res => {
       refetch();
     });

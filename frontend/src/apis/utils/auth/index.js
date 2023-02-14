@@ -19,9 +19,7 @@ export const login = async (provider, code) => {
         shelterId: userInfo.shelterId,
       })
     );
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 export const logout = async () => {
@@ -33,7 +31,7 @@ export const logout = async () => {
       AccessToken: `Bearer ${access}`,
     },
   });
-  console.log(res);
+
   if (res.data.message === 'SUCCESS') {
     localStorage.removeItem('isLogin');
     localStorage.removeItem('user');

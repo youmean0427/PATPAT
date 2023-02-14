@@ -27,7 +27,7 @@ export default function ScheduleItem({ item, open, index, noticeId }) {
     queryFn: () => getVolReservationOfUserDetail(item),
   });
 
-  // console.log('data', data);
+  //
   // userId :: 유저 아이디와 이름 가져오기
   let user = 'user';
   if (localStorage.getItem('user')) {

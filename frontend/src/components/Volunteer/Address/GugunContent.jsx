@@ -27,7 +27,6 @@ export default function GugunContent({ sidoCode, getGugunFunc }) {
     setActiveTab(event.target.value);
     getGugunFunc(event.target.value);
   }
-  // console.log(activeTab);
 
   return (
     <div>

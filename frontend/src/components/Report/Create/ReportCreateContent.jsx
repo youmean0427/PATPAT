@@ -68,7 +68,6 @@ export default function ReportCreateContent() {
   let todayDate = now.getDate();
 
   const registDate = todayYear + '.' + todayMonth + '.' + todayDate;
-  // console.log(registDate);
 
   // Alert
   const [titleAlertOpen, setTitleAlertOpen] = useState(0);
@@ -205,11 +204,9 @@ export default function ReportCreateContent() {
     queryFn: () => getBreedsList(),
   });
   const breedData = data;
-  // console.log(uploadFile);
   if (isLoading) return;
 
   // Select Data
-  // console.log(fileList);
 
   const stateOpt = [
     { value: 1, label: '실종' },
@@ -270,9 +267,6 @@ export default function ReportCreateContent() {
   };
   // Console
 
-  // console.log('fL', fileList);
-  // console.log('pre', preFile);
-
   // Submit
   const handleSubmit = () => {
     if (content === '') {
@@ -322,7 +316,6 @@ export default function ReportCreateContent() {
       window.location.replace('/report');
     }
   };
-  console.log(color1);
   return (
     <div>
       <form
@@ -723,14 +716,12 @@ export default function ReportCreateContent() {
               editor={ClassicEditor}
               onReady={editor => {
                 // You can store the "editor" and use when it is needed.
-                // console.log('Editor is ready to use!', editor);
               }}
               config={{
                 placeholder: '강아지 상세정보 / 신고자 연락처',
               }}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                // console.log({ event, editor, data });
                 setContent(data);
               }}
             />

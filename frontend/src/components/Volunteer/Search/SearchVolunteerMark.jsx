@@ -21,14 +21,13 @@ export default function SearchVolunteerMark({
 
   const listToMark = x => {
     markToPage(x);
-    // console.log('Mark', x);
+    // 'Mark', x);
   };
 
   // Today Date
   let now = new Date();
   let todayYear = now.getFullYear();
   let todayMonth = now.getMonth() + 1;
-  // console.log(todayYear, todayMonth);
 
   if (todayMonth < 10) {
     todayMonth = `0${todayMonth}`;
