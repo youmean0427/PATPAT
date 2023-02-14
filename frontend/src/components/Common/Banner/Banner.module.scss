@@ -3,7 +3,7 @@
 .banner {
   display: flex;
   width: 100%;
-  height: 400px;
+  height: 250px;
   background-color: $main-color;
   justify-content: center;
   // margin-top:72px;
@@ -30,7 +30,7 @@
 .title {
   font: {
     weight: 700;
-    size: 50px;
+    size: 4rem;
   }
   text-align: center;
   color: $white-color;
@@ -41,24 +41,41 @@
   justify-content: flex-end;
 }
 
-@include breakpoint(md) {
-  .pat {
-    width: 250px;
+.img {
+  & > img {
+    width: 200px;
+    position: absolute;
+    display: flex;
+    right: 30px;
+    top: 148px;
   }
-  .title {
-    font: {
-      size: 45px;
+}
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+  .img {
+    & > img {
+      width: 200px;
+      position: absolute;
+      display: flex;
+      right: 20px;
+      top: 148px;
     }
   }
 }
 
-@include breakpoint(sm) {
-  .pat {
-    width: 200px;
-  }
-  .title {
-    font: {
-      size: 40px;
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .img {
+    & > img {
+      width: 180px;
+      position: absolute;
+      display: flex;
+      right: 10px;
+      top: 158px;
     }
   }
 }

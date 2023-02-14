@@ -1,0 +1,105 @@
+@import 'assets/styles/variable.scss';
+
+.time {
+  & > span {
+    margin: 0 5px 0 0;
+  }
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  width: 50px;
+  font-size: 15px;
+  margin-right: 5px;
+  font-family: $noto-font;
+  text-align: center;
+}
+
+.peopleButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  align-items: center;
+  & > div {
+    width: 100px;
+
+    & > input {
+      width: 100%;
+      font-size: 15px;
+      height: 35px;
+      border: 1px solid gray;
+      border-radius: 4px;
+      padding-left: 5px;
+    }
+  }
+
+  .button {
+    border-radius: 4px;
+    width: 100px;
+    padding: 5px;
+    color: $white-color;
+    background-color: $main-color;
+  }
+  & > div {
+    font-size: 17px;
+    padding: 5px;
+    & > button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+.containerTime {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px 0 10px 0;
+  & > div {
+    display: flex;
+    justify-content: center;
+
+    & > span {
+      margin: 0 10px 0 0;
+    }
+    & > div {
+      font-weight: 700;
+      color: $main-accent-color;
+    }
+  }
+}
+
+.guideLine {
+  height: 225px;
+  margin: 10px 0 10px 0;
+  max-height: 450px;
+  overflow: auto;
+}
+
+.people {
+  margin-right: 10px;
+}
+
+.requested {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  color: red;
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .containerTime {
+    flex-direction: column;
+  }
+}

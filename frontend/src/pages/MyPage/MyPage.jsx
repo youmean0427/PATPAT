@@ -15,6 +15,7 @@ export default function MyPage() {
 
   if (isLoading) return;
 
+  console.log(data);
   return (
     <div className={styles.container}>
       <ForPawMeter data={data} />

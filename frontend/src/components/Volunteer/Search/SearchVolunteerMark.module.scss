@@ -16,14 +16,41 @@
   color: $main-accent-color;
 }
 
-.test {
+.container {
   width: 400px !important;
-  height: 300px !important;
+  height: 330px !important;
   padding: 10px;
+  font-family: $noto-font;
+  animation: modal-show 0.3s;
 }
 
 .closeButton {
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
+  position: absolute;
+  width: 94%;
+  margin-top: 6.5px;
+  & > div {
+    position: relative;
+
+    display: flex;
+    justify-content: flex-end;
+
+    & > button {
+      top: 15px;
+      right: 15px;
+      width: 30px;
+      font-size: 21px;
+      font-weight: 700;
+      text-align: center;
+      color: #999;
+      background-color: transparent;
+    }
+  }
+}
+@keyframes modal-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

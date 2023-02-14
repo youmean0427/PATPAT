@@ -7,11 +7,27 @@ import Button from '@mui/material/Button';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
 import defaultPicture from '../../../assets/images/volunteer.png';
+import infoIcon from 'assets/images/forpaw-info.png';
+import DetailModal from 'components/Common/DetailModal';
+import EarDetail from 'components/Report/Create/EarDetail';
+import PatternDetail from 'components/Report/Create/PatternDetail';
+import TailDetail from 'components/Report/Create/TailDetail';
 
 export default function PersonalDogDetailContent({ item, state }) {
   // const [user, setUser] = useState('');
   const [file2, setFile2] = useState(0);
   const [file3, setFile3] = useState(0);
+  const [modal, setModal] = useState(false);
+  const [modalNum, setModalNum] = useState();
+
+  const openModal = idx => {
+    setModalNum(idx);
+    setModal(true);
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
 
   const { isLoading, data } = useQuery({
     queryKey: ['PersonalDogDetail'],
@@ -146,15 +162,23 @@ export default function PersonalDogDetailContent({ item, state }) {
       <div className={styles['container-content-character']}>
         <div className={styles['container-content-character-list']}>
           <div>
-            <div>귀</div>
+            <div>
+              <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(0)} />귀
+            </div>
             <span>{data.categoryEar}</span>
           </div>
           <div>
-            <div>무늬</div>
+            <div>
+              <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(1)} />
+              무늬
+            </div>
             <span>{data.categoryPattern}</span>
           </div>
           <div>
-            <div>꼬리</div>
+            <div>
+              <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(2)} />
+              꼬리
+            </div>
             <span>{data.categoryTail}</span>
           </div>
         </div>
@@ -268,6 +292,13 @@ export default function PersonalDogDetailContent({ item, state }) {
       <div className={styles.content}>
         <div>{data.content === null ? null : HtmlReactParser(data.content)}</div>
       </div>
+      <DetailModal
+        open={modal}
+        close={closeModal}
+        title={modalNum === 0 ? '귀 모양 상세' : modalNum === 1 ? '무늬 상세' : '꼬리 모양 상세'}
+      >
+        {modalNum === 0 ? <EarDetail /> : modalNum === 1 ? <PatternDetail /> : <TailDetail />}
+      </DetailModal>
     </div>
   );
 }

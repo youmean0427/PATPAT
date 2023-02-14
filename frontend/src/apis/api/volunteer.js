@@ -59,8 +59,8 @@ export const getVolNoticePerMonth = async (shelterId, year, month) => {
  * @param {int} userId
  * @returns
  */
-export const getVolReservationOfUser = async (limit, offset, userId) => {
-  const { data } = await authInstance.get(`/volunteers/reservations?limit=${limit}&offSet=${offset}&userId=${userId}`);
+export const getVolReservationOfUser = async (limit, offset) => {
+  const { data } = await authInstance.get(`/volunteers/reservations?limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -96,6 +96,15 @@ export const changeReservationState = async (userId, reservationId, stateCode) =
     `/volunteers/reservations/state?userId=${userId}&reservationId=${reservationId}&stateCode=${stateCode}`
   );
   return res;
+}
+/** 
+ * GET : user가 지원한 봉사 지원서 조회 확인
+ * @param {int} noticeId
+ * @returns
+ */
+export const getVolReservationOfUserCheck = async noticeId => {
+  const { data } = await authInstance.get(`/volunteers/reservations/check/${noticeId}`);
+  return data;
 };
 
 // POST
@@ -130,8 +139,10 @@ export const createVolNoticeSchedule = async data => {
  * @param {int} capacity 인원 수
  * @returns
  */
-export const applyVolReservation = async (volunteerId, capacity) => {
-  const res = await authInstance.post(`/volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}`);
+export const applyVolReservation = async data => {
+  const res = await authInstance.post(`/volunteers/reservations`, data, {
+    headers: { 'Content-Type': 'application/json' },
+  });
   return res;
 };
 

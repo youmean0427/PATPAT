@@ -19,7 +19,6 @@ export default function SearchVolunteerList({ items, listToMark }) {
     queryKey: ['getShelterDetail'],
     queryFn: () => getShelterDetail(items[0].shelterId),
   });
-  // console.log(data);
   if (isLoading) return;
 
   return (
@@ -37,9 +36,9 @@ export default function SearchVolunteerList({ items, listToMark }) {
         </div>
       </div>
       <hr />
-      <div style={{ height: '150px', overflowY: 'scroll' }}>
+      <div style={{ height: '180px', overflowY: 'scroll' }}>
         {items.map((item, index) => (
-          <SearchVolunteerItem key={index} item={item} itemToList={itemToList} />
+          <SearchVolunteerItem key={index} item={item} itemToList={itemToList} className={styles.volunteerItem} />
         ))}
       </div>
     </div>

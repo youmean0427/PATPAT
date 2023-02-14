@@ -31,19 +31,11 @@ export default function FavoriteItem({ item }) {
           </div>
         </div>
         <ProtectStateBadge state={state} stateCode={stateCode} />
-        <div className={styles['fav-icon']} title={favorite ? '꾹 해제' : '꾹 등록'}>
+        <div className={styles['fav-icon']}>
           {favorite ? (
-            <PetsIcon
-              className={styles.icon}
-              onClick={() => handleFavBtn()}
-              sx={{ fontSize: '55px', color: 'hotpink' }}
-            />
+            <PetsIcon className={styles.icon} sx={{ fontSize: '55px', color: 'hotpink' }} />
           ) : (
-            <PetsIcon
-              className={styles.icon}
-              onClick={() => handleFavBtn()}
-              sx={{ fontSize: '55px', color: 'lightgray' }}
-            />
+            <PetsIcon className={styles.icon} sx={{ fontSize: '55px', color: 'lightgray' }} />
           )}
         </div>
       </div>
