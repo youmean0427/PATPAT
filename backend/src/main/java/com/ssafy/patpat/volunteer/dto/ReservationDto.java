@@ -25,4 +25,5 @@ public class ReservationDto {
     private Integer capacity;
     @Schema(example = "대기중,수락,거절,불참,완료")
     private Integer stateCode;
+
 }

@@ -29,6 +29,7 @@ import com.ssafy.patpat.user.repository.OwnerRepository;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 
+import org.apache.commons.collections.ArrayStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -346,6 +347,8 @@ public class ShelterServiceImpl implements ShelterService{
                     owner.setUser(user.get());
                     shelter.setOwner(owner);
 
+                    List<User> users = new ArrayList<>();
+                    shelter.setUsers(users);
                     shelter = shelterRepository.save(shelter);
 
                     List<Time> timeList = new ArrayList<>();

@@ -25,6 +25,8 @@ public class VolunteerNoticeDto {
     private String latitude;
     private String longitude;
 
+    private List<VolunteerScheduleDto> volunteerScheduleDtos;
+
     public VolunteerNoticeDto(VolunteerNotice volunteerNotice){
         this.noticeId = volunteerNotice.getNoticeId();
         this.name = volunteerNotice.getShelter().getName();

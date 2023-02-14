@@ -72,6 +72,14 @@ public class Shelter {
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
     private List<Time> times;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_shelter",
+            joinColumns = {@JoinColumn(name = "shelter_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private List<User> users;
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
     private List<ShelterProtectedDog> shelterProtectedDogs;
+
 }

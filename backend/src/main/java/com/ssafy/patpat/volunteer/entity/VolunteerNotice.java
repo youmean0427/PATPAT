@@ -38,7 +38,7 @@ public class VolunteerNotice {
     @JoinColumn(name = "shelter_id")
     private Shelter shelter;
 
-    @OneToMany(mappedBy = "volunteerNotice")
+    @OneToMany(mappedBy = "volunteerNotice", cascade = CascadeType.ALL)
     private List<VolunteerSchedule> volunteerSchedules;
 
     @PrePersist

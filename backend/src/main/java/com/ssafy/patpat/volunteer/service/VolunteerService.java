@@ -4,6 +4,7 @@ import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.error.VolunteerException;
+import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.shelter.dto.ShelterLocationDto;
 import com.ssafy.patpat.shelter.entity.Shelter;
@@ -46,6 +47,7 @@ public class VolunteerService {
     private final VolunteerReservationRepository volunteerReservationRepository;
     private final UserRepository userRepository;
     private final ShelterRepository shelterRepository;
+    private final FileService fileService;
 
     /**
      * 봉사 공고 조회(전체)
@@ -330,59 +332,67 @@ public class VolunteerService {
      * 특정 봉사일정을 보고 싶을 때
      * */
     @Transactional
-    public VolunteerScheduleDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
-        VolunteerScheduleDto volunteerScheduleDto = new VolunteerScheduleDto();
-        ResponseListDto responseVolunteerDto = new ResponseListDto();
+    public VolunteerNoticeDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
+        VolunteerNoticeDto volunteerNoticeDto = new VolunteerNoticeDto();
         Optional<VolunteerNotice> volunteerNotice = volunteerNoticeRepository.findById(requestVolunteerDto.getNoticeId());
         if(!volunteerNotice.isPresent()){
             LOGGER.info("봉사 공고가 비었습니다.");
-            return volunteerScheduleDto;
+            return volunteerNoticeDto;
         }
 
         List<VolunteerSchedule> volunteerSchedules = volunteerNotice.get().getVolunteerSchedules();
         if(volunteerSchedules.isEmpty()){
             LOGGER.info("봉사 일정이 비었습니다.");
-            return volunteerScheduleDto;
-        }
-        VolunteerSchedule vs = volunteerSchedules.get(0);
-
-        int capacity = 0;
-        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
-        Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
-        List<VolunteerReservationDto> list = new ArrayList<>();
-        if(!volunteerReservations.isEmpty()){
-            for (VolunteerReservation vr:
-                    volunteerReservations.toList()) {
-                if(vr.getReservationStateCode() == Reservation.승인) {
-                    capacity += vr.getCapacity();
-                }
-                list.add(VolunteerReservationDto.builder()
-                        .reservationId(vr.getReservationId())
-                        .scheduleId(vs.getScheduleId())
-                        .capacity(vr.getCapacity())
-                        .shelterName(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getName())
-                        .shelterAddress(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getAddress())
-                        .volunteerDate(vr.getVolunteerSchedule().getVolunteerNotice().getVolunteerDate())
-                        .startTime(vr.getVolunteerSchedule().getStartTime())
-                        .endTime(vr.getVolunteerSchedule().getEndTime())
-                        .reservationState(vr.getReservationStateCode().name())
-                        .reservationStateCode(vr.getReservationStateCode().getCode())
-                        .build());
-            }
+            return volunteerNoticeDto;
         }
 
-        responseVolunteerDto.setList(list);
-        responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
-        responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
-        List<ScheduleDto> scheduleDtos = new ArrayList<>();
-        scheduleDtos = volunteerSchedules.stream()
-                .map(ScheduleDto::new).collect(Collectors.toList());
+        volunteerSchedules = volunteerSchedules.stream().sorted(Comparator.comparing(VolunteerSchedule::getStartTime)).collect(Collectors.toList());
+        List<VolunteerScheduleDto> volunteerScheduleDtos = volunteerSchedules.stream()
+                .map(vs -> {
+                    PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
+                    Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
+                    List<ReservationUserDto> list = volunteerReservations.toList().stream()
+                            .map( vr -> {
+                                ReservationUserDto reservationUserDto = new ReservationUserDto(vr);
+                                reservationUserDto.setUserProfile(fileService.getFileUrl(vr.getUser().getImage()));
+                                return reservationUserDto;
+                            }).collect(Collectors.toList());
 
-        volunteerScheduleDto = VolunteerScheduleDto.builder()
-                .responseListDto(responseVolunteerDto)
-                .scheduleDtos(scheduleDtos)
-                .build();
-        return volunteerScheduleDto;
+                    ResponseListDto responseVolunteerDto = new ResponseListDto();
+                    responseVolunteerDto.setList(list);
+                    responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
+                    responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
+                    VolunteerScheduleDto vr = new VolunteerScheduleDto(vs);
+                    vr.setResponseListDto(responseVolunteerDto);
+                    return vr;
+                }).collect(Collectors.toList());
+//        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
+//        Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
+//        List<VolunteerReservationDto> list = new ArrayList<>();
+//        if(!volunteerReservations.isEmpty()){
+//            for (VolunteerReservation vr:
+//                    volunteerReservations.toList()) {
+//
+//                list.add(VolunteerReservationDto.builder()
+//                        .reservationId(vr.getReservationId())
+//                        .scheduleId(vs.getScheduleId())
+//                        .capacity(vr.getCapacity())
+//                        .shelterName(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getName())
+//                        .shelterAddress(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getAddress())
+//                        .volunteerDate(vr.getVolunteerSchedule().getVolunteerNotice().getVolunteerDate())
+//                        .startTime(vr.getVolunteerSchedule().getStartTime())
+//                        .endTime(vr.getVolunteerSchedule().getEndTime())
+//                        .reservationState(vr.getReservationStateCode().name())
+//                        .reservationStateCode(vr.getReservationStateCode().getCode())
+//                        .build());
+//            }
+//        }
+
+
+        volunteerNoticeDto = new VolunteerNoticeDto(volunteerNotice.get());
+        volunteerNoticeDto.setVolunteerScheduleDtos(volunteerScheduleDtos);
+
+        return volunteerNoticeDto;
     }
 
     @Transactional
