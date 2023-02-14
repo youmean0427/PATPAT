@@ -5,6 +5,7 @@ import com.ssafy.patpat.alarm.entity.Alarm;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.error.LogoutException;
 import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.service.FileService;
@@ -149,7 +150,7 @@ public class UserService {
 
     /** access token이 만료되기 일보 직전이라 access만 재발급할 때 */
     @Transactional
-    public TokenDto refresh(String refreshToken){
+    public TokenDto refresh(String refreshToken) throws LogoutException {
         TokenDto token = new TokenDto();
 
         if(!tokenProvider.checkRefreshToken(refreshToken)){
@@ -168,7 +169,7 @@ public class UserService {
 
     /** access token이 만료됐지만 refresh token은 살아 있어서 둘다 재발급할 때 */
     @Transactional
-    public TokenDto reissue(String refreshToken){
+    public TokenDto reissue(String refreshToken) throws LogoutException {
         TokenDto token = new TokenDto();
 
         if(!tokenProvider.checkRefreshToken(refreshToken)){

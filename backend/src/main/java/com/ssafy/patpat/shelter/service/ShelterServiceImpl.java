@@ -80,7 +80,7 @@ public class ShelterServiceImpl implements ShelterService{
     UserService userService;
     @Override
     public BreedDto selectBreedByMbti(String mbtiId) {
-        long breedId = MBTI.valueOf(mbtiId).ordinal();
+        long breedId = MBTI.valueOf(mbtiId).getCode();
         Breed breed = breedRepository.findByBreedId(breedId);
         Image breedImage = breed.getImage();
 //        BreedImage breedImage = breedImageRepository.findByBreedId(breedId);

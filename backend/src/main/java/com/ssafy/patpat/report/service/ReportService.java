@@ -3,6 +3,7 @@ package com.ssafy.patpat.report.service;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.protect.dto.ProtectDto;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.report.dto.RecommendDto;
 import com.ssafy.patpat.report.dto.ReportDto;
 import com.ssafy.patpat.report.dto.RequestReportDto;
@@ -24,5 +25,5 @@ public interface ReportService {
     Boolean deleteAll();
     ResponseListDto selectRecommendList(Long missingId, RequestReportDto requestReportDto);
 //    void insertRecommend(User user, MissingDog missingDog);
-
+    boolean isResemble(MissingDog missingDog, ShelterProtectedDog s);
 }

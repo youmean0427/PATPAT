@@ -853,7 +853,7 @@ public class ReportServiceImpl implements ReportService{
         return responseListDto;
     }
 
-    private boolean isResemble(MissingDog missingDog, ShelterProtectedDog s) {
+    public boolean isResemble(MissingDog missingDog, ShelterProtectedDog s) {
         int count = 0;
         int total = 7;
         /** 견종 여부 **/
