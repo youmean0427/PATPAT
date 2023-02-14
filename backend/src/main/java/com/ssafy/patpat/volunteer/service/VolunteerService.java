@@ -349,6 +349,7 @@ public class VolunteerService {
 
         volunteerSchedules = volunteerSchedules.stream().sorted(Comparator.comparing(VolunteerSchedule::getStartTime)).collect(Collectors.toList());
         List<VolunteerScheduleDto> volunteerScheduleDtos = volunteerSchedules.stream()
+                .sorted(Comparator.comparing(VolunteerSchedule::getStartTime))
                 .map(vs -> {
                     PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
                     Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
