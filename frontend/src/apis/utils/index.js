@@ -60,8 +60,11 @@ const axiosAuthApi = baseURL => {
             })
             .catch(error => {
               if (error.response.data.code === '008') {
+                localStorage.removeItem('isLogin');
+                localStorage.removeItem('user');
+                localStorage.removeItem('refreshToken');
+                localStorage.removeItem('accessToken');
                 window.location.href = '/login';
-                toast('토큰이 만료되었습니다. 다시 로그인해주세요', { type: 'info' });
               }
             });
           // 요청 후 새롭게 받은 access token과 refresh token 을 다시 저장
