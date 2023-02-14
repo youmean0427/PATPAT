@@ -5,11 +5,36 @@
 }
 
 .list-table {
+  padding-top: 2rem;
   width: 100%;
+  border-bottom: 2px solid #a1887f;
 }
 
 .list-table-row {
+  border-top: 2px solid #a1887f;
+  border-bottom: 2px solid #a1887f;
 }
 
 .list-table-cell {
+  font-size: 1.6rem;
+}
+
+.list-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.list-btn-container {
+  margin-left: auto;
+}
+.list-footer-pagination {
+  margin-left: auto;
+}
+.list-footer-btn {
+  color: white;
+  margin-left: auto;
+  background-color: #a1887f;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+  padding: 1rem;
 }

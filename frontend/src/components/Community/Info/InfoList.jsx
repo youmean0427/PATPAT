@@ -15,7 +15,7 @@ import Banner from 'components/Common/Banner/Banner';
 
 export default function InfoList() {
   const [page, setPage] = useState(1);
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['infoList'],
     queryFn: () => getBoardList(2, 200, 0),
   });
@@ -31,7 +31,6 @@ export default function InfoList() {
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
-  console.log(newData);
   const handleSubmit = event => {
     event.preventDefault();
     setFilteredData(newData.filter(row => row.title.toLowerCase().includes(searchTerm.toLowerCase())));
@@ -39,11 +38,11 @@ export default function InfoList() {
 
   return (
     <div className={styles['list-container']}>
-      <Banner />
-      <form onSubmit={handleSubmit}>
+      <Banner title="정보공유" />
+      {/* <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Search by title" value={searchTerm} onChange={handleSearch} />
       </form>
-      <button type="submit">Search</button>
+      <button type="submit">Search</button> */}
       <TableContainer className={styles['list-table']} component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -72,6 +71,7 @@ export default function InfoList() {
                 state={{ item: item }}
               >
                 <TableCell className={styles['table-cell']} align="center">
+                  {/* <PetsIcon /> */}
                   {item.title}
                 </TableCell>
                 <TableCell className={styles['table-cell']} align="center">
@@ -88,18 +88,23 @@ export default function InfoList() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination
-        count={count}
-        sx={{ display: 'flex', justifyContent: 'center', padding: '15px 0' }}
-        size="large"
-        page={page}
-        variant="outlined"
-        shape="rounded"
-        onChange={handleChange}
-      />
-      <Link to="/community/infowrite">
-        <button>글쓰기</button>
-      </Link>
+      <div className={styles['list-footer']}>
+        <Pagination
+          className={styles['list-footer-pagination']}
+          count={count}
+          sx={{ display: 'flex', justifyContent: 'center', padding: '15px 0' }}
+          size="large"
+          page={page}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChange}
+        />
+        <div className={styles['list-btn-container']}>
+          <Link to="/community/infowrite">
+            <button className={styles['list-footer-btn']}>글쓰기</button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
