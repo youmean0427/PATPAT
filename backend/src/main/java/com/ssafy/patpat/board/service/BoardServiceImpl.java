@@ -213,6 +213,7 @@ public class BoardServiceImpl implements BoardService{
         boardRepository.save(board);
         BoardDto boardDto = BoardDto.builder()
                 .boardId(board.getBoardId())
+                .userId(board.getUser().getUserId())
                 .author(board.getUser().getNickname())
                 .registDate(board.getDateTime().toLocalDate())
                 .title(board.getTitle())

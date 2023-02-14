@@ -237,5 +237,5 @@ public class ShelterController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("SUCCESS"));
     }
-    
+
 }
