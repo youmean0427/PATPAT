@@ -4,6 +4,7 @@ import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.dto.ResponseListDto;
+import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.common.service.FileService;
 import com.ssafy.patpat.common.util.SecurityUtil;
@@ -720,8 +721,10 @@ public class VolunteerService {
     }
 
     @Transactional
-    public boolean changeReservationState(ReservationDto reservationDto) throws VolunteerException {
-        LOGGER.info("dto{}", reservationDto.toString());
+    public ResponseMessage changeReservationState(ReservationDto reservationDto) throws VolunteerException {
+
+        ResponseMessage responseMessage = new ResponseMessage();
+
         Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
         if(!volunteerReservation.isPresent()){
             LOGGER.info("유효한 예약이 아닙니다.");
@@ -791,6 +794,7 @@ public class VolunteerService {
                     }
                 }
 
+                responseMessage.setMessage("승인되었습니다.");
                 volunteerScheduleRepository.save(volunteerSchedule);
             }
 
@@ -830,9 +834,9 @@ public class VolunteerService {
                     volunteerNoticeRepository.save(volunteerNotice);
                 }
             }
+
+            responseMessage.setMessage("거절되었습니다.");
             volunteerScheduleRepository.save(volunteerSchedule);
-
-
         }
         if(reservationDto.getStateCode() == 4){
             vr.setReservationStateCode(Reservation.완료);
@@ -842,6 +846,7 @@ public class VolunteerService {
                 user.updateExp(user.getExp()+1);
                 userRepository.save(user);
             /** ------------------------**/
+            responseMessage.setMessage("완료되었습니다.");
         }
         if(reservationDto.getStateCode() == 3){
             vr.setReservationStateCode(Reservation.불참);
@@ -851,10 +856,11 @@ public class VolunteerService {
             user.updateExp(user.getExp()-1);
             userRepository.save(user);
             /** ------------------------**/
+            responseMessage.setMessage("불참하였습니다.");
         }
 
 
-        return true;
+        return responseMessage;
     }
 
     @Transactional
