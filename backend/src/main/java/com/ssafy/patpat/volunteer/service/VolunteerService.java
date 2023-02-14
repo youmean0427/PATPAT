@@ -328,15 +328,22 @@ public class VolunteerService {
      * 특정 봉사일정을 보고 싶을 때
      * */
     @Transactional
-    public ResponseListDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
-
-        Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(requestVolunteerDto.getScheduleId());
-        if(!volunteerSchedule.isPresent()){
-            LOGGER.info("봉사 일정이 비었습니다.");
-            return null;
+    public VolunteerScheduleDto selectScheduleList(RequestVolunteerDto requestVolunteerDto){
+        VolunteerScheduleDto volunteerScheduleDto = new VolunteerScheduleDto();
+        ResponseListDto responseVolunteerDto = new ResponseListDto();
+        Optional<VolunteerNotice> volunteerNotice = volunteerNoticeRepository.findById(requestVolunteerDto.getNoticeId());
+        if(!volunteerNotice.isPresent()){
+            LOGGER.info("봉사 공고가 비었습니다.");
+            return volunteerScheduleDto;
         }
 
-        VolunteerSchedule vs = volunteerSchedule.get();
+        List<VolunteerSchedule> volunteerSchedules = volunteerNotice.get().getVolunteerSchedules();
+        if(volunteerSchedules.isEmpty()){
+            LOGGER.info("봉사 일정이 비었습니다.");
+            return volunteerScheduleDto;
+        }
+        VolunteerSchedule vs = volunteerSchedules.get(0);
+
         int capacity = 0;
         PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
         Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
@@ -362,12 +369,10 @@ public class VolunteerService {
             }
         }
 
-        ResponseListDto responseVolunteerDto = new ResponseListDto();
-
         responseVolunteerDto.setList(list);
         responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
         responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
-        VolunteerScheduleDto volunteerScheduleDto = VolunteerScheduleDto.builder()
+        volunteerScheduleDto = VolunteerScheduleDto.builder()
                 .scheduleId(vs.getScheduleId())
                 .noticeId(vs.getVolunteerNotice().getNoticeId())
                 .startTime(vs.getStartTime())
@@ -380,7 +385,7 @@ public class VolunteerService {
                 .responseListDto(responseVolunteerDto)
                 .build();
 
-        return responseVolunteerDto;
+        return volunteerScheduleDto;
     }
 
     @Transactional

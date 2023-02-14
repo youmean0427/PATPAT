@@ -135,7 +135,7 @@ public class VolunteerController {
     @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 scheduleId offset limit")
     public ResponseEntity<Object> selectScheduleList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        ResponseListDto volunteerScheduleDto = volunteerService.selectScheduleList(requestVolunteerDto);
+        VolunteerScheduleDto volunteerScheduleDto = volunteerService.selectScheduleList(requestVolunteerDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                     .body(volunteerScheduleDto);
