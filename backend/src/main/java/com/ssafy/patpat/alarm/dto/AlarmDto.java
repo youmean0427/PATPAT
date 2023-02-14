@@ -7,6 +7,8 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AlarmDto {
     private Long alarmId;
     private Boolean checkRead;
