@@ -23,6 +23,8 @@ public interface ShelterService {
 
     ResponseMessage AuthShelter(Long shelterId, String authCode);
 
+    String getAuthCode(Long shelterId);
+
     List<BreedDto> selectBreedList();
 
     MbtiMapDto selectBreedCountByMbti(Long breedId);
@@ -30,4 +32,6 @@ public interface ShelterService {
     List<ShelterNameDto> selectShelterAll();
 
     Boolean deleteShelter(Long shelterId);
+
+    boolean dummyShelter();
 }

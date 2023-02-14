@@ -30,6 +30,7 @@ import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 
 import org.apache.commons.collections.ArrayStack;
+import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -336,8 +337,10 @@ public class ShelterServiceImpl implements ShelterService{
                 return dto;
             }
             else{
-                dto.setAuthCode(passwordEncoder.encode(shelter.getRegNumber()));
-                System.out.println(dto);
+                String auth = passwordEncoder.encode(shelter.getRegNumber());
+                dto.setAuthCode(auth);
+                shelter.setAuthCode(auth);
+//                System.out.println(dto);
                 Optional<Owner> o = Optional.ofNullable(shelter.getOwner());
                 if(!o.isPresent()){ // owner가 없다면
                     Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
@@ -349,6 +352,7 @@ public class ShelterServiceImpl implements ShelterService{
 
                     List<User> users = new ArrayList<>();
                     shelter.setUsers(users);
+
                     shelter = shelterRepository.save(shelter);
 
                     List<Time> timeList = new ArrayList<>();
@@ -378,6 +382,48 @@ public class ShelterServiceImpl implements ShelterService{
         }
         return dto;
     }
+
+    @Override
+    @Transactional
+    public boolean dummyShelter() {
+
+        for (long i = 316L; i < 324L; i++) {
+            Shelter shelter = shelterRepository.findByShelterId(i);
+            String auth = passwordEncoder.encode(shelter.getRegNumber());
+            shelter.setAuthCode(auth);
+            Optional<Owner> o = Optional.ofNullable(shelter.getOwner());
+            if (!o.isPresent()) { // owner가 없다면
+                Optional<User> user = userRepository.findById(i - 101);
+                user.get().setShelter(shelter);
+                Owner owner = new Owner();
+                owner.setName(user.get().getNickname());
+                owner.setUser(user.get());
+                shelter.setOwner(owner);
+
+                List<User> users = new ArrayList<>();
+                shelter.setUsers(users);
+
+                shelter = shelterRepository.save(shelter);
+
+                List<Time> timeList = new ArrayList<>();
+                for (TimeCode t : TimeCode.values()) {
+                    timeList.add(
+                            Time.builder()
+                                    .timeCode(t)
+                                    .active(true)
+                                    .shelter(shelter)
+                                    .build()
+                    );
+                }
+                timeRepository.saveAll(timeList);
+
+                userRepository.save(user.get());
+            }
+
+        }
+        return true;
+    }
+
     @Override
     @Transactional
     public ResponseMessage updateShelter(ShelterDto shelterDto, List<MultipartFile> uploadFile) throws Exception {
@@ -471,6 +517,20 @@ public class ShelterServiceImpl implements ShelterService{
             else return new ResponseMessage("FAIL");
         }else return new ResponseMessage("FAIL");
         return new ResponseMessage("SUCCESS");
+    }
+
+    @Override
+    @Transactional
+    public String getAuthCode(Long shelterId) {
+        Optional<Shelter> shelter = shelterRepository.findById(shelterId);
+        if(!shelter.isPresent()){
+            return null;
+        }
+        Optional<String> authCode = Optional.ofNullable(shelter.get().getAuthCode());
+        if(!authCode.isPresent()){
+            return null;
+        }
+        return authCode.get();
     }
 
 

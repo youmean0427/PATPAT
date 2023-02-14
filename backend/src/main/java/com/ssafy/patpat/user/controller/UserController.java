@@ -216,7 +216,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/insert")
-    @ApiOperation(value = "찜 등록", notes = "임시용 사진 넣기")
+    @ApiOperation(value = "사진 등록", notes = "임시용 사진 넣기")
     public ResponseEntity<Object> insertImage(@RequestPart List<MultipartFile> profileFile) throws Exception{
         //서비스 호출 코드
         userService.insertImage(profileFile);
