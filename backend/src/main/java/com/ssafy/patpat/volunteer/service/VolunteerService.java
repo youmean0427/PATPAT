@@ -772,7 +772,6 @@ public class VolunteerService {
                 volunteerSchedule.setCapacity(capacity + vr.getCapacity());
                 if(totalCapacity == capacity + vr.getCapacity()){
                     volunteerSchedule.setReservationStateCode(Reservation.승인);
-                    volunteerScheduleRepository.save(volunteerSchedule);
 
                     // 전체 공고 체크 필요
                     VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
@@ -787,6 +786,7 @@ public class VolunteerService {
                         volunteerNotice.setReservationStateCode(Reservation.승인);
                     }
                 }
+                volunteerScheduleRepository.save(volunteerSchedule);
             }
 
             // 나머지 예약들 거절 시키기
@@ -803,16 +803,18 @@ public class VolunteerService {
 
         // 거절시
         if(reservationDto.getStateCode() == 2){
+            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
+            if(vr.getReservationStateCode() == Reservation.승인){
+                int capacity = volunteerSchedule.getCapacity();
+                volunteerSchedule.setCapacity(capacity-vr.getCapacity());
+            }
             vr.setReservationStateCode(Reservation.거절);
             volunteerReservationRepository.save(vr);
             notificationService.notifyDenyVolunteerEvent(vr.getReservationId());
             // 전체 봉사 일정 체크 필요
-            VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
             if(volunteerSchedule.getReservationStateCode() == Reservation.승인){
-                int capacity = volunteerSchedule.getCapacity();
-                volunteerSchedule.setCapacity(capacity-vr.getCapacity());
                 volunteerSchedule.setReservationStateCode(Reservation.대기중);
-                volunteerScheduleRepository.save(volunteerSchedule);
+
 
                 // 전체 공고 체크 필요
                 VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
@@ -821,6 +823,7 @@ public class VolunteerService {
                     volunteerNoticeRepository.save(volunteerNotice);
                 }
             }
+            volunteerScheduleRepository.save(volunteerSchedule);
             // 나머지 예약들 대기중 바꾸기
             List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
             for (VolunteerReservation vrs:
