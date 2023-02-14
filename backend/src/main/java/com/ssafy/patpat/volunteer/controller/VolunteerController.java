@@ -2,6 +2,7 @@ package com.ssafy.patpat.volunteer.controller;
 
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
+import com.ssafy.patpat.common.error.ErrorDto;
 import com.ssafy.patpat.common.error.VolunteerException;
 import com.ssafy.patpat.shelter.dto.ShelterLocationDto;
 import com.ssafy.patpat.volunteer.dto.*;
@@ -153,8 +154,8 @@ public class VolunteerController {
 
     @PostMapping("/schedules")
     @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가")
-    public ResponseEntity<Object> insertSchedule(@RequestBody NoticeDto noticeDto){
-        volunteerService.insertSchedule(noticeDto);
+    public ResponseEntity<Object> insertSchedule(@RequestBody ScheduleDto scheduleDto){
+        volunteerService.insertSchedule(scheduleDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("SUCCESS"));
     }
@@ -169,11 +170,19 @@ public class VolunteerController {
 
     @DeleteMapping("/schedules")
     @ApiOperation(value = "봉사 일정 삭제", notes = "봉사 일정 삭제 - 파라미터로 scheduleId")
-    public ResponseEntity<Object> deleteSchedule(@RequestParam("scheduleId") Long scheduleId) throws VolunteerException {
+    public ResponseEntity<Object> deleteSchedule(@RequestParam("scheduleId") Long scheduleId) {
         //서비스 호출 코드
-        volunteerService.deleteSchedule(scheduleId);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try {
+            volunteerService.deleteSchedule(scheduleId);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto errorDto = new ErrorDto(e.getMessage(), "noCode");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(errorDto);
+        }
+
+
     }
 
     /**

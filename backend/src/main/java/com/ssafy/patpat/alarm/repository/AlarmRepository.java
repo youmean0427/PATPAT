@@ -13,4 +13,6 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 
     Page<Alarm> findByUserUserId(Long userId, PageRequest pageRequest);
     List<Alarm> findByUserUserId(Long userId);
+
+    Integer countByUserUserIdAndCheckRead(Long userId, Boolean checkRead);
 }

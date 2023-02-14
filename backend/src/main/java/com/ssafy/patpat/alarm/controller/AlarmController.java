@@ -1,6 +1,7 @@
 package com.ssafy.patpat.alarm.controller;
 
 import com.ssafy.patpat.alarm.dto.AlarmDto;
+import com.ssafy.patpat.alarm.dto.AlarmListDto;
 import com.ssafy.patpat.alarm.dto.RequestAlarmDto;
 import com.ssafy.patpat.alarm.entity.Alarm;
 import com.ssafy.patpat.alarm.service.AlarmService;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,7 +48,7 @@ public class AlarmController {
     @GetMapping
     @ApiOperation(value = "알림 리스트", notes = "알림 목록 조회")
     public ResponseEntity<Object> selectAlarmList(RequestAlarmDto requestAlarmDto){
-        ResponseListDto responseListDto = alarmService.selectAlarmList(requestAlarmDto);
+        AlarmListDto responseListDto = alarmService.selectAlarmList(requestAlarmDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseListDto);
     }
@@ -77,9 +79,14 @@ public class AlarmController {
 
 
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
-    public SseEmitter subscribe(@RequestParam Long userId) {
+    public SseEmitter subscribe(@RequestParam Long userId, HttpServletResponse response) {
         LOGGER.info("오나? {}",userId);
 //        Long userId = notificationService.getUserId();
+
+        response.addHeader("X-Accel-Buffering", "no");
+        response.addHeader("Content-Type", "text/event-stream");
+        response.setHeader("Connection", "keep-alive");
+        response.setHeader("Cache-Control", "no-cache");
 
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         sseEmitter.onCompletion(() -> sseEmitters.remove(userId));
