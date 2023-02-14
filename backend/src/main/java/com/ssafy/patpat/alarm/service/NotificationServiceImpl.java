@@ -65,6 +65,17 @@ public class NotificationServiceImpl implements NotificationService{
         BigDecimal log = shelterProtectedDog.getLongitude();
 
         List<MissingDog> missingDogList = missingDogRepository.selectBydistance(lat,log,lat);
+        MsgCode msgCode = MsgCode.MSG_NEW_RESEMBLE_DOG;
+
+        for(MissingDog m : missingDogList){
+            Alarm alarm = Alarm.builder()
+                    .checkRead(false)
+                    .msgCode(msgCode)
+                    .user(m.getUser())
+                    .registDate(LocalDateTime.now())
+                    .build();
+            alarmRepository.save(alarm);
+        }
 
         /** 반경 내에 실종된 동물이 있다면 **/
         if(missingDogList.size() > 0){
@@ -76,16 +87,6 @@ public class NotificationServiceImpl implements NotificationService{
                     if(sseEmitters.containsKey(userId)){
                         SseEmitter sseEmitter = sseEmitters.get(userId);
                         try{
-                            MsgCode msgCode = MsgCode.MSG_NEW_RESEMBLE_DOG;
-
-                            Alarm alarm = Alarm.builder()
-                                    .checkRead(false)
-                                    .msgCode(msgCode)
-                                    .user(m.getUser())
-                                    .registDate(LocalDateTime.now())
-                                    .build();
-                            alarmRepository.save(alarm);
-
                             sseEmitter.send(SseEmitter.event().name("addProtect").data(msgCode, MediaType.APPLICATION_JSON));
                         }catch (Exception e){
                             sseEmitters.remove(userId);
@@ -103,6 +104,18 @@ public class NotificationServiceImpl implements NotificationService{
         BigDecimal log = missingDog.getLongitude();
 
         List<Shelter> shelterList = shelterRepository.selectBydistance(lat,log,lat);
+        MsgCode msgCode = MsgCode.MSG_NEW_MISSING;
+
+        for(Shelter s : shelterList){
+            Alarm alarm = Alarm.builder()
+                    .checkRead(false)
+                    .missingId(missingId)
+                    .registDate(LocalDateTime.now())
+                    .msgCode(msgCode)
+                    .user(s.getOwner().getUser())
+                    .build();
+            alarmRepository.save(alarm);
+        }
 
         if(shelterList.size() > 0){
             for(Shelter s : shelterList){
@@ -111,17 +124,6 @@ public class NotificationServiceImpl implements NotificationService{
                 if(sseEmitters.containsKey(userId)){
                     SseEmitter sseEmitter = sseEmitters.get(userId);
                     try{
-                        MsgCode msgCode = MsgCode.MSG_NEW_MISSING;
-
-                        Alarm alarm = Alarm.builder()
-                                .checkRead(false)
-                                .missingId(missingId)
-                                .registDate(LocalDateTime.now())
-                                .msgCode(msgCode)
-                                .user(s.getOwner().getUser())
-                                .build();
-                        alarmRepository.save(alarm);
-
                         sseEmitter.send(SseEmitter.event().name("addMissing").data(msgCode,MediaType.APPLICATION_JSON));
                     }catch (Exception e){
                         sseEmitters.remove(userId);
@@ -138,20 +140,21 @@ public class NotificationServiceImpl implements NotificationService{
         Consulting consulting = consultingRepository.findByConsultingId(consultingId);
         Shelter shelter = consulting.getShelter();
         Long userId = shelter.getOwner().getUser().getUserId();
+
+        MsgCode msgCode = MsgCode.MSG_NEW_CONSULTING;
+
+        Alarm alarm = Alarm.builder()
+                .checkRead(false)
+                .shelterId(shelter.getShelterId())
+                .registDate(LocalDateTime.now())
+                .msgCode(msgCode)
+                .user(shelter.getOwner().getUser())
+                .build();
+        alarmRepository.save(alarm);
+
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
-                MsgCode msgCode = MsgCode.MSG_NEW_CONSULTING;
-
-                Alarm alarm = Alarm.builder()
-                        .checkRead(false)
-                        .shelterId(shelter.getShelterId())
-                        .registDate(LocalDateTime.now())
-                        .msgCode(msgCode)
-                        .user(shelter.getOwner().getUser())
-                        .build();
-                alarmRepository.save(alarm);
-
                 sseEmitter.send(SseEmitter.event().name("addConsulting").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
@@ -165,18 +168,20 @@ public class NotificationServiceImpl implements NotificationService{
     public void notifyAddVolunteerEvent(Long noticeId) {
         VolunteerNotice notice = volunteerNoticeRepository.findByNoticeId(noticeId);
         Long userId = notice.getShelter().getOwner().getUser().getUserId();
+
+        MsgCode msgCode = MsgCode.MSG_NEW_VOLUNTEER;
+        Alarm alarm = Alarm.builder()
+                .checkRead(false)
+                .shelterId(notice.getShelter().getShelterId())
+                .registDate(LocalDateTime.now())
+                .msgCode(msgCode)
+                .user(notice.getShelter().getOwner().getUser())
+                .build();
+        alarmRepository.save(alarm);
+
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
-                MsgCode msgCode = MsgCode.MSG_NEW_VOLUNTEER;
-                Alarm alarm = Alarm.builder()
-                        .checkRead(false)
-                        .shelterId(notice.getShelter().getShelterId())
-                        .registDate(LocalDateTime.now())
-                        .msgCode(msgCode)
-                        .user(notice.getShelter().getOwner().getUser())
-                        .build();
-                alarmRepository.save(alarm);
                 sseEmitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
@@ -190,17 +195,19 @@ public class NotificationServiceImpl implements NotificationService{
     public void notifyAccessConsultingEvent(Long consultingId) {
         Consulting consulting = consultingRepository.findByConsultingId(consultingId);
         Long userId = consulting.getUser().getUserId();
+
+        MsgCode msgCode = MsgCode.MSG_ACCESS_CONSULTING;
+        Alarm alarm = Alarm.builder()
+                .checkRead(false)
+                .registDate(LocalDateTime.now())
+                .msgCode(msgCode)
+                .user(consulting.getUser())
+                .build();
+        alarmRepository.save(alarm);
+
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
-                MsgCode msgCode = MsgCode.MSG_ACCESS_CONSULTING;
-                Alarm alarm = Alarm.builder()
-                        .checkRead(false)
-                        .registDate(LocalDateTime.now())
-                        .msgCode(msgCode)
-                        .user(consulting.getUser())
-                        .build();
-                alarmRepository.save(alarm);
                 sseEmitter.send(SseEmitter.event().name("accessConsulting").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
@@ -214,17 +221,19 @@ public class NotificationServiceImpl implements NotificationService{
     public void notifyDenyConsultingEvent(Long consultingId) {
         Consulting consulting = consultingRepository.findByConsultingId(consultingId);
         Long userId = consulting.getUser().getUserId();
+
+        MsgCode msgCode = MsgCode.MSG_ACCESS_CONSULTING;
+        Alarm alarm = Alarm.builder()
+                .checkRead(false)
+                .registDate(LocalDateTime.now())
+                .msgCode(msgCode)
+                .user(consulting.getUser())
+                .build();
+        alarmRepository.save(alarm);
+
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
-                MsgCode msgCode = MsgCode.MSG_ACCESS_CONSULTING;
-                Alarm alarm = Alarm.builder()
-                        .checkRead(false)
-                        .registDate(LocalDateTime.now())
-                        .msgCode(msgCode)
-                        .user(consulting.getUser())
-                        .build();
-                alarmRepository.save(alarm);
                 sseEmitter.send(SseEmitter.event().name("denyConsulting").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
@@ -238,16 +247,18 @@ public class NotificationServiceImpl implements NotificationService{
     public void notifyAccessVolunteerEvent(Long reservationId) {
         VolunteerReservation volunteerReservation = volunteerReservationRepository.findByReservationId(reservationId);
         Long userId = volunteerReservation.getUser().getUserId();
+
+        MsgCode msgCode = MsgCode.MSG_ACCESS_VOLUNTEER;
+        Alarm alarm = Alarm.builder()
+                .checkRead(false)
+                .msgCode(msgCode)
+                .user(volunteerReservation.getUser())
+                .build();
+        alarmRepository.save(alarm);
+
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
-                MsgCode msgCode = MsgCode.MSG_ACCESS_VOLUNTEER;
-                Alarm alarm = Alarm.builder()
-                        .checkRead(false)
-                        .msgCode(msgCode)
-                        .user(volunteerReservation.getUser())
-                        .build();
-                alarmRepository.save(alarm);
                 sseEmitter.send(SseEmitter.event().name("accessVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
@@ -261,17 +272,19 @@ public class NotificationServiceImpl implements NotificationService{
     public void notifyDenyVolunteerEvent(Long reservationId) {
         VolunteerReservation volunteerReservation = volunteerReservationRepository.findByReservationId(reservationId);
         Long userId = volunteerReservation.getUser().getUserId();
+
+        MsgCode msgCode = MsgCode.MSG_ACCESS_VOLUNTEER;
+        Alarm alarm = Alarm.builder()
+                .checkRead(false)
+                .registDate(LocalDateTime.now())
+                .msgCode(msgCode)
+                .user(volunteerReservation.getUser())
+                .build();
+        alarmRepository.save(alarm);
+
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
-                MsgCode msgCode = MsgCode.MSG_ACCESS_VOLUNTEER;
-                Alarm alarm = Alarm.builder()
-                        .checkRead(false)
-                        .registDate(LocalDateTime.now())
-                        .msgCode(msgCode)
-                        .user(volunteerReservation.getUser())
-                        .build();
-                alarmRepository.save(alarm);
                 sseEmitter.send(SseEmitter.event().name("denyVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
@@ -285,17 +298,19 @@ public class NotificationServiceImpl implements NotificationService{
     public void notifyCreateRoomEvent(Long consultingId) {
         Consulting consulting = consultingRepository.findByConsultingId(consultingId);
         Long userId = consulting.getUser().getUserId();
+
+        MsgCode msgCode = MsgCode.MSG_CREATE_ROOM;
+        Alarm alarm = Alarm.builder()
+                .checkRead(false)
+                .registDate(LocalDateTime.now())
+                .msgCode(msgCode)
+                .user(consulting.getUser())
+                .build();
+        alarmRepository.save(alarm);
+
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
-                MsgCode msgCode = MsgCode.MSG_CREATE_ROOM;
-                Alarm alarm = Alarm.builder()
-                        .checkRead(false)
-                        .registDate(LocalDateTime.now())
-                        .msgCode(msgCode)
-                        .user(consulting.getUser())
-                        .build();
-                alarmRepository.save(alarm);
                 sseEmitter.send(SseEmitter.event().name("createRoom").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
