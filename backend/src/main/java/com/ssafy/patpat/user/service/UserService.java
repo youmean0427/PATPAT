@@ -280,6 +280,7 @@ public class UserService {
                     .email(user.get().getEmail())
                     .username(user.get().getNickname())
                     .ageRange(user.get().getAgeRange())
+                    .exp(user.get().getExp())
                     .profileImageUrl(fileService.getFileUrl(user.get().getImage()))
                     .providerId(user.get().getProviderId())
                     .shelterId(shelterId)
