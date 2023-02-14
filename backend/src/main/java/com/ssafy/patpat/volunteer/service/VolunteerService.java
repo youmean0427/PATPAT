@@ -739,14 +739,17 @@ public class VolunteerService {
 
         // 수락시
         if(reservationDto.getStateCode() == 1){
-            vr.setReservationStateCode(Reservation.승인);
-            volunteerReservationRepository.save(vr);
-            notificationService.notifyAccessVolunteerEvent(vr.getReservationId());
             // 전체 봉사 일정 체크 필요
             VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
             int totalCapacity = volunteerSchedule.getTotaclCapacity();
             int capacity = volunteerSchedule.getCapacity();
+            if(totalCapacity < capacity + vr.getCapacity()){
+                throw new VolunteerException("봉사인원이 초과되었습니다.");
+            }
             if(totalCapacity >= capacity + vr.getCapacity()){
+                vr.setReservationStateCode(Reservation.승인);
+                volunteerReservationRepository.save(vr);
+                notificationService.notifyAccessVolunteerEvent(vr.getReservationId());
                 volunteerSchedule.setCapacity(capacity + vr.getCapacity());
                 List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
                 if(totalCapacity == capacity + vr.getCapacity()){

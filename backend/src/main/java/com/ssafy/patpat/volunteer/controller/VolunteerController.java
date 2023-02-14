@@ -247,11 +247,18 @@ public class VolunteerController {
      */
     @PostMapping("/reservations")
     @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록 로긘필수 parameter : shelterId, capacity")
-    public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto) throws VolunteerException {
+    public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto) {
         //서비스 호출 코드
-        volunteerService.insertReservation(reservationDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try {
+            volunteerService.insertReservation(reservationDto);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto error = new ErrorDto(e.getMessage(),"011");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(error);
+        }
+
     }
     /**
      * 봉사 지원서 수정
@@ -278,11 +285,18 @@ public class VolunteerController {
     /** 수락 및 거절 상태 변경 */
     @GetMapping("/reservations/state")
     @ApiOperation(value = "수락 거절 상태", notes = "봉사 예약 수락 / 거절 인즈엉 파라미터 : reservationId, userId, stateCode(수락 : 1, 거절 : 2)")
-    public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto) throws VolunteerException {
+    public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto) {
         //서비스 호출 코드
-        volunteerService.changeReservationState(reservationDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try{
+            volunteerService.changeReservationState(reservationDto);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto error = new ErrorDto(e.getMessage(), "010");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(error);
+        }
+
     }
 
     /** 완료 변경 */
