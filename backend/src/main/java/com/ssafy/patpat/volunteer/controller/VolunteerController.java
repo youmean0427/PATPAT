@@ -161,7 +161,7 @@ public class VolunteerController {
                     .body(new ResponseMessage("SUCCESS"));
         }catch (VolunteerException e){
             ErrorDto error = new ErrorDto(e.getMessage(), "009");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
         }
     }
 
@@ -174,7 +174,7 @@ public class VolunteerController {
                     .body(new ResponseMessage("SUCCESS"));
         }catch (VolunteerException e){
             ErrorDto error = new ErrorDto(e.getMessage(), "009");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
         }
 
     }
@@ -221,7 +221,7 @@ public class VolunteerController {
 //      responseVolunteerDto = volunteerService.checkReservationPossible(requestVolunteerDto);
         List<CheckVolunteerDto> checkVolunteerDtos = volunteerService.checkReservationPossible(noticeId);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+                .body(checkVolunteerDtos);
     }
 
     /**
