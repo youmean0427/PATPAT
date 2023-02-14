@@ -369,28 +369,6 @@ public class VolunteerService {
                     vr.setReservations(responseVolunteerDto);
                     return vr;
                 }).collect(Collectors.toList());
-//        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
-//        Page<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findWithVolunteerScheduleByVolunteerScheduleScheduleIdAndReservationStateCodeNot(vs.getScheduleId(), Reservation.거절, pageRequest);
-//        List<VolunteerReservationDto> list = new ArrayList<>();
-//        if(!volunteerReservations.isEmpty()){
-//            for (VolunteerReservation vr:
-//                    volunteerReservations.toList()) {
-//
-//                list.add(VolunteerReservationDto.builder()
-//                        .reservationId(vr.getReservationId())
-//                        .scheduleId(vs.getScheduleId())
-//                        .capacity(vr.getCapacity())
-//                        .shelterName(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getName())
-//                        .shelterAddress(vr.getVolunteerSchedule().getVolunteerNotice().getShelter().getAddress())
-//                        .volunteerDate(vr.getVolunteerSchedule().getVolunteerNotice().getVolunteerDate())
-//                        .startTime(vr.getVolunteerSchedule().getStartTime())
-//                        .endTime(vr.getVolunteerSchedule().getEndTime())
-//                        .reservationState(vr.getReservationStateCode().name())
-//                        .reservationStateCode(vr.getReservationStateCode().getCode())
-//                        .build());
-//            }
-//        }
-
 
 
         volunteerNoticeDto.setSchedules(volunteerScheduleDtos);
@@ -770,11 +748,11 @@ public class VolunteerService {
             int capacity = volunteerSchedule.getCapacity();
             if(totalCapacity >= capacity + vr.getCapacity()){
                 volunteerSchedule.setCapacity(capacity + vr.getCapacity());
+                List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
                 if(totalCapacity == capacity + vr.getCapacity()){
                     volunteerSchedule.setReservationStateCode(Reservation.승인);
 
                     // 나머지 예약들 거절 시키기
-                    List<VolunteerReservation> volunteerReservations = volunteerSchedule.getVolunteerReservations();
                     for (VolunteerReservation vrs:
                             volunteerReservations) {
                         if(vrs.getReservationId() != vr.getReservationId()){
@@ -796,7 +774,18 @@ public class VolunteerService {
                     if(ok){
                         volunteerNotice.setReservationStateCode(Reservation.승인);
                     }
+                }else{
+                    // 같은 예약Id에 대한 같은 유저의 요청 거절 처리
+                    for (VolunteerReservation vrs:
+                            volunteerReservations) {
+                        if(vrs.getUser().getUserId() == vr.getUser().getUserId()){
+                            vrs.setReservationStateCode(Reservation.거절);
+                            volunteerReservationRepository.save(vrs);
+                            notificationService.notifyDenyVolunteerEvent(vrs.getReservationId());
+                        }
+                    }
                 }
+
                 volunteerScheduleRepository.save(volunteerSchedule);
             }
 
