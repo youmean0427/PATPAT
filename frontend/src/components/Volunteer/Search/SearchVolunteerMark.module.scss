@@ -21,6 +21,7 @@
   height: 330px !important;
   padding: 10px;
   font-family: $noto-font;
+  animation: modal-show 0.3s;
 }
 
 .closeButton {
@@ -43,5 +44,13 @@
       color: #999;
       background-color: transparent;
     }
+  }
+}
+@keyframes modal-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

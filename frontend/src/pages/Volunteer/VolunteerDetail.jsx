@@ -13,29 +13,27 @@ export default function VolunteerDetail({ items }) {
   // const [scheduleId, setScheduleId] = useState(1);
   const [open, setOpen] = useState(0);
 
-  // useQuery
-  // console.log(items.scheduleId);
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ['getVolNoticePerMonth'],
-  //   queryFn: () => getVolReservationOfUserDetail(scheduleId),
-  // });
-
-  // if (isLoading) return;
-
+  // console.log('detail', items);
+  const handleButtonClick = index => {};
   return (
     <div className={styles.container}>
-      <div>{items.title}</div>
+      <div className={styles.title}>
+        공고제목<span>{items.title}</span>
+      </div>
+      <div className={styles.volunteerDate}>
+        봉사날짜<span>{items.volunteerDate}</span>
+      </div>
       <div className={styles['container-scheduleBnt']}>
         {scheduleId.map((item, index) => (
           <div key={index} className={styles.scheduleBnt}>
-            <button onClick={() => setOpen({ index })}>{index + 1}</button>
+            <button onClick={() => setOpen({ index })}>{index + 1}차</button>
           </div>
         ))}
       </div>
       <hr />
       <div className={styles.scheduleItem}>
         {scheduleId.map((item, index) => (
-          <ScheduleItem item={item} key={index} index={index} open={open} />
+          <ScheduleItem item={item} noticeId={items.noticeId} key={index} index={index} open={open} />
         ))}
       </div>
     </div>

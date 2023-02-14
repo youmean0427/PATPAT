@@ -38,7 +38,7 @@ export default function SearchVolunteerList({ items, listToMark }) {
       <hr />
       <div style={{ height: '180px', overflowY: 'scroll' }}>
         {items.map((item, index) => (
-          <SearchVolunteerItem key={index} item={item} itemToList={itemToList} />
+          <SearchVolunteerItem key={index} item={item} itemToList={itemToList} className={styles.volunteerItem} />
         ))}
       </div>
     </div>

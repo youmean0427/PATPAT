@@ -4,16 +4,19 @@ import { getVolNoticePerMonth } from 'apis/api/volunteer';
 
 import styles from './SearchVolunteerMark.module.scss';
 import React, { useState } from 'react';
-import { CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
+import { MapMarker } from 'react-kakao-maps-sdk';
 import SearchVolunteerList from './SearchVolunteerList';
-import { useEffect } from 'react';
-import zIndex from '@mui/material/styles/zIndex';
-import { style } from '@mui/system';
-import { CgCloseO } from 'react-icons/cg';
 
-export default function SearchVolunteerMark({ latitude, longitude, shelterId, name, markToPage }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [visibleIndex, setVisibleIndex] = useState(0);
+export default function SearchVolunteerMark({
+  latitude,
+  longitude,
+  shelterId,
+  markToPage,
+  modalIndex,
+  onClick,
+  isClicked,
+  onClose,
+}) {
   const position = { lat: latitude, lng: longitude };
 
   const listToMark = x => {
@@ -36,6 +39,7 @@ export default function SearchVolunteerMark({ latitude, longitude, shelterId, na
     queryKey: ['getVolNoticePerMonth', shelterId],
     queryFn: () => getVolNoticePerMonth(shelterId, todayYear.toString(), todayMonth),
   });
+
   if (isLoading) return;
 
   return (
@@ -50,11 +54,9 @@ export default function SearchVolunteerMark({ latitude, longitude, shelterId, na
             height: 36,
           },
         }}
-        onClick={() => {
-          setIsVisible(true);
-        }}
+        onClick={onClick}
       >
-        {isVisible ? (
+        {isClicked ? (
           <div className={styles.container}>
             {/* <CustomOverlayMap // 커스텀 오버레이를 표시할 Container
               position={{ lat: position.lat, lng: position.lng }} // 커스텀 오버레이가 표시될 위치
@@ -63,7 +65,7 @@ export default function SearchVolunteerMark({ latitude, longitude, shelterId, na
             <div className={styles.infoContainer}>
               <div className={styles.closeButton}>
                 <div>
-                  <button onClick={() => setIsVisible(false)}>
+                  <button onClick={onClose}>
                     {/* <CgCloseO size="24" color="gray" />
                      */}
                     &times;

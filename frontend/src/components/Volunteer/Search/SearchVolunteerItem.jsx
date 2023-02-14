@@ -8,7 +8,7 @@ export default function SearchVolunteerItem({ item, itemToList }) {
   // useQuery
   const [itemData, setItemData] = useState(item);
   return (
-    <div>
+    <div className={styles.mainContainer}>
       <div
         className={styles.container}
         onClick={() => {
