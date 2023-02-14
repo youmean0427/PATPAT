@@ -16,8 +16,6 @@ export default function AdoptionReviewUpdate() {
   const typeCode = data.typeCode;
   const boardId = data.boardId;
 
-  //  ========== 사진 업로드 ==========
-  // 이미지 상대경로 저장
   const handleAddImages = event => {
     const imageLists = event.target.files;
     let imageUrlLists = [...fileUrlList];
@@ -63,6 +61,7 @@ export default function AdoptionReviewUpdate() {
         onSubmit={e => {
           e.preventDefault();
           mutation();
+
           onClickBtn();
 
           // DeleteBoard(data.boardId);
@@ -97,7 +96,7 @@ export default function AdoptionReviewUpdate() {
               }}
             />
           </div>
-          <button type="submit">수정 완료</button>
+          <button type="submit">수정완료</button>
         </div>
       </form>
     </div>
