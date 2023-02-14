@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class AlarmService {
         List<Alarm> alarms = alarmRepository.findByUserUserId(user.get().getUserId());
         Integer noRead = alarmRepository.countByUserUserIdAndCheckRead(user.get().getUserId(), false);
         List<AlarmDto> alarmDtoList =  alarms.stream()
+                .sorted(Comparator.comparing(Alarm::getRegistDate).reversed())
                 .map(alarm -> {
                     AlarmDto alarmDto = new AlarmDto(alarm);
                     if(alarm.getMsgCode().getCode() == 0 || alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setMissingId(alarm.getShelterId());
