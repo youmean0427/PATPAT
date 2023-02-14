@@ -363,7 +363,7 @@ public class VolunteerService {
                     responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
                     responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
                     VolunteerScheduleDto vr = new VolunteerScheduleDto(vs);
-                    vr.setResponseListDto(responseVolunteerDto);
+                    vr.setReservations(responseVolunteerDto);
                     return vr;
                 }).collect(Collectors.toList());
 //        PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit());
@@ -390,7 +390,7 @@ public class VolunteerService {
 
 
         volunteerNoticeDto = new VolunteerNoticeDto(volunteerNotice.get());
-        volunteerNoticeDto.setVolunteerScheduleDtos(volunteerScheduleDtos);
+        volunteerNoticeDto.setSchedules(volunteerScheduleDtos);
 
         return volunteerNoticeDto;
     }

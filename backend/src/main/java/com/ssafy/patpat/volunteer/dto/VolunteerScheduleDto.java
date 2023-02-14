@@ -38,7 +38,7 @@ public class VolunteerScheduleDto {
 
     private String reservationState;
 
-    private ResponseListDto responseListDto;
+    private ResponseListDto reservations;
 
     public VolunteerScheduleDto(VolunteerSchedule vs){
         this.scheduleId = vs.getScheduleId();
