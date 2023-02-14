@@ -161,7 +161,7 @@ public class VolunteerController {
                     .body(new ResponseMessage("SUCCESS"));
         }catch (VolunteerException e){
             ErrorDto error = new ErrorDto(e.getMessage(), "009");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+            return ResponseEntity.status(HttpStatus.OK).body(error);
         }
     }
 
@@ -174,7 +174,7 @@ public class VolunteerController {
                     .body(new ResponseMessage("SUCCESS"));
         }catch (VolunteerException e){
             ErrorDto error = new ErrorDto(e.getMessage(), "009");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+            return ResponseEntity.status(HttpStatus.OK).body(error);
         }
 
     }
