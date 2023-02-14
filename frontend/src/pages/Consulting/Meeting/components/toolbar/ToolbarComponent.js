@@ -22,6 +22,7 @@ import QuestionAnswer from '@mui/icons-material/QuestionAnswer';
 
 import IconButton from '@mui/material/IconButton';
 import store from 'redux/store';
+import swal from 'sweetalert2';
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -64,8 +65,7 @@ export default class ToolbarComponent extends Component {
   }
 
   leaveSession() {
-    alert('상담 룸에서 나가시겠습니까?');
-    this.props.leaveSession();
+    swal.fire('상담룸에서 나가시겠습니까?', '', 'info').then(() => this.props.leaveSession());
   }
   camStatusChanged() {
     this.props.camStatusChanged();
