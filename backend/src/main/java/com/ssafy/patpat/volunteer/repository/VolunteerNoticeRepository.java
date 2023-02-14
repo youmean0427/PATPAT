@@ -32,4 +32,5 @@ public interface VolunteerNoticeRepository extends JpaRepository<VolunteerNotice
      * 월별로 탐색
      * */
     List<VolunteerNotice> findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(Long shelterId, String volunteerDate);
+    VolunteerNotice findByNoticeId(Long noticeId);
 }

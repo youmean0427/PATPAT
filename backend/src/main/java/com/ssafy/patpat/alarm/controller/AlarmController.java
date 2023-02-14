@@ -90,7 +90,7 @@ public class AlarmController {
             AlarmDto alarmDto = new AlarmDto();
             alarmDto.setAlarmId(1L);
             alarmDto.setMissingId(2L);
-            sseEmitter.send(SseEmitter.event().name("connect").data(alarmDto));
+            sseEmitter.send(SseEmitter.event().name("connect").data(alarmDto,MediaType.APPLICATION_JSON));
         } catch (Exception e) {
             e.printStackTrace();
         }

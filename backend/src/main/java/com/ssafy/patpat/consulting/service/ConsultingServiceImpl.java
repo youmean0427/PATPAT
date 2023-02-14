@@ -1,5 +1,7 @@
 package com.ssafy.patpat.consulting.service;
 
+import com.ssafy.patpat.alarm.service.AlarmService;
+import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.TimeCode;
@@ -62,6 +64,8 @@ public class ConsultingServiceImpl implements ConsultingService{
 
     @Autowired
     FileService fileService;
+    @Autowired
+    NotificationService notificationService;
 
     @Override
     public ResponseListDto selectConsultingList(RequestConsultingDto requestConsultingDto) {
@@ -211,6 +215,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                     .consultingDate(consultingDto.getConsultingDate())
                     .build();
             consultingRepository.save(consulting);
+            notificationService.notifyAddConsultingEvent(consulting.getConsultingId());
             responseMessage.setMessage("SUCCESS");
         }catch (Exception e){
             e.printStackTrace();
@@ -240,6 +245,15 @@ public class ConsultingServiceImpl implements ConsultingService{
                 userRepository.save(user);
             }
             /** ------------------------**/
+            if(consultingDto.getStateCode().equals(ConsultingState.승인)){
+                notificationService.notifyAccessConsultingEvent(consultingId);
+            }
+            if(consultingDto.getStateCode().equals(ConsultingState.거절)){
+                notificationService.notifyDenyConsultingEvent(consultingId);
+            }
+            if(consultingDto.getStateCode().equals(ConsultingState.방생성)){
+                notificationService.notifyCreateRoomEvent(consultingId);
+            }
             consultingRepository.save(consulting);
             responseMessage.setMessage("SUCCESS");
 

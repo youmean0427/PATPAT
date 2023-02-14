@@ -1,5 +1,6 @@
 package com.ssafy.patpat.volunteer.service;
 
+import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.ConsultingState;
 import com.ssafy.patpat.common.code.Reservation;
 import com.ssafy.patpat.common.dto.ResponseListDto;
@@ -48,6 +49,7 @@ public class VolunteerService {
     private final UserRepository userRepository;
     private final ShelterRepository shelterRepository;
     private final FileService fileService;
+    private final NotificationService notificationService;
 
     /**
      * 봉사 공고 조회(전체)
@@ -290,9 +292,7 @@ public class VolunteerService {
                 .title(noticeDto.getTitle())
                 .build();
         volunteerNoticeRepository.save(volunteerNotice);
-
         return true;
-
     }
 
     @Transactional
@@ -576,7 +576,7 @@ public class VolunteerService {
                         .volunteerSchedule(volunteerSchedule.get())
                         .build();
         volunteerReservationRepository.save(volunteerReservation);
-
+        notificationService.notifyAddVolunteerEvent(volunteerReservation.getVolunteerSchedule().getVolunteerNotice().getNoticeId());
         return true;
     }
 
@@ -646,7 +646,7 @@ public class VolunteerService {
         if(reservationDto.getStateCode() == 1){
             vr.setReservationStateCode(Reservation.승인);
             volunteerReservationRepository.save(vr);
-
+            notificationService.notifyAccessVolunteerEvent(vr.getReservationId());
             // 전체 봉사 일정 체크 필요
             VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
             int totalCapacity = volunteerSchedule.getTotaclCapacity();
@@ -679,6 +679,7 @@ public class VolunteerService {
                 if(vrs.getReservationId() != vr.getReservationId()){
                     vrs.setReservationStateCode(Reservation.거절);
                     volunteerReservationRepository.save(vrs);
+                    notificationService.notifyDenyVolunteerEvent(vrs.getReservationId());
                 }
             }
         }
@@ -687,6 +688,7 @@ public class VolunteerService {
         if(reservationDto.getStateCode() == 2){
             vr.setReservationStateCode(Reservation.거절);
             volunteerReservationRepository.save(vr);
+            notificationService.notifyDenyVolunteerEvent(vr.getReservationId());
             // 전체 봉사 일정 체크 필요
             VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
             if(volunteerSchedule.getReservationStateCode() == Reservation.승인){
