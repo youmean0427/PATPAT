@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Toolbar({ onNavigate, date }) {
+function Toolbar({ onNavigate, date }) {
   const navigate = action => {
     onNavigate(action);
   };
@@ -19,3 +19,5 @@ export default function Toolbar({ onNavigate, date }) {
     </div>
   );
 }
+
+export default React.memo(Toolbar);

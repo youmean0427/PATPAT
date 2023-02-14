@@ -132,7 +132,7 @@ export default class ToolbarComponent extends Component {
                   <PowerSettingsNew />
                 </Link>
               ) : (
-                <Link to="/mypage">
+                <Link to="/mypage/consulting">
                   <PowerSettingsNew />
                 </Link>
               )}

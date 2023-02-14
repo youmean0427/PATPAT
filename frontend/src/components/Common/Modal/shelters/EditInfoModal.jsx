@@ -8,6 +8,7 @@ import styles from './EditInfoModal.module.scss';
 import { encodeFileToBase64 } from 'utils/image';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { BsFillCameraFill } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 
 const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   const {
@@ -23,6 +24,7 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   const { mutate, isLoading } = useMutation(['updateShelter'], formData => updateShelter(formData), {
     onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['getShelterDetailInfo', shelterId] });
+      toast('성공', { type: 'success' });
       handleClickModalClose();
     },
     onError: error => {
@@ -81,7 +83,7 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   };
 
   return (
-    <ModalFrame isOpen={isOpen} handleClickModalClose={handleClickModalClose}>
+    <ModalFrame isOpen={isOpen} handleClickModalClose={handleClickModalClose} width={700} height={600}>
       <div className={styles.title}>보호소 정보 수정</div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles['input-box']}>

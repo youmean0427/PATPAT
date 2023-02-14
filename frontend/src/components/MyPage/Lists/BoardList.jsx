@@ -19,9 +19,9 @@ export default function ConsultingList({ typeCode }) {
         typeCode === 0 ? (
           <NoData>등록된 입양후기 게시물이 없습니다.</NoData>
         ) : typeCode === 1 ? (
-          <NoData>등록된 무료나눔 게시물이 없습니다.</NoData>
-        ) : (
           <NoData>등록된 정보공유 게시물이 없습니다.</NoData>
+        ) : (
+          <NoData>등록된 무료나눔 게시물이 없습니다.</NoData>
         )
       ) : (
         <BoardItem typeCode={typeCode} count={data.totalCount} />

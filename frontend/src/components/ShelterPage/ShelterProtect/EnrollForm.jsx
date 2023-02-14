@@ -24,6 +24,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createProtect } from 'apis/api/protect';
 import { myShelterIdState } from 'recoil/atoms/user';
+import { toast } from 'react-toastify';
 export default function EnrollForm() {
   const { handleSubmit, control, register } = useForm({ mode: onchange });
   const [count, setCount] = useState(0);
@@ -37,8 +38,7 @@ export default function EnrollForm() {
   const myShelterId = useRecoilValue(myShelterIdState);
   const { mutate } = useMutation(['enrollShelterProtect'], formdata => createProtect(formdata), {
     onSuccess: data => {
-      console.log(data);
-      alert('등록되었습니다.');
+      toast('동물이 등록되었습니다.', { type: 'success' });
     },
   });
 
@@ -72,6 +72,8 @@ export default function EnrollForm() {
       uploadImages,
     } = nData;
     console.log(nData);
+    const categoryColors = [];
+    categoryColors.push(categoryColor);
     const formData = new FormData();
     formData.append('protectName', protectName);
     formData.append('breedId', breed.value);
@@ -79,11 +81,11 @@ export default function EnrollForm() {
     formData.append('kg', kg);
     formData.append('neuteredCode', neutered.value);
     formData.append('age', age);
-    formData.append('categoryEar', categoryEar.value);
-    formData.append('categoryTail', categoryTail.value);
-    formData.append('categoryPattern', categoryPattern.value);
-    formData.append('categoryColor', 1);
-    formData.append('categoryCloth', categoryCloth.value);
+    formData.append('categoryEarCode', categoryEar.value);
+    formData.append('categoryTailCode', categoryTail.value);
+    formData.append('categoryPatternCode', categoryPattern.value);
+    formData.append('categoryColor', categoryColors);
+    formData.append('categoryClothCode', categoryCloth.value);
     formData.append('shelterId', myShelterId);
     Array.from(uploadImages).forEach(item => {
       formData.append('uploadFile', item);

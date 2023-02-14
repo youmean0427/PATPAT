@@ -9,8 +9,10 @@ import { authInstance, defaultInstance } from 'apis/utils';
  * @param {int} offset
  * @returns
  */
-export const getVolNoticeList = async (keyword, limit, offset) => {
-  const { data } = await defaultInstance.get(`/volunteers/notices?keyword=${keyword}&limit=${limit}&offSet=${offset}`);
+export const getVolNoticeList = async (keyword, limit, offset, latitude, longitude) => {
+  const { data } = await defaultInstance.get(
+    `/volunteers/notices?keyword=${keyword}&limit=${limit}&offSet=${offset}&latitude=${latitude}&longitude=${longitude}`
+  );
   return data;
 };
 
@@ -64,6 +66,16 @@ export const getVolReservationOfUser = async (limit, offset, userId) => {
  */
 export const getVolReservationOfShelter = async shelterId => {
   const { data } = await authInstance.get(`/volunteers/reservations?shelterId=${shelterId}`);
+  return data;
+};
+
+/**
+ * GET : 봉사 신청내역 상세 조회
+ * @param {int} scheduleId
+ * @returns
+ */
+export const getVolReservationOfUserDetail = async scheduleId => {
+  const { data } = await authInstance.get(`/volunteers/schedules/${scheduleId}`);
   return data;
 };
 
