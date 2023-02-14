@@ -87,7 +87,10 @@ public class AlarmController {
         sseEmitter.onError((e) -> sseEmitters.remove(userId));
         sseEmitters.put(userId, sseEmitter);
         try {
-            sseEmitter.send(SseEmitter.event().name("connect").data("ok good you good"));
+            AlarmDto alarmDto = new AlarmDto();
+            alarmDto.setAlarmId(1L);
+            alarmDto.setMissingId(2L);
+            sseEmitter.send(SseEmitter.event().name("connect").data(alarmDto));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,7 +9,6 @@ import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.util.SecurityUtil;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
