@@ -84,6 +84,7 @@ public class ProtectServiceImpl implements ProtectService{
     @Autowired
     ColorService colorService;
     @Override
+    @Transactional
     public ResponseListDto selectProtectList(RequestProtectDto requestProtectDto) {
         try{
             ResponseListDto responseListDto = new ResponseListDto();
@@ -187,6 +188,7 @@ public class ProtectServiceImpl implements ProtectService{
         }
     }
     @Override
+    @Transactional
     public ResponseListDto selectProtectListByShelter(RequestProtectDto requestProtectDto) {
         try{
             ResponseListDto responseListDto = new ResponseListDto();
@@ -289,6 +291,7 @@ public class ProtectServiceImpl implements ProtectService{
 
     }
     @Override
+    @Transactional
     public ProtectDto detailProtect(Long protectId) {
         try{
             ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(protectId);
@@ -439,6 +442,7 @@ public class ProtectServiceImpl implements ProtectService{
         return responseMessage;
     }
     @Override
+    @Transactional
     public ResponseMessage insertBatchesProtect(ShelterDto shelterDto, MultipartFile uploadFile) throws IOException {
         ResponseMessage responseMessage = new ResponseMessage();
         HashMap<String, String[]> map = new HashMap<>();
