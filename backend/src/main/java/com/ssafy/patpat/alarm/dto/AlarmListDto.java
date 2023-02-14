@@ -11,8 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AlarmListDto {
-    private Long totalCount;
-    private Integer totalPage;
     private List<?> list;
     private Integer cntNoRead;
 }

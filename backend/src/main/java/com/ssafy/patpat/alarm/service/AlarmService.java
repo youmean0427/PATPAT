@@ -33,18 +33,19 @@ public class AlarmService {
     /** 알람 목록 보기 */
     @Transactional
     public AlarmListDto selectAlarmList(RequestAlarmDto requestAlarmDto){
-        PageRequest pageRequest = PageRequest.of(requestAlarmDto.getOffSet(), requestAlarmDto.getLimit(), Sort.by("registDate").descending());
+//        PageRequest pageRequest = PageRequest.of(requestAlarmDto.getOffSet(), requestAlarmDto.getLimit(), Sort.by("registDate").descending());
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
 
-        Page<Alarm> alarms =  alarmRepository.findByUserUserId(user.get().getUserId(), pageRequest);
+//        Page<Alarm> alarms =  alarmRepository.findByUserUserId(user.get().getUserId(), pageRequest);
+        List<Alarm> alarms = alarmRepository.findByUserUserId(user.get().getUserId());
         Integer noRead = alarmRepository.countByUserUserIdAndCheckRead(user.get().getUserId(), false);
-        List<AlarmDto> alarmDtoList =  alarms.toList().stream()
+        List<AlarmDto> alarmDtoList =  alarms.stream()
                 .map(AlarmDto::new).collect(Collectors.toList());
 
         AlarmListDto alarmListDto = new AlarmListDto();
         alarmListDto.setList(alarmDtoList);
-        alarmListDto.setTotalPage(alarms.getTotalPages());
-        alarmListDto.setTotalCount(alarms.getTotalElements());
+//        alarmListDto.setTotalPage(alarms.getTotalPages());
+//        alarmListDto.setTotalCount(alarms.getTotalElements());
         alarmListDto.setCntNoRead(noRead);
         return alarmListDto;
     }
@@ -64,6 +65,7 @@ public class AlarmService {
             alarm.setCheckRead(true);
         }
 
+        alarmRepository.save(alarm);
         AlarmDto alarmDto = new AlarmDto();
         if(alarm.getMsgCode().getCode() == 0) alarmDto.setMissingId(alarm.getMissingId());
         if(alarm.getMsgCode().getCode() == 8) alarmDto.setShelterId(alarm.getShelterId());
