@@ -1,4 +1,26 @@
 @import 'assets/styles/variable.scss';
 .container {
   font-size: 15px;
+
+  &-scheduleBnt {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+.scheduleBnt {
+  width: 50px;
+  border: 2px solid $main-color;
+  color: $white-color;
+  background-color: $main-color;
+  border-radius: 4px;
+  margin: 10px 5px 10px 0px;
+  & > button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.scheduleItem {
+  margin: 5px 0 5px 0;
 }

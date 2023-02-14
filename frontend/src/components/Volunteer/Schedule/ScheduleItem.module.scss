@@ -1,0 +1,23 @@
+.time {
+  & > span {
+    margin: 0 5px 0 0;
+  }
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  width: 50px;
+  font-size: 15px;
+}
+
+.peopleButton {
+  display: flex;
+}
+
+.button {
+  border: 1px solid gray;
+}

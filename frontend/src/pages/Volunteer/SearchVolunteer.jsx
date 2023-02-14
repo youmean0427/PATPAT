@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Map, MapMarker, Circle } from 'react-kakao-maps-sdk';
 import styles from './SearchVolunteer.module.scss';
 import SearchVolunteerMark from 'components/Volunteer/Search/SearchVolunteerMark';
-import DetailModal from 'components/Common/DetailModal';
+import DetailModal from './DetailModal';
 import Volunteer from './Volunteer';
 import VolunteerDetail from './VolunteerDetail';
 export default function SearchVolunteer() {
@@ -53,8 +53,9 @@ export default function SearchVolunteer() {
     }
   }, []);
 
+  // Console
   // console.log('data', data);
-  console.log(state);
+  // console.log(state);
 
   const markToPage = x => {
     setModalData(x);
