@@ -132,7 +132,7 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/schedules")
-    @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 scheduleId offset limit")
+    @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 noticeId offset limit")
     public ResponseEntity<Object> selectScheduleList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
         VolunteerScheduleDto volunteerScheduleDto = volunteerService.selectScheduleList(requestVolunteerDto);
@@ -145,7 +145,7 @@ public class VolunteerController {
     @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 scheduleId")
     public ResponseEntity<Object> detailSchedule(@PathVariable Long scheduleId){
         //서비스 호출 코드
-        VolunteerScheduleDto volunteerScheduleDto = volunteerService.detailSchedule(scheduleId);
+        ScheduleDto volunteerScheduleDto = volunteerService.detailSchedule(scheduleId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(volunteerScheduleDto);
@@ -161,7 +161,7 @@ public class VolunteerController {
 
     @PutMapping("/schedules")
     @ApiOperation(value = "봉사 일정 수정", notes = "봉사 일정 수정")
-    public ResponseEntity<Object> updateSchedule(@RequestBody VolunteerScheduleDto volunteerScheduleDto){
+    public ResponseEntity<Object> updateSchedule(@RequestBody ScheduleDto volunteerScheduleDto){
         volunteerService.updateSchedule(volunteerScheduleDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("SUCCESS"));

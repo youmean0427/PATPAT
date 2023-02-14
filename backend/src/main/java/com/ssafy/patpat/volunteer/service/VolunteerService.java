@@ -241,9 +241,10 @@ public class VolunteerService {
 
         LOGGER.info("date {}",noticeDto.getVolunteerDate());
         // notice 정보
+        LocalDate localDate = noticeDto.getVolunteerDate().plusHours(9L).toLocalDate();
         VolunteerNotice volunteerNotice = VolunteerNotice.builder()
                 .title(noticeDto.getTitle())
-                .volunteerDate(noticeDto.getVolunteerDate().toString())
+                .volunteerDate(localDate.toString())
                 .shelter(s.get())
                 .build();
         VolunteerNotice v = volunteerNoticeRepository.save(volunteerNotice);
@@ -373,24 +374,19 @@ public class VolunteerService {
         responseVolunteerDto.setList(list);
         responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
         responseVolunteerDto.setTotalPage(volunteerReservations.getTotalPages());
-        volunteerScheduleDto = VolunteerScheduleDto.builder()
-                .scheduleId(vs.getScheduleId())
-                .noticeId(vs.getVolunteerNotice().getNoticeId())
-                .startTime(vs.getStartTime())
-                .endTime(vs.getEndTime())
-                .totalCapacity(vs.getCapacity())
-                .capacity(capacity)
-                .guideLine(vs.getGuideLine())
-                .reservationState(vs.getReservationStateCode().name())
-                .reservationStateCode(vs.getReservationStateCode().getCode())
-                .responseListDto(responseVolunteerDto)
-                .build();
+        List<ScheduleDto> scheduleDtos = new ArrayList<>();
+        scheduleDtos = volunteerSchedules.stream()
+                .map(ScheduleDto::new).collect(Collectors.toList());
 
+        volunteerScheduleDto = VolunteerScheduleDto.builder()
+                .responseListDto(responseVolunteerDto)
+                .scheduleDtos(scheduleDtos)
+                .build();
         return volunteerScheduleDto;
     }
 
     @Transactional
-    public VolunteerScheduleDto detailSchedule(Long scheduleId){
+    public ScheduleDto detailSchedule(Long scheduleId){
 
         Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(scheduleId);
         if(!volunteerSchedule.isPresent()){
@@ -400,7 +396,7 @@ public class VolunteerService {
 
         VolunteerSchedule vs = volunteerSchedule.get();
 
-        VolunteerScheduleDto volunteerScheduleDto = VolunteerScheduleDto.builder()
+        ScheduleDto scheduleDto = ScheduleDto.builder()
                 .scheduleId(vs.getScheduleId())
                 .noticeId(vs.getVolunteerNotice().getNoticeId())
                 .startTime(vs.getStartTime())
@@ -411,7 +407,7 @@ public class VolunteerService {
                 .reservationState(vs.getReservationStateCode().name())
                 .reservationStateCode(vs.getReservationStateCode().getCode())
                 .build();
-        return volunteerScheduleDto;
+        return scheduleDto;
 
     }
 
@@ -426,14 +422,14 @@ public class VolunteerService {
         }
         List<VolunteerSchedule> volunteerSchedules = new ArrayList<>();
 
-        List<VolunteerScheduleDto> volunteerScheduleDtos = noticeDto.getList();
-        if(volunteerScheduleDtos.isEmpty()){
+        List<ScheduleDto> scheduleDtos = noticeDto.getList();
+        if(scheduleDtos.isEmpty()){
             LOGGER.info("등록된 정보가 없습니다.");
             return false;
         }
 
-        for (VolunteerScheduleDto vs:
-             volunteerScheduleDtos) {
+        for (ScheduleDto vs:
+                scheduleDtos) {
             volunteerSchedules.add(
                     VolunteerSchedule.builder()
                     .volunteerNotice(vn.get())
@@ -450,9 +446,9 @@ public class VolunteerService {
     }
 
     @Transactional
-    public boolean updateSchedule(VolunteerScheduleDto volunteerScheduleDto){
+    public boolean updateSchedule(ScheduleDto scheduleDto){
 
-        Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(volunteerScheduleDto.getScheduleId());
+        Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(scheduleDto.getScheduleId());
 
         if(!volunteerSchedule.isPresent()){
             // 아무 등록이 없을 때
@@ -460,11 +456,11 @@ public class VolunteerService {
             return false;
         }
         VolunteerSchedule vs = VolunteerSchedule.builder()
-                .scheduleId(volunteerScheduleDto.getScheduleId())
-                .capacity(volunteerScheduleDto.getTotalCapacity())
-                .startTime(volunteerScheduleDto.getStartTime())
-                .endTime(volunteerScheduleDto.getEndTime())
-                .guideLine(volunteerScheduleDto.getGuideLine())
+                .scheduleId(scheduleDto.getScheduleId())
+                .capacity(scheduleDto.getTotalCapacity())
+                .startTime(scheduleDto.getStartTime())
+                .endTime(scheduleDto.getEndTime())
+                .guideLine(scheduleDto.getGuideLine())
                 .build();
 
         volunteerScheduleRepository.save(vs);
@@ -645,21 +641,24 @@ public class VolunteerService {
             VolunteerSchedule volunteerSchedule = vr.getVolunteerSchedule();
             int totalCapacity = volunteerSchedule.getTotaclCapacity();
             int capacity = volunteerSchedule.getCapacity();
-            if(totalCapacity == capacity + vr.getCapacity()){
-                volunteerSchedule.setReservationStateCode(Reservation.승인);
-                volunteerScheduleRepository.save(volunteerSchedule);
+            if(totalCapacity >= capacity + vr.getCapacity()){
+                volunteerSchedule.setCapacity(capacity + vr.getCapacity());
+                if(totalCapacity == capacity + vr.getCapacity()){
+                    volunteerSchedule.setReservationStateCode(Reservation.승인);
+                    volunteerScheduleRepository.save(volunteerSchedule);
 
-                // 전체 공고 체크 필요
-                VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
-                boolean ok = true;
-                for (VolunteerSchedule vs:
-                        volunteerNotice.getVolunteerSchedules()) {
-                    if(vs.getReservationStateCode() != Reservation.승인){
-                        ok = false;
+                    // 전체 공고 체크 필요
+                    VolunteerNotice volunteerNotice = volunteerSchedule.getVolunteerNotice();
+                    boolean ok = true;
+                    for (VolunteerSchedule vs:
+                            volunteerNotice.getVolunteerSchedules()) {
+                        if(vs.getReservationStateCode() != Reservation.승인){
+                            ok = false;
+                        }
                     }
-                }
-                if(ok){
-                    volunteerNotice.setReservationStateCode(Reservation.승인);
+                    if(ok){
+                        volunteerNotice.setReservationStateCode(Reservation.승인);
+                    }
                 }
             }
 

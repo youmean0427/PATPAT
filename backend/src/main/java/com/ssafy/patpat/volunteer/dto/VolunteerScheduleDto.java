@@ -18,24 +18,7 @@ import java.util.List;
 @Builder
 public class VolunteerScheduleDto {
 
-    private Long scheduleId;
-
-    private Long noticeId;
-
-    private LocalDateTime startTime;
-
-    private LocalDateTime endTime;
-
-    private Integer totalCapacity;
-
-    private Integer capacity;
-
-    private String guideLine;
-
-    private Integer reservationStateCode;
-
-    private String reservationState;
-
+    private List<ScheduleDto> scheduleDtos;
     private ResponseListDto responseListDto;
 
 }
