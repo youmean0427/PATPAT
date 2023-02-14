@@ -829,8 +829,10 @@ public class VolunteerService {
             for (VolunteerReservation vrs:
                     volunteerReservations) {
                 if(vrs.getReservationId() != vr.getReservationId()){
-                    vrs.setReservationStateCode(Reservation.대기중);
-                    volunteerReservationRepository.save(vrs);
+                    if(vrs.getReservationStateCode() == Reservation.거절){
+                        vrs.setReservationStateCode(Reservation.대기중);
+                        volunteerReservationRepository.save(vrs);
+                    }
                 }
             }
 
