@@ -288,7 +288,7 @@ public class VolunteerController {
     public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto) {
         //서비스 호출 코드
         try{
-            ResponseMessage responseMessage =volunteerService.changeReservationState(reservationDto);
+            VolunteerMessage responseMessage =volunteerService.changeReservationState(reservationDto);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(responseMessage);
         }catch (VolunteerException e){

@@ -721,9 +721,9 @@ public class VolunteerService {
     }
 
     @Transactional
-    public ResponseMessage changeReservationState(ReservationDto reservationDto) throws VolunteerException {
+    public VolunteerMessage changeReservationState(ReservationDto reservationDto) throws VolunteerException {
 
-        ResponseMessage responseMessage = new ResponseMessage();
+        VolunteerMessage volunteerMessage = new VolunteerMessage();
 
         Optional<VolunteerReservation> volunteerReservation = volunteerReservationRepository.findById(reservationDto.getReservationId());
         if(!volunteerReservation.isPresent()){
@@ -794,7 +794,8 @@ public class VolunteerService {
                     }
                 }
 
-                responseMessage.setMessage("승인되었습니다.");
+                volunteerMessage.setMessage("SUCCESS");
+                volunteerMessage.setComment("승인되었습니다.");
                 volunteerScheduleRepository.save(volunteerSchedule);
             }
 
@@ -834,8 +835,8 @@ public class VolunteerService {
                     volunteerNoticeRepository.save(volunteerNotice);
                 }
             }
-
-            responseMessage.setMessage("거절되었습니다.");
+            volunteerMessage.setMessage("SUCCESS");
+            volunteerMessage.setComment("거절되었습니다.");
             volunteerScheduleRepository.save(volunteerSchedule);
         }
         if(reservationDto.getStateCode() == 4){
@@ -846,7 +847,8 @@ public class VolunteerService {
                 user.updateExp(user.getExp()+1);
                 userRepository.save(user);
             /** ------------------------**/
-            responseMessage.setMessage("완료되었습니다.");
+            volunteerMessage.setMessage("SUCCESS");
+            volunteerMessage.setComment("완료되었습니다.");
         }
         if(reservationDto.getStateCode() == 3){
             vr.setReservationStateCode(Reservation.불참);
@@ -856,11 +858,12 @@ public class VolunteerService {
             user.updateExp(user.getExp()-1);
             userRepository.save(user);
             /** ------------------------**/
-            responseMessage.setMessage("불참하였습니다.");
+            volunteerMessage.setMessage("SUCCESS");
+            volunteerMessage.setComment("불참하였습니다.");
         }
 
 
-        return responseMessage;
+        return volunteerMessage;
     }
 
     @Transactional
