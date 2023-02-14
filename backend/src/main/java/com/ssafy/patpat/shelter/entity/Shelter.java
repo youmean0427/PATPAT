@@ -79,6 +79,7 @@ public class Shelter {
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
     private List<User> users;
+
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
     private List<ShelterProtectedDog> shelterProtectedDogs;
 

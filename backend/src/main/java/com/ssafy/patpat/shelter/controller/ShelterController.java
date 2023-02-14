@@ -237,12 +237,5 @@ public class ShelterController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("SUCCESS"));
     }
-
-    @GetMapping("/dummy")
-    @ApiOperation(value = "보호소 인증", notes = "보호소 삭제")
-    public ResponseEntity<ResponseMessage> dummyShelter(){
-        service.dummyShelter();
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
-    }
+    
 }

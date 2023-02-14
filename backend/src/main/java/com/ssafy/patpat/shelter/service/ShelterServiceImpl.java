@@ -44,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ShelterServiceImpl implements ShelterService{
@@ -216,8 +217,10 @@ public class ShelterServiceImpl implements ShelterService{
             shelterList = shelterRepository.findByShelterIdIn(longList,pageRequest);
         }
         List<ShelterDto> shelterDtoList = new ArrayList<>();
-        System.out.println(shelterList);
-        for(Shelter s : shelterList){
+//        System.out.println(shelterList);
+        List<Shelter> shelters = shelterList.toList().stream()
+                .filter( s -> Optional.ofNullable(s.getOwner()).isPresent()).collect(Collectors.toList());
+        for(Shelter s : shelters){
             List<Image> shelterImage = s.getImages();
             List<FileDto> imageList = new ArrayList<>();
             for(Image i : shelterImage){
@@ -350,9 +353,6 @@ public class ShelterServiceImpl implements ShelterService{
                     owner.setUser(user.get());
                     shelter.setOwner(owner);
 
-                    List<User> users = new ArrayList<>();
-                    shelter.setUsers(users);
-
                     shelter = shelterRepository.save(shelter);
 
                     List<Time> timeList = new ArrayList<>();
@@ -381,47 +381,6 @@ public class ShelterServiceImpl implements ShelterService{
             dto.setAuthCode("FAIL");
         }
         return dto;
-    }
-
-    @Override
-    @Transactional
-    public boolean dummyShelter() {
-
-        for (long i = 316L; i < 324L; i++) {
-            Shelter shelter = shelterRepository.findByShelterId(i);
-            String auth = passwordEncoder.encode(shelter.getRegNumber());
-            shelter.setAuthCode(auth);
-            Optional<Owner> o = Optional.ofNullable(shelter.getOwner());
-            if (!o.isPresent()) { // owner가 없다면
-                Optional<User> user = userRepository.findById(i - 101);
-                user.get().setShelter(shelter);
-                Owner owner = new Owner();
-                owner.setName(user.get().getNickname());
-                owner.setUser(user.get());
-                shelter.setOwner(owner);
-
-                List<User> users = new ArrayList<>();
-                shelter.setUsers(users);
-
-                shelter = shelterRepository.save(shelter);
-
-                List<Time> timeList = new ArrayList<>();
-                for (TimeCode t : TimeCode.values()) {
-                    timeList.add(
-                            Time.builder()
-                                    .timeCode(t)
-                                    .active(true)
-                                    .shelter(shelter)
-                                    .build()
-                    );
-                }
-                timeRepository.saveAll(timeList);
-
-                userRepository.save(user.get());
-            }
-
-        }
-        return true;
     }
 
     @Override

@@ -33,5 +33,4 @@ public interface ShelterService {
 
     Boolean deleteShelter(Long shelterId);
 
-    boolean dummyShelter();
 }
