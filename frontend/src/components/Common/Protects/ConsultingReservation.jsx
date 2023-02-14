@@ -12,6 +12,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 import SelectTime from './SelectTime';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import swal from 'sweetalert2';
 
 export default function ConsultingReservation({ data }) {
   const [modal, setModal] = useState(false);
@@ -25,8 +26,7 @@ export default function ConsultingReservation({ data }) {
 
   const openModal = idx => {
     if (userId === undefined) {
-      toast('로그인이 필요한 서비스입니다.', { type: 'info' });
-      navigate('/login');
+      swal.fire('로그인이 필요한 서비스입니다.', '', 'warning').then(() => navigate('/login'));
     } else {
       setModal(true);
     }
