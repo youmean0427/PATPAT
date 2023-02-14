@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -398,7 +399,7 @@ public class VolunteerService {
     }
 
     @Transactional
-    public ScheduleDto detailSchedule(Long scheduleId){
+    public VolunteerScheduleDto detailSchedule(Long scheduleId){
 
         Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(scheduleId);
         if(!volunteerSchedule.isPresent()){
@@ -408,7 +409,7 @@ public class VolunteerService {
 
         VolunteerSchedule vs = volunteerSchedule.get();
 
-        ScheduleDto scheduleDto = ScheduleDto.builder()
+        VolunteerScheduleDto scheduleDto = VolunteerScheduleDto.builder()
                 .scheduleId(vs.getScheduleId())
                 .noticeId(vs.getVolunteerNotice().getNoticeId())
                 .startTime(vs.getStartTime())
@@ -433,16 +434,16 @@ public class VolunteerService {
             LOGGER.info("등록된 봉사 공고가 없습니다.");
             return false;
         }
-
-        LocalDateTime st = scheduleDto.getStartTime().plusHours(9L);
-        LocalDateTime et = scheduleDto.getEndTime().plusHours(9L);
+//.plusHours(9L)
+        LocalTime st = LocalTime.parse(scheduleDto.getStartTime());
+        LocalTime et = LocalTime.parse(scheduleDto.getEndTime());
 
         List<VolunteerSchedule> volunteerSchedules = vn.get().getVolunteerSchedules();
 
         for (VolunteerSchedule v:
                 volunteerSchedules) {
-            LocalDateTime startTime = v.getStartTime();
-            LocalDateTime endTime = v.getEndTime();
+            LocalTime startTime = LocalTime.parse(v.getStartTime());
+            LocalTime endTime = LocalTime.parse(v.getEndTime());
             int sh = startTime.getHour();
             int sm = startTime.getMinute();
             int eh = endTime.getHour();
@@ -474,9 +475,9 @@ public class VolunteerService {
 
         VolunteerSchedule vs = VolunteerSchedule.builder()
                 .volunteerNotice(vn.get())
-                .capacity(scheduleDto.getTotalCapacity())
-                .startTime(st)
-                .endTime(et)
+                .totaclCapacity(scheduleDto.getTotalCapacity())
+                .startTime(scheduleDto.getStartTime())
+                .endTime(scheduleDto.getEndTime())
                 .guideLine(scheduleDto.getGuideLine())
                 .build();
         volunteerScheduleRepository.save(vs);
@@ -502,8 +503,8 @@ public class VolunteerService {
 
         // 누적합
 
-        LocalDateTime st = scheduleDto.getStartTime().plusHours(9L);
-        LocalDateTime et = scheduleDto.getEndTime().plusHours(9L);
+        LocalTime st = LocalTime.parse(scheduleDto.getStartTime());
+        LocalTime et = LocalTime.parse(scheduleDto.getEndTime());
 
         int[] check = new int[1440];
 
@@ -522,8 +523,10 @@ public class VolunteerService {
             if(v.getScheduleId() == vs.getScheduleId()){
                 continue;
             }
-            LocalDateTime startTime = v.getStartTime();
-            LocalDateTime endTime = v.getEndTime();
+//            LocalDateTime startTime = v.getStartTime();
+//            LocalDateTime endTime = v.getEndTime();
+            LocalTime startTime = LocalTime.parse(v.getStartTime());
+            LocalTime endTime = LocalTime.parse(v.getEndTime());
             int sh = startTime.getHour();
             int sm = startTime.getMinute();
             int eh = endTime.getHour();
@@ -553,9 +556,9 @@ public class VolunteerService {
             }
         }
 
-        vs.setCapacity(scheduleDto.getTotalCapacity());
-        vs.setStartTime(st);
-        vs.setEndTime(et);
+        vs.setTotaclCapacity(scheduleDto.getTotalCapacity());
+        vs.setStartTime(scheduleDto.getStartTime());
+        vs.setEndTime(scheduleDto.getEndTime());
         vs.setGuideLine(scheduleDto.getGuideLine());
 
         volunteerScheduleRepository.save(vs);

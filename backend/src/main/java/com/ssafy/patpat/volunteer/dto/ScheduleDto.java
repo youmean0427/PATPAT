@@ -4,6 +4,7 @@ import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Setter
 @Getter
@@ -15,9 +16,9 @@ public class ScheduleDto {
 
     private Long noticeId;
 
-    private LocalDateTime startTime;
+    private String startTime;
 
-    private LocalDateTime endTime;
+    private String endTime;
 
     private Integer totalCapacity;
 

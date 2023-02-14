@@ -146,7 +146,7 @@ public class VolunteerController {
     @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 scheduleId")
     public ResponseEntity<Object> detailSchedule(@PathVariable Long scheduleId){
         //서비스 호출 코드
-        ScheduleDto volunteerScheduleDto = volunteerService.detailSchedule(scheduleId);
+        VolunteerScheduleDto volunteerScheduleDto = volunteerService.detailSchedule(scheduleId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(volunteerScheduleDto);

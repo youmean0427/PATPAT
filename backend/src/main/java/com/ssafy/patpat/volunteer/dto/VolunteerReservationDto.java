@@ -26,9 +26,9 @@ public class VolunteerReservationDto {
 
     private String volunteerDate;
 
-    private LocalDateTime startTime;
+    private String startTime;
 
-    private LocalDateTime endTime;
+    private String endTime;
 
     private String reservationState;
 
