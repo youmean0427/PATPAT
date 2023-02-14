@@ -1,5 +1,8 @@
 @import 'assets/styles/variable.scss';
-
+.mainContainer {
+  &:hover {
+  }
+}
 .container {
   border: 1px solid $border-color;
   border-radius: 5px;
@@ -18,7 +21,9 @@
 }
 
 .volunteerDate {
-  font-size: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
 }
 
 .state {
@@ -26,6 +31,7 @@
   background-color: orange;
   border-radius: 5px;
   padding: 5px;
+  color: white;
   &Code0 {
     font-size: 12px;
     background-color: orange;
