@@ -84,6 +84,20 @@ export const getVolReservationOfUserDetail = async scheduleId => {
   return data;
 };
 
+/**
+ * 봉사 공고 일정 신청서 상태 변경 (수락: 1 거절 : 2 불참 : 3 완료 : 4)
+ * @param {*} userId
+ * @param {*} reservationId
+ * @param {*} stateCode
+ * @returns
+ */
+export const changeReservationState = async (userId, reservationId, stateCode) => {
+  const res = await authInstance.get(
+    `/volunteers/reservations/state?userId=${userId}&reservationId=${reservationId}&stateCode=${stateCode}`
+  );
+  return res;
+};
+
 // POST
 
 /**
@@ -93,6 +107,18 @@ export const getVolReservationOfUserDetail = async scheduleId => {
  */
 export const createVolNotice = async data => {
   const res = await authInstance.post(`/volunteers/notices`, data, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  return res;
+};
+
+/**
+ * 봉사 공고의 일정 추가
+ * @param {json} data
+ * @returns
+ */
+export const createVolNoticeSchedule = async data => {
+  const res = await authInstance.post(`/volunteers/schedules`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -129,5 +155,21 @@ export const updateVolReservation = async (volunteerId, capacity, state) => {
   const res = await authInstance.put(
     `/volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}&state=${state}`
   );
+  return res;
+};
+
+// DELETE
+
+export const deleteVolNotice = async noticeId => {
+  const res = await authInstance.delete(`/volunteers/schedules?noticeId=${noticeId}`);
+  return res;
+};
+/**
+ *
+ * @param {int} scheduleId
+ * @returns 봉사 공고의 일정 삭제
+ */
+export const deleteVolSchedule = async scheduleId => {
+  const res = await authInstance.delete(`/volunteers/schedules?scheduleId=${scheduleId}`);
   return res;
 };
