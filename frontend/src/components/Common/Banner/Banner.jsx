@@ -6,16 +6,9 @@ export default function Banner({ title }) {
     <div>
       <div className={styles.banner}>
         <div className={styles.container}>
-          <div className={styles.item_1}>
-            <div></div>
-          </div>
-          <div className={styles.item_1}>
-            <div className={styles.title}>{title}</div>
-          </div>
-          <div className={styles.item_2}>
-            <div className={styles['pat-container']}>
-              <img className={styles.pat} src={pat} alt="pat" />
-            </div>
+          <div className={styles.title}>{title}</div>
+          <div className={styles.img}>
+            <img src={pat} alt="" />
           </div>
         </div>
       </div>
