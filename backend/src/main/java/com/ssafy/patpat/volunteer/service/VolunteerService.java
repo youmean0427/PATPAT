@@ -781,10 +781,12 @@ public class VolunteerService {
                     // 같은 예약Id에 대한 같은 유저의 요청 거절 처리
                     for (VolunteerReservation vrs:
                             volunteerReservations) {
-                        if(vrs.getUser().getUserId() == vr.getUser().getUserId()){
-                            vrs.setReservationStateCode(Reservation.거절);
-                            volunteerReservationRepository.save(vrs);
-                            notificationService.notifyDenyVolunteerEvent(vrs.getReservationId());
+                        if(vrs.getReservationId() != vr.getReservationId()){
+                            if(vrs.getUser().getUserId() == vr.getUser().getUserId()){
+                                vrs.setReservationStateCode(Reservation.거절);
+                                volunteerReservationRepository.save(vrs);
+                                notificationService.notifyDenyVolunteerEvent(vrs.getReservationId());
+                            }
                         }
                     }
                 }
