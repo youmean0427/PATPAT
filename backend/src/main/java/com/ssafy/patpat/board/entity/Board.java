@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @DynamicUpdate
 @DynamicInsert
 public class Board {

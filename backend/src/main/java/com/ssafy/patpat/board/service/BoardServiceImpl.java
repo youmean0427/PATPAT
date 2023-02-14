@@ -63,6 +63,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseListDto selectUserBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(), Sort.by("boardId").descending());
         /**
@@ -101,6 +102,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseListDto selectBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(),Sort.by("boardId").descending());
         Page<Board> entityList = boardRepository.findByBoardCode(BoardCode.of(requestBoardDto.getTypeCode()),pageRequest);
@@ -155,6 +157,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public BoardDto detailBoard(Long boardId) {
         Board board = boardRepository.findByBoardId(boardId);
         List<Comment> commentList = commentRepository.findByBoardBoardId(boardId);
@@ -440,6 +443,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage insertComment(CommentDto commentDto) {
         ResponseMessage responseMessage = new ResponseMessage();
 //        UserDto userDto = userService.getUserWithAuthorities();
@@ -535,6 +539,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage updateReply(Long replyId, ReplyDto replyDto) {
         ResponseMessage responseMessage = new ResponseMessage();
 
