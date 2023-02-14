@@ -17,7 +17,7 @@ public class ReservationUserDto {
     private Long userId;
     private String userName;
     private String userProfile;
-
+    private Integer userExp;
     private Integer capacity;
 
     public ReservationUserDto(VolunteerReservation vr){
@@ -25,6 +25,7 @@ public class ReservationUserDto {
         this.userId = vr.getUser().getUserId();
         this.userName = vr.getUser().getNickname();
         this.capacity = vr.getCapacity();
+        this.userExp = vr.getUser().getExp();
     }
 
 }

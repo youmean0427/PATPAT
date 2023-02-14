@@ -83,6 +83,7 @@ public class ReportServiceImpl implements ReportService{
     @Value("${app.fileupload.uploadDir}")
     String uploadFolder;
     @Override
+    @Transactional
     public ResponseListDto selectMissingList(RequestReportDto requestReportDto) {
         try{
             ResponseListDto responseListDto = new ResponseListDto();
@@ -153,6 +154,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ResponseListDto selectMissingListByUser(RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
@@ -214,6 +216,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ResponseListDto selectPersonalProtectionList(RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         Gender gender = Gender.of(requestReportDto.getGender());
@@ -278,6 +281,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ReportDto detailMissing(Long missingId) {
         MissingDog missingDog = missingDogRepository.findByMissingId(missingId);
         List<Image> missingDogImageList = missingDog.getImages();
@@ -339,6 +343,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ReportDto detailPersonalProtection(Long personalProtectId) {
         PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(personalProtectId);
         List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
@@ -403,6 +408,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ResponseMessage updateReport(ReportDto reportDto, List<MultipartFile> uploadFile) throws Exception {
         ResponseMessage responseMessage = new ResponseMessage();
         try{
@@ -853,6 +859,7 @@ public class ReportServiceImpl implements ReportService{
         return responseListDto;
     }
 
+    @Transactional
     public boolean isResemble(MissingDog missingDog, ShelterProtectedDog s) {
         int count = 0;
         int total = 7;

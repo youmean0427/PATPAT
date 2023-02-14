@@ -153,19 +153,30 @@ public class VolunteerController {
     }
 
     @PostMapping("/schedules")
-    @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가")
+    @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가/ noticeId, startTime, endTime, totalCapacity, guideLine")
     public ResponseEntity<Object> insertSchedule(@RequestBody ScheduleDto scheduleDto){
-        volunteerService.insertSchedule(scheduleDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try {
+            volunteerService.insertSchedule(scheduleDto);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto error = new ErrorDto(e.getMessage(), "009");
+            return ResponseEntity.status(HttpStatus.OK).body(error);
+        }
     }
 
     @PutMapping("/schedules")
-    @ApiOperation(value = "봉사 일정 수정", notes = "봉사 일정 수정")
+    @ApiOperation(value = "봉사 일정 수정", notes = "봉사 일정 수정 / scheduleId, startTime, endTime, totalCapacity, guideLine")
     public ResponseEntity<Object> updateSchedule(@RequestBody ScheduleDto volunteerScheduleDto){
-        volunteerService.updateSchedule(volunteerScheduleDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try {
+            volunteerService.updateSchedule(volunteerScheduleDto);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto error = new ErrorDto(e.getMessage(), "009");
+            return ResponseEntity.status(HttpStatus.OK).body(error);
+        }
+
     }
 
     @DeleteMapping("/schedules")
@@ -198,6 +209,21 @@ public class VolunteerController {
                 .body(responseVolunteerDto);
 
     }
+
+    /**
+     * 봉사 지원서 가능 여부 조회
+     * @return
+     */
+    @GetMapping("/reservations/check/{noticeId}")
+    @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회 pathValue : scheduleId")
+    public ResponseEntity<Object> checkReservationPossible(@PathVariable Long noticeId){
+        //서비스 호출 코드
+//      responseVolunteerDto = volunteerService.checkReservationPossible(requestVolunteerDto);
+        List<CheckVolunteerDto> checkVolunteerDtos = volunteerService.checkReservationPossible(noticeId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(checkVolunteerDtos);
+    }
+
     /**
      * 봉사 지원서 조회(보호소) 이건 위에 스케쥴과 함께
      * @return

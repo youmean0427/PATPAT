@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -422,20 +423,59 @@ public class VolunteerService {
     }
 
     @Transactional
-    public boolean insertSchedule(ScheduleDto scheduleDto){
+    public boolean insertSchedule(ScheduleDto scheduleDto) throws VolunteerException {
+
+        int[] check = new int[1440];
 
         Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(scheduleDto.getNoticeId());
-
         if(!vn.isPresent()){
-            LOGGER.info("잘못된 봉사 공고 id 입니다.");
+            LOGGER.info("등록된 봉사 공고가 없습니다.");
             return false;
+        }
+
+        LocalDateTime st = scheduleDto.getStartTime().plusHours(9L);
+        LocalDateTime et = scheduleDto.getEndTime().plusHours(9L);
+
+        List<VolunteerSchedule> volunteerSchedules = vn.get().getVolunteerSchedules();
+
+        for (VolunteerSchedule v:
+                volunteerSchedules) {
+            LocalDateTime startTime = v.getStartTime();
+            LocalDateTime endTime = v.getEndTime();
+            int sh = startTime.getHour();
+            int sm = startTime.getMinute();
+            int eh = endTime.getHour();
+            int em = endTime.getMinute();
+            int sidx = sh * 60 + sm;
+            int eidx = eh * 60 + em;
+            for (int i = sidx; i < eidx ; i++) {
+                if(check[i] == 0) check[i] = 1;
+                else {
+                    throw new VolunteerException("예약에 문제가 있습니다.");
+                }
+            }
+        }
+
+        int ush = st.getHour();
+        int usm = st.getMinute();
+        int ueh = et.getHour();
+        int uem = et.getMinute();
+        int usidx = ush * 60 + usm;
+        int ueidx = ueh * 60 + uem;
+
+        for (int i = usidx; i < ueidx ; i++) {
+            if(check[i] == 0) check[i] = 1;
+            else{
+                // error
+                throw new VolunteerException("현재 시간은 이미 예약이 있습니다.");
+            }
         }
 
         VolunteerSchedule vs = VolunteerSchedule.builder()
                 .volunteerNotice(vn.get())
                 .capacity(scheduleDto.getTotalCapacity())
-                .startTime(scheduleDto.getStartTime())
-                .endTime(scheduleDto.getEndTime())
+                .startTime(st)
+                .endTime(et)
                 .guideLine(scheduleDto.getGuideLine())
                 .build();
         volunteerScheduleRepository.save(vs);
@@ -444,7 +484,7 @@ public class VolunteerService {
     }
 
     @Transactional
-    public boolean updateSchedule(ScheduleDto scheduleDto){
+    public boolean updateSchedule(ScheduleDto scheduleDto) throws VolunteerException {
 
         Optional<VolunteerSchedule> volunteerSchedule = volunteerScheduleRepository.findById(scheduleDto.getScheduleId());
 
@@ -453,10 +493,68 @@ public class VolunteerService {
             LOGGER.info("등록된 봉사 일정이 없습니다.");
             return false;
         }
+        // 1. 그 누구보다 빠르거나 = 모든 시작 시간보다 나의 end 시간이 앞이면된다.
+
+        // 2. 그 누구보다 느리거나 = 모든 종료 시간보다 나의 시작시간이 뒤면 된다.
+
+        // 그 특정 구간 사이에 있거나 = 특정 시작 시간보다 나의 종료 시간이 앞이면서 특정 종료 시간보다 나의 시작 시간이 뒤면 된다.
+
+        // 누적합
+
+        LocalDateTime st = scheduleDto.getStartTime().plusHours(9L);
+        LocalDateTime et = scheduleDto.getEndTime().plusHours(9L);
+
+        int[] check = new int[1440];
+
         VolunteerSchedule vs = volunteerSchedule.get();
+
+        Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(vs.getVolunteerNotice().getNoticeId());
+        if(!vn.isPresent()){
+            LOGGER.info("등록된 봉사 공고가 없습니다.");
+            return false;
+        }
+
+        List<VolunteerSchedule> volunteerSchedules = vn.get().getVolunteerSchedules();
+
+        for (VolunteerSchedule v:
+             volunteerSchedules) {
+            if(v.getScheduleId() == vs.getScheduleId()){
+                continue;
+            }
+            LocalDateTime startTime = v.getStartTime();
+            LocalDateTime endTime = v.getEndTime();
+            int sh = startTime.getHour();
+            int sm = startTime.getMinute();
+            int eh = endTime.getHour();
+            int em = endTime.getMinute();
+            int sidx = sh * 60 + sm;
+            int eidx = eh * 60 + em;
+            for (int i = sidx; i < eidx ; i++) {
+                if(check[i] == 0) check[i] = 1;
+                else {
+                    throw new VolunteerException("예약에 문제가 있습니다.");
+                }
+            }
+        }
+
+        int ush = st.getHour();
+        int usm = st.getMinute();
+        int ueh = et.getHour();
+        int uem = et.getMinute();
+        int usidx = ush * 60 + usm;
+        int ueidx = ueh * 60 + uem;
+
+        for (int i = usidx; i < ueidx ; i++) {
+            if(check[i] == 0) check[i] = 1;
+            else{
+                // error
+                throw new VolunteerException("현재 시간은 이미 예약이 있습니다.");
+            }
+        }
+
         vs.setCapacity(scheduleDto.getTotalCapacity());
-        vs.setStartTime(scheduleDto.getStartTime());
-        vs.setEndTime(scheduleDto.getEndTime());
+        vs.setStartTime(st);
+        vs.setEndTime(et);
         vs.setGuideLine(scheduleDto.getGuideLine());
 
         volunteerScheduleRepository.save(vs);
@@ -533,6 +631,35 @@ public class VolunteerService {
         responseVolunteerDto.setTotalCount(volunteerReservations.getTotalElements());
 
         return responseVolunteerDto;
+    }
+
+    @Transactional
+    public List<CheckVolunteerDto> checkReservationPossible(Long noticeId){
+        List<CheckVolunteerDto> checkVolunteerDtos = new ArrayList<>();
+
+        Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+        if(!user.isPresent()){
+            return checkVolunteerDtos;
+        }
+        Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(noticeId);
+        if(!vn.isPresent()){
+            return checkVolunteerDtos;
+        }
+        List<VolunteerSchedule> volunteerSchedules = vn.get().getVolunteerSchedules();
+        checkVolunteerDtos = volunteerSchedules.stream()
+                .map(vs -> {
+                    CheckVolunteerDto checkVolunteerDto = new CheckVolunteerDto();
+                    checkVolunteerDto.setScheduleId(vs.getScheduleId());
+                    List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findByUserAndVolunteerSchedule(user.get(), vs);
+                    if(volunteerReservations.isEmpty()){
+                        checkVolunteerDto.setIsOk(true);
+                    }else{
+                        checkVolunteerDto.setIsOk(false);
+                    }
+                    return checkVolunteerDto;
+                }).collect(Collectors.toList());
+
+        return checkVolunteerDtos;
     }
 
     /** 예약 등록 */
