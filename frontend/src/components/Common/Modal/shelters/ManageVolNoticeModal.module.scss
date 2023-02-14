@@ -1,0 +1,64 @@
+@import 'assets/styles/variable.scss';
+
+.title {
+  text-align: center;
+  font-size: 2.8rem;
+  font-family: 700;
+}
+.notice {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  font-size: 2rem;
+  border-bottom: 2px solid black;
+  padding: 2rem 0;
+  & > span:nth-child(3) {
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+  & > span:nth-child(4) {
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+  & > span:nth-child(2n) {
+    grid-column-start: 2;
+    grid-column-end: 5;
+  }
+}
+
+.btn-wrap {
+  margin: 0.5rem 0 2rem 0;
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 0.4rem;
+  background-color: $main-color;
+  font-size: 1.6rem;
+  color: $white-color;
+}
+.schedule {
+  display: grid;
+  font-size: 1.2rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2rem;
+  & > .start {
+    &Time {
+      grid-column-start: 2;
+      grid-column-end: 3;
+    }
+  }
+  & > .end {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    &Time {
+      grid-row-start: 2;
+      grid-row-end: 3;
+      grid-column-start: 2;
+      grid-column-end: 3;
+    }
+  }
+}

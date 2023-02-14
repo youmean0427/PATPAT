@@ -16,8 +16,13 @@ export const getVolNoticeList = async (keyword, limit, offset, latitude, longitu
   return data;
 };
 
+export const getVolNoticeInfoPerDay = async (noticeId, limit, offSet) => {
+  const { data } = await authInstance.get(`/volunteers/schedules?noticeId=${noticeId}&limit=${limit}&offSet=${offSet}`);
+  return data;
+};
+
 /**
- * GET : 봉사활동 신청 공고 상세 정보 데이터
+ * GET : 개인 봉사활동 신청 공고 상세 정보 데이터
  * @param {int} noticeId
  * @returns
  */
@@ -105,14 +110,9 @@ export const applyVolReservation = async (volunteerId, capacity) => {
 };
 
 // PUT
-/**
- * PUT : 보호소 봉사활동 공고 정보 수정
- * @param {int} volunteerId
- * @param {json} data
- * @returns
- */
-export const updateVolNotice = async (volunteerId, data) => {
-  const res = await authInstance.put(`/volunteers/notices/${volunteerId}`, data, {
+
+export const updateVolNoticeSchedule = async data => {
+  const res = await authInstance.put(`/volunteers/schedules`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;

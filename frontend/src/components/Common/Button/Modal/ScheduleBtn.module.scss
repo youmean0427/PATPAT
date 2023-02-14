@@ -1,0 +1,13 @@
+@import 'assets/styles/variable.scss';
+
+.btn {
+  font-size: 1.6rem;
+  background-color: $main-color;
+  &.active {
+    background-color: $main-accent-color;
+  }
+  & > .editIcon {
+    font-size: 1.6rem;
+    color: $white-color;
+  }
+}
