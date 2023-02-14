@@ -433,6 +433,9 @@ public class VolunteerService {
             return false;
         }
 
+        LocalDateTime st = scheduleDto.getStartTime().plusHours(9L);
+        LocalDateTime et = scheduleDto.getEndTime().plusHours(9L);
+
         List<VolunteerSchedule> volunteerSchedules = vn.get().getVolunteerSchedules();
 
         for (VolunteerSchedule v:
@@ -453,10 +456,10 @@ public class VolunteerService {
             }
         }
 
-        int ush = scheduleDto.getStartTime().getHour();
-        int usm = scheduleDto.getStartTime().getMinute();
-        int ueh = scheduleDto.getEndTime().getHour();
-        int uem = scheduleDto.getEndTime().getMinute();
+        int ush = st.getHour();
+        int usm = st.getMinute();
+        int ueh = et.getHour();
+        int uem = et.getMinute();
         int usidx = ush * 60 + usm;
         int ueidx = ueh * 60 + uem;
 
@@ -471,8 +474,8 @@ public class VolunteerService {
         VolunteerSchedule vs = VolunteerSchedule.builder()
                 .volunteerNotice(vn.get())
                 .capacity(scheduleDto.getTotalCapacity())
-                .startTime(scheduleDto.getStartTime())
-                .endTime(scheduleDto.getEndTime())
+                .startTime(st)
+                .endTime(et)
                 .guideLine(scheduleDto.getGuideLine())
                 .build();
         volunteerScheduleRepository.save(vs);
@@ -497,6 +500,9 @@ public class VolunteerService {
         // 그 특정 구간 사이에 있거나 = 특정 시작 시간보다 나의 종료 시간이 앞이면서 특정 종료 시간보다 나의 시작 시간이 뒤면 된다.
 
         // 누적합
+
+        LocalDateTime st = scheduleDto.getStartTime().plusHours(9L);
+        LocalDateTime et = scheduleDto.getEndTime().plusHours(9L);
 
         int[] check = new int[1440];
 
@@ -531,10 +537,10 @@ public class VolunteerService {
             }
         }
 
-        int ush = scheduleDto.getStartTime().getHour();
-        int usm = scheduleDto.getStartTime().getMinute();
-        int ueh = scheduleDto.getEndTime().getHour();
-        int uem = scheduleDto.getEndTime().getMinute();
+        int ush = st.getHour();
+        int usm = st.getMinute();
+        int ueh = et.getHour();
+        int uem = et.getMinute();
         int usidx = ush * 60 + usm;
         int ueidx = ueh * 60 + uem;
 
@@ -547,8 +553,8 @@ public class VolunteerService {
         }
 
         vs.setCapacity(scheduleDto.getTotalCapacity());
-        vs.setStartTime(scheduleDto.getStartTime());
-        vs.setEndTime(scheduleDto.getEndTime());
+        vs.setStartTime(st);
+        vs.setEndTime(et);
         vs.setGuideLine(scheduleDto.getGuideLine());
 
         volunteerScheduleRepository.save(vs);
@@ -628,22 +634,32 @@ public class VolunteerService {
     }
 
     @Transactional
-    public boolean checkReservationPossible(Long scheduleId){
+    public List<CheckVolunteerDto> checkReservationPossible(Long noticeId){
+        List<CheckVolunteerDto> checkVolunteerDtos = new ArrayList<>();
+
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         if(!user.isPresent()){
-            return false;
+            return checkVolunteerDtos;
         }
-        Optional<VolunteerSchedule> vs = volunteerScheduleRepository.findById(scheduleId);
-        if(!vs.isPresent()){
-            return false;
+        Optional<VolunteerNotice> vn = volunteerNoticeRepository.findById(noticeId);
+        if(!vn.isPresent()){
+            return checkVolunteerDtos;
         }
-        List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findByUserAndVolunteerSchedule(user.get(), vs.get());
-        if(volunteerReservations.isEmpty()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        List<VolunteerSchedule> volunteerSchedules = vn.get().getVolunteerSchedules();
+        checkVolunteerDtos = volunteerSchedules.stream()
+                .map(vs -> {
+                    CheckVolunteerDto checkVolunteerDto = new CheckVolunteerDto();
+                    checkVolunteerDto.setScheduleId(vs.getScheduleId());
+                    List<VolunteerReservation> volunteerReservations = volunteerReservationRepository.findByUserAndVolunteerSchedule(user.get(), vs);
+                    if(volunteerReservations.isEmpty()){
+                        checkVolunteerDto.setIsOk(true);
+                    }else{
+                        checkVolunteerDto.setIsOk(false);
+                    }
+                    return checkVolunteerDto;
+                }).collect(Collectors.toList());
+
+        return checkVolunteerDtos;
     }
 
     /** 예약 등록 */

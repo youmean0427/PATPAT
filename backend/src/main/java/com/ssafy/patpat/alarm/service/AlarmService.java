@@ -44,8 +44,8 @@ public class AlarmService {
                 .sorted(Comparator.comparing(Alarm::getRegistDate).reversed())
                 .map(alarm -> {
                     AlarmDto alarmDto = new AlarmDto(alarm);
-                    if(alarm.getMsgCode().getCode() == 0 || alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setShelterId(alarm.getShelterId());
-                    if(alarm.getMsgCode().getCode() == 3) alarmDto.setMissingId(alarm.getMissingId());
+                    if(alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setShelterId(alarm.getShelterId());
+                    if(alarm.getMsgCode().getCode() == 0) alarmDto.setMissingId(alarm.getMissingId());
                     return alarmDto;
                 }).collect(Collectors.toList());
 
@@ -75,8 +75,8 @@ public class AlarmService {
 
         alarmRepository.save(alarm);
         AlarmDto alarmDto = new AlarmDto();
-        if(alarm.getMsgCode().getCode() == 0 || alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setShelterId(alarm.getShelterId());
-        if(alarm.getMsgCode().getCode() == 3) alarmDto.setMissingId(alarm.getMissingId());
+        if(alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setShelterId(alarm.getShelterId());
+        if(alarm.getMsgCode().getCode() == 0) alarmDto.setMissingId(alarm.getMissingId());
 
         return alarmDto;
     }
