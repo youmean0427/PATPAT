@@ -339,7 +339,7 @@ public class VolunteerService {
             LOGGER.info("봉사 공고가 비었습니다.");
             return volunteerNoticeDto;
         }
-
+        volunteerNoticeDto = new VolunteerNoticeDto(volunteerNotice.get());
         List<VolunteerSchedule> volunteerSchedules = volunteerNotice.get().getVolunteerSchedules();
         if(volunteerSchedules.isEmpty()){
             LOGGER.info("봉사 일정이 비었습니다.");
@@ -389,7 +389,7 @@ public class VolunteerService {
 //        }
 
 
-        volunteerNoticeDto = new VolunteerNoticeDto(volunteerNotice.get());
+
         volunteerNoticeDto.setSchedules(volunteerScheduleDtos);
 
         return volunteerNoticeDto;
