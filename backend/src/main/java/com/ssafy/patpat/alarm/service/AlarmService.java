@@ -67,8 +67,8 @@ public class AlarmService {
 
         alarmRepository.save(alarm);
         AlarmDto alarmDto = new AlarmDto();
-        if(alarm.getMsgCode().getCode() == 0) alarmDto.setMissingId(alarm.getMissingId());
-        if(alarm.getMsgCode().getCode() == 8) alarmDto.setShelterId(alarm.getShelterId());
+        if(alarm.getMsgCode().getCode() == 0 || alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setMissingId(alarm.getShelterId());
+        if(alarm.getMsgCode().getCode() == 3) alarmDto.setShelterId(alarm.getMissingId());
 
         return alarmDto;
     }

@@ -153,19 +153,30 @@ public class VolunteerController {
     }
 
     @PostMapping("/schedules")
-    @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가")
+    @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가/ noticeId, startTime, endTime, totalCapacity, guideLine")
     public ResponseEntity<Object> insertSchedule(@RequestBody ScheduleDto scheduleDto){
-        volunteerService.insertSchedule(scheduleDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try {
+            volunteerService.insertSchedule(scheduleDto);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto error = new ErrorDto(e.getMessage(), "009");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
     }
 
     @PutMapping("/schedules")
-    @ApiOperation(value = "봉사 일정 수정", notes = "봉사 일정 수정")
+    @ApiOperation(value = "봉사 일정 수정", notes = "봉사 일정 수정 / scheduleId, startTime, endTime, totalCapacity, guideLine")
     public ResponseEntity<Object> updateSchedule(@RequestBody ScheduleDto volunteerScheduleDto){
-        volunteerService.updateSchedule(volunteerScheduleDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try {
+            volunteerService.updateSchedule(volunteerScheduleDto);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto error = new ErrorDto(e.getMessage(), "009");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+
     }
 
     @DeleteMapping("/schedules")
