@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import styles from './Alarm.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 export default function Alarm() {
   let subscribeUrl = process.env.REACT_APP_API_URL + '/alarm/sub';
@@ -131,21 +132,15 @@ export default function Alarm() {
 
   return (
     <div className={styles.notify} onClick={() => setShow(cur => !cur)}>
-      {isCheck ? (
-        <Badge badgeContent={data.cntNoRead} color="warning">
-          <CircleNotificationsIcon
-            onClick={() => {
-              setIscheck(false);
-              setStart(false);
-            }}
-            sx={{ fontSize: '25px', color: '#dc0000' }}
-          />
-        </Badge>
-      ) : (
-        <Badge badgeContent={data.cntNoRead} color="warning">
-          <CircleNotificationsIcon sx={{ fontSize: '25px', color: '#ffd80b' }} />
-        </Badge>
-      )}
+      <Badge badgeContent={data.cntNoRead} color="warning">
+        <CircleNotificationsIcon
+          onClick={() => {
+            setIscheck(false);
+            setStart(false);
+          }}
+          sx={{ fontSize: '25px', color: '#ffd80b' }}
+        />
+      </Badge>
 
       {show ? (
         <div className={styles.messages}>
@@ -154,7 +149,7 @@ export default function Alarm() {
             onClick={async () => {
               await deleteAllAlarm();
               setClick(cur => !cur);
-              alert('삭제되었습니다.');
+              toast('삭제되었습니다.', { type: 'success' });
             }}
           >
             전체 삭제
@@ -178,7 +173,7 @@ export default function Alarm() {
                 onClick={async () => {
                   await deleteAlarm(item.alarmId);
                   setClick(cur => !cur);
-                  alert('삭제되었습니다.');
+                  toast('삭제되었습니다.', { type: 'success' });
                 }}
               >
                 <CloseIcon />

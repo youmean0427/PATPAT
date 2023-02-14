@@ -7,6 +7,7 @@ import PatternDetail from 'components/Report/Create/PatternDetail';
 import TailDetail from 'components/Report/Create/TailDetail';
 import PetsIcon from '@mui/icons-material/Pets';
 import { insertFavProtect, deleteFavProtect } from 'apis/api/user';
+import { toast } from 'react-toastify';
 
 export default function DetailContent({ data }) {
   const [modal, setModal] = useState(false);
@@ -24,7 +25,15 @@ export default function DetailContent({ data }) {
   };
 
   const handleFavBtn = () => {
-    favorite ? deleteFavProtect(data.protectId) : insertFavProtect(data.protectId);
+    if (favorite) {
+      deleteFavProtect(data.protectId);
+
+      toast('꾹 해제 완료!', { type: 'success' });
+    } else {
+      insertFavProtect(data.protectId);
+      toast('꾹 등록 완료!', { type: 'success' });
+    }
+
     setFavorite(cur => !cur);
   };
 
