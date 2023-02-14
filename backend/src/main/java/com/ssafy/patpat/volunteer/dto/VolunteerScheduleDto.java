@@ -43,8 +43,8 @@ public class VolunteerScheduleDto {
     public VolunteerScheduleDto(VolunteerSchedule vs){
         this.scheduleId = vs.getScheduleId();
         this.noticeId = vs.getVolunteerNotice().getNoticeId();
-        this.startTime = vs.getStartTime();
-        this.endTime = vs.getEndTime();
+        this.startTime = vs.getStartTime().minusHours(9L);
+        this.endTime = vs.getEndTime().minusHours(9L);
         this.totalCapacity = vs.getTotaclCapacity();
         this.capacity = vs.getCapacity();
         this.guideLine = vs.getGuideLine();
