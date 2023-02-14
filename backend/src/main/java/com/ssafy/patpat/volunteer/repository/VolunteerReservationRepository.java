@@ -30,11 +30,9 @@ public interface VolunteerReservationRepository extends JpaRepository<VolunteerR
      * 3, 0, 1, 5 중에서만
      * */
     Optional<Long> countWithUserByUserUserIdAndReservationStateCodeIn(Long userId, List<Reservation> reservations);
-<<<<<<< HEAD
+
     VolunteerReservation findByReservationId(Long reservationId);
-=======
 
     List<VolunteerReservation> findByUserAndVolunteerSchedule(User user, VolunteerSchedule volunteerSchedule);
 
->>>>>>> b4cd8d64505effd281f5381cdc94a95b3a3e6f7d
 }
