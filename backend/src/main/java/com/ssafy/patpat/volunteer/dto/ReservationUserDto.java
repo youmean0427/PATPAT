@@ -19,6 +19,8 @@ public class ReservationUserDto {
     private String userProfile;
     private Integer userExp;
     private Integer capacity;
+    private String state;
+    private Integer stateCode;
 
     public ReservationUserDto(VolunteerReservation vr){
         this.reservationId = vr.getReservationId();
@@ -26,6 +28,8 @@ public class ReservationUserDto {
         this.userName = vr.getUser().getNickname();
         this.capacity = vr.getCapacity();
         this.userExp = vr.getUser().getExp();
+        this.state = vr.getReservationStateCode().name();
+        this.stateCode = vr.getReservationStateCode().getCode();
     }
 
 }
