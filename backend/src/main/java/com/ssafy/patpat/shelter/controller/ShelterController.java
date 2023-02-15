@@ -187,6 +187,7 @@ public class ShelterController {
      */
     @PostMapping
     @ApiOperation(value = "보호소 등록", notes = "보호소 등록")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> insertShelter(@RequestBody RequestParamShelterInsertDto requestParamShelterInsertDto){
         LOGGER.info("여긴와?");
         AuthCodeDto authCodeDto = service.insertShelter(requestParamShelterInsertDto);
@@ -204,6 +205,7 @@ public class ShelterController {
      */
     @PostMapping("/update")
     @ApiOperation(value = "보호소 수정", notes = "보호소 수정")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ResponseMessage> updateShelter(ShelterDto shelterDto, @RequestPart(value = "uploadFile",required = false) List<MultipartFile> uploadFile) throws Exception{
         ResponseMessage responseMessage = service.updateShelter(shelterDto, uploadFile);
         if(responseMessage.getMessage()=="SUCCESS"){
@@ -239,7 +241,7 @@ public class ShelterController {
      * @return
      */
     @GetMapping("/auth/code")
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "보호소 인증", notes = "보호소 인증")
     public ResponseEntity<ResponseMessage> getAuthCode(@RequestParam("shelterId") Long shelterId){
         String authCode = service.getAuthCode(shelterId);
@@ -250,6 +252,7 @@ public class ShelterController {
 
     @DeleteMapping("/delete/{shelterId}")
     @ApiOperation(value = "보호소 인증", notes = "보호소 삭제")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ResponseMessage> deleteShelter(@PathVariable Long shelterId){
         service.deleteShelter(shelterId);
         return ResponseEntity.status(HttpStatus.OK)

@@ -78,6 +78,7 @@ public class UserController {
      * @return
      */
     @DeleteMapping("/favorite/{protectId}")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "찜 해제", notes = "찜 동물 해제")
     public ResponseEntity<Object> deleteFavorite(@PathVariable Long protectId){
         //서비스 호출 코드
@@ -143,6 +144,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> logout(HttpServletRequest request) throws Exception{
         String accessToken = request.getHeader(JwtFilter.ACCESSTOKEN_HEADER);
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
@@ -152,6 +154,7 @@ public class UserController {
     }
 
     @GetMapping("/refresh")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> refresh(HttpServletRequest request) {
 
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
@@ -171,6 +174,7 @@ public class UserController {
     }
 
     @GetMapping("/reissue")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<TokenDto> reissue(HttpServletRequest request) throws LogoutException {
 
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);

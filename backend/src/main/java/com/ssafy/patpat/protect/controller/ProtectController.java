@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,6 +73,7 @@ public class ProtectController {
      */
     @PostMapping
     @ApiOperation(value = "보호동물 등록", notes = "보호동물 개별 등록")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ResponseMessage> insertProtect(ProtectDto protectDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
         //서비스 호출 코드
         ResponseMessage responseMessage = service.insertProtect(protectDto,uploadFile);
@@ -85,6 +87,7 @@ public class ProtectController {
      */
     @PostMapping("/batches")
     @ApiOperation(value = "보호동물 일괄등록", notes = "보호동물 일괄등록")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ResponseMessage> insertBachProtect(ShelterDto shelterDto, @RequestPart(required = false) MultipartFile uploadFile){
         //서비스 호출 코드
         try{
@@ -103,6 +106,7 @@ public class ProtectController {
      */
     @PostMapping("/{protectId}")
     @ApiOperation(value = "보호동물 수정", notes = "보호동물 수정")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ResponseMessage> updateProtect(@PathVariable Long protectId, @RequestPart(required = false) List<MultipartFile> uploadFile, ProtectDto protectDto){
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateProtect(protectId,uploadFile,protectDto);

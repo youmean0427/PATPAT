@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ public class ConsultingController {
      */
     @GetMapping()
     @ApiOperation(value = "상담 조회", notes = "내가 예약한 상담을 조회한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> selectConsultingList(RequestConsultingDto requestConsultingDto){
         //service 호출
 //        System.out.println(requestConsultingDto);
@@ -49,6 +51,7 @@ public class ConsultingController {
      */
     @GetMapping("/shelters")
     @ApiOperation(value = "상담 조회", notes = "해당 보호소에서 예약된 상담을 조회한다.")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Object> selectConsultingListByShelter(RequestConsultingDto requestConsultingDto){
         //service 호출
         ResponseListDto consultingDtoList = service.selectConsultingListByShelter(requestConsultingDto);
@@ -62,6 +65,7 @@ public class ConsultingController {
      */
     @GetMapping("/shelters/{shelterId}")
     @ApiOperation(value = "예약 가능한 시간 리스트", notes = "예약 가능한 시간 리스트")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> selectTimeList(@PathVariable Long shelterId,
                                                  @RequestParam("date")
                                                 @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date){
@@ -80,6 +84,7 @@ public class ConsultingController {
      */
     @GetMapping("/rooms")
     @ApiOperation(value = "상담 방 생성코드 및 유저정보 주기", notes = "방 생성 , 참가")
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Object> selectTimeList(@RequestParam Long shelterId, @RequestParam Long consultingId){
         //service 호출
         RoomDto roomDto = service.selectRoomDto(shelterId,consultingId);
@@ -94,6 +99,7 @@ public class ConsultingController {
      */
     @PostMapping()
     @ApiOperation(value = "상담 등록", notes = "상담을 등록한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> insertConsulting(@RequestBody ConsultingDto consultingDto){
         //service 호출
         ResponseMessage responseMessage = service.insertConsulting(consultingDto);
@@ -108,6 +114,7 @@ public class ConsultingController {
      */
     @PutMapping("/{consultingId}")
     @ApiOperation(value = "상담 수정", notes = "상담을 수정한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> updateConsulting(@PathVariable Long consultingId, @RequestBody ConsultingDto consultingDto){
         //service 호출
         ResponseMessage responseMessage = service.updateConsulting(consultingId,consultingDto);

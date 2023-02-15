@@ -74,6 +74,7 @@ public class VolunteerController {
      * @return
      */
     @PostMapping("/notices")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "봉사 공고 등록", notes = "봉사 공고 등록")
     public ResponseEntity<Object> insertNotice(@RequestBody NoticeDto noticeDto){
         //서비스 호출 코드
@@ -87,6 +88,7 @@ public class VolunteerController {
      * @return
      */
     @PutMapping("/notices")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "봉사 공고 수정", notes = "봉사 공고 수정")
     public ResponseEntity<Object> updateNotice(@RequestBody NoticeDto noticeDto){
         //서비스 호출 코드
@@ -101,6 +103,7 @@ public class VolunteerController {
      * @return
      */
     @DeleteMapping("/notices")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "봉사 공고 삭제", notes = "봉사 공고 삭제...상태코드로 한다했나..?")
     public ResponseEntity<Object> deleteNotice(@RequestParam("noticeId") Long noticeId) throws VolunteerException {
         //서비스 호출 코드
@@ -116,6 +119,7 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/schedules")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 noticeId offset limit")
     public ResponseEntity<Object> selectScheduleList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
@@ -126,6 +130,7 @@ public class VolunteerController {
     }
 
     @GetMapping("/schedules/{scheduleId}")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "일별 봉사 일정 조회", notes = "일별 상세 조회 - 파라미터로 scheduleId")
     public ResponseEntity<Object> detailSchedule(@PathVariable Long scheduleId){
         //서비스 호출 코드
@@ -141,6 +146,7 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/schedules/shelter")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "봉사 공고 조회", notes = "개인의 보호소 페이지 공고 조회(shelterId)")
     public ResponseEntity<Object> selectScheduleListByShelter(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
@@ -151,6 +157,7 @@ public class VolunteerController {
     }
 
     @PostMapping("/schedules")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "봉사 일정 추가", notes = "봉사 일정 추가/ noticeId, startTime, endTime, totalCapacity, guideLine")
     public ResponseEntity<Object> insertSchedule(@RequestBody ScheduleDto scheduleDto){
         try {
@@ -164,6 +171,7 @@ public class VolunteerController {
     }
 
     @PutMapping("/schedules")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "봉사 일정 수정", notes = "봉사 일정 수정 / scheduleId, startTime, endTime, totalCapacity, guideLine")
     public ResponseEntity<Object> updateSchedule(@RequestBody ScheduleDto volunteerScheduleDto){
         try {
@@ -178,6 +186,7 @@ public class VolunteerController {
     }
 
     @DeleteMapping("/schedules")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "봉사 일정 삭제", notes = "봉사 일정 삭제 - 파라미터로 scheduleId")
     public ResponseEntity<Object> deleteSchedule(@RequestParam("scheduleId") Long scheduleId) {
         //서비스 호출 코드
@@ -199,6 +208,7 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/reservations")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회 parameter: userId, limit, offset")
     public ResponseEntity<Object> selectReservationList(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
@@ -213,6 +223,7 @@ public class VolunteerController {
      * @return
      */
     @GetMapping("/reservations/check/{noticeId}")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "봉사 지원서 조회", notes = "개인이 지원한 봉사 지원서 조회 pathValue : scheduleId")
     public ResponseEntity<Object> checkReservationPossible(@PathVariable Long noticeId){
         //서비스 호출 코드
@@ -244,6 +255,7 @@ public class VolunteerController {
      * @return
      */
     @PostMapping("/reservations")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "봉사 지원서 등록", notes = "봉사 지원서 등록 로긘필수 json : scheduleId, capacity")
     public ResponseEntity<Object> insertReservation(@RequestBody ReservationDto reservationDto) {
         //서비스 호출 코드
@@ -263,6 +275,7 @@ public class VolunteerController {
      * @return
      */
     @PutMapping("/reservations")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "봉사 지원서 수정", notes = "봉사 지원서 수정 reservationId, userId, capacity")
     public ResponseEntity<Object> updateReservation(@RequestBody ReservationDto reservationDto) throws VolunteerException {
         //서비스 호출 코드
@@ -272,6 +285,7 @@ public class VolunteerController {
     }
 
     @DeleteMapping("/reservations")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "봉사 지원서 수정", notes = "봉사 지원서 수정 reservationId, userId")
     public ResponseEntity<Object> deleteReservation(@RequestBody ReservationDto reservationDto) throws VolunteerException {
         //서비스 호출 코드
@@ -282,6 +296,7 @@ public class VolunteerController {
 
     /** 수락 및 거절 상태 변경 */
     @GetMapping("/reservations/state")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "수락 거절 상태", notes = "봉사 예약 수락 / 거절 인즈엉 파라미터 : reservationId, stateCode(수락 : 1, 거절 : 2)")
     public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto) {
         //서비스 호출 코드
@@ -299,6 +314,7 @@ public class VolunteerController {
 
     /** 완료 변경 */
     @GetMapping("/reservations/complete")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "완료", notes = "봉사 완료 파라미터 : reservationId 무적권 완료")
     public ResponseEntity<Object> completeReservationState(ReservationDto reservationDto) throws VolunteerException {
         //서비스 호출 코드
