@@ -1,0 +1,48 @@
+@import 'assets/styles/variable.scss';
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 1.5rem;
+  column-gap: 1.5rem;
+  width: 100%;
+}
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    row-gap: 1rem;
+  }
+}
+.description {
+  padding: 0 1rem 1rem 1rem;
+}
+.name {
+  font-weight: 700;
+  font-size: 1.7rem;
+  margin-bottom: 0.6rem;
+}
+.fav-img {
+  position: relative;
+  width: 43px !important;
+  height: 40px !important;
+  float: right !important;
+  margin-top: -70px;
+  margin-right: 5px;
+  z-index: 2;
+  transition: all 0.3s ease-out;
+}
+.fav-img:hover {
+  transform: translateY(-2px);
+}
+.kind,
+.gender,
+.age {
+  font-size: 1.2rem;
+  color: $gray-color;
+}

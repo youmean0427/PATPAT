@@ -1,0 +1,39 @@
+@import 'assets/styles/variable.scss';
+
+.main {
+  width: 100%;
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.main-images {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  width: 45%;
+  min-width: 35rem;
+  justify-content: center;
+  height: 100%;
+}
+.main-content {
+  position: relative;
+  width: 45%;
+  min-width: 35rem;
+  height: 100%;
+}
+.line {
+  width: 90%;
+  opacity: 0.6;
+  margin: 3rem auto;
+}
+.info-contnet {
+  padding: 10rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+.footer {
+  padding: 5rem;
+  text-align: center;
+}

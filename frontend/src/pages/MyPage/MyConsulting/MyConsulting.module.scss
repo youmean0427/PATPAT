@@ -1,0 +1,18 @@
+@import 'assets/styles/variable.scss';
+
+.filter {
+  display: flex;
+  gap: 1rem;
+  &-item {
+    font-size: 1.4rem;
+    color: $gray-color;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      color: $black-color;
+    }
+    &.active {
+      color: $black-color;
+    }
+  }
+}

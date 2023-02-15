@@ -1,0 +1,163 @@
+@import 'assets/styles/variable.scss';
+
+.title {
+  text-align: center;
+  font-size: 2.8rem;
+  font-family: 700;
+}
+.notice {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  font-size: 2rem;
+  border-bottom: 4px dashed $main-accent-color;
+  padding: 2rem 0;
+  & > span:nth-child(3) {
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+  & > span:nth-child(4) {
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+  & > span:nth-child(2n) {
+    grid-column-start: 2;
+    grid-column-end: 5;
+  }
+}
+
+.btn-wrap {
+  margin: 0.5rem 0 2rem 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 1rem 1rem;
+  border-radius: 0.4rem;
+  background-color: $main-color;
+  font-size: 1.2rem;
+  color: $white-color;
+  transition: all 0.3s;
+  &.click {
+    background-color: $main-accent-color;
+  }
+  &:hover {
+    background-color: $main-accent-color;
+  }
+}
+.add {
+  font-size: 4rem;
+  color: $main-color;
+  transition: all 0.3s;
+  &.click {
+    color: $main-accent-color;
+  }
+  &:hover {
+    color: $main-accent-color;
+  }
+}
+.capacity {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  & > span {
+    font-size: 1.4rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: $main-color;
+    color: $white-color;
+  }
+}
+.schedule {
+  display: grid;
+  font-size: 1.2rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 2rem;
+    & > input {
+      font-size: 2rem;
+    }
+  }
+}
+.total {
+  height: 100%;
+}
+
+.edit-btn-wrap {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.enroll,
+.update,
+.delete {
+  padding: 1rem 2rem;
+  color: $white-color;
+  border-radius: 0.4rem;
+  font-size: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+.enroll {
+  background-color: $enroll-btn-color;
+  &:hover {
+    background-color: #4b3ac9;
+  }
+}
+.update {
+  background-color: $update-btn-color;
+  &:hover {
+    background-color: #0f7a65;
+  }
+}
+.delete {
+  background-color: $delete-btn-color;
+  &:hover {
+    background-color: #b53728;
+  }
+}
+
+.reservations {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  & > .reservation {
+    display: flex;
+    align-items: center;
+    background-color: $white-color;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    &.approve {
+      background-color: $enroll-btn-color;
+    }
+    &.complete {
+      background-color: $update-btn-color;
+    }
+    &.noshow {
+      background-color: $delete-btn-color;
+    }
+    & > img {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+    }
+  }
+}

@@ -1,0 +1,140 @@
+@import 'assets/styles/variable.scss';
+
+.content1 {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 5rem;
+  justify-content: center;
+  justify-content: space-between;
+  padding: 0 5% 5% 5%;
+}
+.content2 {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 28rem;
+}
+.content3 {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 13em;
+  justify-content: center;
+  justify-content: space-between;
+  background-color: #a1887f34;
+}
+.dog-name {
+  width: 70%;
+  margin: auto;
+  font-size: 3rem;
+  font-weight: 700;
+  color: $main-color;
+  display: flex;
+}
+.pressed {
+  margin-left: 5px;
+  cursor: pointer;
+}
+.state0 {
+  text-align: right;
+  width: 30%;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  color: white;
+  background-color: $state-zero;
+  border-radius: 4px;
+}
+.state1 {
+  text-align: right;
+  width: 30%;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  background-color: $state-one;
+  color: white;
+  border-radius: 4px;
+}
+.state2 {
+  text-align: right;
+  width: 30%;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  background-color: $state-two;
+  color: white;
+  border-radius: 4px;
+}
+.state3 {
+  text-align: right;
+  width: 30%;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px 0;
+  background-color: $state-three;
+  color: white;
+  border-radius: 4px;
+}
+.dog-detail,
+.dog-detail-ans {
+  position: relative;
+  margin: auto;
+}
+.dpg-detail {
+  width: 40%;
+}
+.dog-detail-ans {
+  width: 60%;
+}
+.dog-detail p,
+.dog-detail-ans p {
+  padding: 3px;
+  font-size: 1.5rem;
+}
+.category1,
+.category2 {
+  position: relative;
+  display: flex;
+  width: 45%;
+  height: 7rem;
+  margin: auto;
+}
+.dog-category,
+.dog-category-ans {
+  position: relative;
+  margin: auto;
+}
+.dog-category p,
+.dog-category-ans p {
+  padding: 3px;
+  font-size: 1.2rem;
+}
+.info-icon {
+  width: 10px;
+  margin-right: 3px;
+  cursor: pointer;
+}
+.info-icon:hover {
+  transform: translateY(-2px);
+}
+.line {
+  width: 90%;
+  opacity: 0.6;
+  margin: auto;
+}
+.colors {
+  display: flex;
+  gap: 0.5rem;
+}
+.color-box {
+  width: 20px;
+  height: 20px;
+}
+.icon:hover {
+  transform: translateY(-3px);
+}

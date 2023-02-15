@@ -1,0 +1,30 @@
+@import '../../../assets/styles/variable.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.content {
+  width: 120rem;
+  font-style: $spoqa-font;
+  font-size: 20px;
+}
+
+.blue-font {
+  color: $main-color;
+  font-weight: 400;
+}
+
+@include breakpoint(md) {
+  .container {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
+
+@include breakpoint(sm) {
+}

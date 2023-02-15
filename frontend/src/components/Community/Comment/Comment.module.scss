@@ -1,0 +1,44 @@
+.comment-title {
+  float: left top;
+}
+
+.comment-container {
+  border-top: solid 1px #a1887f;
+  border-bottom: solid 1px #747474;
+  margin-bottom: 0.5rem;
+  & > table {
+    width: 100%;
+  }
+}
+
+.comment-row {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 0;
+  margin: left 10rem;
+  // border-bottom: 0.5px solid #747474;
+}
+
+.comment-author-content {
+}
+
+.comment-author {
+  color: #747474;
+  padding-left: 1rem;
+}
+
+.comment-crud {
+  padding-left: 1rem;
+}
+
+.comment-delete {
+  padding-right: 1rem;
+}
+
+.comment-update {
+  padding-right: 1rem;
+}
+
+.reply {
+  margin-left: 2rem;
+}
