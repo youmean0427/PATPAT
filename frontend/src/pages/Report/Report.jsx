@@ -1,7 +1,7 @@
 import Banner from 'components/Common/Banner/Banner';
 import MissingDogList from 'components/Report/MissingDog/MissingDogList';
 import PersonalDogList from 'components/Report/PersonalDog/PersonalDogList';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import styles from './Report.module.scss';
 import { getBreedsList } from 'apis/api/shelter';

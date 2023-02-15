@@ -50,3 +50,20 @@
     }
   }
 }
+
+.scroll {
+  height: 180px !important;
+  overflow-y: scroll !important;
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+}

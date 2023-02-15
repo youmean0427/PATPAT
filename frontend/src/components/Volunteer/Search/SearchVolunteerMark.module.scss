@@ -1,15 +1,5 @@
 @import 'assets/styles/variable.scss';
 
-// .infoContainer {
-//   padding: 10px;
-//   width: 400px;
-//   height: 300px;
-//   background-color: $white-color;
-//   border: solid 1px $gray-color;
-//   // border-radius: 10px;
-//   cursor: default;
-// }
-
 .shelterName {
   font-size: 20px;
   margin-bottom: 5px;
@@ -52,5 +42,23 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .container {
+    width: 300px !important;
+    height: 350px !important;
+    padding: 10px;
+    font-family: $noto-font;
   }
 }

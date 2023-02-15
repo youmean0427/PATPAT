@@ -7,7 +7,7 @@ import { getSidoList } from 'apis/api/shelter';
 import Banner from 'components/Common/Banner/Banner';
 import ShelterSearchBar from 'components/SearchShelter/ShelterSearchBar';
 import { useSetRecoilState } from 'recoil';
-import { searchShelterPageState, selectSidoState } from 'recoil/atoms/shelter';
+import { searchShelterPageState } from 'recoil/atoms/shelter';
 import Loading from 'components/Common/Loading';
 
 export default function SearchShelter() {
