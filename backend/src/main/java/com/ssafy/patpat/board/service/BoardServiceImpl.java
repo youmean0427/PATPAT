@@ -328,12 +328,14 @@ public class BoardServiceImpl implements BoardService{
                 List<Image> images = board.getImages();
 
 
+                List<Image> removeImage = new ArrayList<>();
                 images.stream().forEach(i->{
                     if(boardDto.getDeleteFileList().contains(i.getImageId())){
                         fileService.deleteFile(i);
-                        images.remove(i);
+                        removeImage.add(i);
                     }
                 });
+                images.removeAll(removeImage);
 
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));
