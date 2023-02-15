@@ -38,9 +38,9 @@ export const getVolNoticeDetail = async noticeId => {
  * @param {int} offset
  * @returns
  */
-export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
+export const getVolScheduleListOfShelter = async (shelterId, limit, offset) => {
   const { data } = await authInstance.get(
-    `/volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offSet=${offset}`
+    `/volunteers/schedules/shelter?shelterId=${shelterId}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };
@@ -135,8 +135,6 @@ export const createVolNoticeSchedule = async data => {
 
 /**
  * 개인이 봉사 활동 신청
- * @param {int} volunteerId 봉사활동 공고 id
- * @param {int} capacity 인원 수
  * @returns
  */
 export const applyVolReservation = async data => {
@@ -172,7 +170,7 @@ export const updateVolReservation = async (volunteerId, capacity, state) => {
 // DELETE
 
 export const deleteVolNotice = async noticeId => {
-  const res = await authInstance.delete(`/volunteers/schedules?noticeId=${noticeId}`);
+  const res = await authInstance.delete(`/volunteers/notices?noticeId=${noticeId}`);
   return res;
 };
 /**
