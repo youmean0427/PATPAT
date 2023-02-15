@@ -8,12 +8,15 @@ import TailDetail from 'components/Report/Create/TailDetail';
 import PetsIcon from '@mui/icons-material/Pets';
 import { insertFavProtect, deleteFavProtect } from 'apis/api/user';
 import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
+import { AiOutlineHome } from 'react-icons/ai';
 
 export default function DetailContent({ data }) {
   const [modal, setModal] = useState(false);
   const [modalNum, setModalNum] = useState();
   const [userId, setUserId] = useState();
   const [favorite, setFavorite] = useState(data.isFavorite);
+  const navigate = useNavigate();
 
   const openModal = idx => {
     setModalNum(idx);
@@ -47,7 +50,7 @@ export default function DetailContent({ data }) {
     <>
       <div className={styles.content1}>
         <div className={styles['dog-name']}>
-          <p>{data.protectName}</p>{' '}
+          <p>{data.protectName}</p>
           {userId !== undefined ? (
             <div title={favorite ? '꾹 해제' : '꾹 등록'} className={styles.icon}>
               {favorite ? (
@@ -65,6 +68,10 @@ export default function DetailContent({ data }) {
               )}
             </div>
           ) : null}
+          <AiOutlineHome
+            className={styles.home}
+            onClick={() => navigate(`/shelter/${data.shelterId}/protect`, { state: { shelterId: data.shelterId } })}
+          />
         </div>
         <div
           className={
