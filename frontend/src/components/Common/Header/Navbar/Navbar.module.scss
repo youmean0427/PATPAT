@@ -1,0 +1,14 @@
+@import 'assets/styles/variable.scss';
+.logo-link {
+  flex-shrink: 0;
+
+  & img {
+    width: 120px;
+  }
+}
+
+@include breakpoint(md) {
+}
+
+@include breakpoint(sm) {
+}

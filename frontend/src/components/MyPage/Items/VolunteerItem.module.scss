@@ -1,0 +1,64 @@
+@import 'assets/styles/variable.scss';
+
+.info {
+  display: flex;
+  gap: 2rem;
+  & > .user {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    .user-name {
+      width: 10rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 0.5rem 2rem;
+      border-radius: 0.4rem;
+      color: $black-color;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    & > img {
+      width: 10rem;
+      height: 10rem;
+      border-radius: 0.4rem;
+    }
+  }
+}
+// 0 대기 1 승인 2 거절 3 방참가 4 진행중 5 완료 6 불참
+.state {
+  height: 4rem;
+}
+.address {
+  font-size: 1rem;
+  color: $border-color;
+}
+.res-date {
+  margin-top: 1rem;
+  font-size: 1.3rem;
+}
+.desc {
+  margin-top: 1rem;
+  flex: 1;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.name {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.line {
+  height: 1px;
+  border: 0;
+  background-color: lightgray;
+  margin: 2rem 0;
+}
+.guide-line {
+  margin: 2rem 0;
+  font-size: 1.5rem;
+}
+.content {
+  position: relative;
+}

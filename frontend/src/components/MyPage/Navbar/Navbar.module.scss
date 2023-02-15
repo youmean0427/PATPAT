@@ -1,0 +1,33 @@
+@import 'assets/styles/variable.scss';
+
+.navbar {
+  font-size: 1.8rem;
+  margin-top: 4rem;
+  transition: all 0.4s;
+  &__menu {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+@include breakpoint(md) {
+  .navbar {
+    font-size: 1.6rem;
+    margin-top: 3rem;
+    &__menu {
+      gap: 1.5rem;
+    }
+  }
+}
+
+@include breakpoint(sm) {
+  .navbar {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    &__menu {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+}

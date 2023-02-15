@@ -1,0 +1,23 @@
+@import 'assets/styles/variable.scss';
+@import 'react-big-calendar/lib/sass/styles';
+.rbc-event {
+  background-color: $main-color;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+
+.rbc-event:hover {
+  background-color: $main-accent-color;
+}
+
+.rbc-event.rbc-selected {
+  background-color: $main-accent-color;
+}
+
+.rbc-day-bg {
+  cursor: pointer;
+}
+
+.rbc-calendar {
+  height: 700px !important;
+}

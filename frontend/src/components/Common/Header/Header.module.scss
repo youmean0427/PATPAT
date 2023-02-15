@@ -1,27 +1,54 @@
+@import 'assets/styles/variable.scss';
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+  @include breakpoint(md) {
+    padding: 0 $spacing-md;
+  }
+
+  @include breakpoint(sm) {
+    padding: 0 $spacing-sm;
+  }
+}
+
 .header {
   position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+  transition: all $response-transition-time;
+  &.scroll {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  }
+}
+
+.nav {
+  position: relative;
+  width: 100%;
+  background-color: $white-color;
+}
+
+.container-inner {
+  position: relative;
   left: 0;
   top: 0;
-  padding: 25px 20px;
-  width: 100%;
-  border-bottom: 1px solid lightgray;
-  box-sizing: border-box;
-}
-
-.top {
-  font-size: 0.9rem;
-  display: flex;
-  justify-content: flex-end;
-  color: gray;
-  height: 15px;
-}
-
-.bottom {
+  height: $header-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .logo {
-    width: 200px;
-    height: 60px;
+  font-size: 1.7rem;
+  transition: all $response-transition-time;
+}
+
+// responsive css
+// 640 ~ 1024
+@include breakpoint(md) {
+  .container-inner {
+    font-size: 1.6rem;
   }
+}
+
+// 0 ~ 640
+@include breakpoint(sm) {
 }

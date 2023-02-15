@@ -1,0 +1,69 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  font-size: 20px;
+  & > div {
+    margin-bottom: 5px;
+  }
+  &-inner {
+    display: flex;
+  }
+}
+
+.name {
+  color: $main-accent-color;
+}
+.address {
+  font-size: 12px;
+}
+.phoneNumber {
+  font-size: 12px;
+}
+.infoContent {
+  font-size: 12px;
+}
+
+.image {
+  width: 100px;
+
+  margin: 5px;
+  border: 1px solid $gray-color;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+
+  & > img {
+    width: 100%;
+  }
+}
+
+.info {
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  & > div {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    & > div {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.scroll {
+  height: 180px !important;
+  overflow-y: scroll !important;
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+}
