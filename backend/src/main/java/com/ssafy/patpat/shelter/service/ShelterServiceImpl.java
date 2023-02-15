@@ -48,6 +48,8 @@ public class ShelterServiceImpl implements ShelterService{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShelterServiceImpl.class);
     @Autowired
+    CountRepository countRepository;
+    @Autowired
     ShelterRepository shelterRepository;
     @Autowired
     SidoRepository sidoRepository;
@@ -110,6 +112,24 @@ public class ShelterServiceImpl implements ShelterService{
 
         return breedDto;
     }
+
+    @Override
+    @Transactional
+    public Long getCount(){
+        Count c = countRepository.findByCountId(1L);
+        Long count = c.getCount();
+        return count;
+    }
+
+    @Override
+    @Transactional
+    public Boolean addCount() {
+        Count c = countRepository.findByCountId(1L);
+        c.setCount(c.getCount()+1);
+        countRepository.save(c);
+        return true;
+    }
+
     @Override
     @Transactional
     public List<Sido> sidoList() {

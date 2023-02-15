@@ -103,6 +103,24 @@ public class ShelterController {
                     .body(new ResponseMessage("FAIL"));
         }
     }
+    @GetMapping("/mbti/count")
+    @ApiOperation(value = "mbti 총 응시 인원", notes = "총 응시 인원")
+    public ResponseEntity<Object> getMbtiCount(){
+        //service 호출
+        Long count = service.getCount();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(count);
+    }
+
+    @GetMapping("/mbti/add/count")
+    @ApiOperation(value = "응시 인원 추가하기", notes = "응시 인원 추가하기")
+    public ResponseEntity<Object> addMbtiCount(){
+        //service 호출
+        service.addCount();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("SUCCESS"));
+    }
+
     /**
      * 8도, 전체 해당 견종을 가진
      * @return
