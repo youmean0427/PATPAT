@@ -320,19 +320,22 @@ public class BoardServiceImpl implements BoardService{
             Board board = boardRepository.findByBoardId(boardId);
             board.update(boardDto.getTitle(),boardDto.getContent());
 
-            List<Image> images = board.getImages();
-            for(Image image : images){
-                fileService.deleteFile(image);
-            }
-            images.removeAll(images);
+
 
 //            List<Image> newImages = new ArrayList<>();
             if(uploadFile != null) {
+                List<Image> images = board.getImages();
+                for(Image image : images){
+                    fileService.deleteFile(image);
+                }
+                images.removeAll(images);
+
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));
                 }
+                board.setImages(images);
             }
-            board.setImages(images);
+
             boardRepository.save(board);
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
