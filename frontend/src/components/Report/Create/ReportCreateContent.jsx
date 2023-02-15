@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createReport } from 'apis/api/report';
 import React, { useEffect, useState } from 'react';
 import styles from './ReportCreateContent.module.scss';
@@ -26,6 +26,7 @@ import { CgCloseO } from 'react-icons/cg';
 import { toast } from 'react-toastify';
 
 export default function ReportCreateContent() {
+  const navigate = useNavigate();
   // info
 
   const [title, setTitle] = useState('');
@@ -169,33 +170,14 @@ export default function ReportCreateContent() {
     setFileList(fileList.filter((_, index) => index !== id));
   };
 
-  // FormData
-  let formData = new FormData();
-  formData.append('title', title);
-  formData.append('name', name);
-  formData.append('age', age);
-  formData.append('genderCode', genderCode);
-  formData.append('breedId', breedId.value);
-  formData.append('kg', kg);
-  formData.append('neuteredCode', neuteredCode.value);
-  formData.append('content', content);
-  formData.append('categoryEarCode', categoryEar.value);
-  formData.append('categoryColor', categoryColor);
-  formData.append('categoryPatternCode', categoryPattern.value);
-  formData.append('categoryTailCode', categoryTail.value);
-  formData.append('categoryClothCode', categoryCloth.value);
-  formData.append('typeCode', typeCode.value);
-  formData.append('latitude', lat);
-  formData.append('longitude', lng);
-  formData.append('stateCode', 0);
-  // formData.append('date', registDate);
-  // POST (등록)
-  for (let i = 0; i < fileList.length; i++) {
-    formData.append('uploadFile', fileList[i]);
-  }
   // formData.append('uploadFile', preFile);
-  const { mutate: mutation } = useMutation(['createReport'], () => {
-    return createReport(formData);
+  const queryClient = useQueryClient();
+  const { mutate: mutation } = useMutation(['createReport'], formData => createReport(formData), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['missingDogList']);
+      toast('등록되었습니다.', { type: 'success' });
+      navigate('/report');
+    },
   });
 
   // GET (견종 리스트)
@@ -310,10 +292,32 @@ export default function ReportCreateContent() {
       (name !== '') & (title !== '') &&
       neuteredCode.value !== 0
     ) {
-      mutation();
+      // FormData
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('name', name);
+      formData.append('age', age);
+      formData.append('genderCode', genderCode);
+      formData.append('breedId', breedId.value);
+      formData.append('kg', kg);
+      formData.append('neuteredCode', neuteredCode.value);
+      formData.append('content', content);
+      formData.append('categoryEarCode', categoryEar.value);
+      formData.append('categoryColor', categoryColor);
+      formData.append('categoryPatternCode', categoryPattern.value);
+      formData.append('categoryTailCode', categoryTail.value);
+      formData.append('categoryClothCode', categoryCloth.value);
+      formData.append('typeCode', typeCode.value);
+      formData.append('latitude', lat);
+      formData.append('longitude', lng);
+      formData.append('stateCode', 0);
+      // formData.append('date', registDate);
+      // POST (등록)
+      for (let i = 0; i < fileList.length; i++) {
+        formData.append('uploadFile', fileList[i]);
+      }
       // navigate('/report');
-      toast('등록되었습니다.', { type: 'success' });
-      window.location.replace('/report');
+      mutation(formData);
     }
   };
   return (
