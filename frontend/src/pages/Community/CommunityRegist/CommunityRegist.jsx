@@ -1,26 +1,46 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { CreateBoard } from 'apis/api/board';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import styles from '../Write.module.scss';
+import React, { useState, useRef, useEffect } from 'react';
+import styles from './CommunityRegist.module.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { useNavigate } from 'react-router-dom';
+import Test from '../../../assets/images/volunteer.png';
+import './ckeditor.scss';
+import { useMutation } from '@tanstack/react-query';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import Test from '../../../assets/images/volunteer.png';
-import { getBoardList } from 'apis/api/board';
-import { CgCloseO } from 'react-icons/cg';
 
-export default function AdoptionReviewWrite() {
+import { CgCloseO } from 'react-icons/cg';
+import { Link } from 'react-router-dom';
+import { CreateBoard } from 'apis/api/board';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+export default function CommunityRegist() {
+  const stateCode = useLocation().state.stateCode;
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [typeCode, setTypeCode] = useState(parseInt(0));
+
+  // Picture
   const [preFile, setPreFile] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [file2, setFile2] = useState(0);
   const [file3, setFile3] = useState(0);
+
+  const [titleAlertOpen, setTitleAlertOpen] = useState(0);
   const [fileListAlertOpen, setFileListAlertOpen] = useState(0);
+  const [contentAlertOpen, setContentAlertOpen] = useState(0);
+
+  const titleInput = useRef();
   const fileListInput = useRef();
+  const contentInput = useRef();
+
+  // useEffect
+  useEffect(() => {
+    if (title !== '') {
+      setTitleAlertOpen(0);
+    }
+  }, [title]);
 
   useEffect(() => {
     if (preFile.length !== 0) {
@@ -28,7 +48,13 @@ export default function AdoptionReviewWrite() {
     }
   }, [preFile]);
 
-  //  ========== 사진 업로드 ==========
+  useEffect(() => {
+    if (content !== '') {
+      setContentAlertOpen(0);
+    }
+  }, [content]);
+
+  // Picture
   const handleAddImages = e => {
     const imageFileList = [...fileList];
     let imageUrlLists = [...preFile];
@@ -51,32 +77,53 @@ export default function AdoptionReviewWrite() {
     setFileList(fileList.filter((_, index) => index !== id));
   };
 
-  let formData2 = new FormData();
-  formData2.append('title', title);
-  formData2.append('content', content);
-  formData2.append('typeCode', typeCode);
-
-  for (let i = 0; i < fileList.length; i++) {
-    formData2.append('uploadFiles', fileList[i]);
-  }
-
-  const { mutate: mutation } = useMutation(['test'], () => {
-    console.log('왓다잉');
-    return CreateBoard(formData2);
-  });
-
-  const navigate = useNavigate();
-  const onClickBtn = () => {
-    navigate('/community/adoptionreview');
-  };
+  // Submit
   const handleSubmit = () => {
+    if (content === '') {
+      setContentAlertOpen(1);
+      contentInput.current.focus();
+    }
+
     if (preFile.length === 0) {
       setFileListAlertOpen(1);
     }
-    mutation();
-    alert('등록되었습니다.');
-    onClickBtn();
+
+    if (title === '') {
+      setTitleAlertOpen(1);
+      titleInput.current.focus();
+    }
+
+    if (content !== '' && title !== '') {
+      mutation();
+      Swal.fire({
+        icon: 'info',
+        title: '등록하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonText: '등록',
+        cancelButtonText: '취소',
+      }).then(() =>
+        stateCode === 0
+          ? navigate('/community/adoption')
+          : stateCode === 1
+          ? navigate('/community/info')
+          : navigate('/community/share')
+      );
+    }
   };
+
+  let formData = new FormData();
+  formData.append('title', title);
+  formData.append('content', content);
+  formData.append('staeCode', 0);
+  formData.append('typeCode', stateCode);
+
+  for (let i = 0; i < fileList.length; i++) {
+    formData.append('uploadFile', fileList[i]);
+  }
+
+  const { mutate: mutation } = useMutation(['createBoard'], () => {
+    return CreateBoard(formData);
+  });
 
   return (
     <div>
@@ -86,15 +133,19 @@ export default function AdoptionReviewWrite() {
         }}
       >
         <div className={styles.container}>
-          <div>
-            <select onChange={e => setTypeCode(parseInt(e.target.value))}>
-              <option value={0}>입양후기</option>
-              <option value={1}>무료나눔</option>
-              <option value={2}>정보공유</option>
-            </select>
-          </div>
-          <div>
-            <input type="text" placeholder="제목을 입력하세요" onChange={e => setTitle(e.target.value)} />
+          <div className={styles.title}>
+            <input ref={titleInput} type="text" placeholder="글 제목" onChange={e => setTitle(e.target.value)} />
+            <div>
+              {titleAlertOpen === 0 ? null : (
+                <div>
+                  <Stack sx={{ width: '100%' }} spacing={2}>
+                    <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                      제목을 작성해주세요.
+                    </Alert>
+                  </Stack>
+                </div>
+              )}
+            </div>
           </div>
           <div className={styles['container-info']}>
             <div className={styles['container-info-picture']}>
@@ -209,20 +260,46 @@ export default function AdoptionReviewWrite() {
                 </div>
               </div>
             </div>
-
-            <div className={styles.ckEditor}>
-              <CKEditor
-                editor={ClassicEditor}
-                config={{
-                  placeholder: '내용을 입력하세요',
-                }}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  setContent(data);
-                }}
-              />
+          </div>
+        </div>
+        <hr />
+        <div>
+          {contentAlertOpen === 0 ? null : (
+            <div>
+              <Stack sx={{ width: '100%' }} spacing={2}>
+                <Alert severity="error" sx={{ fontSize: '15px', color: 'red' }}>
+                  정성스런 게시물 작성은 PATPAT에게 큰 힘이 됩니다.
+                </Alert>
+              </Stack>
             </div>
-            <button onClick={handleSubmit}>글등록</button>
+          )}
+          <div className={styles.ckEditor}>
+            <CKEditor
+              editor={ClassicEditor}
+              config={{
+                placeholder: '상세',
+              }}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setContent(data);
+              }}
+            />
+          </div>
+        </div>
+        <hr />
+        <div>
+          <div className={styles['container-button']}>
+            <button onClick={handleSubmit} className={styles.button}>
+              <div>등록</div>
+            </button>
+            <Link
+              to={stateCode === 0 ? '/community/adoption' : stateCode === 1 ? '/community/info' : '/community/share'}
+              className="links"
+            >
+              <button className={styles.button}>
+                <div>취소</div>
+              </button>
+            </Link>
           </div>
         </div>
       </form>

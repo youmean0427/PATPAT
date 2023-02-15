@@ -1,0 +1,54 @@
+@import 'assets/styles/variable.scss';
+
+.title {
+  text-align: left;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+}
+.board-desc {
+  display: flex;
+  gap: 2rem;
+  & > div {
+    font-size: 1rem;
+    color: lightgray;
+  }
+  & > .author {
+    width: 10%;
+  }
+  & > .date {
+    width: 20%;
+  }
+  & > .count {
+    width: 70%;
+    text-align: right;
+  }
+}
+.line {
+  margin: 10px 0 20px 0;
+  height: 1px;
+  background-color: lightgray;
+  border: 0px;
+}
+.content {
+  font-size: 1.5rem;
+  margin: 30px auto;
+  text-align: center;
+}
+.buttons {
+  padding-top: 10px;
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+  & > button {
+    font-size: 1.5rem;
+    padding: 5px 10px;
+    background-color: $main-color;
+    color: white;
+    border-radius: 10px;
+  }
+  & > button:hover {
+    background-color: $main-accent-color;
+    transform: translateY(-2px);
+  }
+}

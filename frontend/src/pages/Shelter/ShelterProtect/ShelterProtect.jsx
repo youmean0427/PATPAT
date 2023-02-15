@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getProtectListOfShelter } from 'apis/api/protect';
-import AbandonedDogItem from 'components/Home/AbandonedDogItem';
+import AbandonedDogItem from 'components/Common/Home/AbandonedDogItem';
 import styles from './ShelterProtect.module.scss';
 import ShelterContainer from 'containers/ShelterContainer';
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';

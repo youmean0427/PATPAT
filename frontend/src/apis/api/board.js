@@ -47,7 +47,6 @@ export const CreateBoard = async formData => {
   const res = await authInstance.post('/boards', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-  console.log('res정상작동', res);
   return res;
 };
 

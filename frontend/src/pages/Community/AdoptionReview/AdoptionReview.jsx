@@ -1,16 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { getBoardList } from 'apis/api/board';
 import React, { useState, useEffect } from 'react';
-import AdoptionReviewItem from './AdoptionReviewItem';
-import styles from './AdoptionReviewList.module.scss';
-import { Link } from 'react-router-dom';
-import Banner from 'components/Common/Banner/Banner';
+import styles from './AdoptionReview.module.scss';
+import ShelterContainer from 'containers/ShelterContainer';
+import NoData from 'components/Common/NoData';
+import AdoptionReviewItem from 'components/Community/items/AdoptionReviewItem';
+import { useNavigate } from 'react-router-dom';
 
-export default function AdoptionReviewList() {
+export default function AdoptionReview() {
+  const navigate = useNavigate();
   const [page, setPage] = useState(10);
   const [hasMore, setHasMore] = useState(true);
+  const [isChange, setIsChange] = useState(false);
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['adoptionList'],
+    queryKey: ['adoptionList', isChange],
     queryFn: () => getBoardList(0, page, 0),
     config: {
       onSuccess: (prevData, newData) => {
@@ -40,30 +43,22 @@ export default function AdoptionReviewList() {
     };
   }, [page, hasMore]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return;
 
   return (
-    <>
-      <div className={styles['container']}>
-        <Banner title="입양 후기" />
-        <div className={styles['list']}>
-          {data.list.map((item, index) => (
-            <AdoptionReviewItem key={item.id} item={item} />
-          ))}
+    <ShelterContainer title="입양 후기">
+      <div className={styles.write}>
+        <div onClick={() => navigate('/community/regist', { state: { stateCode: 0 } })}>글쓰기</div>
+      </div>
+      {data.totalCount === 0 ? (
+        <NoData>등록된 입양후기 게시물이 없습니다.</NoData>
+      ) : (
+        <div className={styles.list}>
+          {data.list.map(item => {
+            return <AdoptionReviewItem key={item.boardId} item={item} change={setIsChange} />;
+          })}
         </div>
-        {hasMore ? (
-          () => {
-            alert('모든 데이터가 로딩 되었습니다.');
-          }
-        ) : (
-          <div>has more</div>
-        )}
-      </div>
-      <div>
-        <Link to="/community/infowrite">
-          <button>글쓰기</button>
-        </Link>
-      </div>
-    </>
+      )}
+    </ShelterContainer>
   );
 }

@@ -1,0 +1,38 @@
+@import 'assets/styles/variable.scss';
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5rem;
+}
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+.write {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 20px;
+  & > div {
+    cursor: pointer;
+    display: flex;
+    padding: 7px 10px;
+    font-size: 2rem;
+    border-radius: 10px;
+    justify-content: center;
+    color: white;
+    background-color: $main-color;
+  }
+  & > div:hover {
+    background-color: $main-accent-color;
+    transform: translateY(-2px);
+  }
+}
