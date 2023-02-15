@@ -29,7 +29,7 @@ public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProt
     List<ShelterIdMapping> findDistinctByShelterSidoCodeAndShelterGugunCodeAndBreedBreedId(String sidoCode,String gugunCode,Long breedId);
 
     @Query(
-            value = "select * , (6371 * acos ( cos ( radians(?) )* cos( radians( latitude ) )* cos( radians( longitude )- radians(?) )+ sin ( radians(?) ) * sin( radians( latitude )))) as distance from shelter_protected_dog where regist_date >= ? and state_code in(0,1) group by sp_dog_id having distance < 15",
+            value = "select * , (6371 * acos ( cos ( radians(?) )* cos( radians( latitude ) )* cos( radians( longitude )- radians(?) )+ sin ( radians(?) ) * sin( radians( latitude )))) as distance from shelter_protected_dog where regist_date >= ? and state_code in(0,1) group by sp_dog_id having distance < 40",
             nativeQuery = true
     )
     List<ShelterProtectedDog> selectBydistance(BigDecimal a, BigDecimal b , BigDecimal c, LocalDate localDate);
@@ -43,7 +43,7 @@ public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProt
                 " where" +
                 " regist_date >= :localDate" +
                 " having" +
-                " distance < 15) as sc")
+                " distance < 40) as sc")
     Long countDogByDistance(BigDecimal a, BigDecimal b , BigDecimal c, LocalDate localDate);
 
 }

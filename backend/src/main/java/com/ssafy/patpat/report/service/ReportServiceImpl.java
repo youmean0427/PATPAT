@@ -651,7 +651,7 @@ public class ReportServiceImpl implements ReportService{
             if(reportDto.getTypeCode() == 1) {
 
                 MissingDog missingDog = MissingDog.builder()
-                        .missingDate(reportDto.getDate())
+                        .missingDate(LocalDate.now())
                         .breed(breed)
                         .age(reportDto.getAge())
                         .gender(Gender.of(reportDto.getGenderCode()))
