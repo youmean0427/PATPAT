@@ -65,7 +65,12 @@ export default function MyCalendar() {
         <EnrollVolunteerModal date={selectDate} isOpen={isOpen} handleClickModalClose={handleClickModalClose} />
       )}
       {isModalOpen && (
-        <ManageVolNoticeModal noticeId={noticeId} isOpen={isModalOpen} handleClickModalClose={handleClickModalClose1} />
+        <ManageVolNoticeModal
+          setClick={setClick}
+          noticeId={noticeId}
+          isOpen={isModalOpen}
+          handleClickModalClose={handleClickModalClose1}
+        />
       )}
     </>
   );

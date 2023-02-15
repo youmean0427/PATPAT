@@ -2,6 +2,7 @@
 .container {
   font-size: 17px;
   margin: 10px;
+  animation: modal-bg-show 0.3s;
   &-scheduleBnt {
     display: flex;
     justify-content: flex-start;
@@ -39,6 +40,20 @@
 .scheduleItem {
   margin: 5px 0 5px 0;
 }
+
+@keyframes modal-bg-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .buttonActive {
   background-color: red;
+}
+
+.active {
+  background-color: $main-accent-color;
 }

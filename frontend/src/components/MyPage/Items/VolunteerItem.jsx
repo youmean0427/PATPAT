@@ -9,6 +9,7 @@ import Shelter from 'assets/images/shelter.png';
 import DetailModal from 'components/Common/DetailModal';
 
 export default function VolunteerItem({ item }) {
+  const { startTime, endTime, volunteerDate, scheduleId } = item;
   const date = [item.endTime[0], item.endTime[1], item.endTime[2]];
   const startHour = item.startTime[3] <= 9 ? '0' + item.startTime[3] : item.startTime[3];
   const startMinute = item.startTime[4] <= 9 ? '0' + item.startTime[4] : item.startTime[4];
@@ -16,9 +17,9 @@ export default function VolunteerItem({ item }) {
   const endMonute = item.endTime[4] <= 9 ? '0' + item.endTime[4] : item.endTime[4];
   const [modal, setModal] = useState(false);
   const { data, isLoading } = useQuery({
-    queryKey: ['getMyConsultations', item.scheduleId],
+    queryKey: ['getMyConsultations', scheduleId],
     queryFn: () => {
-      return getVolReservationOfUserDetail(item.scheduleId);
+      return getVolReservationOfUserDetail(scheduleId);
     },
   });
 
@@ -46,11 +47,11 @@ export default function VolunteerItem({ item }) {
           </div>
           <div className={styles['res-date']}>
             <div className={styles['desc-item']}>
-              <span className={styles['desc-item-title']}>{formatDate(date)}</span>
+              <span className={styles['desc-item-title']}>{volunteerDate}</span>
             </div>
             <div className={styles['desc-item']}>
               <span className={styles['desc-item-title']}>
-                {startHour + ':' + startMinute + ' ~ ' + endHour + ':' + endMonute} 예정
+                {startTime} ~ {endTime} 예정
               </span>
             </div>
           </div>
@@ -73,11 +74,11 @@ export default function VolunteerItem({ item }) {
         <div>
           <div className={styles['res-date']}>
             <div className={styles['desc-item']}>
-              <span className={styles['desc-item-title']}>{formatDate(date)}</span>
+              <span className={styles['desc-item-title']}>{volunteerDate}</span>
             </div>
             <div className={styles['desc-item']}>
               <span className={styles['desc-item-title']}>
-                {startHour + ':' + startMinute + ' ~ ' + endHour + ':' + endMonute} 예정
+                {startTime} ~ {endTime} 예정
               </span>
             </div>
           </div>

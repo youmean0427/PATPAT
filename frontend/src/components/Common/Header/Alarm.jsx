@@ -26,17 +26,17 @@ export default function Alarm() {
       }
       case 1: {
         // 신규 상담 신청
-        navigate(`shelter/${item.shelterId}/consulting`);
+        navigate(`shelter/${item.shelterId}/consulting`, { state: { shelterId: item.shelterId } });
         break;
       }
       case 2: {
         // 신규 봉사 신청
-        navigate(`shelter/${item.shelterId}/volunteer`);
+        navigate(`shelter/${item.shelterId}/volunteer`, { state: { shelterId: item.shelterId } });
         break;
       }
       case 3: {
         // 유사견
-        navigate(`/mypage/missing`);
+        navigate('/mypage/missing');
         break;
       }
       case 4: {
@@ -74,44 +74,56 @@ export default function Alarm() {
       let userId = JSON.parse(localStorage.getItem('user')).userId;
       let eventSource = new EventSource(subscribeUrl + '?userId=' + userId);
 
+      eventSource.addEventListener('connect', function (event) {
+        setMessage(event.data);
+      });
+
       // 보호소
       // 신규 실종견 등록
-      eventSource.addEventListener('newMissing', function (event) {
+      eventSource.addEventListener('addMissing', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 신규 상담 신청
-      eventSource.addEventListener('newConsulting', function (event) {
+      eventSource.addEventListener('addConsulting', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 신규 봉사 신청
-      eventSource.addEventListener('newVolunteer', function (event) {
+      eventSource.addEventListener('addVolunteer', function (event) {
+        alert(event.data);
         setMessage(event.data);
-        setIscheck(true);
       });
 
       // 개인사용자
       // 유사견 등록
-      eventSource.addEventListener('registSimilar', function (event) {
+      eventSource.addEventListener('addProtect', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 상담 승인
-      eventSource.addEventListener('acceptConsulting', function (event) {
+      eventSource.addEventListener('accessConsulting', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 상담 거부
-      eventSource.addEventListener('rejectConsulting', function (event) {
+      eventSource.addEventListener('denyConsulting', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 봉사 신청 승인
-      eventSource.addEventListener('acceptVolunteer', function (event) {
+      eventSource.addEventListener('accessVolunteer', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 봉사 신청 거부
-      eventSource.addEventListener('rejectVolunteer', function (event) {
+      eventSource.addEventListener('denyVolunteer', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 상담방 생성
-      eventSource.addEventListener('createConsulting', function (event) {
+      eventSource.addEventListener('createRoom', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
 

@@ -22,6 +22,7 @@ import Stack from '@mui/material/Stack';
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CgCloseO } from 'react-icons/cg';
+import { toast } from 'react-toastify';
 
 export default function ReportMissingDogUpdateContent({ items }) {
   const item = items;
@@ -292,7 +293,7 @@ export default function ReportMissingDogUpdateContent({ items }) {
     ) {
       mutation();
       // navigate('/report');
-      alert('수정되었습니다.');
+      toast('수정되었습니다.', { type: 'success' });
       window.location.replace('/report');
     }
   };

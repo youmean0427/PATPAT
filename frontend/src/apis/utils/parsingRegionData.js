@@ -19,17 +19,20 @@ const dList = [
 ];
 
 export const getRegionList = list => {
+  console.log(list);
   return list.map((item, index) => {
-    let colorStyle = 'zero';
-    if (item.count > 0 && item.count <= 10) {
+    let colorStyle = '';
+    if (item.count === 0) {
+      colorStyle = 'zero';
+    } else if (item.count <= 3) {
       colorStyle = 'one';
-    } else if (item.count <= 20) {
+    } else if (item.count <= 6) {
       colorStyle = 'two';
-    } else if (item.count <= 30) {
+    } else if (item.count <= 9) {
       colorStyle = 'three';
-    } else if (item.count <= 40) {
+    } else if (item.count <= 12) {
       colorStyle = 'four';
-    } else if (item.count <= 50) {
+    } else if (item.count <= 15) {
       colorStyle = 'five';
     } else {
       colorStyle = 'six';

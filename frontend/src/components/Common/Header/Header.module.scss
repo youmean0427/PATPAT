@@ -1,5 +1,4 @@
 @import 'assets/styles/variable.scss';
-@import 'assets/styles/variable.scss';
 .container {
   max-width: 120rem;
   margin: 0 auto;
@@ -14,7 +13,7 @@
 }
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   width: 100%;
   z-index: 3;
