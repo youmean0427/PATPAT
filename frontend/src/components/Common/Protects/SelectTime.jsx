@@ -11,7 +11,7 @@ export default function SelectTime({ shelterId, value, saveFunction, click, setC
   });
 
   if (isLoading) return;
-
+  console.log(data);
   return (
     <div className={styles['consulting-time']}>
       <div className={styles.morning}>

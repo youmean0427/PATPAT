@@ -31,6 +31,16 @@
   font-weight: 700;
   color: $main-color;
   display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.home {
+  font-size: 3rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  &:hover {
+    color: $main-accent-color;
+  }
 }
 .pressed {
   margin-left: 5px;
