@@ -72,6 +72,7 @@ export default function BoardDetail({ boardId, close, change, typeCode }) {
       </div>
       <div className={styles.content} dangerouslySetInnerHTML={{ __html: data.content }}></div>
       <Comment boardId={data.boardId} />
+
       {data.userId === userId ? (
         <div className={styles.buttons}>
           <button onClick={() => navigate('/community/update', { state: { stateCode: typeCode, data: data } })}>
