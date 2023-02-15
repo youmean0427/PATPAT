@@ -10,6 +10,7 @@ import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 //import com.ssafy.patpat.protect.repository.ShelterDogImageRepository;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+import com.ssafy.patpat.shelter.entity.Breed;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.BreedRepository;
 import com.ssafy.patpat.shelter.repository.GugunRepository;
@@ -29,6 +30,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @SpringBootTest
@@ -58,7 +61,30 @@ class PatpatApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
+		Long num = 179L;
+		Long plus = 316L;
+		Random random = new Random();
+		for(int j=0; j<50; j++){
+			for(int i=0; i<16; i++){
+				int shelterId = random.nextInt(179)+316;
+				ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
+						.age(1)
+						.breed(breedRepository.findByBreedId(Long.valueOf(i)))
+						.gender(Gender.수컷)
+						.neutered(Neutered.X)
+						.registDate(LocalDateTime.now().toLocalDate())
+						.findingDate(LocalDate.now())
+						.weight(2.0)
+						.categoryCloth(Cloth.X)
+						.categoryTail(Tail.단발꼬리)
+						.categoryPattern(Pattern.새들)
+						.categoryEar(Ear.모름)
+						.shelter(shelterRepository.findByShelterId(Long.valueOf(shelterId)))
+						.build();
+				shelterProtectedDogRepository.save(shelterProtectedDog);
+				}
+			}
+		}
 
 	@Test
 	void test() throws IOException {

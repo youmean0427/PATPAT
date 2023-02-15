@@ -10,6 +10,7 @@ import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.consulting.repository.ConsultingRepository;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.protect.repository.ShelterProtectedDogRepository;
+import com.ssafy.patpat.protect.service.ProtectServiceImpl;
 import com.ssafy.patpat.report.entity.MissingDog;
 import com.ssafy.patpat.report.repository.MissingDogRepository;
 import com.ssafy.patpat.report.service.ReportService;
@@ -23,6 +24,8 @@ import com.ssafy.patpat.volunteer.repository.VolunteerNoticeRepository;
 import com.ssafy.patpat.volunteer.repository.VolunteerReservationRepository;
 import com.ssafy.patpat.volunteer.repository.VolunteerScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -58,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService{
     AlarmRepository alarmRepository;
     @Autowired
     ReportService reportService;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
     @Override
     @Transactional
     public void notifyAddProtectDogEvent(Long spDogId){
@@ -68,7 +71,6 @@ public class NotificationServiceImpl implements NotificationService{
 
         List<MissingDog> missingDogList = missingDogRepository.selectBydistance(lat,log,lat);
         MsgCode msgCode = MsgCode.MSG_NEW_RESEMBLE_DOG;
-
         for(MissingDog m : missingDogList){
             Alarm alarm = Alarm.builder()
                     .checkRead(false)
@@ -82,11 +84,13 @@ public class NotificationServiceImpl implements NotificationService{
         /** 반경 내에 실종된 동물이 있다면 **/
         if(missingDogList.size() > 0){
             for(MissingDog m : missingDogList){
+                LOGGER.info("오나? 보호소 입장임 {}",m.getUser().getUserId());
                 /** 반견 내에 있는 실종견이 등록견과 닮아있다면 **/
                 if(reportService.isResemble(m,shelterProtectedDog)){
                     Long userId = m.getUser().getUserId();
                     /** 실종견 주인이 현재 구독중이라면 **/
                     if(sseEmitters.containsKey(userId)){
+                        LOGGER.info("구독중인유저 {}",m.getUser().getUserId());
                         SseEmitter sseEmitter = sseEmitters.get(userId);
                         try{
                             sseEmitter.send(SseEmitter.event().name("addProtect").data(msgCode, MediaType.APPLICATION_JSON));
@@ -207,10 +211,11 @@ public class NotificationServiceImpl implements NotificationService{
                 .user(consulting.getUser())
                 .build();
         alarmRepository.save(alarm);
-
+        LOGGER.info("오나? 상담 인증 {}",userId);
         if(sseEmitters.containsKey(userId)){
             SseEmitter sseEmitter = sseEmitters.get(userId);
             try{
+                LOGGER.info("오나? 상담 인증 알람 직전 라인 {}",userId);
                 sseEmitter.send(SseEmitter.event().name("accessConsulting").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
                 sseEmitters.remove(userId);
