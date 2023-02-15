@@ -1,20 +1,27 @@
-import { Margin } from '@mui/icons-material';
-import styledEngine from '@mui/styled-engine';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { applyVolReservation, getVolReservationOfUserCheck, getVolReservationOfUserDetail } from 'apis/api/volunteer';
+import {
+  applyVolReservation,
+  getVolReservationOfUser,
+  getVolReservationOfUserCheck,
+  getVolReservationOfUserDetail,
+} from 'apis/api/volunteer';
 import HTMLReactParser from 'html-react-parser';
 import React from 'react';
-import { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './ScheduleItem.module.scss';
+import { isLoginState } from 'recoil/atoms/user';
+import { useRecoilState } from 'recoil';
+import UserBadge from './UserBadge';
+import { Link } from 'react-router-dom';
+
 export default function ScheduleItem({ item, open, index, noticeId, volunteerDate }) {
-  // item is scheduleId
+  // *** item is scheduleId
 
-  // useState
-
+  const [isLogin] = useRecoilState(isLoginState);
   const [people, setPeople] = useState(0);
   const [submit, setSubmit] = useState(0);
+
   // useQuery :: User의 봉사 예약 신청 내역 리스트
   const { data: checkData } = useQuery({
     queryKey: ['getVolReservationOfUserCheck'],
@@ -22,19 +29,24 @@ export default function ScheduleItem({ item, open, index, noticeId, volunteerDat
   });
 
   // useQuery :: 봉사 상세
-
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['getVolNoticePerMonth', item],
     queryFn: () => getVolReservationOfUserDetail(item),
   });
 
-  //
+  const { data: userVolList, error } = useQuery({
+    queryKey: ['getVolReservationOfUser'],
+    queryFn: () => getVolReservationOfUser(10, 0),
+    enabled: isLogin,
+  });
+
   // userId :: 유저 아이디와 이름 가져오기
   let user = 'user';
   if (localStorage.getItem('user')) {
     user = JSON.parse(localStorage.getItem('user'));
   }
 
+  //
   const Check = () => {
     let result = false;
     for (let i = 0; i < checkData.length; i++) {
@@ -43,6 +55,30 @@ export default function ScheduleItem({ item, open, index, noticeId, volunteerDat
       }
     }
 
+    return result;
+  };
+
+  const NowStateCode = () => {
+    let result = 0;
+    if (userVolList) {
+      for (let i = 0; i < userVolList.list.length; i++) {
+        if (userVolList.list[i].scheduleId === item) {
+          result = userVolList.list[i].reservationStateCode;
+        }
+      }
+    }
+    return result;
+  };
+
+  const NowState = () => {
+    let result = '';
+    if (userVolList) {
+      for (let i = 0; i < userVolList.list.length; i++) {
+        if (userVolList.list[i].scheduleId === item) {
+          result = userVolList.list[i].reservationState;
+        }
+      }
+    }
     return result;
   };
 
@@ -63,6 +99,7 @@ export default function ScheduleItem({ item, open, index, noticeId, volunteerDat
     };
     return applyVolReservation(datas);
   });
+  if (error) return;
   if (isLoading) return;
 
   return (
@@ -80,10 +117,10 @@ export default function ScheduleItem({ item, open, index, noticeId, volunteerDat
             </div>
             <div>
               <span>봉사인원</span>
-              <div>
+              <div className={styles.capacity}>
                 <span>{data.capacity === null ? 0 : data.capacity}</span>
                 <span> / </span>
-                {data.totalCapacity}
+                <span>{data.totalCapacity}</span>
               </div>
             </div>
           </div>
@@ -91,49 +128,92 @@ export default function ScheduleItem({ item, open, index, noticeId, volunteerDat
           <hr />
           <div className={styles.guideLine}>{HTMLReactParser(data.guideLine)}</div>
           <hr />
-          <div>
-            {data.capacity !== data.totalCapacity ? (
-              Check() !== false ? (
-                submit !== 1 ? (
-                  <div className={styles.peopleButton}>
-                    <span className={styles.people}>신청인원</span>
-                    <div className={styles.input}>
-                      <input
-                        min="0"
-                        type="number"
-                        placeholder="인원"
-                        onChange={e => {
-                          setPeople(e.target.value);
-                        }}
-                        value={people}
-                      />
-                    </div>
+          <div className={styles.state}>
+            {isLogin === true ? (
+              data.capacity !== data.totalCapacity ? (
+                Check() !== false ? (
+                  submit !== 1 ? (
+                    <div className={styles.peopleButton}>
+                      <span className={styles.people}>신청인원</span>
+                      <div className={styles.input}>
+                        <input
+                          min="0"
+                          type="number"
+                          placeholder="인원"
+                          onChange={e => {
+                            setPeople(e.target.value);
+                          }}
+                          value={people}
+                        />
+                      </div>
 
-                    <div className={styles.button}>
-                      <button
-                        onClick={() => {
-                          if (people > 0 && people <= data.totalCapacity - data.capacity) {
-                            mutation();
-                            toast('봉사가 신청되었습니다.', { type: 'success' });
-                            setSubmit(1);
-                          } else {
-                            setPeople('');
-                            toast('인원을 확인해주세요.', { type: 'warning' });
-                          }
-                        }}
-                      >
-                        신청
-                      </button>
+                      <div className={styles.button}>
+                        <button
+                          onClick={() => {
+                            if (people > 0 && people <= data.totalCapacity - data.capacity) {
+                              mutation();
+                              toast('봉사가 신청되었습니다.', { type: 'success' });
+                              setSubmit(1);
+                            } else {
+                              setPeople('');
+                              toast('인원을 확인해주세요.', { type: 'warning' });
+                            }
+                          }}
+                        >
+                          신청
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div>
+                      {NowState() !== '' ? (
+                        <Link to="/mypage/volunteer">
+                          <UserBadge
+                            className={styles.userBadge}
+                            state={NowState()}
+                            stateCode={NowStateCode()}
+                            items={null}
+                          />
+                        </Link>
+                      ) : (
+                        <Link to="/mypage/volunteer">
+                          <UserBadge className={styles.userBadge} state="대기중" stateCode={0} items={null} />
+                        </Link>
+                      )}
+                    </div>
+                  )
                 ) : (
-                  <div className={styles.message}>이미 신청되었습니다. </div>
+                  <div>
+                    {NowState() !== '' ? (
+                      <Link to="/mypage/volunteer">
+                        <UserBadge
+                          className={styles.userBadge}
+                          state={NowState()}
+                          stateCode={NowStateCode()}
+                          items={null}
+                        />
+                      </Link>
+                    ) : null}
+                  </div>
                 )
               ) : (
-                <div className={styles.message}>이미 신청되었습니다.</div>
+                <div>
+                  {NowState() !== '' ? (
+                    <Link to="/mypage/volunteer">
+                      <UserBadge
+                        className={styles.userBadge}
+                        state={NowState()}
+                        stateCode={NowStateCode()}
+                        items={null}
+                      />
+                    </Link>
+                  ) : (
+                    <div className={styles.full}>인원초과</div>
+                  )}
+                </div>
               )
             ) : (
-              <div className={styles.message}>인원 가득찼습니다.</div>
+              <div className={styles.message}>봉사활동 신청은 로그인이 필요합니다.</div>
             )}
           </div>
         </div>

@@ -20,13 +20,12 @@ import TailDetail from './TailDetail';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { CgCloseO } from 'react-icons/cg';
+import { Link } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 
 export default function ReportPersonalDogUpdateContent({ items }) {
   const item = items;
-  const navigate = useNavigate();
   // info
   const [title, setTitle] = useState(item.title);
   const [name, setName] = useState(item.name);
@@ -35,7 +34,6 @@ export default function ReportPersonalDogUpdateContent({ items }) {
   const [lat, setLat] = useState(item.latitude);
   const [lng, setLng] = useState(item.longitude);
   const [position, setPosition] = useState({ lat: lat, lng: lng });
-
   const [genderCode, setGenderCode] = useState(item.genderCode);
   const [breedId, setBreedId] = useState({ value: item.breedId });
   const [kg, setKg] = useState(item.kg);
@@ -61,7 +59,6 @@ export default function ReportPersonalDogUpdateContent({ items }) {
   // Modal
   const [modal, setModal] = useState(false);
   const [modalNum, setModalNum] = useState();
-  const reader = new FileReader();
 
   // Alert
   const [titleAlertOpen, setTitleAlertOpen] = useState(0);
@@ -73,7 +70,6 @@ export default function ReportPersonalDogUpdateContent({ items }) {
   const [contentAlertOpen, setContentAlertOpen] = useState(0);
 
   const titleInput = useRef();
-  const fileListInput = useRef();
   const nameInput = useRef();
 
   const breedInput = useRef();

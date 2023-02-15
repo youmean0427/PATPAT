@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { getShelterDetail } from 'apis/api/shelter';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React from 'react';
+
 import SearchVolunteerItem from './SearchVolunteerItem';
 import styles from './SearchVolunteerList.module.scss';
 
 export default function SearchVolunteerList({ items, listToMark }) {
-  const [itemData, setItemData] = useState();
   const itemToList = x => {
     // setItemData(x);
     listToMark(x);
@@ -22,7 +21,7 @@ export default function SearchVolunteerList({ items, listToMark }) {
   return (
     <div className={styles.container}>
       <div className={styles['container-inner']}>
-        <div className={styles.image}>{data.imageList ? <img src={data.imageList[0].filePath} /> : null}</div>
+        <div className={styles.image}>{data.imageList ? <img src={data.imageList[0].filePath} alt="" /> : null}</div>
         <div className={styles.info}>
           <div className={styles.name}>{data.name}</div>
           <hr />

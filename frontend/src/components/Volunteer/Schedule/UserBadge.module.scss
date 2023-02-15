@@ -1,0 +1,39 @@
+@import 'assets/styles/variable.scss';
+
+.badge {
+  width: 100px;
+  text-align: center;
+  bottom: 7%;
+  right: 5%;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  font-weight: 900;
+  color: $white-color;
+  &:hover {
+    background-color: white;
+    opacity: 50%;
+  }
+
+  &.zero {
+    background-color: $state-con-zero;
+  }
+  &.one {
+    background-color: $state-con-one;
+  }
+  &.two {
+    background-color: $state-con-two;
+  }
+  &.three {
+    background-color: $state-con-three;
+  }
+  &.four {
+    background-color: $state-con-four;
+  }
+  &.five {
+    background-color: $state-con-five;
+  }
+  &.six {
+    background-color: $state-con-six;
+  }
+}
