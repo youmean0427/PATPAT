@@ -202,6 +202,7 @@ public class BoardServiceImpl implements BoardService{
         for(Image entity : postImageList){
             fileDtoList.add(
                     FileDto.builder()
+                            .id(entity.getImageId())
                             .filePath(fileService.getFileUrl(entity))
                             .build()
             );
@@ -325,10 +326,14 @@ public class BoardServiceImpl implements BoardService{
 //            List<Image> newImages = new ArrayList<>();
             if(uploadFile != null) {
                 List<Image> images = board.getImages();
-                for(Image image : images){
-                    fileService.deleteFile(image);
-                }
-                images.removeAll(images);
+
+
+                images.stream().forEach(i->{
+                    if(boardDto.getDeleteFileList().contains(i.getImageId())){
+                        fileService.deleteFile(i);
+                        images.remove(i);
+                    }
+                });
 
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));
