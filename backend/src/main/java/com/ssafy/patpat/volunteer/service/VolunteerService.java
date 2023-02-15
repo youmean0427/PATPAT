@@ -613,6 +613,7 @@ public class VolunteerService {
             LOGGER.info("등록된 유저가 아닙니다.");
             return false;
         }
+        
         if(volunteerSchedule.get().getTotaclCapacity() < volunteerSchedule.get().getCapacity() + reservationDto.getCapacity()){
             throw new VolunteerException("인원이 맞지 않습니다.");
         }
