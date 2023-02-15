@@ -1,11 +1,11 @@
-import SlideBanner from 'components/Home/SlideBanner';
+import SlideBanner from 'components/Common/Home/SlideBanner';
 import React from 'react';
 import styles from './Home.module.scss';
-import AbandonedDogList from 'components/Home/AbandonedDogList';
-import Section from 'components/Home/Section';
+import AbandonedDogList from 'components/Common/Home/AbandonedDogList';
+import Section from 'components/Common/Home/Section';
 import { Link } from 'react-router-dom';
 import logo from 'assets/images/logo.png';
-import ReviewList from 'components/Home/ReviewList';
+import ReviewList from 'components/Common/Home/ReviewList';
 export default function Home() {
   return (
     <div className={styles.wrap}>

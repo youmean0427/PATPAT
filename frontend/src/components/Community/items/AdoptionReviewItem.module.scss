@@ -1,0 +1,22 @@
+.desc-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.4rem;
+}
+.title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+.content {
+  text-align: center;
+  font-size: 1.2rem;
+  & > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}

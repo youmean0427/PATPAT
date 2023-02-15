@@ -58,8 +58,8 @@ export default function MenuList({ handleClickModalOpen }) {
         <MenuItem move="shelter/search" value="보호소" dropdown={shelter} />
         <MenuItem move="report" value="실종 신고" />
         <MenuItem move="volunteer" value="봉사" />
-        <MenuItem move="community" value="커뮤니티" />
-        {isLogin ? <Alarm /> : null}
+        <MenuItem move="community/adoption" value="커뮤니티" />
+
         {!isLogin ? (
           <MenuItem move="login" value="로그인" />
         ) : (
