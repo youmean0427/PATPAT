@@ -67,8 +67,9 @@ public class VolunteerService {
         List<VolunteerNotice> volunteerNotices;
         if(requestVolunteerDto.getLatitude() != null &&
                 requestVolunteerDto.getLongitude() != null){
-            BigDecimal a = new BigDecimal(requestVolunteerDto.getLatitude());
-            BigDecimal b = new BigDecimal(requestVolunteerDto.getLongitude());
+//            BigDecimal a = new BigDecimal(requestVolunteerDto.getLatitude());
+            BigDecimal a = BigDecimal.valueOf(Double.valueOf(requestVolunteerDto.getLatitude()));
+            BigDecimal b = BigDecimal.valueOf(Double.valueOf(requestVolunteerDto.getLongitude()));
             List<ShelterDistanceMapping> sheltersInDistance = shelterRepository.findAllShelter(a, b, a, 30);
 //            LOGGER.info("뜨긴 뜨나 {}",sheltersInDistance.get(0).getDistance());
             List<Long> shelters = sheltersInDistance.stream().map( s -> s.getShelterId()).collect(Collectors.toList());
@@ -87,47 +88,6 @@ public class VolunteerService {
             List<Shelter> shelterList = volunteerNotices.stream().map( v -> v.getShelter()).distinct().collect(Collectors.toList());
             List<ShelterLocationDto> shelterLocationDtos = shelterList.stream()
                     .map(ShelterLocationDto::new).collect(Collectors.toList());
-
-//            List<VolunteerNoticeDto> list = new ArrayList<>();
-//            for (VolunteerNotice vn:
-//                    volunteerNotices) {
-////                LOGGER.info("검색된 봉사 공고의 보호소 id {}",vn.getShelter().getShelterId());
-////                List<Long> scheduleId = new ArrayList<>();
-////                for (VolunteerSchedule vs:
-////                        vn.getVolunteerSchedules()) {
-////                    scheduleId.add(vs.getScheduleId());
-////                }
-//                List<Long> scheduleId = vn.getVolunteerSchedules().stream()
-//                        .map(vs -> vs.getScheduleId()).collect(Collectors.toList());
-//
-////                LOGGER.info("distance {}", sheltersInDistance.stream()
-////                        .filter(s -> s.getShelterId().equals(vn.getShelter().getShelterId()))
-////                        .findAny()
-////                        .map( d -> d.getDistance())
-////                        .get());
-//
-//                list.add(VolunteerNoticeDto.builder()
-//                        .name(vn.getShelter().getName())
-//                        .noticeId(vn.getNoticeId())
-//                        .shelterId(vn.getShelter().getShelterId())
-//                        .state(vn.getReservationStateCode().name())
-//                        .stateCode(vn.getReservationStateCode().getCode())
-//                        .title(vn.getTitle())
-//                        .scheduleId(scheduleId)
-//                        .volunteerDate(vn.getVolunteerDate())
-//                        .distance(sheltersInDistance.stream()
-//                            .filter(s -> s.getShelterId().equals(vn.getShelter().getShelterId()))
-//                            .findAny()
-//                            .map(d -> d.getDistance())
-//                            .get())
-//                        .latitude(vn.getShelter().getLatitude().toString())
-//                        .longitude(vn.getShelter().getLongitude().toString())
-//                        .build());
-//            }
-//            ResponseListDto responseVolunteerDto = new ResponseListDto();
-//            responseVolunteerDto.setTotalCount(volunteerNotices.getTotalElements());
-//            responseVolunteerDto.setTotalPage(volunteerNotices.getTotalPages());
-//            responseVolunteerDto.setList(list);
 
             return shelterLocationDtos;
 

@@ -284,7 +284,7 @@ public class VolunteerController {
 
     /** 수락 및 거절 상태 변경 */
     @GetMapping("/reservations/state")
-    @ApiOperation(value = "수락 거절 상태", notes = "봉사 예약 수락 / 거절 인즈엉 파라미터 : reservationId, userId, stateCode(수락 : 1, 거절 : 2)")
+    @ApiOperation(value = "수락 거절 상태", notes = "봉사 예약 수락 / 거절 인즈엉 파라미터 : reservationId, stateCode(수락 : 1, 거절 : 2)")
     public ResponseEntity<Object> changeReservationState(ReservationDto reservationDto) {
         //서비스 호출 코드
         try{

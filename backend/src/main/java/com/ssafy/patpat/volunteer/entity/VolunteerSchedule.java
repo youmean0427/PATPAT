@@ -57,5 +57,6 @@ public class VolunteerSchedule {
     @PrePersist
     public void prePersist() {
         this.reservationStateCode = this.reservationStateCode == null ? Reservation.대기중 : this.reservationStateCode;
+        this.capacity = this.capacity == null ? 0 : this.capacity;
     }
 }
