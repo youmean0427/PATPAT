@@ -8,6 +8,7 @@ import com.ssafy.patpat.shelter.mapping.ShelterDistanceMapping;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
 import com.ssafy.patpat.test.TestMapping;
 import com.ssafy.patpat.test.TestRepository;
+import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -52,6 +55,8 @@ class VolunteerScheduleRepositoryTest {
 
     @Autowired
     private ConsultingRepository consultingRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Test
     @Transactional
@@ -146,17 +151,36 @@ class VolunteerScheduleRepositoryTest {
 //        }
 
 //        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("distance").descending());
-        BigDecimal a = new BigDecimal(37.5152937);
-        BigDecimal b = new BigDecimal(126.9013676);
-//        Page<ShelterDistanceMapping> test = shelterRepository.findAllShelter(a,b,a, pageRequest);
-        List<TestMapping> test = testRepository.selectAllSQL(a,b,a);
-        System.out.println("here");
-        String d = test.stream()
-                .filter(s -> s.getId() == 1)
-                .findAny()
-                .map(ds -> ds.getDistance())
-                .get();
-        System.out.println(d);
+//        BigDecimal a = new BigDecimal(37.5152937);
+//        BigDecimal b = new BigDecimal(126.9013676);
+////        Page<ShelterDistanceMapping> test = shelterRepository.findAllShelter(a,b,a, pageRequest);
+//        List<TestMapping> test = testRepository.selectAllSQL(a,b,a);
+//        System.out.println("here");
+//        String d = test.stream()
+//                .filter(s -> s.getId() == 1)
+//                .findAny()
+//                .map(ds -> ds.getDistance())
+//                .get();
+//        System.out.println(d);
+        System.out.println(passwordEncoder.encode("68"));
+//        System.out.println(passwordEncoder.encode("18"));
+//        System.out.println(passwordEncoder.encode("9"));
+
+//        List<User> users = new ArrayList<>();
+//        for (int i = 1; i <= 200 ; i++) {
+//            users.add(
+//                    User.builder()
+//                            .ageRange("20~29")
+//                            .email("user"+i+"@patpat.com")
+//                            .nickname("user"+i)
+//                            .password("user"+i)
+//                            .providerId("user")
+//                            .provider("user")
+//                            .build()
+//            );
+//        }
+//        userRepository.saveAll(users);
+
 //        for (TestMapping t:
 //                test) {
 ////            System.out.println(t.getShelter().getShelterId());

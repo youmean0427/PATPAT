@@ -1,8 +1,12 @@
 package com.ssafy.patpat.user.controller;
 
+import com.google.gson.JsonObject;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.error.ErrorCode;
+import com.ssafy.patpat.common.error.ErrorDto;
+import com.ssafy.patpat.common.error.LogoutException;
 import com.ssafy.patpat.common.security.filter.JwtFilter;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.user.dto.*;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -147,18 +152,26 @@ public class UserController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<TokenDto> refresh(HttpServletRequest request) {
+    public ResponseEntity<Object> refresh(HttpServletRequest request) {
 
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
-        TokenDto tokenDto = userService.refresh(refreshToken);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
-        httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
-        return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+        try{
+            TokenDto tokenDto = userService.refresh(refreshToken);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(JwtFilter.ACCESSTOKEN_HEADER, "Bearer " + tokenDto.getAccessToken());
+            httpHeaders.add(JwtFilter.REFRESHTOKEN_HEADER, "Bearer " + tokenDto.getRefreshToken());
+            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+        }catch (LogoutException e){
+            ErrorDto error = new ErrorDto(ErrorCode.PLZ_RELOGIN.getMessage(), ErrorCode.PLZ_RELOGIN.getCode());
+
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        }
+
+
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<TokenDto> reissue(HttpServletRequest request) {
+    public ResponseEntity<TokenDto> reissue(HttpServletRequest request) throws LogoutException {
 
         String refreshToken = request.getHeader(JwtFilter.REFRESHTOKEN_HEADER);
         TokenDto tokenDto = userService.reissue(refreshToken);
@@ -203,7 +216,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/insert")
-    @ApiOperation(value = "찜 등록", notes = "임시용 사진 넣기")
+    @ApiOperation(value = "사진 등록", notes = "임시용 사진 넣기")
     public ResponseEntity<Object> insertImage(@RequestPart List<MultipartFile> profileFile) throws Exception{
         //서비스 호출 코드
         userService.insertImage(profileFile);

@@ -29,11 +29,11 @@ public class VolunteerSchedule {
 
     @NotNull
     @Column(name = "start_time")
-    private LocalDateTime startTime;
+    private String startTime;
 
     @NotNull
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private String endTime;
 
     @Column(name = "totalCapacity")
     private Integer totaclCapacity;
@@ -51,11 +51,12 @@ public class VolunteerSchedule {
     @JoinColumn(name = "notice_id")
     private VolunteerNotice volunteerNotice;
 
-    @OneToMany(mappedBy = "volunteerSchedule")
+    @OneToMany(mappedBy = "volunteerSchedule", cascade = CascadeType.ALL)
     private List<VolunteerReservation> volunteerReservations;
 
     @PrePersist
     public void prePersist() {
         this.reservationStateCode = this.reservationStateCode == null ? Reservation.대기중 : this.reservationStateCode;
+        this.capacity = this.capacity == null ? 0 : this.capacity;
     }
 }

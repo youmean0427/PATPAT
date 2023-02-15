@@ -24,4 +24,6 @@ public class RequestVolunteerDto {
     private Long userId;
     private Long scheduleId;
 
+    private Long noticeId;
+
 }

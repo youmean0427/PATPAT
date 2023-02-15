@@ -103,6 +103,24 @@ public class ShelterController {
                     .body(new ResponseMessage("FAIL"));
         }
     }
+    @GetMapping("/mbti/count")
+    @ApiOperation(value = "mbti 총 응시 인원", notes = "총 응시 인원")
+    public ResponseEntity<Object> getMbtiCount(){
+        //service 호출
+        Long count = service.getCount();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(count);
+    }
+
+    @GetMapping("/mbti/add/count")
+    @ApiOperation(value = "응시 인원 추가하기", notes = "응시 인원 추가하기")
+    public ResponseEntity<Object> addMbtiCount(){
+        //service 호출
+        service.addCount();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("SUCCESS"));
+    }
+
     /**
      * 8도, 전체 해당 견종을 가진
      * @return
@@ -215,4 +233,27 @@ public class ShelterController {
                     .body(responseMessage);
         }
     }
+
+    /**
+     * 보호소 인증
+     * @return
+     */
+    @GetMapping("/auth/code")
+    @PreAuthorize("hasAnyRole('USER')")
+    @ApiOperation(value = "보호소 인증", notes = "보호소 인증")
+    public ResponseEntity<ResponseMessage> getAuthCode(@RequestParam("shelterId") Long shelterId){
+        String authCode = service.getAuthCode(shelterId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage(authCode));
+
+    }
+
+    @DeleteMapping("/delete/{shelterId}")
+    @ApiOperation(value = "보호소 인증", notes = "보호소 삭제")
+    public ResponseEntity<ResponseMessage> deleteShelter(@PathVariable Long shelterId){
+        service.deleteShelter(shelterId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("SUCCESS"));
+    }
+
 }

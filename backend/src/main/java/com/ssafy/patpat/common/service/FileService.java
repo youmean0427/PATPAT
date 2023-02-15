@@ -2,8 +2,10 @@ package com.ssafy.patpat.common.service;
 
 import com.ssafy.patpat.common.entity.Image;
 import com.ssafy.patpat.common.repository.ImageRepository;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +18,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class FileService {
 
-    private final ImageRepository imageRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Value("${app.fileupload.uploadPath}")
     String uploadPath;

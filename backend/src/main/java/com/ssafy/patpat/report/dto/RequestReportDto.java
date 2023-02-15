@@ -14,5 +14,4 @@ public class RequestReportDto {
     private Integer limit;
     private Long breedId;
     private Integer gender;
-    private Long missingId;
 }

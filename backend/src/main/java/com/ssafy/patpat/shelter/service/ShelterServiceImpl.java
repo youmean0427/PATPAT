@@ -22,6 +22,7 @@ import com.ssafy.patpat.shelter.entity.*;
 import com.ssafy.patpat.shelter.mapping.ShelterNameMapping;
 import com.ssafy.patpat.shelter.repository.*;
 import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.entity.Authority;
 import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.OwnerRepository;
@@ -31,7 +32,6 @@ import com.ssafy.patpat.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,11 +41,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ShelterServiceImpl implements ShelterService{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShelterServiceImpl.class);
+    @Autowired
+    CountRepository countRepository;
     @Autowired
     ShelterRepository shelterRepository;
     @Autowired
@@ -78,8 +81,9 @@ public class ShelterServiceImpl implements ShelterService{
     @Autowired
     UserService userService;
     @Override
+    @Transactional
     public BreedDto selectBreedByMbti(String mbtiId) {
-        long breedId = MBTI.valueOf(mbtiId).ordinal();
+        long breedId = MBTI.valueOf(mbtiId).getCode();
         Breed breed = breedRepository.findByBreedId(breedId);
         Image breedImage = breed.getImage();
 //        BreedImage breedImage = breedImageRepository.findByBreedId(breedId);
@@ -108,16 +112,37 @@ public class ShelterServiceImpl implements ShelterService{
 
         return breedDto;
     }
+
     @Override
+    @Transactional
+    public Long getCount(){
+        Count c = countRepository.findByCountId(1L);
+        Long count = c.getCount();
+        return count;
+    }
+
+    @Override
+    @Transactional
+    public Boolean addCount() {
+        Count c = countRepository.findByCountId(1L);
+        c.setCount(c.getCount()+1);
+        countRepository.save(c);
+        return true;
+    }
+
+    @Override
+    @Transactional
     public List<Sido> sidoList() {
         return sidoRepository.findAll();
     }
 
     @Override
+    @Transactional
     public List<Gugun> gugunList(String sidoCode) {
         return gugunRepository.findBySidoCode(sidoCode);
     }
     @Override
+    @Transactional
     public List<BreedDto> selectBreedList() {
         List<Breed> breedList = breedRepository.findAll();
         List<BreedDto> breedDtoList = new ArrayList<>();
@@ -137,6 +162,7 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
+    @Transactional
     public MbtiMapDto selectBreedCountByMbti(Long breedId) {
         MbtiMapDto mbtiMapDto = new MbtiMapDto();
         List<SidoCountDto> sidoCountDtoList = new ArrayList<>();
@@ -166,6 +192,7 @@ public class ShelterServiceImpl implements ShelterService{
     // 시도코드 , 구군코드
     // 시도코드 , 구군코드 , 견종
     @Override
+    @Transactional
     public ResponseListDto shelterList(RequestShelterDto dto) {
         ResponseListDto responseListDto = new ResponseListDto();
         Long breedId = dto.getBreedId();
@@ -213,8 +240,10 @@ public class ShelterServiceImpl implements ShelterService{
             shelterList = shelterRepository.findByShelterIdIn(longList,pageRequest);
         }
         List<ShelterDto> shelterDtoList = new ArrayList<>();
-        System.out.println(shelterList);
-        for(Shelter s : shelterList){
+//        System.out.println(shelterList);
+        List<Shelter> shelters = shelterList.toList().stream()
+                .filter( s -> Optional.ofNullable(s.getOwner()).isPresent()).collect(Collectors.toList());
+        for(Shelter s : shelters){
             List<Image> shelterImage = s.getImages();
             List<FileDto> imageList = new ArrayList<>();
             for(Image i : shelterImage){
@@ -244,6 +273,7 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
+    @Transactional
     public List<ShelterDto> shelterListInVolunteer(String gugunCode) {
         List<Shelter> shelterList = shelterRepository.findByGugunCode(gugunCode);
         List<ShelterDto> shelterDtoList = new ArrayList<>();
@@ -263,6 +293,7 @@ public class ShelterServiceImpl implements ShelterService{
      *보호소 등록, 수정, 상세
      */
     @Override
+    @Transactional
     public AuthCodeDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto){
         String shelterNm = requestParamShelterInsertDto.getShelterName();
         String shelterCode = requestParamShelterInsertDto.getShelterCode();
@@ -334,8 +365,10 @@ public class ShelterServiceImpl implements ShelterService{
                 return dto;
             }
             else{
-                dto.setAuthCode(passwordEncoder.encode(shelter.getRegNumber()));
-                System.out.println(dto);
+                String auth = passwordEncoder.encode(shelter.getRegNumber());
+                dto.setAuthCode(auth);
+                shelter.setAuthCode(auth);
+//                System.out.println(dto);
                 Optional<Owner> o = Optional.ofNullable(shelter.getOwner());
                 if(!o.isPresent()){ // owner가 없다면
                     Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
@@ -374,6 +407,7 @@ public class ShelterServiceImpl implements ShelterService{
         }
         return dto;
     }
+
     @Override
     @Transactional
     public ResponseMessage updateShelter(ShelterDto shelterDto, List<MultipartFile> uploadFile) throws Exception {
@@ -454,14 +488,33 @@ public class ShelterServiceImpl implements ShelterService{
         Optional<Shelter> s = shelterRepository.findById(shelterId);
         if(!s.isPresent()){
             if(passwordEncoder.matches(s.get().getRegNumber(),authCode)){
-                UserDto user = userService.getUserWithAuthorities();
-                Optional<User> u = userRepository.findById(user.getUserId());
-                u.get().setShelter(s.get());
-                userRepository.save(u.get());
+                Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
+                user.get().setShelter(s.get());
+
+                List<Authority> authorities = user.get().getAuthorities();
+                authorities.add(Authority.builder()
+                            .authorityName("ROLE_ADMIN")
+                            .build());
+                user.get().setAuthorities(authorities);
+                userRepository.save(user.get());
             }
             else return new ResponseMessage("FAIL");
         }else return new ResponseMessage("FAIL");
         return new ResponseMessage("SUCCESS");
+    }
+
+    @Override
+    @Transactional
+    public String getAuthCode(Long shelterId) {
+        Optional<Shelter> shelter = shelterRepository.findById(shelterId);
+        if(!shelter.isPresent()){
+            return null;
+        }
+        Optional<String> authCode = Optional.ofNullable(shelter.get().getAuthCode());
+        if(!authCode.isPresent()){
+            return null;
+        }
+        return authCode.get();
     }
 
 
@@ -526,6 +579,15 @@ public class ShelterServiceImpl implements ShelterService{
             idx++;
         }
         return shelterNameDtos;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteShelter(Long shelterId) {
+        LOGGER.info("shelterId : {}", shelterId);
+        Shelter shelter = shelterRepository.findByShelterId(shelterId);
+        shelterRepository.delete(shelter);
+        return true;
     }
 
 

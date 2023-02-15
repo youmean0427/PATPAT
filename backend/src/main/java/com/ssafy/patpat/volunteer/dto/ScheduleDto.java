@@ -1,25 +1,17 @@
 package com.ssafy.patpat.volunteer.dto;
 
-import com.ssafy.patpat.common.code.Reservation;
-import com.ssafy.patpat.common.dto.ResponseListDto;
-import com.ssafy.patpat.shelter.entity.Shelter;
-import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
-import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
 import com.ssafy.patpat.volunteer.entity.VolunteerSchedule;
-import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class VolunteerScheduleDto {
-
+public class ScheduleDto {
     private Long scheduleId;
 
     private Long noticeId;
@@ -38,9 +30,10 @@ public class VolunteerScheduleDto {
 
     private String reservationState;
 
-    private ResponseListDto reservations;
+    private String title;
+    private String date;
 
-    public VolunteerScheduleDto(VolunteerSchedule vs){
+    public ScheduleDto(VolunteerSchedule vs){
         this.scheduleId = vs.getScheduleId();
         this.noticeId = vs.getVolunteerNotice().getNoticeId();
         this.startTime = vs.getStartTime();
@@ -48,9 +41,9 @@ public class VolunteerScheduleDto {
         this.totalCapacity = vs.getTotaclCapacity();
         this.capacity = vs.getCapacity();
         this.guideLine = vs.getGuideLine();
+        this.title = vs.getVolunteerNotice().getTitle();
+        this.date = vs.getVolunteerNotice().getVolunteerDate();
         this.reservationStateCode = vs.getReservationStateCode().getCode();
         this.reservationState = vs.getReservationStateCode().name();
     }
-
-
 }

@@ -63,6 +63,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseListDto selectUserBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(), Sort.by("boardId").descending());
         /**
@@ -101,6 +102,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseListDto selectBoardList(RequestBoardDto requestBoardDto) {
         PageRequest pageRequest = PageRequest.of(requestBoardDto.getOffSet(),requestBoardDto.getLimit(),Sort.by("boardId").descending());
         Page<Board> entityList = boardRepository.findByBoardCode(BoardCode.of(requestBoardDto.getTypeCode()),pageRequest);
@@ -155,6 +157,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public BoardDto detailBoard(Long boardId) {
         Board board = boardRepository.findByBoardId(boardId);
         List<Comment> commentList = commentRepository.findByBoardBoardId(boardId);
@@ -199,16 +202,23 @@ public class BoardServiceImpl implements BoardService{
         for(Image entity : postImageList){
             fileDtoList.add(
                     FileDto.builder()
+                            .id(entity.getImageId())
                             .filePath(fileService.getFileUrl(entity))
                             .build()
             );
         }
+        /** 조회수 증가 */
+        int count = board.getCount();
+        count++;
+        board.setCount(count);
+        boardRepository.save(board);
         BoardDto boardDto = BoardDto.builder()
                 .boardId(board.getBoardId())
+                .userId(board.getUser().getUserId())
                 .author(board.getUser().getNickname())
                 .registDate(board.getDateTime().toLocalDate())
                 .title(board.getTitle())
-                .count(board.getCount())
+                .count(count)
                 .content(board.getContent())
                 .commentList(commentDtoList)
                 .fileUrlList(fileDtoList)
@@ -311,19 +321,26 @@ public class BoardServiceImpl implements BoardService{
             Board board = boardRepository.findByBoardId(boardId);
             board.update(boardDto.getTitle(),boardDto.getContent());
 
-            List<Image> images = board.getImages();
-            for(Image image : images){
-                fileService.deleteFile(image);
-            }
-            images.removeAll(images);
+
 
 //            List<Image> newImages = new ArrayList<>();
             if(uploadFile != null) {
+                List<Image> images = board.getImages();
+
+
+                images.stream().forEach(i->{
+                    if(boardDto.getDeleteFileList().contains(i.getImageId())){
+                        fileService.deleteFile(i);
+                        images.remove(i);
+                    }
+                });
+
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));
                 }
+                board.setImages(images);
             }
-            board.setImages(images);
+
             boardRepository.save(board);
 
 //            File uploadDir = new File(uploadPath +File.separator+uploadFolder);
@@ -435,6 +452,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage insertComment(CommentDto commentDto) {
         ResponseMessage responseMessage = new ResponseMessage();
 //        UserDto userDto = userService.getUserWithAuthorities();
@@ -530,6 +548,7 @@ public class BoardServiceImpl implements BoardService{
      * @return
      */
     @Override
+    @Transactional
     public ResponseMessage updateReply(Long replyId, ReplyDto replyDto) {
         ResponseMessage responseMessage = new ResponseMessage();
 

@@ -1,6 +1,7 @@
 package com.ssafy.patpat.protect.service;
 
 //import com.ssafy.patpat.board.entity.PostImage;
+import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.category.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -67,6 +68,9 @@ public class ProtectServiceImpl implements ProtectService{
     ShelterProtectedDogRepository shelterProtectedDogRepository;
 //    @Autowired
 //    ShelterDogImageRepository shelterDogImageRepository;
+    @Autowired
+    NotificationService notificationService;
+
 
     @Autowired
     ShelterRepository shelterRepository;
@@ -80,13 +84,14 @@ public class ProtectServiceImpl implements ProtectService{
     @Autowired
     ColorService colorService;
     @Override
+    @Transactional
     public ResponseListDto selectProtectList(RequestProtectDto requestProtectDto) {
         try{
             ResponseListDto responseListDto = new ResponseListDto();
             PageRequest pageRequest;
             Page<ShelterProtectedDog> shelterProtectedDogList;
             List<ProtectState> filterList = new ArrayList<>();
-            filterList.add(ProtectState.입양);
+            filterList.add(ProtectState.입양완료);
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
             LOGGER.info("여기와? {} : ",requestProtectDto);
@@ -183,13 +188,14 @@ public class ProtectServiceImpl implements ProtectService{
         }
     }
     @Override
+    @Transactional
     public ResponseListDto selectProtectListByShelter(RequestProtectDto requestProtectDto) {
         try{
             ResponseListDto responseListDto = new ResponseListDto();
             PageRequest pageRequest;
             Page<ShelterProtectedDog> shelterProtectedDogList;
             List<ProtectState> filterList = new ArrayList<>();
-            filterList.add(ProtectState.입양);
+            filterList.add(ProtectState.입양완료);
             filterList.add(ProtectState.자연사);
             filterList.add(ProtectState.안락사);
 
@@ -285,6 +291,7 @@ public class ProtectServiceImpl implements ProtectService{
 
     }
     @Override
+    @Transactional
     public ProtectDto detailProtect(Long protectId) {
         try{
             ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(protectId);
@@ -426,6 +433,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .longitude(shelter.getLongitude())
                     .build();
             shelterProtectedDogRepository.save(shelterProtectedDog);
+            notificationService.notifyAddProtectDogEvent(shelterProtectedDog.getSpDogId());
             responseMessage.setMessage("SUCCESS");
         } catch (Exception e) {
             e.printStackTrace();
@@ -434,6 +442,7 @@ public class ProtectServiceImpl implements ProtectService{
         return responseMessage;
     }
     @Override
+    @Transactional
     public ResponseMessage insertBatchesProtect(ShelterDto shelterDto, MultipartFile uploadFile) throws IOException {
         ResponseMessage responseMessage = new ResponseMessage();
         HashMap<String, String[]> map = new HashMap<>();
@@ -565,6 +574,8 @@ public class ProtectServiceImpl implements ProtectService{
                     shelterProtectedDog.setRegistDate(LocalDate.now());
                     shelterProtectedDog.setImages(images);
                     shelterProtectedDog.setColors(colors);
+                    shelterProtectedDog.setLatitude(shelter.getLatitude());
+                    shelterProtectedDog.setLongitude(shelter.getLongitude());
                     Collections.sort(strList);
                     StringBuilder sb = new StringBuilder();
                     for(int i=0; i<strList.size(); i++){
@@ -578,6 +589,8 @@ public class ProtectServiceImpl implements ProtectService{
             //리스트에 동물이 들어간 이후 등록
             for(ShelterProtectedDog dog : list){
                 shelterProtectedDogRepository.save(dog);
+                /** 비동기로 가야하나... ?? **/
+                notificationService.notifyAddProtectDogEvent(dog.getSpDogId());
             }
             //만약 10번에 등록된 강아지다 ~ 8개 등록되어있는 상황이면 18번까지있음
             long startIdx = list.get(0).getSpDogId();

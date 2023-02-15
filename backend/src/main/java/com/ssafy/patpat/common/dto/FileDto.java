@@ -3,6 +3,8 @@ package com.ssafy.patpat.common.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @ToString
 @NoArgsConstructor

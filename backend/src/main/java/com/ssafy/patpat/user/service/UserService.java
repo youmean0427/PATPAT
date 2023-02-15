@@ -1,9 +1,11 @@
 package com.ssafy.patpat.user.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.patpat.alarm.entity.Alarm;
 import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.common.error.LogoutException;
 import com.ssafy.patpat.common.redis.RedisService;
 import com.ssafy.patpat.common.security.jwt.TokenProvider;
 import com.ssafy.patpat.common.service.FileService;
@@ -124,6 +126,8 @@ public class UserService {
 
         List<ShelterProtectedDog> favoriteDogs = new ArrayList<>();
 
+        List<Alarm> alarms = new ArrayList<>();
+
         String password = passwordEncoder.encode(userDto.getProvider() + userDto.getProviderId());
 
         Image image = fileService.insertFileUrl(userDto.getProfileImageUrl(), userDto.getProvider());
@@ -138,6 +142,7 @@ public class UserService {
                 .image(image)
                 .authorities(list)
                 .favoriteDogs(favoriteDogs)
+                .alarms(alarms)
                 .build();
 
         return userRepository.save(user);
@@ -145,7 +150,7 @@ public class UserService {
 
     /** access token이 만료되기 일보 직전이라 access만 재발급할 때 */
     @Transactional
-    public TokenDto refresh(String refreshToken){
+    public TokenDto refresh(String refreshToken) throws LogoutException {
         TokenDto token = new TokenDto();
 
         if(!tokenProvider.checkRefreshToken(refreshToken)){
@@ -164,7 +169,7 @@ public class UserService {
 
     /** access token이 만료됐지만 refresh token은 살아 있어서 둘다 재발급할 때 */
     @Transactional
-    public TokenDto reissue(String refreshToken){
+    public TokenDto reissue(String refreshToken) throws LogoutException {
         TokenDto token = new TokenDto();
 
         if(!tokenProvider.checkRefreshToken(refreshToken)){
@@ -275,6 +280,7 @@ public class UserService {
                     .email(user.get().getEmail())
                     .username(user.get().getNickname())
                     .ageRange(user.get().getAgeRange())
+                    .exp(user.get().getExp())
                     .profileImageUrl(fileService.getFileUrl(user.get().getImage()))
                     .providerId(user.get().getProviderId())
                     .shelterId(shelterId)

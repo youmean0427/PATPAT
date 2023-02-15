@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonValueInstantiator;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.consulting.entity.Time;
+import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.user.entity.Owner;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.volunteer.dto.VolunteerNoticeDto;
@@ -25,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -55,8 +56,11 @@ public class Shelter {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "shelter")
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
     private List<VolunteerNotice> volunteerNotices;
+
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
+    private List<Consulting> consultings;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
@@ -67,5 +71,16 @@ public class Shelter {
 
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
     private List<Time> times;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_shelter",
+            joinColumns = {@JoinColumn(name = "shelter_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private List<User> users;
+
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
+    private List<ShelterProtectedDog> shelterProtectedDogs;
 
 }

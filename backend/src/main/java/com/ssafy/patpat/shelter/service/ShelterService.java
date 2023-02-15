@@ -12,6 +12,10 @@ import java.util.List;
 
 public interface ShelterService {
     List<Sido> sidoList();
+    Long getCount();
+
+    Boolean addCount();
+
     List<Gugun> gugunList(String sidoCode);
     ResponseListDto shelterList(RequestShelterDto dto);
     List<ShelterDto> shelterListInVolunteer(String gugunCode);
@@ -23,9 +27,14 @@ public interface ShelterService {
 
     ResponseMessage AuthShelter(Long shelterId, String authCode);
 
+    String getAuthCode(Long shelterId);
+
     List<BreedDto> selectBreedList();
 
     MbtiMapDto selectBreedCountByMbti(Long breedId);
 
     List<ShelterNameDto> selectShelterAll();
+
+    Boolean deleteShelter(Long shelterId);
+
 }

@@ -1,5 +1,6 @@
 package com.ssafy.patpat.report.service;
 
+import com.ssafy.patpat.alarm.service.NotificationService;
 import com.ssafy.patpat.common.code.MissingState;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -71,6 +72,8 @@ public class ReportServiceImpl implements ReportService{
     UserService userService;
     @Autowired
     ColorService colorService;
+    @Autowired
+    NotificationService notificationService;
 
     @Autowired
     ShelterProtectedDogRepository shelterProtectedDogRepository;
@@ -80,6 +83,7 @@ public class ReportServiceImpl implements ReportService{
     @Value("${app.fileupload.uploadDir}")
     String uploadFolder;
     @Override
+    @Transactional
     public ResponseListDto selectMissingList(RequestReportDto requestReportDto) {
         try{
             ResponseListDto responseListDto = new ResponseListDto();
@@ -150,6 +154,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ResponseListDto selectMissingListByUser(RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
@@ -211,6 +216,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ResponseListDto selectPersonalProtectionList(RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         Gender gender = Gender.of(requestReportDto.getGender());
@@ -275,6 +281,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ReportDto detailMissing(Long missingId) {
         MissingDog missingDog = missingDogRepository.findByMissingId(missingId);
         List<Image> missingDogImageList = missingDog.getImages();
@@ -336,6 +343,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ReportDto detailPersonalProtection(Long personalProtectId) {
         PersonalProtectedDog personalProtectedDog = personalProtectedDogRepository.findByPpDogId(personalProtectId);
         List<Image> personalProtectedDogImageList = personalProtectedDog.getImages();
@@ -400,6 +408,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
+    @Transactional
     public ResponseMessage updateReport(ReportDto reportDto, List<MultipartFile> uploadFile) throws Exception {
         ResponseMessage responseMessage = new ResponseMessage();
         try{
@@ -618,7 +627,7 @@ public class ReportServiceImpl implements ReportService{
 //        UserDto userDto = userService.getUserWithAuthorities();
         Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         Breed breed = breedRepository.findByBreedId(reportDto.getBreedId());
-        System.out.println(uploadFile);
+        //System.out.println(uploadFile);
         try{
             List<Image> images = new ArrayList<>();
             if(uploadFile != null){
@@ -628,12 +637,6 @@ public class ReportServiceImpl implements ReportService{
                 }
             }
             List<DogColor> colors = new ArrayList<>();
-            for (String c:
-                    reportDto.getCategoryColor()) {
-                colors.add(DogColor.builder()
-                        .colorCode(c)
-                        .build());
-            }
             /** Color 처리 로직 */
             /** 프론트에게 다시 줘야하는 #333333 형식의 컬러 코드 리스트를 엔티티리스트에 저장 **/
             for(String color : reportDto.getCategoryColor()){
@@ -671,40 +674,8 @@ public class ReportServiceImpl implements ReportService{
                         .build();
 
                 missingDogRepository.save(missingDog);
+                notificationService.notifyAddMissingDogEvent(missingDog.getMissingId());
 
-//                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-//                if (!uploadDir.exists()) uploadDir.mkdir();
-//                if (uploadFile != null) {
-//                    for (MultipartFile partFile : uploadFile) {
-//                        int missingId = missingDog.getMissingId();
-//                        String fileName = partFile.getOriginalFilename();
-//
-//                        UUID uuid = UUID.randomUUID();
-//
-//                        String extension = FilenameUtils.getExtension(fileName);
-//
-//                        String savingFileName = uuid + "." + extension;
-//
-//                        File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-//
-//                        partFile.transferTo(destFile);
-//
-//                        Image image = Image.builder()
-//                                .origFilename(fileName)
-//                                .fileSize((int) partFile.getSize())
-//                                .filename(fileName)
-//                                .filePath(uploadFolder + "/" + savingFileName)
-//                                .build();
-//
-//                        imageRepository.save(image);
-//                        MissingDogImage missingDogImage = MissingDogImage.builder()
-//                                .imageId(image.getImageId())
-//                                .missingId(missingId)
-//                                .build();
-//
-//                        missingDogImageRepository.save(missingDogImage);
-//                    }
-//                }
             }else{
 
                 PersonalProtectedDog personalProtectedDog = PersonalProtectedDog.builder()
@@ -732,39 +703,6 @@ public class ReportServiceImpl implements ReportService{
 
             personalProtectedDogRepository.save(personalProtectedDog);
 
-//                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-//                if (!uploadDir.exists()) uploadDir.mkdir();
-//                if (uploadFile != null) {
-//                    for (MultipartFile partFile : uploadFile) {
-//                        int ppDogId = personalProtectedDog.getPpDogId();
-//                        String fileName = partFile.getOriginalFilename();
-//
-//                        UUID uuid = UUID.randomUUID();
-//
-//                        String extension = FilenameUtils.getExtension(fileName);
-//
-//                        String savingFileName = uuid + "." + extension;
-//
-//                        File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-//
-//                        partFile.transferTo(destFile);
-//
-//                        Image image = Image.builder()
-//                                .origFilename(fileName)
-//                                .fileSize((int) partFile.getSize())
-//                                .filename(fileName)
-//                                .filePath(uploadFolder + "/" + savingFileName)
-//                                .build();
-//
-//                        imageRepository.save(image);
-//                        PersonalProtectedDogImage personalProtectedDogImage = PersonalProtectedDogImage.builder()
-//                                .imageId(image.getImageId())
-//                                .ppDogId(ppDogId)
-//                                .build();
-//
-//                        personalProtectedDogImageRepository.save(personalProtectedDogImage);
-//                    }
-//                }
             }
             responseMessage.setMessage("SUCCESS");
         }catch (Exception e){
@@ -810,33 +748,100 @@ public class ReportServiceImpl implements ReportService{
         MissingDog missingDog = missingDogRepository.findByMissingId(missingId);
         //Optional<User> user = SecurityUtil.getCurrentEmail().flatMap(userRepository::findOneWithAuthoritiesByEmail);
         PageRequest pageRequest = PageRequest.of(requestReportDto.getOffSet(), requestReportDto.getLimit());
-        System.out.println(missingDog);
-        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
-        for(ShelterProtectedDog s : shelterProtectedDogPage){
-            ProtectDto protectDto = new ProtectDto();
-            protectDto.setProtectId(s.getSpDogId());
-            protectDto.setKg(s.getWeight());
-            protectDto.setAge(s.getAge());
-            protectDto.setProtectName(s.getName());
-            protectDto.setBreedId(s.getBreed().getBreedId());
-            protectDto.setBreedName(s.getBreed().getName());
-            if ((s.getImages().size() > 0)) {
-                protectDto.setThumbnail(s.getImages().get(0).getFilePath());
-            } else {
-                protectDto.setThumbnail(fileService.getFileUrl(fileService.getDefaultImage()));
-            }
-            protectDto.setNeuteredCode(s.getNeutered().getCode());
-            protectDto.setNeutered(s.getNeutered().name());
-            protectDto.setStateCode(s.getStateCode().getCode());
-            protectDto.setState(s.getStateCode().name());
-            protectDto.setGenderCode(s.getGender().getCode());
-            protectDto.setGender(s.getGender().name());
+        //System.out.println(missingDog);
+//        Page<ShelterProtectedDog> shelterProtectedDogPage = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate(),pageRequest);
+        List<ShelterProtectedDog> shelterProtectedDogList = shelterProtectedDogRepository.selectBydistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
+        //System.out.println(shelterProtectedDogList.size());
+        //Long totalCount = shelterProtectedDogRepository.countDogByDistance(missingDog.getLatitude(),missingDog.getLongitude(),missingDog.getLatitude(),missingDog.getMissingDate());
 
-            protectDtoList.add(protectDto);
+        for(ShelterProtectedDog s : shelterProtectedDogList){
+            /** 유사도 코드 **/
+            if(isResemble(missingDog,s)){
+                ProtectDto protectDto = new ProtectDto();
+                protectDto.setProtectId(s.getSpDogId());
+                protectDto.setKg(s.getWeight());
+                protectDto.setAge(s.getAge());
+                protectDto.setProtectName(s.getName());
+                protectDto.setBreedId(s.getBreed().getBreedId());
+                protectDto.setBreedName(s.getBreed().getName());
+                if ((s.getImages().size() > 0)) {
+                    protectDto.setThumbnail(fileService.getFileUrl(s.getImages().get(0)));
+                } else {
+                    protectDto.setThumbnail(fileService.getFileUrl(fileService.getDefaultImage()));
+                }
+                protectDto.setNeuteredCode(s.getNeutered().getCode());
+                protectDto.setNeutered(s.getNeutered().name());
+                protectDto.setStateCode(s.getStateCode().getCode());
+                protectDto.setState(s.getStateCode().name());
+                protectDto.setGenderCode(s.getGender().getCode());
+                protectDto.setGender(s.getGender().name());
+
+                protectDtoList.add(protectDto);
+            }
         }
+        Long totalCount = Long.valueOf(protectDtoList.size());
+        Long totalPage = totalCount % requestReportDto.getLimit() == 0 ? totalCount / requestReportDto.getLimit()
+                : (totalCount / requestReportDto.getLimit()) +1;
         responseListDto.setList(protectDtoList);
-        responseListDto.setTotalPage(shelterProtectedDogPage.getTotalPages());
-        responseListDto.setTotalCount(shelterProtectedDogPage.getTotalElements());
+        responseListDto.setTotalPage(Math.toIntExact(totalPage));
+        responseListDto.setTotalCount(totalCount);
         return responseListDto;
+    }
+
+    @Transactional
+    public boolean isResemble(MissingDog missingDog, ShelterProtectedDog s) {
+        int count = 0;
+        int total = 7;
+        /** 견종 여부 **/
+        if(missingDog.getBreed().getBreedId()==s.getBreed().getBreedId()){
+            count++;
+        }
+        /** 성별 여부 **/
+        if(missingDog.getGender().getCode()!=3 && s.getGender().getCode()!=3){
+            if(missingDog.getGender().equals(s.getGender())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        /** 옷 입었는지 여부 **/
+        if(missingDog.getCategoryCloth().equals(s.getCategoryCloth())){
+            count++;
+        }
+        /** 색깔 여부 **/
+        if(missingDog.getCategoryColor().equals(s.getCategoryColor())){
+            count++;
+        }
+        /** 귀 여부 **/
+        if(missingDog.getCategoryEar().getCode()!=0 && s.getCategoryEar().getCode()!=0){
+            if(missingDog.getCategoryEar().equals(s.getCategoryEar())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        /** 패턴 여부 **/
+        if(missingDog.getCategoryPattern().getCode()!=0 && s.getCategoryPattern().getCode()!=0){
+            if(missingDog.getCategoryPattern().equals(s.getCategoryPattern())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        /** 꼬리 여부 **/
+        if(missingDog.getCategoryTail().getCode()!=0 && s.getCategoryTail().getCode()!=0){
+            if(missingDog.getCategoryPattern().equals(s.getCategoryPattern())){
+                count++;
+            }
+        }else{
+            total--;
+        }
+        double percentage = (double)count/(double) total;
+        if(percentage > 0.6){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

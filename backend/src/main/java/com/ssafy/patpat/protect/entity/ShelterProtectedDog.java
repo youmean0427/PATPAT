@@ -62,7 +62,12 @@ public class ShelterProtectedDog {
             inverseJoinColumns = {@JoinColumn(name = "image_id")})
     private List<Image> images;
 
-    @ManyToMany(mappedBy = "favoriteDogs")
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite",
+            joinColumns = {@JoinColumn(name = "sp_dog_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
     private List<User> users;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

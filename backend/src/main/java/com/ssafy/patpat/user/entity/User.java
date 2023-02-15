@@ -1,6 +1,8 @@
 package com.ssafy.patpat.user.entity;
 
+import com.ssafy.patpat.alarm.entity.Alarm;
 import com.ssafy.patpat.common.entity.Image;
+import com.ssafy.patpat.consulting.entity.Consulting;
 import com.ssafy.patpat.protect.entity.ShelterProtectedDog;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.sun.istack.NotNull;
@@ -25,9 +27,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-
-    @Column(name = "missing_id")
-    private Long missingId;
 
     @Column(name = "age_range")
     private String ageRange;
@@ -56,18 +55,20 @@ public class User {
         this.exp = exp;
     }
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Consulting> consultings;
     @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_authority",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private List<Authority> authorities;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_favorite",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -85,6 +86,9 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Owner owner;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Alarm> alarms;
 
     @PrePersist
     public void prePersist() {

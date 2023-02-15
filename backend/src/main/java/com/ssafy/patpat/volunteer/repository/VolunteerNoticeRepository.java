@@ -28,8 +28,10 @@ public interface VolunteerNoticeRepository extends JpaRepository<VolunteerNotice
      * */
     Page<VolunteerNotice> findWithShelterByShelterShelterIdAndReservationStateCodeAndVolunteerDateGreaterThan(Long shelterId, Reservation reservation, String volunteerDate, PageRequest pageRequest);
 
+    Page<VolunteerNotice> findWithShelterByShelterShelterIdAndReservationStateCodeAndVolunteerDateBetween(Long shelterId, Reservation reservation, String startDate, String endDate, PageRequest pageRequest);
     /**
      * 월별로 탐색
      * */
     List<VolunteerNotice> findWithShelterByShelterShelterIdAndVolunteerDateLikeOrderByVolunteerDateAsc(Long shelterId, String volunteerDate);
+    VolunteerNotice findByNoticeId(Long noticeId);
 }
