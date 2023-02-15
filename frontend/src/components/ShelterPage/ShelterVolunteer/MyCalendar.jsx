@@ -3,7 +3,7 @@ import { getVolNoticePerMonth } from 'apis/api/volunteer';
 import moment from 'moment';
 import React from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { myShelterIdState } from 'recoil/atoms/user';
 import Toolbar from './Toolbar';
 import './MyCalendar.scss';
@@ -11,24 +11,37 @@ import useModal from 'hooks/useModal';
 import EnrollVolunteerModal from 'components/Common/Modal/shelters/EnrollVolunteerModal';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { volNoticeListPerMonthState } from 'recoil/atoms/shelter';
+import ManageVolNoticeModal from 'components/Common/Modal/shelters/ManageVolNoticeModal';
 
 export default function MyCalendar() {
   const myShelterId = useRecoilValue(myShelterIdState);
   const [date, setDate] = useState({ year: 2023, month: 2 });
-  const [data, setData] = useState([]);
+  const [data, setData] = useRecoilState(volNoticeListPerMonthState);
+  const [noticeId, setNoticeId] = useState();
   const [click, setClick] = useState(false);
   const [selectDate, setSelectDate] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     getVolNoticePerMonth(myShelterId, date.year, date.month).then(res => setData(res));
   }, [click]);
+  const handleClickModalOpen1 = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClickModalClose1 = () => {
+    setIsModalOpen(false);
+  };
   moment.locale('ko-KR');
   const localizer = momentLocalizer(moment);
   const handleClickSlot = ({ start }) => {
-    console.log(start);
     setSelectDate(start);
     handleClickModalOpen();
   };
-  const handleClickSelect = () => {};
+  const handleClickSelect = select => {
+    setNoticeId(select.noticeId);
+    handleClickModalOpen1();
+  };
   const handleClickNavigate = date => {
     setDate({ year: date.getFullYear(), month: date.getMonth() + 1 });
     setClick(prev => !prev);
@@ -51,6 +64,14 @@ export default function MyCalendar() {
       {isOpen && (
         <EnrollVolunteerModal date={selectDate} isOpen={isOpen} handleClickModalClose={handleClickModalClose} />
       )}
+      {isModalOpen && (
+        <ManageVolNoticeModal
+          setClick={setClick}
+          noticeId={noticeId}
+          isOpen={isModalOpen}
+          handleClickModalClose={handleClickModalClose1}
+        />
+      )}
     </>
   );
 }
@@ -60,7 +81,7 @@ const convertCalendarData = list => {
     return list.map(item => {
       const vDate = item.volunteerDate;
       const date = new Date(vDate);
-      return { title: item.title, start: date, end: date };
+      return { noticeId: item.noticeId, title: item.title, start: date, end: date };
     });
   } else {
     return [];

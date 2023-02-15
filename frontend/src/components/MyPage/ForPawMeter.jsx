@@ -7,6 +7,7 @@ import ForPawDog from 'assets/images/ForPawDog.gif';
 import ModifyBtn from 'assets/images/modify-profile.png';
 import ForPawInfo from 'assets/images/forpaw-info.png';
 import Modal from '../Common/Modal';
+import { toast } from 'react-toastify';
 
 export default function ForPawMeter({ data }) {
   const [click, setClick] = useState(false);
@@ -15,7 +16,7 @@ export default function ForPawMeter({ data }) {
   const [profile, setProfile] = useState('');
   const [preProfile, setPreProfile] = useState('');
   const [userName, setUserName] = useState('');
-  const [distance, setDistance] = useState(0); // 최대 Distance = 82
+  const [distance, setDistance] = useState(data.exp); // 최대 Distance = 82
 
   const fileInput = useRef(null);
   const reader = new FileReader();
@@ -25,16 +26,14 @@ export default function ForPawMeter({ data }) {
       queryClient.invalidateQueries({ queryKey: ['getUserInfo'] });
       closeModal();
     },
-    onError: error => {
-      console.log(error);
-    },
+    onError: error => {},
   });
 
   useEffect(() => {
     setProfile(data.profileImageUrl);
     setPreProfile(data.profileImageUrl);
     setUserName(data.username);
-    setDistance(distance >= 82 ? 82 : distance);
+    setDistance(distance >= 80 ? 80 : distance);
   }, []);
 
   const openModal = () => {
@@ -45,9 +44,9 @@ export default function ForPawMeter({ data }) {
   };
 
   const saveModal = () => {
-    alert('저장하시겠습니까?');
     setProfile(preProfile);
     createFormData();
+    toast('저장되었습니다.', { type: 'success' });
     closeModal();
   };
 
@@ -118,7 +117,7 @@ export default function ForPawMeter({ data }) {
         </Modal>
         <br />
         <div className={styles.road}>
-          <div className={styles.status} style={{ width: `${distance === 82 ? 100 : Math.round(distance + 10)}%` }} />
+          <div className={styles.status} style={{ width: `${distance === 80 ? 100 : Math.round(distance + 10)}%` }} />
         </div>
       </div>
     </div>

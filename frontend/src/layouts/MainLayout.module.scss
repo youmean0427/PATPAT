@@ -6,6 +6,7 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
+  overflow: hidden;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 30px;
@@ -13,5 +14,8 @@
 .layout-main {
   width: 100%;
   position: relative;
+  top: 72px;
+  left: 0;
   flex: 1;
+  margin-bottom: 72px;
 }

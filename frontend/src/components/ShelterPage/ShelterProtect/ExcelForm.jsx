@@ -24,13 +24,10 @@ export default function ExcelForm() {
     onSuccess: data => {
       navigate(`/shelter/${myShelterId}/protect`, { state: { shelterId: myShelterId } });
     },
-    onError: error => {
-      console.log(error);
-    },
+    onError: error => {},
   });
   const onSubmit = data => {
     const formData = new FormData();
-    console.log(data.excelFile[0]);
     formData.append('uploadFile', data.excelFile[0]);
     formData.append('shelterId', myShelterId);
     mutate(formData);

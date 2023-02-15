@@ -34,3 +34,8 @@ export const currentYearMonthState = atom({
   key: 'recoilCurrentYear',
   default: { month: 2, year: 2023 },
 });
+
+export const volNoticeListPerMonthState = atom({
+  key: 'recoilVolNoticeListPerMonth',
+  default: [],
+});

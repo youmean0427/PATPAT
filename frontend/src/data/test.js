@@ -23,7 +23,7 @@ export const testContents = [
   {
     question: '유기견 입양 신청을 끝내고 난 후의 나는 ?',
     selection: [
-      { answer: '그떼그때 필요한 걸 사면 되지 생각하며 강아지 영상이나 더 본다', value: 'p' },
+      { answer: '그때그때 필요한 걸 사면 되지 생각하며 강아지 영상이나 더 본다', value: 'p' },
       { answer: '강아지에게 필요한 용품들을 미리 알아보며 구매 리스트를 작성한다 ', value: 'j' },
     ],
   },

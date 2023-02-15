@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 // import test from '../../../assets/images/ear8.png';
 export default function MissingDogItem({ item }) {
   const { missingId, title, content, thumbnail, stateCode } = item;
-  // console.log(thumbnail.filePath);
 
   return (
     <div className={styles.card}>

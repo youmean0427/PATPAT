@@ -7,6 +7,9 @@ import styles from './ShelterProtect.module.scss';
 import ShelterContainer from 'containers/ShelterContainer';
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
 import { BsPlusCircleDotted } from 'react-icons/bs';
+import { checkMyShelter } from 'utils/checkMyShelter';
+import { useRecoilValue } from 'recoil';
+import { myShelterIdState } from 'recoil/atoms/user';
 export default function ShelterProtect() {
   const {
     state: { shelterId },
@@ -14,6 +17,7 @@ export default function ShelterProtect() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const LIMIT = 8;
+  const myShelterId = useRecoilValue(myShelterIdState);
   const { data, isLoading } = useQuery(['protectListOfShelter', shelterId, page], () => {
     return getProtectListOfShelter(shelterId, 0, LIMIT, page - 1);
   });
@@ -28,9 +32,11 @@ export default function ShelterProtect() {
   return (
     <ShelterContainer title="보호 동물">
       <span>현재 {data.totalCount}개의 보호동물이 등록 되어있습니다.</span>
-      <button onClick={() => navigate('enroll')} className={styles.add}>
-        <BsPlusCircleDotted />
-      </button>
+      {checkMyShelter(shelterId, myShelterId) && (
+        <button onClick={() => navigate('enroll')} className={styles.add}>
+          <BsPlusCircleDotted />
+        </button>
+      )}
       <div className={styles.pagination}>
         <button
           onClick={handleClickPrev}
@@ -51,7 +57,7 @@ export default function ShelterProtect() {
         </button>
       </div>
       <div className={styles.list}>
-        {data.list.map(item => {
+        {data?.list?.map(item => {
           return <AbandonedDogItem key={item.protectId} item={item} />;
         })}
       </div>

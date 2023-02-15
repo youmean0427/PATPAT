@@ -13,7 +13,6 @@ export default function AddressContent() {
     setGetSido(e);
     setGetGugun('');
   }, []);
-  // console.log(option);
   const getGugunFunc = React.useCallback(e => {
     setGetGugun(e);
   }, []);

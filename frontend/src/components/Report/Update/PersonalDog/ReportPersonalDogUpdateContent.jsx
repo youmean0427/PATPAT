@@ -22,6 +22,7 @@ import Stack from '@mui/material/Stack';
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CgCloseO } from 'react-icons/cg';
+import { toast } from 'react-toastify';
 
 export default function ReportPersonalDogUpdateContent({ items }) {
   const item = items;
@@ -251,8 +252,6 @@ export default function ReportPersonalDogUpdateContent({ items }) {
 
   // Console
 
-  // console.log(fileList, preFile);
-
   // Submit
   const handleSubmit = () => {
     if (content === '') {
@@ -293,7 +292,7 @@ export default function ReportPersonalDogUpdateContent({ items }) {
     ) {
       mutation();
       // navigate('/report');
-      alert('수정되었습니다.');
+      toast('수정되었습니다.', { type: 'success' });
       window.location.replace('/report');
     }
   };
@@ -673,14 +672,12 @@ export default function ReportPersonalDogUpdateContent({ items }) {
               editor={ClassicEditor}
               onReady={editor => {
                 // You can store the "editor" and use when it is needed.
-                // console.log('Editor is ready to use!', editor);
               }}
               config={{
                 placeholder: '강아지 상세정보 / 신고자 연락처',
               }}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                // console.log({ event, editor, data });
                 setContent(data);
               }}
             />

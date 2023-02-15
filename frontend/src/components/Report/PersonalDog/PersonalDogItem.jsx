@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 
 export default function PersonalDogItem({ item }) {
   const { personalProtectionId, title, content, thumbnail } = item;
-  // console.log(item);
 
   return (
     <div className={styles.card}>

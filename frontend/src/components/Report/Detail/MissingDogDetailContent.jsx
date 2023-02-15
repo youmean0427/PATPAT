@@ -2,16 +2,33 @@ import React, { useState } from 'react';
 import styles from './MissingDogDetailContent.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import { getMissingDogDetail } from 'apis/api/report';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 import HtmlReactParser from 'html-react-parser';
 import defaultPicture from '../../../assets/images/volunteer.png';
+import infoIcon from 'assets/images/forpaw-info.png';
+import DetailModal from 'components/Common/DetailModal';
+import EarDetail from 'components/Report/Create/EarDetail';
+import PatternDetail from 'components/Report/Create/PatternDetail';
+import TailDetail from 'components/Report/Create/TailDetail';
 
 export default function MissingDogDetailContent({ item, state }) {
   // const [user, setUser] = useState('');
   const [file2, setFile2] = useState(0);
   const [file3, setFile3] = useState(0);
+
+  const [modal, setModal] = useState(false);
+  const [modalNum, setModalNum] = useState();
+
+  const openModal = idx => {
+    setModalNum(idx);
+    setModal(true);
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
 
   const { isLoading, data } = useQuery({
     queryKey: ['missingDogDetail'],
@@ -35,7 +52,7 @@ export default function MissingDogDetailContent({ item, state }) {
               <span className={styles.date}>23.02.03</span> */}
             </div>
 
-            {data.userId === user.userId ? (
+            {data.userId === user.userId && data.stateCode !== 1 ? (
               <div>
                 <Link to="update" state={{ data, state }}>
                   <Button variant="contained" className={styles.button}>
@@ -146,15 +163,23 @@ export default function MissingDogDetailContent({ item, state }) {
       <div className={styles['container-content-character']}>
         <div className={styles['container-content-character-list']}>
           <div>
-            <div>귀</div>
+            <div>
+              <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(0)} />귀
+            </div>
             <span>{data.categoryEar}</span>
           </div>
           <div>
-            <div>무늬</div>
+            <div>
+              <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(1)} />
+              무늬
+            </div>
             <span>{data.categoryPattern}</span>
           </div>
           <div>
-            <div>꼬리</div>
+            <div>
+              <img src={infoIcon} alt="" className={styles['info-icon']} onClick={() => openModal(2)} />
+              꼬리
+            </div>
             <span>{data.categoryTail}</span>
           </div>
         </div>
@@ -268,6 +293,13 @@ export default function MissingDogDetailContent({ item, state }) {
       <div className={styles.content}>
         <div>{data.content === null ? null : HtmlReactParser(data.content)}</div>
       </div>
+      <DetailModal
+        open={modal}
+        close={closeModal}
+        title={modalNum === 0 ? '귀 모양 상세' : modalNum === 1 ? '무늬 상세' : '꼬리 모양 상세'}
+      >
+        {modalNum === 0 ? <EarDetail /> : modalNum === 1 ? <PatternDetail /> : <TailDetail />}
+      </DetailModal>
     </div>
   );
 }

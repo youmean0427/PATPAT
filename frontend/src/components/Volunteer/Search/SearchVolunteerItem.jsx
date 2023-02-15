@@ -8,19 +8,21 @@ export default function SearchVolunteerItem({ item, itemToList }) {
   // useQuery
   const [itemData, setItemData] = useState(item);
   return (
-    <div>
+    <div className={styles.mainContainer}>
       <div
         className={styles.container}
         onClick={() => {
           itemToList(itemData);
-          console.log('click');
         }}
       >
+        <div className={styles.title}>{item.title}</div>
         <div className={styles['container-dateState']}>
           <div className={styles.volunteerDate}>봉사날짜 : {item.volunteerDate}</div>
-          <div className={styles.state}>{item.state}</div>
+          {item.stateCode === 0 ? <div className={styles.stateCode0}>{item.state}</div> : null}
+          {item.stateCode === 1 ? <div className={styles.stateCode1}>{item.state}</div> : null}
+          {item.stateCode === 2 ? <div className={styles.stateCode2}>{item.state}</div> : null}
+          {item.stateCode === 3 ? <div className={styles.stateCode3}>{item.state}</div> : null}
         </div>
-        <div className={styles.title}>{item.title}</div>
       </div>
     </div>
   );

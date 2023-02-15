@@ -28,7 +28,6 @@ export default function MissingDogList({ genderCode, breedCode }) {
     setPage(prev => prev + 1);
   };
 
-  // console.log(data);
   if (isLoading) return;
   return (
     <div>

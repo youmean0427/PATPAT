@@ -50,8 +50,6 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
                     logout();
                     setIsLogin(false);
                     toast('로그아웃 완료', { type: 'success' });
-                  } else if (item.path === '') {
-                    handleClickModalOpen();
                   }
                 }}
                 key={index}

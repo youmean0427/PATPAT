@@ -6,20 +6,17 @@ import SearchVolunteerItem from './SearchVolunteerItem';
 import styles from './SearchVolunteerList.module.scss';
 
 export default function SearchVolunteerList({ items, listToMark }) {
-  // console.log('list', items);
   const [itemData, setItemData] = useState();
   const itemToList = x => {
     // setItemData(x);
     listToMark(x);
   };
-  // console.log(items);
   // useQuery
 
   const { data, isLoading } = useQuery({
     queryKey: ['getShelterDetail'],
     queryFn: () => getShelterDetail(items[0].shelterId),
   });
-  // console.log(data);
   if (isLoading) return;
 
   return (
@@ -37,11 +34,12 @@ export default function SearchVolunteerList({ items, listToMark }) {
         </div>
       </div>
       <hr />
-      <div style={{ height: '150px', overflowY: 'scroll' }}>
+      <div className={styles.scroll}>
         {items.map((item, index) => (
-          <SearchVolunteerItem key={index} item={item} itemToList={itemToList} />
+          <SearchVolunteerItem key={index} item={item} itemToList={itemToList} className={styles.volunteerItem} />
         ))}
       </div>
     </div>
   );
 }
+// style={{ height: '180px', overflowY: 'scroll' }}

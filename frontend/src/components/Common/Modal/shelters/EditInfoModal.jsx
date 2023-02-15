@@ -27,9 +27,7 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
       toast('성공', { type: 'success' });
       handleClickModalClose();
     },
-    onError: error => {
-      console.log(error);
-    },
+    onError: error => {},
   });
 
   const [files, setFiles] = useState([]);
@@ -38,7 +36,6 @@ const EditInfoModal = ({ isOpen, handleClickModalClose, data, shelterId }) => {
   const LIMIT_UPLOAD_IMAGE_FILE = 4;
   useEffect(() => {
     if (files) {
-      console.log(files);
       let count = 0;
       setBase64s([]);
       Array.from(files).forEach(image => {

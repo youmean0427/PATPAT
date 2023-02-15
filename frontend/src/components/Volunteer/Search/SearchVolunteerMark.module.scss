@@ -1,29 +1,64 @@
 @import 'assets/styles/variable.scss';
 
-// .infoContainer {
-//   padding: 10px;
-//   width: 400px;
-//   height: 300px;
-//   background-color: $white-color;
-//   border: solid 1px $gray-color;
-//   // border-radius: 10px;
-//   cursor: default;
-// }
-
 .shelterName {
   font-size: 20px;
   margin-bottom: 5px;
   color: $main-accent-color;
 }
 
-.test {
+.container {
   width: 400px !important;
-  height: 300px !important;
+  height: 330px !important;
   padding: 10px;
+  font-family: $noto-font;
+  animation: modal-show 0.3s;
 }
 
 .closeButton {
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
+  position: absolute;
+  width: 94%;
+  margin-top: 6.5px;
+  & > div {
+    position: relative;
+
+    display: flex;
+    justify-content: flex-end;
+
+    & > button {
+      top: 15px;
+      right: 15px;
+      width: 30px;
+      font-size: 21px;
+      font-weight: 700;
+      text-align: center;
+      color: #999;
+      background-color: transparent;
+    }
+  }
+}
+@keyframes modal-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .container {
+    width: 300px !important;
+    height: 350px !important;
+    padding: 10px;
+    font-family: $noto-font;
+  }
 }

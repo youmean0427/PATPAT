@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { Map, MapMarker, Circle } from 'react-kakao-maps-sdk';
 import styles from './SearchVolunteer.module.scss';
 import SearchVolunteerMark from 'components/Volunteer/Search/SearchVolunteerMark';
-import DetailModal from 'components/Common/DetailModal';
-import Volunteer from './Volunteer';
+import DetailModal from './DetailModal';
+
 import VolunteerDetail from './VolunteerDetail';
 export default function SearchVolunteer() {
   const [modal, setModal] = useState(false);
   const [modalData, setModalData] = useState();
+  const [selectedMarker, setSeleteMarker] = useState();
   const [state, setState] = useState({
     center: {
       lat: 0,
@@ -17,20 +18,10 @@ export default function SearchVolunteer() {
     },
   });
 
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ['getVolNoticePerMonth', state],
-  //   queryFn: () => getVolNoticePerMonth(state.center.lat.toString(), state.center.lng.toString()),
-  // });
-
   const { data, isLoading } = useQuery({
     queryKey: ['getVolNoticePerMonth', state],
     queryFn: () => getVolNoticeList(0, 0, 0, state.center.lat.toString(), state.center.lng.toString()),
   });
-
-  // const { shelterdata } = useQuery({
-  //   queryKey: ['getShelterDetail', shelterId],
-  //   queryFn: () => getShelterDetail(shelterId),
-  // });
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -53,8 +44,8 @@ export default function SearchVolunteer() {
     }
   }, []);
 
-  // console.log('data', data);
-  console.log(state);
+  // Console
+  //
 
   const markToPage = x => {
     setModalData(x);
@@ -66,6 +57,7 @@ export default function SearchVolunteer() {
   const closeModal = () => {
     setModal(false);
   };
+
   if (isLoading) return;
 
   return (
@@ -113,7 +105,11 @@ export default function SearchVolunteer() {
                 shelterId={item.shelterId}
                 name={item.name}
                 key={index}
+                modalIndex={index}
                 markToPage={markToPage}
+                onClick={() => setSeleteMarker(index)}
+                isClicked={selectedMarker === index}
+                onClose={() => setSeleteMarker(999)}
               />
             ))
           : null}

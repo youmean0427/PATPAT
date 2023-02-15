@@ -1,5 +1,8 @@
 @import 'assets/styles/variable.scss';
-
+.mainContainer {
+  &:hover {
+  }
+}
 .container {
   border: 1px solid $border-color;
   border-radius: 5px;
@@ -18,19 +21,43 @@
 }
 
 .volunteerDate {
-  font-size: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
 }
 
-.state {
-  font-size: 12px;
-  background-color: orange;
-  border-radius: 5px;
-  padding: 5px;
-  &Code0 {
+.stateCode {
+  &0 {
+    // 대기
     font-size: 12px;
     background-color: orange;
     border-radius: 5px;
     padding: 5px;
+    color: $white-color;
+  }
+  &1 {
+    // 승인
+    font-size: 12px;
+    background-color: $green-color;
+    border-radius: 5px;
+    padding: 5px;
+    color: $white-color;
+  }
+  &2 {
+    // 거절
+    font-size: 12px;
+    background-color: $red-color;
+    border-radius: 5px;
+    padding: 5px;
+    color: $white-color;
+  }
+  &3 {
+    // 불참
+    font-size: 12px;
+    background-color: $red-color;
+    border-radius: 5px;
+    padding: 5px;
+    color: $white-color;
   }
 }
 

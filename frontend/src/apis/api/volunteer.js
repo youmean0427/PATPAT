@@ -16,8 +16,13 @@ export const getVolNoticeList = async (keyword, limit, offset, latitude, longitu
   return data;
 };
 
+export const getVolNoticeInfoPerDay = async (noticeId, limit, offSet) => {
+  const { data } = await authInstance.get(`/volunteers/schedules?noticeId=${noticeId}&limit=${limit}&offSet=${offSet}`);
+  return data;
+};
+
 /**
- * GET : 봉사활동 신청 공고 상세 정보 데이터
+ * GET : 개인 봉사활동 신청 공고 상세 정보 데이터
  * @param {int} noticeId
  * @returns
  */
@@ -33,9 +38,9 @@ export const getVolNoticeDetail = async noticeId => {
  * @param {int} offset
  * @returns
  */
-export const getVolNoticeListOfShelter = async (shelterId, limit, offset) => {
+export const getVolScheduleListOfShelter = async (shelterId, limit, offset) => {
   const { data } = await authInstance.get(
-    `/volunteers/notices/shelters?shelterId=${shelterId}&limit=${limit}&offSet=${offset}`
+    `/volunteers/schedules/shelter?shelterId=${shelterId}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };
@@ -54,8 +59,8 @@ export const getVolNoticePerMonth = async (shelterId, year, month) => {
  * @param {int} userId
  * @returns
  */
-export const getVolReservationOfUser = async (limit, offset, userId) => {
-  const { data } = await authInstance.get(`/volunteers/reservations?limit=${limit}&offSet=${offset}&userId=${userId}`);
+export const getVolReservationOfUser = async (limit, offset) => {
+  const { data } = await authInstance.get(`/volunteers/reservations?limit=${limit}&offSet=${offset}`);
   return data;
 };
 
@@ -79,6 +84,29 @@ export const getVolReservationOfUserDetail = async scheduleId => {
   return data;
 };
 
+/**
+ * 봉사 공고 일정 신청서 상태 변경 (수락: 1 거절 : 2 불참 : 3 완료 : 4)
+ * @param {*} userId
+ * @param {*} reservationId
+ * @param {*} stateCode
+ * @returns
+ */
+export const changeReservationState = async (userId, reservationId, stateCode) => {
+  const res = await authInstance.get(
+    `/volunteers/reservations/state?userId=${userId}&reservationId=${reservationId}&stateCode=${stateCode}`
+  );
+  return res;
+};
+/**
+ * GET : user가 지원한 봉사 지원서 조회 확인
+ * @param {int} noticeId
+ * @returns
+ */
+export const getVolReservationOfUserCheck = async noticeId => {
+  const { data } = await authInstance.get(`/volunteers/reservations/check/${noticeId}`);
+  return data;
+};
+
 // POST
 
 /**
@@ -94,25 +122,32 @@ export const createVolNotice = async data => {
 };
 
 /**
- * 개인이 봉사 활동 신청
- * @param {int} volunteerId 봉사활동 공고 id
- * @param {int} capacity 인원 수
+ * 봉사 공고의 일정 추가
+ * @param {json} data
  * @returns
  */
-export const applyVolReservation = async (volunteerId, capacity) => {
-  const res = await authInstance.post(`/volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}`);
+export const createVolNoticeSchedule = async data => {
+  const res = await authInstance.post(`/volunteers/schedules`, data, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  return res;
+};
+
+/**
+ * 개인이 봉사 활동 신청
+ * @returns
+ */
+export const applyVolReservation = async data => {
+  const res = await authInstance.post(`/volunteers/reservations`, data, {
+    headers: { 'Content-Type': 'application/json' },
+  });
   return res;
 };
 
 // PUT
-/**
- * PUT : 보호소 봉사활동 공고 정보 수정
- * @param {int} volunteerId
- * @param {json} data
- * @returns
- */
-export const updateVolNotice = async (volunteerId, data) => {
-  const res = await authInstance.put(`/volunteers/notices/${volunteerId}`, data, {
+
+export const updateVolNoticeSchedule = async data => {
+  const res = await authInstance.put(`/volunteers/schedules`, data, {
     headers: { 'Content-Type': 'application/json' },
   });
   return res;
@@ -129,5 +164,21 @@ export const updateVolReservation = async (volunteerId, capacity, state) => {
   const res = await authInstance.put(
     `/volunteers/reservations?volunteerId=${volunteerId}&capacity=${capacity}&state=${state}`
   );
+  return res;
+};
+
+// DELETE
+
+export const deleteVolNotice = async noticeId => {
+  const res = await authInstance.delete(`/volunteers/notices?noticeId=${noticeId}`);
+  return res;
+};
+/**
+ *
+ * @param {int} scheduleId
+ * @returns 봉사 공고의 일정 삭제
+ */
+export const deleteVolSchedule = async scheduleId => {
+  const res = await authInstance.delete(`/volunteers/schedules?scheduleId=${scheduleId}`);
   return res;
 };

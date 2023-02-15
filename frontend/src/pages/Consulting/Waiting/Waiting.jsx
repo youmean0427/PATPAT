@@ -40,9 +40,7 @@ export default function Waiting() {
       });
       // 비디오 태그에 웹캠 연동
       videoRef.current.srcObject = curDevice;
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   // 스트림 리스트 받아오기
@@ -60,9 +58,7 @@ export default function Waiting() {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const cameraLabels = devices.filter(device => device.kind === 'videoinput').map(camera => camera.label);
       setCameraList(cameraLabels);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   // 사용가능한 오디오 정보 받아오기
@@ -71,9 +67,7 @@ export default function Waiting() {
       const devices = navigator.mediaDevices.enumerateDevices();
       const audioLabels = devices.filter(device => device.kind === 'audioinput').map(audio => audio.label);
       setAudioList(audioLabels);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const handleAudio = () => {
