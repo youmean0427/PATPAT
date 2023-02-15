@@ -32,4 +32,8 @@ public class Alarm {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @PrePersist
+    public void prePersist() {
+        this.registDate = this.registDate == null ? LocalDateTime.now() : this.registDate;
+    }
 }
