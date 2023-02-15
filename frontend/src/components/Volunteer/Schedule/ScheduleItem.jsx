@@ -6,8 +6,9 @@ import HTMLReactParser from 'html-react-parser';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import styles from './ScheduleItem.module.scss';
-export default function ScheduleItem({ item, open, index, noticeId }) {
+export default function ScheduleItem({ item, open, index, noticeId, volunteerDate }) {
   // item is scheduleId
 
   // useState
@@ -46,27 +47,22 @@ export default function ScheduleItem({ item, open, index, noticeId }) {
   };
 
   // datas :: 봉사 신청할 때 필요한 Data
-  const datas = {
-    capacity: parseInt(people),
-    endTime: '',
-    reservationId: 0,
-    scheduleId: item,
-    shelterName: '',
-    startTime: '',
-    stateCode: 0,
-    userId: user.userId,
-    userName: user.userName,
-    volunteerDate: '',
-  };
-
   // useMutation :: 봉사 신청
   const { mutate: mutation } = useMutation(['applyVolReservation'], () => {
+    const datas = {
+      capacity: parseInt(people),
+      endTime: '',
+      reservationId: 0,
+      scheduleId: item,
+      shelterName: '',
+      startTime: '',
+      stateCode: 0,
+      userId: user.userId,
+      userName: user.userName,
+      volunteerDate: volunteerDate,
+    };
     return applyVolReservation(datas);
   });
-
-  useEffect(() => {
-    refetch();
-  }, [data]);
   if (isLoading) return;
 
   return (
@@ -96,41 +92,49 @@ export default function ScheduleItem({ item, open, index, noticeId }) {
           <div className={styles.guideLine}>{HTMLReactParser(data.guideLine)}</div>
           <hr />
           <div>
-            <div className={styles.peopleButton}>
-              <span className={styles.people}>신청인원</span>
-              <div className={styles.input}>
-                <input
-                  min="0"
-                  type="number"
-                  placeholder="인원"
-                  onChange={e => {
-                    setPeople(e.target.value);
-                  }}
-                  value={people}
-                />
-              </div>
+            {data.capacity !== data.totalCapacity ? (
+              Check() !== false ? (
+                submit !== 1 ? (
+                  <div className={styles.peopleButton}>
+                    <span className={styles.people}>신청인원</span>
+                    <div className={styles.input}>
+                      <input
+                        min="0"
+                        type="number"
+                        placeholder="인원"
+                        onChange={e => {
+                          setPeople(e.target.value);
+                        }}
+                        value={people}
+                      />
+                    </div>
 
-              <div className={styles.button}>
-                <button
-                  onClick={() => {
-                    if (people > 0 && people <= data.totalCapacity - data.capacity) {
-                      mutation();
-                      alert('봉사가 신청되었습니다.');
-                      setSubmit(1);
-                    } else {
-                      setPeople('');
-                      alert('인원을 확인해주세요.');
-                    }
-                  }}
-                >
-                  신청
-                </button>
-              </div>
-            </div>
-
-            <div className={styles.requested}>
-              <div>이미 신청한 봉사활동 입니다.</div>
-            </div>
+                    <div className={styles.button}>
+                      <button
+                        onClick={() => {
+                          if (people > 0 && people <= data.totalCapacity - data.capacity) {
+                            mutation();
+                            toast('봉사가 신청되었습니다.', { type: 'success' });
+                            setSubmit(1);
+                          } else {
+                            setPeople('');
+                            toast('인원을 확인해주세요.', { type: 'warning' });
+                          }
+                        }}
+                      >
+                        신청
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.message}>이미 신청되었습니다. </div>
+                )
+              ) : (
+                <div className={styles.message}>이미 신청되었습니다.</div>
+              )
+            ) : (
+              <div className={styles.message}>인원 가득찼습니다.</div>
+            )}
           </div>
         </div>
       ) : null}

@@ -82,11 +82,8 @@
   margin-right: 10px;
 }
 
-.requested {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-  color: red;
+.message {
+  color: $red-color;
 }
 
 /* desktop 규격 */
@@ -102,4 +99,9 @@
   .containerTime {
     flex-direction: column;
   }
+}
+
+.message {
+  text-align: end;
+  margin-top: 10px;
 }
