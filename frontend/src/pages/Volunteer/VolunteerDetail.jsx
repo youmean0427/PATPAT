@@ -9,6 +9,7 @@ export default function VolunteerDetail({ items }) {
   const [scheduleId] = useState(items.scheduleId);
   // const [scheduleId, setScheduleId] = useState(1);
   const [open, setOpen] = useState(0);
+  const [active, setActive] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -21,8 +22,28 @@ export default function VolunteerDetail({ items }) {
       {/* Button */}
       <div className={styles['container-scheduleBnt']}>
         {scheduleId.map((item, index) => (
-          <div key={index} className={styles.scheduleBnt}>
-            <button onClick={() => setOpen({ index })}>{index + 1}차</button>
+          <div key={index}>
+            {index === open.index && active === true ? (
+              <button
+                className={styles.scheduleBntActive}
+                onClick={() => {
+                  setOpen({ index });
+                  setActive(true);
+                }}
+              >
+                {index + 1}차
+              </button>
+            ) : (
+              <button
+                className={styles.scheduleBnt}
+                onClick={() => {
+                  setOpen({ index });
+                  setActive(true);
+                }}
+              >
+                {index + 1}차
+              </button>
+            )}
           </div>
         ))}
       </div>

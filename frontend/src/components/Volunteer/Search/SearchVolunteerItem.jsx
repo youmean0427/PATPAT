@@ -1,12 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { getShelterDetail } from 'apis/api/shelter';
 import React, { useState } from 'react';
 import styles from './SearchVolunteerItem.module.scss';
-import { useNavigate } from 'react-router-dom';
 
 export default function SearchVolunteerItem({ item, itemToList }) {
   // useQuery
-  const [itemData, setItemData] = useState(item);
+  const [itemData] = useState(item);
   return (
     <div className={styles.mainContainer}>
       <div

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getVolNoticePerMonth } from 'apis/api/volunteer';
 
 import styles from './SearchVolunteerMark.module.scss';
-import React, { useState } from 'react';
+import React from 'react';
 import { MapMarker } from 'react-kakao-maps-sdk';
 import SearchVolunteerList from './SearchVolunteerList';
 

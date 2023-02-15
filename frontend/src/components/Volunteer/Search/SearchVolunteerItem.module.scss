@@ -18,6 +18,10 @@
   & > div {
     margin: 5px;
   }
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
 }
 
 .volunteerDate {
@@ -68,4 +72,20 @@
 .Modal {
   position: relative;
   z-index: 10;
+}
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .title {
+    font-size: 1.4rem;
+  }
+  .container-dateState {
+    margin: 5px 0 5px 0;
+  }
 }

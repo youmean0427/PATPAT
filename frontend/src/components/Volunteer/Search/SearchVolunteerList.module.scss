@@ -31,9 +31,13 @@
   border-radius: 4px;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 
   & > img {
     width: 100%;
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 }
 
@@ -66,4 +70,20 @@
 
 /* mobile 규격 */
 @media screen and (max-width: 540px) {
+  .image {
+    width: 80px;
+    object-fit: cover;
+  }
+  .name {
+    font-size: 1.5rem;
+  }
+  .address {
+    font-size: 1rem;
+  }
+  .phoneNumber {
+    font-size: 1rem;
+  }
+  .infoContent {
+    font-size: 1rem;
+  }
 }

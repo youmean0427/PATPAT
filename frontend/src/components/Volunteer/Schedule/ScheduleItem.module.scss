@@ -43,6 +43,11 @@
     padding: 5px;
     color: $white-color;
     background-color: $main-color;
+
+    &:hover {
+      background-color: $main-accent-color;
+      opacity: 90%;
+    }
   }
   & > div {
     font-size: 17px;
@@ -82,10 +87,6 @@
   margin-right: 10px;
 }
 
-.message {
-  color: $red-color;
-}
-
 /* desktop 규격 */
 @media screen and (min-width: 1024px) {
 }
@@ -101,7 +102,32 @@
   }
 }
 
+.state {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0 10px 0;
+}
+
+.full {
+  color: $red-color;
+  width: 100px;
+  padding: 5px;
+  border: 1px solid $red-color;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+}
+
 .message {
-  text-align: end;
-  margin-top: 10px;
+  color: $red-color;
+}
+
+.capacity {
+  width: 45.58px;
+  display: flex;
+  justify-content: center;
+  & > span {
+    margin: 0 1px 0 1px;
+  }
 }
