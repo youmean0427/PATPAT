@@ -47,4 +47,6 @@ public class BoardDto {
     private List<FileDto> fileUrlList;
     @Schema(example = "썸네일")
     private FileDto thumbnail;
+
+    private List<Long> deleteFileList;
 }
