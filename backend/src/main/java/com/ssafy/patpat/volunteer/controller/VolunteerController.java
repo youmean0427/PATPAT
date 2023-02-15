@@ -144,7 +144,7 @@ public class VolunteerController {
     @ApiOperation(value = "봉사 공고 조회", notes = "개인의 보호소 페이지 공고 조회(shelterId)")
     public ResponseEntity<Object> selectScheduleListByShelter(RequestVolunteerDto requestVolunteerDto){
         //서비스 호출 코드
-        ResponseListDto responseVolunteerDto = volunteerService.selectNoticeListByShelter(requestVolunteerDto);
+        ResponseListDto responseVolunteerDto = volunteerService.selectScheduleListByShelter(requestVolunteerDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseVolunteerDto);
