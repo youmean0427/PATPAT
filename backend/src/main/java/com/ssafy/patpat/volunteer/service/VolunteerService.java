@@ -133,14 +133,14 @@ public class VolunteerService {
 
         List<VolunteerNotice> volunteerNoticeList = volunteerNotices.toList().stream().sorted(Comparator.comparing(VolunteerNotice::getVolunteerDate).reversed()).collect(Collectors.toList());
 
-        List<VolunteerScheduleDto> list = new ArrayList<>();
+        List<ScheduleDto> list = new ArrayList<>();
         for (VolunteerNotice vn:
                 volunteerNoticeList) {
             List<VolunteerSchedule> volunteerSchedules = vn.getVolunteerSchedules();
             volunteerSchedules = volunteerSchedules.stream().sorted(Comparator.comparing(VolunteerSchedule::getStartTime)).collect(Collectors.toList());
             for (VolunteerSchedule vs:
                  volunteerSchedules) {
-                list.add(new VolunteerScheduleDto(vs));
+                list.add(new ScheduleDto(vs));
             }
         }
         ResponseListDto responseVolunteerDto = new ResponseListDto();

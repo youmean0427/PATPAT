@@ -30,6 +30,9 @@ public class ScheduleDto {
 
     private String reservationState;
 
+    private String title;
+    private String date;
+
     public ScheduleDto(VolunteerSchedule vs){
         this.scheduleId = vs.getScheduleId();
         this.noticeId = vs.getVolunteerNotice().getNoticeId();
@@ -38,6 +41,8 @@ public class ScheduleDto {
         this.totalCapacity = vs.getTotaclCapacity();
         this.capacity = vs.getCapacity();
         this.guideLine = vs.getGuideLine();
+        this.title = vs.getVolunteerNotice().getTitle();
+        this.date = vs.getVolunteerNotice().getVolunteerDate();
         this.reservationStateCode = vs.getReservationStateCode().getCode();
         this.reservationState = vs.getReservationStateCode().name();
     }
