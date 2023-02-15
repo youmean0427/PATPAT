@@ -36,5 +36,7 @@ public class ShelterDto {
     private String gugunCode;
     private String gugunName;
     private String ownerName;
+    private String latitude;
+    private String longitude;
     private Long ownerId;
 }
