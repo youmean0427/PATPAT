@@ -203,6 +203,10 @@ public class NotificationServiceImpl implements NotificationService{
         Consulting consulting = consultingRepository.findByConsultingId(consultingId);
         Long userId = consulting.getUser().getUserId();
 
+        System.out.println("여기~~~~~~~~~");
+        System.out.println(consulting);
+        System.out.println(userId);
+
         MsgCode msgCode = MsgCode.MSG_ACCESS_CONSULTING;
         Alarm alarm = Alarm.builder()
                 .checkRead(false)
@@ -211,10 +215,14 @@ public class NotificationServiceImpl implements NotificationService{
                 .user(consulting.getUser())
                 .build();
         alarmRepository.save(alarm);
-        LOGGER.info("오나? 상담 인증 {}",userId);
+
+        System.out.println(consulting.getUser().getUserId()+"밖");
+        LOGGER.info("오나? 상담 인증 {}",consulting.getUser().getUserId());
+
         if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(userId);
+            SseEmitter sseEmitter = sseEmitters.get(consulting.getUser().getUserId());
             try{
+                System.out.println(consulting.getUser().getUserId()+"안");
                 LOGGER.info("오나? 상담 인증 알람 직전 라인 {}",userId);
                 sseEmitter.send(SseEmitter.event().name("accessConsulting").data(msgCode,MediaType.APPLICATION_JSON));
             }catch (Exception e){
