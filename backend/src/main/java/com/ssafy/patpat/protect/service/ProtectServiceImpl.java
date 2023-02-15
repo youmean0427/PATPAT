@@ -286,6 +286,7 @@ public class ProtectServiceImpl implements ProtectService{
             responseListDto.setTotalPage(shelterProtectedDogList.getTotalPages());
             return  responseListDto;
         }catch(Exception e){
+            e.printStackTrace();
             return null;
         }
 
@@ -372,6 +373,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .build();
             return  protectDto;
         }catch(Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -409,8 +411,7 @@ public class ProtectServiceImpl implements ProtectService{
             }
             /** 유사도 비교시 사용할 백엔드에서만 사용하는 컬러코드 저장 **/
             Color color = colorService.getColorCode(protectDto.getCategoryColor());
-            System.out.println("here"
-            );
+
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
                     .breed(breed)
