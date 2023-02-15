@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUserInfo } from 'apis/api/user';
 import { logout } from 'apis/utils/auth';
-import useModal from 'hooks/useModal';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState, myShelterIdState } from 'recoil/atoms/user';
 import { isHaveShelter } from 'utils/checkMyShelter';
+import Alarm from '../Alarm';
 import styles from './MyProfileMenuItem.module.scss';
 export default function MyProfileMenuItem({ handleClickModalOpen }) {
   const setIsLogin = useSetRecoilState(isLoginState);

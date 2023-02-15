@@ -42,6 +42,9 @@
     grid-column-end: 5;
   }
 }
+.magam {
+  text-decoration: line-through;
+}
 
 .btn-wrap {
   margin: 0.5rem 0 2rem 0;
@@ -60,6 +63,12 @@
   transition: all 0.3s;
   &.click {
     background-color: $main-accent-color;
+  }
+  &.magam {
+    background-color: $delete-btn-color;
+  }
+  &.magam:hover {
+    background-color: $delete-btn-color;
   }
   &:hover {
     background-color: $main-accent-color;

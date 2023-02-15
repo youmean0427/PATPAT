@@ -64,7 +64,8 @@ export default function MenuList({ handleClickModalOpen }) {
           <MenuItem move="login" value="로그인" />
         ) : (
           <>
-            <Alarm /> <MyProfileMenuItem handleClickModalOpen={handleClickModalOpen} isHaveShelter={true} />
+            <Alarm />
+            <MyProfileMenuItem handleClickModalOpen={handleClickModalOpen} isHaveShelter={true} />
           </>
         )}
       </ul>
