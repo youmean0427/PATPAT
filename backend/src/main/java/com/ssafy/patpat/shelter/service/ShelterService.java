@@ -12,6 +12,10 @@ import java.util.List;
 
 public interface ShelterService {
     List<Sido> sidoList();
+    Long getCount();
+
+    Boolean addCount();
+
     List<Gugun> gugunList(String sidoCode);
     ResponseListDto shelterList(RequestShelterDto dto);
     List<ShelterDto> shelterListInVolunteer(String gugunCode);
