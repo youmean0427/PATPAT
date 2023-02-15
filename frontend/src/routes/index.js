@@ -25,8 +25,6 @@ import MyVolunteer from 'pages/MyPage/MyVolunteer/MyVolunteer';
 import MyConsulting from 'pages/MyPage/MyConsulting/MyConsulting';
 import Report from 'pages/Report/Report';
 import MoreInfo from 'pages/Mbti/MoreInfo';
-import InfoDetail from 'components/Community/Info/InfoDetail';
-import FreeShareDetail from 'components/Community/FreeShare/FreeShareDetail';
 import MissingDogDetail from 'pages/Report/MissingDog/MissingDogDetail';
 import ReportCreate from 'pages/Report/Create/ReportCreate';
 import KakaoLogin from 'pages/Login/SNSLogin/Kakao/KakaoLogin';
@@ -42,17 +40,14 @@ import ShelterConsulting from 'pages/Shelter/ShelterConsulting/ShelterConsulting
 import ShelterProtectEnroll from 'pages/Shelter/ShelterProtect/ShelterProtectEnroll';
 import ProtectsDetail from 'components/Common/Protects/ProtectsDetail';
 import { getBreedsList } from 'apis/api/shelter';
-import InfoList from 'components/Community/Info/InfoList';
-import InfoUpdate from 'components/Community/Info/InfoUpdate';
-import AdoptionReviewList from 'components/Community/AdoptionReview/AdoptionReviewList';
-import AdoptionReviewUpdate from 'components/Community/AdoptionReview/AdoptionReviewUpdate';
-import FreeShareList from 'components/Community/FreeShare/FreeShareList';
-import FreeShareUpdate from 'components/Community/FreeShare/FreeShareUpdate';
-import InfoWrite from 'components/Community/Info/InfoWrite';
-import FreeShareWrite from 'components/Community/FreeShare/FreeShareWrite';
-import AdoptionReviewWrite from 'components/Community/AdoptionReview/AdoptionReviewWrite';
 import ReportPersonalDogUpdate from 'pages/Report/Update/PersonalDog/ReportPersonalDogUpdate';
 import ReportMissingDogUpdate from 'pages/Report/Update/MissingDog/ReportMissingDogUpdate';
+import Community from 'pages/Community/Community';
+import AdoptionReview from 'pages/Community/AdoptionReview/AdoptionReview';
+import FreeShare from 'pages/Community/FreeShare/FreeShare';
+import Information from 'pages/Community/Information/Information';
+import CommunityRegist from 'pages/Community/CommunityRegist/CommunityRegist';
+import CommunityUpdate from 'pages/Community/CommunityUpdate/CommunityUpdate';
 
 const router = createBrowserRouter([
   {
@@ -98,22 +93,22 @@ const router = createBrowserRouter([
           { path: 'consulting', element: <ShelterConsulting /> },
         ],
       },
-      { path: 'community/info', element: <InfoList /> },
-      { path: 'community/infodetail/:id', element: <InfoDetail /> },
-      { path: 'community/adoptionreview', element: <AdoptionReviewList /> },
-      { path: 'community/freeshare', element: <FreeShareList /> },
-      { path: 'community/freesharedetail/:id', element: <FreeShareDetail /> },
+      {
+        path: 'community',
+        element: <Community />,
+        children: [
+          { path: 'adoption', element: <AdoptionReview /> },
+          { path: 'share', element: <FreeShare /> },
+          { path: 'info', element: <Information /> },
+        ],
+      },
+      { path: 'community/regist', element: <CommunityRegist /> },
+      { path: 'community/update', element: <CommunityUpdate /> },
       { path: 'report/missing/:id', element: <MissingDogDetail /> },
       { path: 'report/personal/:id', element: <PersonalDogDetail /> },
       { path: 'report/personal/:id/update', element: <ReportPersonalDogUpdate /> },
       { path: 'report/missing/:id/update', element: <ReportMissingDogUpdate /> },
       { path: 'report/create', element: <ReportCreate /> },
-      { path: 'community/freeshareupdate/:id', element: <FreeShareUpdate /> },
-      { path: 'community/infoupdate/:id', element: <InfoUpdate /> },
-      { path: 'community/adoptionreviewupdate/:id', element: <AdoptionReviewUpdate /> },
-      { path: 'community/adoptionreviewwrtie', element: <AdoptionReviewWrite /> },
-      { path: 'community/freesharewrite', element: <FreeShareWrite /> },
-      { path: 'community/infowrite', element: <InfoWrite /> },
     ],
   },
   {
