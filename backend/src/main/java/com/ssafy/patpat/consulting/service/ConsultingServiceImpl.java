@@ -249,6 +249,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                 userRepository.save(user);
             }
             /** ------------------------**/
+            consultingRepository.save(consulting);
             if(consultingDto.getStateCode().equals(ConsultingState.승인)){
                 notificationService.notifyAccessConsultingEvent(consultingId);
             }
@@ -258,7 +259,6 @@ public class ConsultingServiceImpl implements ConsultingService{
             if(consultingDto.getStateCode().equals(ConsultingState.방생성)){
                 notificationService.notifyCreateRoomEvent(consultingId);
             }
-            consultingRepository.save(consulting);
             responseMessage.setMessage("SUCCESS");
 
         }catch (Exception e){

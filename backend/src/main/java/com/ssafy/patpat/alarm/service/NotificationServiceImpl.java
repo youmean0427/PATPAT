@@ -225,7 +225,7 @@ public class NotificationServiceImpl implements NotificationService{
         Consulting consulting = consultingRepository.findByConsultingId(consultingId);
         Long userId = consulting.getUser().getUserId();
 
-        MsgCode msgCode = MsgCode.MSG_ACCESS_CONSULTING;
+        MsgCode msgCode = MsgCode.MSG_DENY_CONSULTING;
         Alarm alarm = Alarm.builder()
                 .checkRead(false)
                 .registDate(LocalDateTime.now())
@@ -276,7 +276,7 @@ public class NotificationServiceImpl implements NotificationService{
         VolunteerReservation volunteerReservation = volunteerReservationRepository.findByReservationId(reservationId);
         Long userId = volunteerReservation.getUser().getUserId();
 
-        MsgCode msgCode = MsgCode.MSG_ACCESS_VOLUNTEER;
+        MsgCode msgCode = MsgCode.MSG_DENY_VOLUNTEER;
         Alarm alarm = Alarm.builder()
                 .checkRead(false)
                 .registDate(LocalDateTime.now())
