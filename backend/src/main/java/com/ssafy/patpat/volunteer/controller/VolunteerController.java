@@ -105,11 +105,19 @@ public class VolunteerController {
     @DeleteMapping("/notices")
 //    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "봉사 공고 삭제", notes = "봉사 공고 삭제...상태코드로 한다했나..?")
-    public ResponseEntity<Object> deleteNotice(@RequestParam("noticeId") Long noticeId) throws VolunteerException {
+    public ResponseEntity<Object> deleteNotice(@RequestParam("noticeId") Long noticeId){
         //서비스 호출 코드
-        volunteerService.deleteNotice(noticeId);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("SUCCESS"));
+        try {
+            volunteerService.deleteNotice(noticeId);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseMessage("SUCCESS"));
+        }catch (VolunteerException e){
+            ErrorDto error = new ErrorDto(e.getMessage(),"012");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(error);
+        }
+
+
 
     }
 
@@ -195,8 +203,8 @@ public class VolunteerController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseMessage("SUCCESS"));
         }catch (VolunteerException e){
-            ErrorDto errorDto = new ErrorDto(e.getMessage(), "noCode");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            ErrorDto errorDto = new ErrorDto(e.getMessage(), "012");
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(errorDto);
         }
 
