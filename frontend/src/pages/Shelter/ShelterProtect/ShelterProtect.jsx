@@ -49,9 +49,11 @@ export default function ShelterProtect() {
         <button
           onClick={handleClickNext}
           className={
-            data.totalPage === 0 || page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button
+            !data || data.totalPage === 0 || page === data.totalPage
+              ? `${styles.button} ${styles.disabled}`
+              : styles.button
           }
-          disabled={data.totalPage === 0 || page === data.totalPage ? true : false}
+          disabled={!data || data.totalPage === 0 || page === data.totalPage ? true : false}
         >
           <MdArrowForwardIos />
         </button>

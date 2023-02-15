@@ -51,7 +51,7 @@ export default function PersonalDogDetailContent({ item, state }) {
               <span className={styles.date}>23.02.03</span> */}
             </div>
 
-            {data.userId === user.userId ? (
+            {data.userId === user.userId && data.stateCode !== 6 ? (
               <div>
                 <Link to="update" state={{ data, state }}>
                   <Button variant="contained" className={styles.button}>

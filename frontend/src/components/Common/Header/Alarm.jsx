@@ -81,40 +81,49 @@ export default function Alarm() {
       // 보호소
       // 신규 실종견 등록
       eventSource.addEventListener('addMissing', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 신규 상담 신청
       eventSource.addEventListener('addConsulting', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 신규 봉사 신청
       eventSource.addEventListener('addVolunteer', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
 
       // 개인사용자
       // 유사견 등록
       eventSource.addEventListener('addProtect', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 상담 승인
       eventSource.addEventListener('accessConsulting', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 상담 거부
       eventSource.addEventListener('denyConsulting', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 봉사 신청 승인
       eventSource.addEventListener('accessVolunteer', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 봉사 신청 거부
       eventSource.addEventListener('denyVolunteer', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
       // 상담방 생성
       eventSource.addEventListener('createRoom', function (event) {
+        alert(event.data);
         setMessage(event.data);
       });
 

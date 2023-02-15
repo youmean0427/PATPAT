@@ -29,6 +29,21 @@ export default function ManageVolNoticeModal({
   const [isAddBtn, setIsAddBtn] = useState(false);
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
   const { data, isLoading } = useQuery(['detailNotice', noticeId], () => getVolNoticeInfoPerDay(noticeId, 50, 0));
+  const buttonStyle = (index, sIdx, item) => {
+    if (index === sIdx) {
+      if (item.reservationStateCode === 1) {
+        return `${styles.btn} ${styles.click} ${styles.magam}`;
+      } else {
+        return `${styles.btn} ${styles.click}`;
+      }
+    } else {
+      if (item.reservationStateCode === 1) {
+        return `${styles.btn} ${styles.magam}`;
+      } else {
+        return `${styles.btn}`;
+      }
+    }
+  };
   if (isLoading) return;
   const { noticeId: id, title, schedules, volunteerDate } = data;
   return (
@@ -51,14 +66,16 @@ export default function ManageVolNoticeModal({
           {schedules?.map((item, index) => {
             return (
               <button
-                className={index === sIdx ? `${styles.btn} ${styles.click}` : styles.btn}
+                className={buttonStyle(index, sIdx, item)}
                 onClick={() => {
                   setSIdx(index);
                   setIsAddBtn(false);
                 }}
                 key={index}
               >
-                {item.startTime} ~ {item.endTime} ({item.capacity || 0}/{item.totalCapacity})
+                <span className={item.reservationStateCode === 1 ? `${styles.magam} ${styles.text}` : styles.text}>
+                  {item.startTime} ~ {item.endTime} ({item.capacity || 0}/{item.totalCapacity})
+                </span>
               </button>
             );
           })}

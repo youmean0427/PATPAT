@@ -46,9 +46,11 @@ export default function MyCalendar() {
     setDate({ year: date.getFullYear(), month: date.getMonth() + 1 });
     setClick(prev => !prev);
   };
-
+  const eventHandlePropGetter = event => {
+    const backgroundColor = event.magam ? '#e74c3c' : '#a1887f';
+    return { style: { backgroundColor } };
+  };
   const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
-
   return (
     <>
       <Calendar
@@ -60,6 +62,7 @@ export default function MyCalendar() {
         onSelectSlot={handleClickSlot}
         onSelectEvent={handleClickSelect}
         onNavigate={handleClickNavigate}
+        eventPropGetter={eventHandlePropGetter}
       />
       {isOpen && (
         <EnrollVolunteerModal date={selectDate} isOpen={isOpen} handleClickModalClose={handleClickModalClose} />
@@ -81,7 +84,13 @@ const convertCalendarData = list => {
     return list.map(item => {
       const vDate = item.volunteerDate;
       const date = new Date(vDate);
-      return { noticeId: item.noticeId, title: item.title, start: date, end: date };
+      return {
+        noticeId: item.noticeId,
+        title: item.stateCode === 1 ? `(마감)${item.title}` : item.title,
+        start: date,
+        end: date,
+        magam: item.stateCode === 1 ? true : false,
+      };
     });
   } else {
     return [];

@@ -10,7 +10,7 @@ import { getBreedsList } from 'apis/api/shelter';
 import { changeBreedList } from 'utils/changeSelectTemplate';
 import './ckeditor.scss';
 
-import { MapMarker, Map } from 'react-kakao-maps-sdk';
+import { MapMarker, Map, Circle } from 'react-kakao-maps-sdk';
 
 import infoIcon from 'assets/images/forpaw-info.png';
 import DetailModal from 'components/Common/DetailModal';
@@ -33,7 +33,7 @@ export default function ReportCreateContent() {
   const [name, setName] = useState('');
   const [age, setAge] = useState(0);
   const [typeCode, setTypeCode] = useState({ value: 0 });
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  const [position, setPosition] = useState({ lat: 37, lng: 127 });
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const [genderCode, setGenderCode] = useState(3);
@@ -660,8 +660,8 @@ export default function ReportCreateContent() {
           // 지도를 표시할 Container
           center={{
             // 지도의 중심좌표
-            lat: 35.95,
-            lng: 128.25,
+            lat: position.lat,
+            lng: position.lng,
           }}
           style={{
             width: '100%',
@@ -675,6 +675,16 @@ export default function ReportCreateContent() {
             })
           }
         >
+          <Circle
+            center={{ lat: position.lat, lng: position.lng }}
+            radius={40000}
+            strokeWeight={1}
+            strokeColor="#ffd80b"
+            strokeOpacity={0.1}
+            strokeStyle="solid"
+            fillColor="#ffd80b"
+            fillOpacity={0.2}
+          />
           {position && (
             <MapMarker
               position={position}

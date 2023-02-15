@@ -31,16 +31,38 @@
   background-color: $main-color;
   border-radius: 4px;
   margin: 10px 5px 10px 0px;
-  & > button {
-    width: 100%;
+  text-align: center;
+  padding: 5px;
+
+  &:hover {
+    opacity: 90%;
+    background-color: $main-accent-color;
+  }
+
+  &Active {
+    padding: 5px;
+    width: 50px;
+    border: 2px solid $main-accent-color;
+    color: $white-color;
+    background-color: $main-accent-color;
+    border-radius: 4px;
+    margin: 10px 5px 10px 0px;
     text-align: center;
   }
 }
 
 .scheduleItem {
   margin: 5px 0 5px 0;
+  animation: modal-show 0.3s;
 }
-
+@keyframes modal-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 @keyframes modal-bg-show {
   from {
     opacity: 0;

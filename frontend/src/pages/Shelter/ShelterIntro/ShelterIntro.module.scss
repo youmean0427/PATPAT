@@ -30,6 +30,12 @@
   flex: 1;
 }
 
+.map {
+  width: 100%;
+  height: 500px;
+  margin-top: 30px;
+}
+
 @include breakpoint(md) {
 }
 

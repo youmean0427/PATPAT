@@ -28,11 +28,11 @@
 }
 
 .messages {
-  margin-top: 23px;
   animation: fadeInDown 0.8s;
   z-index: -1;
   position: absolute;
   right: 0%;
+  top: 72px;
   width: 250px;
   height: 300px;
   max-height: 200px;
@@ -87,4 +87,10 @@
 }
 .alarm-message-read {
   color: lightgray;
+}
+
+@include breakpoint(sm) {
+  .notify {
+    display: none;
+  }
 }
