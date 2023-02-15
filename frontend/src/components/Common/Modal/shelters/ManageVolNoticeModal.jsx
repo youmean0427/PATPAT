@@ -16,17 +16,31 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import 'components/Report/Update/MissingDog/ckeditor.scss';
+import useModal from 'hooks/useModal';
+import NoticeDeleteAlertModal from '../Alert/NoticeDeleteAlertModal';
 
-export default function ManageVolNoticeModal({ noticeId, isOpen, handleClickModalClose }) {
+export default function ManageVolNoticeModal({
+  setClick,
+  noticeId,
+  isOpen: isOpen2,
+  handleClickModalClose: closeModal,
+}) {
   const [sIdx, setSIdx] = useState(0);
   const [isAddBtn, setIsAddBtn] = useState(false);
+  const [isOpen, handleClickModalOpen, handleClickModalClose] = useModal();
   const { data, isLoading } = useQuery(['detailNotice', noticeId], () => getVolNoticeInfoPerDay(noticeId, 50, 0));
   if (isLoading) return;
   const { noticeId: id, title, schedules, volunteerDate } = data;
   return (
-    <ModalFrame isOpen={isOpen} handleClickModalClose={handleClickModalClose} width={800} height={700}>
+    <ModalFrame isOpen={isOpen2} handleClickModalClose={closeModal} width={800} height={700}>
       <div className={styles.container}>
-        <div className={styles.title}>공고 관리</div>
+        <div className={styles.title}>
+          공고 관리
+          <button onClick={handleClickModalOpen} className={styles['delete-notice']}>
+            공고 삭제
+          </button>
+        </div>
+
         <div className={styles.notice}>
           <span>공고 제목</span>
           <span>{title}</span>
@@ -69,6 +83,15 @@ export default function ManageVolNoticeModal({ noticeId, isOpen, handleClickModa
         )}
         {!schedules && <EnrollSchedule noticeId={id} setSIdx={setSIdx} />}
       </div>
+      {isOpen && (
+        <NoticeDeleteAlertModal
+          setClick={setClick}
+          isOpen={isOpen}
+          handleClickModalClose={handleClickModalClose}
+          handleClickModalClose2={closeModal}
+          noticeId={id}
+        />
+      )}
     </ModalFrame>
   );
 }
@@ -85,6 +108,7 @@ function EnrollSchedule({ noticeId, setSIdx }) {
       if (data.message === 'SUCCESS') {
         queryClient.invalidateQueries(['detailNotice', noticeId]);
         setSIdx(0);
+        toast('일정이 등록되었습니다.', { type: 'success' });
       } else {
         toast(data.message, { type: 'error' });
       }
@@ -152,6 +176,7 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
   const [capacity, setCapacity] = useState();
   const [totalCapacity, setTotalCapacity] = useState();
   const [guideLine, setGuideLine] = useState();
+  const [click, setClick] = useState(0);
   const queryClient = useQueryClient();
   const { mutate } = useMutation(['updateSchedule'], data => updateVolNoticeSchedule(data), {
     onSuccess: ({ data }) => {
@@ -169,7 +194,7 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
         toast(data.message, { type: 'error' });
       } else {
         queryClient.invalidateQueries(['detailNotice', noticeId]);
-        toast(data.message, { type: 'success' });
+        toast('일정이 등록되었습니다.', { type: 'success' });
       }
     },
   });
@@ -196,6 +221,7 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
       onSuccess: ({ data }) => {
         if (data.message === 'SUCCESS') {
           queryClient.invalidateQueries(['detailNotice', noticeId]);
+          toast(data.comment, { type: 'success' });
         } else if (data.code === '010') {
           toast(data.message, { type: 'error' });
         }
@@ -298,8 +324,35 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
           </button>
         </div>
       )}
+      <div className={styles['reservation-title']}>신청서 내역</div>
+      <div className={styles.category}>
+        <button
+          className={click === 0 ? `${styles['category-btn']} ${styles.click}` : styles['category-btn']}
+          onClick={() => setClick(0)}
+        >
+          신청 대기
+        </button>
+        <button
+          className={click === 1 ? `${styles['category-btn']} ${styles.click}` : styles['category-btn']}
+          onClick={() => setClick(1)}
+        >
+          승인
+        </button>
+        <button
+          className={click === 4 ? `${styles['category-btn']} ${styles.click}` : styles['category-btn']}
+          onClick={() => setClick(4)}
+        >
+          완료
+        </button>
+        <button
+          className={click === 3 ? `${styles['category-btn']} ${styles.click}` : styles['category-btn']}
+          onClick={() => setClick(3)}
+        >
+          불참
+        </button>
+      </div>
       <div className={styles.reservations}>
-        {schedules[index]?.reservations?.list?.map(item => {
+        {filterReservationList(schedules[index]?.reservations?.list, click).map(item => {
           const { capacity, reservationId, state, stateCode, userExp, userId, userName, userProfile } = item;
           return (
             <div
@@ -314,50 +367,57 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
               }
               key={reservationId}
             >
-              <img src={userProfile} alt="유저 이미지" />
-              <div>{userName}</div>
-              <div>{capacity}</div>
-              <div>state : {state}</div>
-              {stateCode === 0 && (
-                <>
-                  <button
-                    onClick={() => {
-                      changeReservationMutate({ userId, reservationId, stateCode: 1 });
-                    }}
-                  >
-                    승인
-                  </button>
-                  <button
-                    onClick={() => {
-                      changeReservationMutate({ userId, reservationId, stateCode: 2 });
-                    }}
-                  >
-                    거절
-                  </button>
-                </>
-              )}
-              {stateCode === 1 && (
-                <>
-                  <button
-                    onClick={() => {
-                      changeReservationMutate({ userId, reservationId, stateCode: 4 });
-                    }}
-                  >
-                    완료
-                  </button>
-                  <button
-                    onClick={() => {
-                      changeReservationMutate({ userId, reservationId, stateCode: 3 });
-                    }}
-                  >
-                    불참
-                  </button>
-                </>
-              )}
+              <div>
+                <img src={userProfile} alt="유저 이미지" />
+                <div className={styles.userName}>{userName}</div>
+              </div>
+              <div>
+                <div className={styles.rCapacity}>신청 인원 {capacity}</div>
+                {stateCode === 0 && (
+                  <>
+                    <button
+                      onClick={() => {
+                        changeReservationMutate({ userId, reservationId, stateCode: 1 });
+                      }}
+                    >
+                      승인
+                    </button>
+                    <button
+                      onClick={() => {
+                        changeReservationMutate({ userId, reservationId, stateCode: 2 });
+                      }}
+                    >
+                      거절
+                    </button>
+                  </>
+                )}
+                {stateCode === 1 && (
+                  <>
+                    <button
+                      onClick={() => {
+                        changeReservationMutate({ userId, reservationId, stateCode: 4 });
+                      }}
+                    >
+                      완료
+                    </button>
+                    <button
+                      onClick={() => {
+                        changeReservationMutate({ userId, reservationId, stateCode: 3 });
+                      }}
+                    >
+                      불참
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           );
         })}
       </div>
     </>
   );
+}
+
+function filterReservationList(list, state) {
+  return list.filter(item => item.stateCode === state);
 }

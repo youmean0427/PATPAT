@@ -1,0 +1,47 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  display: flex;
+  gap: 2.4rem;
+  & > .desc {
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+  }
+}
+.user {
+  display: flex;
+  flex-direction: column;
+  & > img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 0.4rem;
+  }
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10rem;
+  }
+  & > div > div {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+  & > div > div > input {
+    display: inline-block;
+    width: 4rem;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid $black-color;
+    text-align: center;
+  }
+}
