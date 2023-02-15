@@ -116,12 +116,12 @@ public class VolunteerService {
 
 
     @Transactional
-    public ResponseListDto selectNoticeListByShelter(RequestVolunteerDto requestVolunteerDto){
+    public ResponseListDto selectScheduleListByShelter(RequestVolunteerDto requestVolunteerDto){
         PageRequest pageRequest = PageRequest.of(requestVolunteerDto.getOffSet(),requestVolunteerDto.getLimit(), Sort.by("volunteerDate").ascending());
         Page<VolunteerNotice> volunteerNotices;
 
         if(requestVolunteerDto.getShelterId() != null){
-            volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndReservationStateCodeAndVolunteerDateGreaterThan(requestVolunteerDto.getShelterId(), Reservation.대기중, LocalDate.now().toString(), pageRequest);
+            volunteerNotices = volunteerNoticeRepository.findWithShelterByShelterShelterIdAndReservationStateCodeAndVolunteerDateBetween(requestVolunteerDto.getShelterId(), Reservation.대기중, LocalDate.now().plusDays(1).toString(), LocalDate.now().plusDays(7L).toString(), pageRequest);
         }else{
             LOGGER.info("탐색 기준이 없습니다.");
             return null;
@@ -131,24 +131,17 @@ public class VolunteerService {
             return null;
         }
 
-        List<VolunteerNoticeDto> list = new ArrayList<>();
+        List<VolunteerNotice> volunteerNoticeList = volunteerNotices.toList().stream().sorted(Comparator.comparing(VolunteerNotice::getVolunteerDate).reversed()).collect(Collectors.toList());
+
+        List<VolunteerScheduleDto> list = new ArrayList<>();
         for (VolunteerNotice vn:
-                volunteerNotices.toList()) {
-            List<Long> scheduleId = new ArrayList<>();
+                volunteerNoticeList) {
+            List<VolunteerSchedule> volunteerSchedules = vn.getVolunteerSchedules();
+            volunteerSchedules = volunteerSchedules.stream().sorted(Comparator.comparing(VolunteerSchedule::getStartTime)).collect(Collectors.toList());
             for (VolunteerSchedule vs:
-                    vn.getVolunteerSchedules()) {
-                scheduleId.add(vs.getScheduleId());
+                 volunteerSchedules) {
+                list.add(new VolunteerScheduleDto(vs));
             }
-            list.add(VolunteerNoticeDto.builder()
-                    .name(vn.getShelter().getName())
-                    .noticeId(vn.getNoticeId())
-                    .shelterId(vn.getShelter().getShelterId())
-                    .state(vn.getReservationStateCode().name())
-                    .stateCode(vn.getReservationStateCode().getCode())
-                    .title(vn.getTitle())
-                    .scheduleId(scheduleId)
-                    .volunteerDate(vn.getVolunteerDate())
-                    .build());
         }
         ResponseListDto responseVolunteerDto = new ResponseListDto();
         responseVolunteerDto.setTotalCount(volunteerNotices.getTotalElements());
