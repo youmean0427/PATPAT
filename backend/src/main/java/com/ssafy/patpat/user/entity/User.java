@@ -57,6 +57,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Consulting> consultings;
+
     @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;

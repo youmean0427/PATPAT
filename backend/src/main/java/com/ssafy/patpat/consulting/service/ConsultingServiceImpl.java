@@ -236,27 +236,27 @@ public class ConsultingServiceImpl implements ConsultingService{
             Consulting consulting = consultingRepository.findByConsultingId(consultingId);
             consulting.updateConsulting(ConsultingState.of(consultingDto.getStateCode()));
             /** ---- 경험치 올리기 코드 ----**/
-            if(consultingDto.getStateCode().equals(ConsultingState.완료)){
+            if(consultingDto.getStateCode()==ConsultingState.완료.getCode()){
                 User user = consulting.getUser();
                 user.updateExp(user.getExp()+1);
                 userRepository.save(user);
             }
             /** ------------------------**/
             /** ---- 경험치 내리기 코드 ----**/
-            if(consultingDto.getStateCode().equals(ConsultingState.불참)){
+            if(consultingDto.getStateCode()==ConsultingState.불참.getCode()){
                 User user = consulting.getUser();
                 user.updateExp(user.getExp()-1);
                 userRepository.save(user);
             }
             /** ------------------------**/
             consultingRepository.save(consulting);
-            if(consultingDto.getStateCode().equals(ConsultingState.승인)){
+            if(consultingDto.getStateCode()==ConsultingState.승인.getCode()){
                 notificationService.notifyAccessConsultingEvent(consultingId);
             }
-            if(consultingDto.getStateCode().equals(ConsultingState.거절)){
+            if(consultingDto.getStateCode()==ConsultingState.거절.getCode()){
                 notificationService.notifyDenyConsultingEvent(consultingId);
             }
-            if(consultingDto.getStateCode().equals(ConsultingState.방생성)){
+            if(consultingDto.getStateCode()==ConsultingState.방생성.getCode()){
                 notificationService.notifyCreateRoomEvent(consultingId);
             }
             responseMessage.setMessage("SUCCESS");
