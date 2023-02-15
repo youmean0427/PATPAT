@@ -1,12 +1,11 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styles from './MissingDogDetail.module.scss';
 
 import Navbar from 'components/ShelterPage/Navbar/Navbar';
 import MenuLink from 'components/ShelterPage/Navbar/MenuLink';
 import MissingDogDetailContent from 'components/Report/Detail/MissingDogDetailContent';
 export default function MissingDogDetail() {
-  const location = useLocation();
   const item = useParams();
   const state = 0;
 

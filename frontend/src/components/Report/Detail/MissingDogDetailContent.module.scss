@@ -226,7 +226,7 @@
   margin-bottom: 20px;
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .name {
@@ -314,6 +314,7 @@
 @media screen and (max-width: 540px) {
   .container {
     flex-direction: column;
+
     & > div {
       width: 100%;
     }
@@ -349,6 +350,21 @@
         }
       }
     }
+  }
+
+  .title {
+    font-size: 35px;
+    margin: 20px;
+    font-weight: 700;
+  }
+
+  .subTitle {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .content {
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 .info-icon {

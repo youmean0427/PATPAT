@@ -26,17 +26,17 @@ export default function Alarm() {
       }
       case 1: {
         // 신규 상담 신청
-        navigate(`shelter/${item.shelterId}/consulting`);
+        navigate(`shelter/${item.shelterId}/consulting`, { state: { shelterId: item.shelterId } });
         break;
       }
       case 2: {
         // 신규 봉사 신청
-        navigate(`shelter/${item.shelterId}/volunteer`);
+        navigate(`shelter/${item.shelterId}/volunteer`, { state: { shelterId: item.shelterId } });
         break;
       }
       case 3: {
         // 유사견
-        navigate(`/mypage/missing`);
+        navigate('/mypage/missing');
         break;
       }
       case 4: {

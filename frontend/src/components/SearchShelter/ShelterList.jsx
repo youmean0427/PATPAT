@@ -25,22 +25,26 @@ function ShelterList() {
   };
   if (isLoading) return <Loading />;
   return (
-    <div className={styles.container}>
-      {data.totalCount !== 0 ? (
-        data.list.map((item, index) => {
-          return <ShelterItem key={index} item={item} />;
-        })
-      ) : (
-        <span>검색 결과가 없습니다.</span>
-      )}
-      <Pagination
-        activePage={page}
-        itemsCountPerPage={10}
-        totalItemsCount={data.totalCount}
-        pageRangeDisplayed={5}
-        onChange={handlePageChange}
-      />
-    </div>
+    <>
+      <div className={styles.container}>
+        {data.totalCount !== 0 ? (
+          data.list.map((item, index) => {
+            return <ShelterItem key={index} item={item} />;
+          })
+        ) : (
+          <span>검색 결과가 없습니다.</span>
+        )}
+      </div>
+      <div className={styles.pagination}>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={10}
+          totalItemsCount={data.totalCount}
+          pageRangeDisplayed={5}
+          onChange={handlePageChange}
+        />
+      </div>
+    </>
   );
 }
 
