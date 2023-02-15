@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -47,6 +48,7 @@ public class AlarmController {
 
     @GetMapping
     @ApiOperation(value = "알림 리스트", notes = "알림 목록 조회")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> selectAlarmList(RequestAlarmDto requestAlarmDto){
         AlarmListDto responseListDto = alarmService.selectAlarmList(requestAlarmDto);
 
@@ -55,6 +57,7 @@ public class AlarmController {
 
     @GetMapping("/{alarmId}")
     @ApiOperation(value = "알림 조회", notes = "알림 상세 조회")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> detailAlarm(@PathVariable Long alarmId){
         AlarmDto alarmDto = alarmService.detailAlarm(alarmId);
 
@@ -63,6 +66,7 @@ public class AlarmController {
 
     @DeleteMapping("/{alarmId}")
     @ApiOperation(value = "알림 삭제", notes = "알림 삭제")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> deleteAlarm(@PathVariable Long alarmId){
         alarmService.deleteAlarm(alarmId);
 
@@ -71,6 +75,7 @@ public class AlarmController {
 
     @DeleteMapping("/all")
     @ApiOperation(value = "알림 전체 삭제", notes = "알림 전체 삭제")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> deleteAlarmAll(){
         alarmService.deleteAlarmAll();
 
@@ -79,6 +84,7 @@ public class AlarmController {
 
 
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
+//    @PreAuthorize("hasAnyRole('USER')")
     public SseEmitter subscribe(@RequestParam Long userId, HttpServletResponse response) {
         LOGGER.info("오나? {}",userId);
 //        Long userId = notificationService.getUserId();

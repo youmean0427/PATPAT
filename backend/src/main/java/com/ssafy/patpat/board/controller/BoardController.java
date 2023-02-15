@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,6 +50,7 @@ public class BoardController {
      */
     @GetMapping("/me")
     @ApiOperation(value = "게시판 리스트", notes = "내가 쓴 게시판 리스트")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> selectUserBoardList(RequestBoardDto requestBoardDto){
         //service 호출
         ResponseListDto boardDtoList = service.selectUserBoardList(requestBoardDto);
@@ -78,6 +80,7 @@ public class BoardController {
      */
     @PostMapping()
     @ApiOperation(value = "게시판 등록", notes = "게시판 등록.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> insertBoard(BoardDto boardDto, @RequestPart(required = false)  List<MultipartFile> uploadFile){
         //service 호출
         System.out.println(boardDto);
@@ -97,6 +100,7 @@ public class BoardController {
      */
     @PostMapping("/{boardId}")
     @ApiOperation(value = "게시판 수정", notes = "게시판 수정한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> updateBoard(@PathVariable Long boardId, BoardDto boardDto, @RequestPart(required = false)  List<MultipartFile> uploadFile){
         //service 호출
         ResponseMessage responseMessage = service.updateBoard(boardId,boardDto,uploadFile);
@@ -115,6 +119,7 @@ public class BoardController {
      */
     @DeleteMapping("/{boardId}")
     @ApiOperation(value = "게시판 삭제", notes = "게시판 삭제한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> deleteBoard(@PathVariable Long boardId){
         //service 호출
         ResponseMessage responseMessage = service.deleteBoard(boardId);
@@ -133,6 +138,7 @@ public class BoardController {
      */
     @PostMapping("/comments")
     @ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> insertComment(@RequestBody CommentDto commentDto){
         //service 호출
         ResponseMessage responseMessage = service.insertComment(commentDto);
@@ -151,6 +157,7 @@ public class BoardController {
      */
     @PutMapping("/comments/{commentId}")
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> updateComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto){
         //service 호출
         ResponseMessage responseMessage = service.updateComment(commentId,commentDto);
@@ -169,6 +176,7 @@ public class BoardController {
      */
     @DeleteMapping("/comments/{commentId}")
     @ApiOperation(value = "댓글 삭제", notes = "댓글을 삭제한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> deleteComment(@PathVariable Long commentId){
         //service 호출
         ResponseMessage responseMessage = service.deleteComment(commentId);
@@ -187,6 +195,7 @@ public class BoardController {
      */
     @PostMapping("/replies")
     @ApiOperation(value = "대댓글 등록", notes = "대댓글을 등록한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> insertReply(@RequestBody ReplyDto replyDto){
         //service 호출
         ResponseMessage responseMessage = service.insertReply(replyDto);
@@ -205,6 +214,7 @@ public class BoardController {
      */
     @PutMapping("/replies/{replyId}")
     @ApiOperation(value = "대댓글 수정", notes = "대댓글을 수정한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> updateReply(@PathVariable Long replyId,@RequestBody ReplyDto replyDto){
         //service 호출
         ResponseMessage responseMessage = service.updateReply(replyId,replyDto);
@@ -223,6 +233,7 @@ public class BoardController {
      */
     @DeleteMapping("/replies/{replyId}")
     @ApiOperation(value = "대댓글 삭제", notes = "대댓글을 삭제한다.")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> deleteReply(@PathVariable Long replyId){
         //service 호출
         ResponseMessage responseMessage = service.deleteReply(replyId);

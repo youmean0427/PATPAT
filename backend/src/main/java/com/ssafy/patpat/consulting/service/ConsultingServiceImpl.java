@@ -249,6 +249,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                 userRepository.save(user);
             }
             /** ------------------------**/
+            consultingRepository.save(consulting);
             if(consultingDto.getStateCode().equals(ConsultingState.승인)){
                 notificationService.notifyAccessConsultingEvent(consultingId);
             }
@@ -258,7 +259,6 @@ public class ConsultingServiceImpl implements ConsultingService{
             if(consultingDto.getStateCode().equals(ConsultingState.방생성)){
                 notificationService.notifyCreateRoomEvent(consultingId);
             }
-            consultingRepository.save(consulting);
             responseMessage.setMessage("SUCCESS");
 
         }catch (Exception e){
@@ -338,60 +338,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                 );
             }
         }
-
-//        Shelter shelter = shelterRepository.findByShelterId(5);
-//        List<TimeCode> list = new ArrayList<>();
-//
-//        for(Time t : shelter.getTimes()){
-//            if(t.getState() == 1){
-//                list.add(t.getTimeCode());
-//            }
-//        }
-//        List<Consulting> consultings = consultingRepository.findByShelterIdAndRegistDate(shelter.getShelterId(),date);
-//
-//        for(Consulting c : consultings){
-//            if(!(c.getStateCode()==2 || c.getStateCode()==3)){
-//                list.remove(TimeCode.of(c.getTimeCode()));
-//            }
-//        }
-//
-//        if(date.equals(LocalDate.now())){
-//            int hour = LocalDateTime.now().getHour();
-//
-//            System.out.println(list);
-//
-//            for (TimeCode time:
-//                 list) {
-//                if(time.getCode() <= hour ){
-//                    list.re
-//                }
-//            }
-//            for(int i=0; i<list.size(); i++){
-//                if(list.get(i).getCode()==10){
-//                    if(list.get(i)+10 <= hour) {
-//                        list.remove(Integer.valueOf(list.get(i)));
-//                        i--;
-//                    }
-//                }
-//                else{
-//                    if(list.get(i)+13 <= hour){
-//                        list.remove(Integer.valueOf(list.get(i)));
-//                        i--;
-//                    }
-//                }
-//            }
-//        }
-//
-//        System.out.println(list);
-//        List<TimeDto> timeDtoList = new ArrayList<>();
-//        for(Integer i : list){
-//            timeDtoList.add(new TimeDto(i));
-//        }
-
-//        return timeDtoList;
-//        return null;
-
-
+        
         return timeDtoList;
 
     }

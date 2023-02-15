@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,6 +44,7 @@ public class ReportController {
      * @return
      */
     @GetMapping("/missings/me")
+//    @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "실종견 조회", notes = "{현재 유저의 실종견 공고 리스트}")
     public ResponseEntity<Object> selectMissingListByUser(RequestReportDto requestReportDto){
         //서비스 호출 코드
@@ -95,6 +97,7 @@ public class ReportController {
      */
     @GetMapping("/recommends/{missingId}")
     @ApiOperation(value = "유사견종 조회", notes = "실종된 견종과 유사한 견종 조회")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Object> selectRecommendList(@PathVariable Long missingId,RequestReportDto requestReportDto){
         //서비스 호출 코드
         ResponseListDto responseListDto = service.selectRecommendList(missingId,requestReportDto);
@@ -108,6 +111,7 @@ public class ReportController {
      */
     @PostMapping
     @ApiOperation(value = "실종,임보 등록", notes = "0==실종, 1==임보")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> insertReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile){
         //서비스 호출 코드
         System.out.println(reportDto);
@@ -126,6 +130,7 @@ public class ReportController {
      */
     @PostMapping("/updates")
     @ApiOperation(value = "실종,임보 수정", notes = "0==실종, 1==임보")
+//    @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<ResponseMessage> updateReport(ReportDto reportDto, @RequestPart(required = false) List<MultipartFile> uploadFile) throws Exception{
         //서비스 호출 코드
         ResponseMessage responseMessage = service.updateReport(reportDto, uploadFile);
@@ -138,14 +143,14 @@ public class ReportController {
         }
     }
 
-    @DeleteMapping("/happy")
-    @ApiOperation(value = "행복 버튼", notes = "모든 report 데이터를 날린다.")
-    public ResponseEntity<Object> deleteAll(){
-        //서비스 호출 코드
-//        System.out.println(requestReportDto);
-        service.deleteAll();
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseMessage("HAPPY"));
-    }
+//    @DeleteMapping("/happy")
+//    @ApiOperation(value = "행복 버튼", notes = "모든 report 데이터를 날린다.")
+//    public ResponseEntity<Object> deleteAll(){
+//        //서비스 호출 코드
+////        System.out.println(requestReportDto);
+//        service.deleteAll();
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(new ResponseMessage("HAPPY"));
+//    }
 
 }
