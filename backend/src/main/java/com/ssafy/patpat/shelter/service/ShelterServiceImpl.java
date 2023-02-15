@@ -29,12 +29,9 @@ import com.ssafy.patpat.user.repository.OwnerRepository;
 import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 
-import org.apache.commons.collections.ArrayStack;
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -82,6 +79,7 @@ public class ShelterServiceImpl implements ShelterService{
     @Autowired
     UserService userService;
     @Override
+    @Transactional
     public BreedDto selectBreedByMbti(String mbtiId) {
         long breedId = MBTI.valueOf(mbtiId).getCode();
         Breed breed = breedRepository.findByBreedId(breedId);
@@ -113,15 +111,18 @@ public class ShelterServiceImpl implements ShelterService{
         return breedDto;
     }
     @Override
+    @Transactional
     public List<Sido> sidoList() {
         return sidoRepository.findAll();
     }
 
     @Override
+    @Transactional
     public List<Gugun> gugunList(String sidoCode) {
         return gugunRepository.findBySidoCode(sidoCode);
     }
     @Override
+    @Transactional
     public List<BreedDto> selectBreedList() {
         List<Breed> breedList = breedRepository.findAll();
         List<BreedDto> breedDtoList = new ArrayList<>();
@@ -141,6 +142,7 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
+    @Transactional
     public MbtiMapDto selectBreedCountByMbti(Long breedId) {
         MbtiMapDto mbtiMapDto = new MbtiMapDto();
         List<SidoCountDto> sidoCountDtoList = new ArrayList<>();
@@ -170,6 +172,7 @@ public class ShelterServiceImpl implements ShelterService{
     // 시도코드 , 구군코드
     // 시도코드 , 구군코드 , 견종
     @Override
+    @Transactional
     public ResponseListDto shelterList(RequestShelterDto dto) {
         ResponseListDto responseListDto = new ResponseListDto();
         Long breedId = dto.getBreedId();
@@ -250,6 +253,7 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
+    @Transactional
     public List<ShelterDto> shelterListInVolunteer(String gugunCode) {
         List<Shelter> shelterList = shelterRepository.findByGugunCode(gugunCode);
         List<ShelterDto> shelterDtoList = new ArrayList<>();
@@ -269,6 +273,7 @@ public class ShelterServiceImpl implements ShelterService{
      *보호소 등록, 수정, 상세
      */
     @Override
+    @Transactional
     public AuthCodeDto insertShelter(RequestParamShelterInsertDto requestParamShelterInsertDto){
         String shelterNm = requestParamShelterInsertDto.getShelterName();
         String shelterCode = requestParamShelterInsertDto.getShelterCode();
@@ -557,6 +562,7 @@ public class ShelterServiceImpl implements ShelterService{
     }
 
     @Override
+    @Transactional
     public Boolean deleteShelter(Long shelterId) {
         LOGGER.info("shelterId : {}", shelterId);
         Shelter shelter = shelterRepository.findByShelterId(shelterId);
