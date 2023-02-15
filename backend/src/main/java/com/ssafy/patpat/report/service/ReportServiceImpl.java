@@ -637,12 +637,6 @@ public class ReportServiceImpl implements ReportService{
                 }
             }
             List<DogColor> colors = new ArrayList<>();
-            for (String c:
-                    reportDto.getCategoryColor()) {
-                colors.add(DogColor.builder()
-                        .colorCode(c)
-                        .build());
-            }
             /** Color 처리 로직 */
             /** 프론트에게 다시 줘야하는 #333333 형식의 컬러 코드 리스트를 엔티티리스트에 저장 **/
             for(String color : reportDto.getCategoryColor()){
@@ -681,39 +675,7 @@ public class ReportServiceImpl implements ReportService{
 
                 missingDogRepository.save(missingDog);
                 notificationService.notifyAddMissingDogEvent(missingDog.getMissingId());
-//                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-//                if (!uploadDir.exists()) uploadDir.mkdir();
-//                if (uploadFile != null) {
-//                    for (MultipartFile partFile : uploadFile) {
-//                        int missingId = missingDog.getMissingId();
-//                        String fileName = partFile.getOriginalFilename();
-//
-//                        UUID uuid = UUID.randomUUID();
-//
-//                        String extension = FilenameUtils.getExtension(fileName);
-//
-//                        String savingFileName = uuid + "." + extension;
-//
-//                        File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-//
-//                        partFile.transferTo(destFile);
-//
-//                        Image image = Image.builder()
-//                                .origFilename(fileName)
-//                                .fileSize((int) partFile.getSize())
-//                                .filename(fileName)
-//                                .filePath(uploadFolder + "/" + savingFileName)
-//                                .build();
-//
-//                        imageRepository.save(image);
-//                        MissingDogImage missingDogImage = MissingDogImage.builder()
-//                                .imageId(image.getImageId())
-//                                .missingId(missingId)
-//                                .build();
-//
-//                        missingDogImageRepository.save(missingDogImage);
-//                    }
-//                }
+
             }else{
 
                 PersonalProtectedDog personalProtectedDog = PersonalProtectedDog.builder()
@@ -741,39 +703,6 @@ public class ReportServiceImpl implements ReportService{
 
             personalProtectedDogRepository.save(personalProtectedDog);
 
-//                File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-//                if (!uploadDir.exists()) uploadDir.mkdir();
-//                if (uploadFile != null) {
-//                    for (MultipartFile partFile : uploadFile) {
-//                        int ppDogId = personalProtectedDog.getPpDogId();
-//                        String fileName = partFile.getOriginalFilename();
-//
-//                        UUID uuid = UUID.randomUUID();
-//
-//                        String extension = FilenameUtils.getExtension(fileName);
-//
-//                        String savingFileName = uuid + "." + extension;
-//
-//                        File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-//
-//                        partFile.transferTo(destFile);
-//
-//                        Image image = Image.builder()
-//                                .origFilename(fileName)
-//                                .fileSize((int) partFile.getSize())
-//                                .filename(fileName)
-//                                .filePath(uploadFolder + "/" + savingFileName)
-//                                .build();
-//
-//                        imageRepository.save(image);
-//                        PersonalProtectedDogImage personalProtectedDogImage = PersonalProtectedDogImage.builder()
-//                                .imageId(image.getImageId())
-//                                .ppDogId(ppDogId)
-//                                .build();
-//
-//                        personalProtectedDogImageRepository.save(personalProtectedDogImage);
-//                    }
-//                }
             }
             responseMessage.setMessage("SUCCESS");
         }catch (Exception e){

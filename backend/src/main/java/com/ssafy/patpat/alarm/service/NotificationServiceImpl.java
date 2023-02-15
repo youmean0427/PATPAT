@@ -58,6 +58,8 @@ public class NotificationServiceImpl implements NotificationService{
     AlarmRepository alarmRepository;
     @Autowired
     ReportService reportService;
+
+    @Override
     @Transactional
     public void notifyAddProtectDogEvent(Long spDogId){
         ShelterProtectedDog shelterProtectedDog = shelterProtectedDogRepository.findBySpDogId(spDogId);
@@ -97,6 +99,7 @@ public class NotificationServiceImpl implements NotificationService{
             }
         }
     }
+    @Override
     @Transactional
     public void notifyAddMissingDogEvent(Long missingId){
         MissingDog missingDog = missingDogRepository.findByMissingId(missingId);
