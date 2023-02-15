@@ -32,7 +32,10 @@
 .input {
   display: none;
 }
-
+.excelform {
+  text-decoration: underline;
+  font-size: 1.4rem;
+}
 .input-path {
   font-size: 2rem;
   flex: 1;
@@ -40,4 +43,19 @@
   border: 1px solid $main-color;
   border-radius: 0.4rem;
   color: $black-color;
+}
+
+@include breakpoint(sm) {
+  .input-box {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    & > button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .input-path {
+    width: 100%;
+  }
 }

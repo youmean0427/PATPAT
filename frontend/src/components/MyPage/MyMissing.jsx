@@ -45,7 +45,7 @@ export default function MyMissing() {
             <span>{userName}</span>님이 찾고 계신 <span>{dogName}</span>와(과) 유사한 견종입니다.
           </p>
           <p>
-            반경 10km 내의 보호소 중 총 <span>{data.totalCount}</span>건이 검색되었습니다.
+            반경 40km 내의 보호소 중 총 <span>{data.totalCount}</span>건이 검색되었습니다.
           </p>
           <br />
           <p>해당 보호소 페이지로 이동하여 화상 상담을 신청할 수 있습니다.</p>

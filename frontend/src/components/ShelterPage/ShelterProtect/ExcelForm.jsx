@@ -8,6 +8,7 @@ import { myShelterIdState } from 'recoil/atoms/user';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { enrollProtectByExcel } from 'apis/api/protect';
 import { useNavigate } from 'react-router-dom';
+import PATPATFORM from 'assets/images/PATPATFORM.xlsx';
 export default function ExcelForm() {
   const myShelterId = useRecoilValue(myShelterIdState);
   const {
@@ -41,19 +42,24 @@ export default function ExcelForm() {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles['input-box']}>
-      <label htmlFor="input-item">
-        <AiFillFileAdd />
-      </label>
-      <input
-        id="input-item"
-        className={styles.input}
-        type="file"
-        accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        {...register('excelFile', { onChange: handleChange })}
-      />
-      <span className={styles['input-path']}>{filePath}</span>
-      <button type="submit">데이터 전송</button>
-    </form>
+    <>
+      <a className={styles.excelform} href={PATPATFORM} download="PATPAT_EXCEL_FORM">
+        첨부파일 : PATPAT 보호동물 등록 양식 EXCEL
+      </a>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles['input-box']}>
+        <label htmlFor="input-item">
+          <AiFillFileAdd />
+        </label>
+        <input
+          id="input-item"
+          className={styles.input}
+          type="file"
+          accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          {...register('excelFile', { onChange: handleChange })}
+        />
+        <span className={styles['input-path']}>{filePath}</span>
+        <button type="submit">데이터 전송</button>
+      </form>
+    </>
   );
 }

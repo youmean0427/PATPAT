@@ -2,6 +2,12 @@
 .footer {
   width: 100%;
   height: $footer-height;
-  margin-top: auto;
   border-top: 1px solid lightgray;
+  background-color: $light-gray-color;
+  display: flex;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
 }

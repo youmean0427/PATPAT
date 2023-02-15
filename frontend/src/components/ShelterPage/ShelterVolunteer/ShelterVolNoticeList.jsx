@@ -21,7 +21,6 @@ export default function ShelterVolNoticeList() {
     setPage(prev => prev + 1);
   };
   if (isLoading) return;
-  console.log(data);
   return (
     <>
       <div className={styles.pagination}>
@@ -36,9 +35,11 @@ export default function ShelterVolNoticeList() {
         <button
           onClick={handleClickNext}
           className={
-            data.totalPage === 0 || page === data.totalPage ? `${styles.button} ${styles.disabled}` : styles.button
+            !data || data.totalPage === 0 || page === data.totalPage
+              ? `${styles.button} ${styles.disabled}`
+              : styles.button
           }
-          disabled={data.totalPage === 0 || page === data.totalPage ? true : false}
+          disabled={!data || data.totalPage === 0 || page === data.totalPage ? true : false}
         >
           <MdArrowForwardIos />
         </button>
