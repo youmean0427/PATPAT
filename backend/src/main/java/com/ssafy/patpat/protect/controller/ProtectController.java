@@ -31,6 +31,7 @@ public class ProtectController {
      * @return
      */
     @GetMapping
+    //@PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "보호동물 리스트", notes = "{code==0 안락사, code==1 최신순, stateCode 넣으면 상태별}")
     public ResponseEntity<Object> selectProtectList(RequestProtectDto requestProtectDto){
         //서비스 호출 코드
@@ -43,6 +44,7 @@ public class ProtectController {
      * @return
      */
     @GetMapping("/shelters")
+    //@PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "보호동물 리스트", notes = "{shelterId 필수, code==0 안락사, code==1 최신순, stateCode 넣으면 상태별}")
     public ResponseEntity<Object> selectProtectListByShelter(RequestProtectDto requestProtectDto){
         //서비스 호출 코드
@@ -50,6 +52,21 @@ public class ProtectController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(protectDtoList);
     }
+
+    /**
+     * 보호동물 리스트(보호소별)
+     * @return
+     */
+    @GetMapping("/shelters/admin/{shelterId}")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @ApiOperation(value = "보호동물 관리 리스트", notes = "{shelterId 필수")
+    public ResponseEntity<Object> selectProtectListByShelter(@PathVariable Long shelterId){
+        //서비스 호출 코드
+        List<ProtectDto> protectDtoList = service.selectProtectListByShelterAdmin(shelterId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(protectDtoList);
+    }
+
     /**
      * 보호동물 상세
      * @return

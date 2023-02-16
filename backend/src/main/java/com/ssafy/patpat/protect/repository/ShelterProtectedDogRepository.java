@@ -22,6 +22,7 @@ public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProt
     Page<ShelterProtectedDog> findByStateCode(ProtectState stateCode, PageRequest pageRequest);
     ShelterProtectedDog findBySpDogId(Long spDogId);
 
+    List<ShelterProtectedDog> findByShelterShelterIdAndStateCodeNotIn(Long shelterId, List<ProtectState> protectStates);
     List<ShelterIdMapping> findDistinctByShelterSidoCodeAndBreedBreedId(String sidoCode, Long breedId);
 
     List<ShelterIdMapping> findDistinctByBreedBreedId(Long breedId);

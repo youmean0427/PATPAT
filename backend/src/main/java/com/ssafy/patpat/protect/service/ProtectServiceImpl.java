@@ -90,6 +90,7 @@ public class ProtectServiceImpl implements ProtectService{
             ResponseListDto responseListDto = new ResponseListDto();
             PageRequest pageRequest;
             Page<ShelterProtectedDog> shelterProtectedDogList;
+
             List<ProtectState> filterList = new ArrayList<>();
             filterList.add(ProtectState.입양완료);
             filterList.add(ProtectState.자연사);
@@ -130,7 +131,7 @@ public class ProtectServiceImpl implements ProtectService{
             }
 
             List<ProtectDto> protectDtoList = new ArrayList<>();
-            for(ShelterProtectedDog s : shelterProtectedDogList){
+            for(ShelterProtectedDog s : shelterProtectedDogList.toList()){
                 //파일 담을 객체 생성 후 받아오기
                 List<Image> shelterDogImageList = s.getImages();
 
@@ -236,7 +237,7 @@ public class ProtectServiceImpl implements ProtectService{
             }
 
             List<ProtectDto> protectDtoList = new ArrayList<>();
-            for(ShelterProtectedDog s : shelterProtectedDogList){
+            for(ShelterProtectedDog s : shelterProtectedDogList.toList()){
                 //파일 담을 객체 생성 후 받아오기
                 List<Image> shelterDogImageList = s.getImages();
                 //만약 파일이 있다면
@@ -289,7 +290,60 @@ public class ProtectServiceImpl implements ProtectService{
             e.printStackTrace();
             return null;
         }
+    }
 
+    @Transactional
+    public List<ProtectDto> selectProtectListByShelterAdmin(Long shelterId){
+        List<ProtectDto> protectDtoList = new ArrayList<>();
+        List<ProtectState> filterList = new ArrayList<>();
+        filterList.add(ProtectState.입양완료);
+        filterList.add(ProtectState.자연사);
+        filterList.add(ProtectState.안락사);
+        List<ShelterProtectedDog> shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(shelterId, filterList);
+
+        for(ShelterProtectedDog s : shelterProtectedDogList){
+            //파일 담을 객체 생성 후 받아오기
+            List<Image> shelterDogImageList = s.getImages();
+            //만약 파일이 있다면
+            String thumbnail = null;
+            if(shelterDogImageList.isEmpty()){
+                thumbnail= fileService.getFileUrl(fileService.getDefaultImage());
+            }
+            if(shelterDogImageList.size() > 0) {
+                //이미지를 한개 받아온다.
+//                    Image image = imageRepository.findByImageId(shelterDogImageList.get(0).getImageId());
+                Image image = s.getImages().get(0);
+//                    //파일 디티오에 넣는다.
+//                    FileDto fileDto = FileDto.builder()
+//                            .origFilename(image.getOrigFilename())
+//                            .build();
+                thumbnail=fileService.getFileUrl(image);
+            }
+            /** 찜목록인지 확인 */
+            boolean isFavorite = false;
+
+//                Breed breed = breedRepository.findByBreedId(s.getBreedId());
+            protectDtoList.add(
+                    ProtectDto.builder()
+                            .protectId(s.getSpDogId())
+                            .stateCode(s.getStateCode().getCode())
+                            .state(s.getStateCode().name())
+                            .protectName(s.getName())
+                            .thumbnail(thumbnail)
+                            .gender(s.getGender().name())
+                            .genderCode(s.getGender().getCode())
+                            .neuteredCode(s.getNeutered().getCode())
+                            .neutered(s.getNeutered().name())
+                            .age(s.getAge())
+                            .breedName(s.getBreed().getName())
+                            .breedId(s.getBreed().getBreedId())
+                            .kg(s.getWeight())
+                            .isFavorite(isFavorite)
+                            .build()
+
+            );
+        }
+        return protectDtoList;
     }
     @Override
     @Transactional
