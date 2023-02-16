@@ -75,7 +75,6 @@ class PatpatApplicationTests {
 						.registDate(LocalDateTime.now().toLocalDate())
 						.findingDate(LocalDate.now())
 						.weight(2.0)
-						.categoryCloth(Cloth.X)
 						.categoryTail(Tail.단발꼬리)
 						.categoryPattern(Pattern.새들)
 						.categoryEar(Ear.모름)
