@@ -1,5 +1,6 @@
 package com.ssafy.patpat;
 
+import com.ssafy.patpat.board.repository.BoardRepository;
 import com.ssafy.patpat.common.code.category.Neutered;
 import com.ssafy.patpat.common.code.ProtectState;
 import com.ssafy.patpat.common.code.category.*;
@@ -58,10 +59,12 @@ class PatpatApplicationTests {
 	ImageRepository imageRepository;
 //	@Autowired
 //	ShelterDogImageRepository shelterDogImageRepository;
-
+@Autowired
+	BoardRepository boardRepository;
 	@Test
 	void contextLoads() {
-		}
+		boardRepository.deleteAll();
+	}
 
 	@Test
 	void test() throws IOException {
