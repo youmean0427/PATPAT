@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -70,7 +71,7 @@ public class ReportDto {
     @Schema(example = "발견날짜/실종날짜")
     private LocalDate date;
     @Schema(example = "등록날짜")
-    private LocalDate registDate;
+    private LocalDateTime registDate;
     @Schema(example = "상태")
     private String state;
     @Schema(example = "상태코드")
