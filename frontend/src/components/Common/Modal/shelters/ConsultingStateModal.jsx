@@ -3,6 +3,7 @@ import { updateConsultant } from 'apis/api/consulting';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { setShelter } from 'redux/shelter';
 import ModalConsultingFrame from '../ModalConsultingFrame';
 import styles from './ConsultingStateModal.module.scss';
@@ -67,7 +68,7 @@ export default function ConsultingStateModal({
       if (consultingDate[0] === year && consultingDate[1] === month && consultingDate[2] === date) {
         mutate({ consultingId, state });
       } else {
-        alert('당일에만 가능 합니다.');
+        toast('당일에만 방생성을 할 수 있습니다.', { type: 'info' });
       }
     } else {
       mutate({ consultingId, state });
