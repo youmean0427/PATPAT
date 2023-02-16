@@ -144,7 +144,7 @@ export default function Alarm() {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getAlarmList', message, click],
+    queryKey: ['getAlarmList', message, count, click],
     queryFn: () => {
       return getAlarmList();
     },
