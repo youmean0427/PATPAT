@@ -18,6 +18,7 @@ const MainLayout = () => {
           <Outlet />
         </Container>
       </main>
+      <Footer />
       {isOpen && <EnrollShelterModal isOpen={isOpen} handleClickModalClose={handleClickModalClose} />}
       <ToastContainer position="bottom-center" limit={2} closeButton={false} autoClose={2000} hideProgressBar />
     </div>
