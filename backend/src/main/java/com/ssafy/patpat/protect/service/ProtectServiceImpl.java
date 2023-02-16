@@ -423,7 +423,7 @@ public class ProtectServiceImpl implements ProtectService{
                     .gender(Gender.of(protectDto.getGenderCode()))
                     .neutered(Neutered.of(protectDto.getNeuteredCode()))
                     .images(images)
-                    .registDate(LocalDateTime.now().toLocalDate())
+                    .registDate(LocalDateTime.now())
                     .findingDate(LocalDate.now())
                     .name(protectDto.getProtectName())
                     .weight(protectDto.getKg())
@@ -575,7 +575,7 @@ public class ProtectServiceImpl implements ProtectService{
 
                     shelterProtectedDog.setShelter(shelter);
                     shelterProtectedDog.setStateCode(ProtectState.공고중);
-                    shelterProtectedDog.setRegistDate(LocalDate.now());
+                    shelterProtectedDog.setRegistDate(LocalDateTime.now());
                     shelterProtectedDog.setImages(images);
                     shelterProtectedDog.setColors(colors);
                     shelterProtectedDog.setLatitude(shelter.getLatitude());
