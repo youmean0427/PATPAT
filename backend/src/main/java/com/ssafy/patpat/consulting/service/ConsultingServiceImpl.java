@@ -116,6 +116,7 @@ public class ConsultingServiceImpl implements ConsultingService{
                                 .shelterId(shelter.getShelterId())
                                 .shelterDogName(c.getShelterProtectedDog().getName())
                                 .registDate(c.getRegistDate())
+                                .userName(user.get().getNickname())
                                 .build()
                 );
             }
