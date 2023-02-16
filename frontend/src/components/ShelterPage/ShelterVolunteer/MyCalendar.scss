@@ -4,6 +4,9 @@
   background-color: $main-color;
   font-size: 1.2rem;
   transition: all 0.3s;
+  @include breakpoint(sm) {
+    font-size: 0.8rem;
+  }
 }
 
 .rbc-event:hover {
@@ -21,6 +24,6 @@
 .rbc-calendar {
   height: 700px !important;
   @include breakpoint(sm) {
-    height: 370px !important;
+    height: 500px !important;
   }
 }
