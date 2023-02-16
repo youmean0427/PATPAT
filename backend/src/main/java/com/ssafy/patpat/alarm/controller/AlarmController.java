@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -108,15 +109,24 @@ public class AlarmController {
         LOGGER.info("id는 이것 {}", sseEmitters.keySet());
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter {}",id);
-            sseEmitters.remove(id);
+            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+            sseEmitters.remove(removeList);
         });
         sseEmitter.onTimeout(() -> {
             LOGGER.info("onTimeout sseEmitter {}",id);
-            sseEmitters.remove(id);
+            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+            sseEmitters.remove(removeList);
         });
         sseEmitter.onError((e) -> {
             LOGGER.info("Error seeEmitter {}", id);
-            sseEmitters.remove(id);
+            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+            sseEmitters.remove(removeList);
         });
 
         try {
