@@ -109,27 +109,30 @@ public class AlarmController {
         LOGGER.info("id는 이것 {}", sseEmitters.keySet());
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter {}",id);
-            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
-                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
-                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
-            removeList.entrySet().stream()
-                    .map( r -> sseEmitters.remove(r));
+            sseEmitters.remove(id);
+//            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+//                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+//                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+//            removeList.entrySet().stream()
+//                    .map( r -> sseEmitters.remove(r.getKey()));
         });
         sseEmitter.onTimeout(() -> {
             LOGGER.info("onTimeout sseEmitter {}",id);
-            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
-                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
-                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
-            removeList.entrySet().stream()
-                    .map( r -> sseEmitters.remove(r));
+            sseEmitters.remove(id);
+//            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+//                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+//                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+//            removeList.entrySet().stream()
+//                    .map( r -> sseEmitters.remove(r.getKey()));
         });
         sseEmitter.onError((e) -> {
             LOGGER.info("Error seeEmitter {}", id);
-            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
-                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
-                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
-            removeList.entrySet().stream()
-                    .map( r -> sseEmitters.remove(r));
+            sseEmitters.remove(id);
+//            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+//                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+//                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+//            removeList.entrySet().stream()
+//                    .map( r -> sseEmitters.remove(r.getKey()));
         });
 
         try {
