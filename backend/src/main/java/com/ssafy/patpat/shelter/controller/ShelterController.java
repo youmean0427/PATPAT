@@ -259,4 +259,11 @@ public class ShelterController {
                 .body(new ResponseMessage("SUCCESS"));
     }
 
+//    @GetMapping("/dummy")
+//    public ResponseEntity<Object> dummy(){
+//        service.dummyShelter();
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(new ResponseMessage("SUCCESS"));
+//    }
+
 }

@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -101,25 +102,41 @@ public class AlarmController {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Transfer-Encoding","chunked");
 
-        SseEmitter sseEmitter = new SseEmitter(null);
+        SseEmitter sseEmitter = new SseEmitter(1000L * 45L);
         Optional<User> user = userRepository.findById(userId);
         String id = user.get().getEmail() + "_" + System.currentTimeMillis();
         sseEmitters.put(id, sseEmitter);
-        LOGGER.info("id는 이것 {}", id);
+        LOGGER.info("id는 이것 {}", sseEmitters.keySet());
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter {}",id);
             sseEmitters.remove(id);
+//            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+//                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+//                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+//            removeList.entrySet().stream()
+//                    .map( r -> sseEmitters.remove(r.getKey()));
         });
         sseEmitter.onTimeout(() -> {
             LOGGER.info("onTimeout sseEmitter {}",id);
             sseEmitters.remove(id);
+//            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+//                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+//                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+//            removeList.entrySet().stream()
+//                    .map( r -> sseEmitters.remove(r.getKey()));
         });
         sseEmitter.onError((e) -> {
             LOGGER.info("Error seeEmitter {}", id);
             sseEmitters.remove(id);
+//            Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
+//                    .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+//                    .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
+//            removeList.entrySet().stream()
+//                    .map( r -> sseEmitters.remove(r.getKey()));
         });
 
         try {
+
             sseEmitter.send(SseEmitter.event().name("connect").data("Start Connection"));
         } catch (Exception e) {
             e.printStackTrace();

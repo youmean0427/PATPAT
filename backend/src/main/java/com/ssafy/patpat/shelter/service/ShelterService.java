@@ -4,7 +4,6 @@ import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.shelter.dto.*;
 import com.ssafy.patpat.shelter.entity.Gugun;
-import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.entity.Sido;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,5 +35,7 @@ public interface ShelterService {
     List<ShelterNameDto> selectShelterAll();
 
     Boolean deleteShelter(Long shelterId);
+
+//    Boolean dummyShelter();
 
 }
