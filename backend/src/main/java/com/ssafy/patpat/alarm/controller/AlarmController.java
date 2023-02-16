@@ -95,7 +95,7 @@ public class AlarmController {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Transfer-Encoding","chunked");
 
-        SseEmitter sseEmitter = new SseEmitter(-1L);
+        SseEmitter sseEmitter = new SseEmitter(60*1000L);
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter");
             sseEmitters.remove(userId);
