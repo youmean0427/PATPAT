@@ -48,6 +48,7 @@ import FreeShare from 'pages/Community/FreeShare/FreeShare';
 import Information from 'pages/Community/Information/Information';
 import CommunityRegist from 'pages/Community/CommunityRegist/CommunityRegist';
 import CommunityUpdate from 'pages/Community/CommunityUpdate/CommunityUpdate';
+import MoreProduct from 'pages/Home/MoreProduct';
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
       { path: 'statistics', element: <Statistics /> },
       { path: 'vision', element: <Vision /> },
       { path: 'volunteer', element: <Volunteer /> },
+      { path: 'products', element: <MoreProduct /> },
       { path: 'mypage/missing/:id', element: <MyMissing /> },
       {
         path: 'mypage',
