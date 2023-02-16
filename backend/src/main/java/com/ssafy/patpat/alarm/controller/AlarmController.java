@@ -120,6 +120,7 @@ public class AlarmController {
         });
 
         try {
+            LOGGER.info("여긴 와주라 제발 {}", id);
             sseEmitter.send(SseEmitter.event().name("connect").data("Start Connection"));
         } catch (Exception e) {
             e.printStackTrace();
