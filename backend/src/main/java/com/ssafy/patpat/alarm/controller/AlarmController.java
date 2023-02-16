@@ -112,7 +112,7 @@ public class AlarmController {
         });
         sseEmitter.onTimeout(() -> {
             LOGGER.info("onTimeout sseEmitter {}",id);
-            sseEmitter.complete();
+            sseEmitters.remove(id);
         });
         sseEmitter.onError((e) -> {
             LOGGER.info("Error seeEmitter {}", id);
