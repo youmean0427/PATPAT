@@ -152,9 +152,15 @@ export default function DetailContent({ data }) {
           <div className={styles['dog-category-ans']}>
             <p>{data.categoryTail}</p>
             <div className={styles.colors}>
-              {data.categoryColor.map((item, index) => (
-                <div key={index} className={styles['color-box']} style={{ backgroundColor: item }}></div>
-              ))}
+              {data.categoryColor.length === 0 ? (
+                <div className={styles['color-box']} style={{ fontSize: '1.5rem' }}>
+                  -
+                </div>
+              ) : (
+                data.categoryColor.map((item, index) => (
+                  <div key={index} className={styles['color-box']} style={{ backgroundColor: item }}></div>
+                ))
+              )}
             </div>
             <p style={{ visibility: 'hidden' }}>None</p>
           </div>
