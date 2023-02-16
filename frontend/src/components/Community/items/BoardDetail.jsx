@@ -6,11 +6,10 @@ import Carousel from 'react-carousel-minimal/dist/components/Carousel';
 import './Carousel.css';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import Comment from './Comment';
 
 export default function BoardDetail({ boardId, close, change, typeCode }) {
   const navigate = useNavigate();
-  const userId = JSON.parse(localStorage.getItem('user')).userId;
+  const userId = JSON.parse(localStorage.getItem('user'));
 
   const { data, isLoading } = useQuery({
     queryKey: ['getBoardDetail', boardId, change],
@@ -73,7 +72,7 @@ export default function BoardDetail({ boardId, close, change, typeCode }) {
       <div className={styles.content} dangerouslySetInnerHTML={{ __html: data.content }}></div>
       {/* <Comment boardId={data.boardId} /> */}
 
-      {data.userId === userId ? (
+      {userId !== null && data.userId === userId.userId ? (
         <div className={styles.buttons}>
           <button onClick={() => navigate('/community/update', { state: { stateCode: typeCode, data: data } })}>
             수정
