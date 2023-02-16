@@ -2,12 +2,22 @@
 .footer {
   width: 100%;
   height: $footer-height;
-  border-top: 1px solid lightgray;
   background-color: $light-gray-color;
-  display: flex;
-  align-items: center;
+  display: none;
 }
 
 .wrapper {
   display: flex;
+  & > a {
+    color: $main-accent-color;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+}
+
+@include breakpoint(sm) {
+  .footer {
+    display: flex;
+    align-items: center;
+  }
 }
