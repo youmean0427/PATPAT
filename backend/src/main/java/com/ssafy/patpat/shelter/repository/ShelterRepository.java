@@ -30,7 +30,7 @@ public interface ShelterRepository extends JpaRepository<Shelter,Long> {
     @Query(nativeQuery = true,
             value = "select * , (6371 * acos ( cos ( radians(:a) )* cos( radians( latitude ) )* cos( radians( longitude )" +
                     " - radians(:b) )+ sin ( radians(:c) ) * sin( radians( latitude ))))" +
-                    " as distance from shelter group by shelter_id having distance < 15"
+                    " as distance from shelter group by shelter_id having distance < 40"
     )
     List<Shelter> selectBydistance(BigDecimal a, BigDecimal b , BigDecimal c);
 

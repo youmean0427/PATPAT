@@ -113,7 +113,7 @@ public class BoardServiceImpl implements BoardService{
         //보드 하나 골라서
         for(Board board : entityList.toList()){
             //0번 상태인 경우 썸네일을 넣는다.
-            LOGGER.info("board좀 보자 {}", board);
+
             FileDto thumbnail = null;
             if(requestBoardDto.getTypeCode() == 0){
 //                List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
@@ -328,12 +328,14 @@ public class BoardServiceImpl implements BoardService{
                 List<Image> images = board.getImages();
 
 
+                List<Image> removeImage = new ArrayList<>();
                 images.stream().forEach(i->{
                     if(boardDto.getDeleteFileList().contains(i.getImageId())){
                         fileService.deleteFile(i);
-                        images.remove(i);
+                        removeImage.add(i);
                     }
                 });
+                images.removeAll(removeImage);
 
                 for(MultipartFile partFile : uploadFile){
                     images.add(fileService.insertFile(partFile, "board"));

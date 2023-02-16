@@ -560,6 +560,8 @@ public class ShelterServiceImpl implements ShelterService{
                 .imageList(imageList)
                 .ownerId(s.getOwner().getOwnerId())
                 .ownerName(s.getOwner().getName())
+                .latitude(s.getLatitude().toString())
+                .longitude(s.getLongitude().toString())
                 .build();
         return shelterDto;
     }
