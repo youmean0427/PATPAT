@@ -89,7 +89,7 @@ public class AlarmController {
     }
 
 
-    @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
+    @GetMapping(value = "/sub/{userId}", consumes = MediaType.ALL_VALUE)
 //    @PreAuthorize("hasAnyRole('USER')")
     public SseEmitter subscribe(@PathVariable Long userId, HttpServletResponse response) {
         LOGGER.info("오나? {}",userId);
