@@ -95,9 +95,20 @@ public class AlarmController {
         response.setHeader("Cache-Control", "no-cache");
 
         SseEmitter sseEmitter = new SseEmitter(-1L);
-        sseEmitter.onCompletion(() -> sseEmitters.remove(userId));
-        sseEmitter.onTimeout(() -> sseEmitters.remove(userId));
-        sseEmitter.onError((e) -> sseEmitters.remove(userId));
+        sseEmitter.onCompletion(() -> {
+            LOGGER.info("onCompletion sseEmitter");
+
+            sseEmitters.remove(userId);
+        });
+        sseEmitter.onTimeout(() -> {
+            LOGGER.info("onTimeout sseEmitter");
+            SseEmitter sse = sseEmitters.get(userId);
+            sse.complete();
+        });
+        sseEmitter.onError((e) -> {
+            LOGGER.info("Error seeEmitter");
+            sseEmitters.remove(userId);
+        });
         sseEmitters.put(userId, sseEmitter);
         try {
             sseEmitter.send(SseEmitter.event().name("connect").data("Start Connection"));
