@@ -148,7 +148,6 @@ export default function Alarm() {
     queryFn: () => {
       return getAlarmList();
     },
-    refetchInterval: 3000,
   });
 
   if (isLoading) return;
