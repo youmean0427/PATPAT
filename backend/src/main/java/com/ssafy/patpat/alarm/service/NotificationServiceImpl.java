@@ -37,7 +37,9 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ssafy.patpat.alarm.controller.AlarmController.sseEmitters;
 
@@ -235,19 +237,32 @@ public class NotificationServiceImpl implements NotificationService{
         alarmRepository.save(alarm);
 
         Optional<User> user = userRepository.findById(userId);
-        sseEmitters.forEach(
-                (key, emitter) -> {
-                    if(key.contains(user.get().getEmail())){
-                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
-                        try{
-                            emitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
-                        }catch (Exception e){
-                            sseEmitters.remove(key);
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        );
+        Map.Entry<String, SseEmitter> sseEmitter = sseEmitters.entrySet().stream()
+                .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
+                .collect(Collectors.toList()).get(0);
+        String key = sseEmitter.getKey();
+        SseEmitter emitter = sseEmitter.getValue();
+
+        LOGGER.info("구독중인유저 {}",key);
+        try{
+            emitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+        }catch (Exception e){
+            sseEmitters.remove(key);
+            e.printStackTrace();
+        }
+//        sseEmitters.forEach(
+//                (key, emitter) -> {
+//                    if(key.contains(user.get().getEmail())){
+//                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
+//                        try{
+//                            emitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+//                        }catch (Exception e){
+//                            sseEmitters.remove(key);
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//        );
 
 //        if(sseEmitters.containsKey(userId)){
 //            SseEmitter sseEmitter = sseEmitters.get(userId);
