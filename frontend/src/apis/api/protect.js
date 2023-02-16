@@ -2,8 +2,13 @@ import { authInstance, defaultInstance } from 'apis/utils';
 
 // GET
 
+export const getShelterProtectList = async shelterId => {
+  const { data } = await defaultInstance.get(`/protects/shelters/admin/${shelterId}`);
+  return data;
+};
+
 /**
- * GET : 보호소 보호동물 리스트
+ * GET : 전체 보호동물 리스트
  * @param {int} code 0 : 안락사 , 1 : 최신순
  * @param {int} stateCode 0 : 공고중 , 1 : 보호중 , 2 : 입양예정 , 3 : 입양 , 4 : 자연사 , 5 : 안락사
  * @param {int} limit 리스트로 가져올 item 개수

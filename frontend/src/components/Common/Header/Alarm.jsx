@@ -17,8 +17,8 @@ export default function Alarm() {
   const [click, setClick] = useState(false);
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
-
-  const handleAlarmDetail = async item => {
+  const token = localStorage.getItem('accessToken');
+  const handleAlarmDetail = item => {
     switch (item.msgCode) {
       case 0: {
         // 실종견 등록
@@ -71,10 +71,9 @@ export default function Alarm() {
     }
   };
   useEffect(() => {
-    if (localStorage.getItem('user') != null) {
+    if (token) {
       let userId = JSON.parse(localStorage.getItem('user')).userId;
-      let eventSource = new EventSource(subscribeUrl + '?userId=' + userId);
-
+      let eventSource = new EventSource(`subscribeUrl/${userId}`);
       eventSource.addEventListener('connect', function (event) {
         setMessage(event.data);
       });
@@ -171,7 +170,7 @@ export default function Alarm() {
             onClick={async () => {
               await deleteAllAlarm();
               setClick(cur => !cur);
-              toast('삭제되었습니다.', { type: 'success' });
+              toast('모든 알람이 삭제되었습니다.', { type: 'success' });
             }}
           >
             전체 삭제
@@ -195,7 +194,7 @@ export default function Alarm() {
                 onClick={async () => {
                   await deleteAlarm(item.alarmId);
                   setClick(cur => !cur);
-                  toast('삭제되었습니다.', { type: 'success' });
+                  toast('알람이 삭제되었습니다.', { type: 'success' });
                 }}
               >
                 <CloseIcon />

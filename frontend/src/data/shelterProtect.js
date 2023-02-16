@@ -29,31 +29,26 @@ export const categoryEarOpt = [
 ];
 export const categoryTailOpt = [
   { value: 0, label: '모름' },
-  { value: 1, label: '말려있음' },
-  { value: 2, label: '펴져있음' },
+  { value: 1, label: '말린꼬리' },
+  { value: 2, label: '수달꼬리' },
+  { value: 3, label: '당근꼬리' },
+  { value: 4, label: '단발꼬리' },
 ];
 
 export const categoryPatternOpt = [
   { value: 0, label: '모름' },
   { value: 1, label: '솔리드' },
-  { value: 2, label: '탄' },
-  { value: 3, label: '바이컬러' },
-  { value: 4, label: '트라이컬러' },
+  { value: 2, label: '바이컬러' },
+  { value: 3, label: '트라이컬러' },
+  { value: 4, label: '탄' },
   { value: 5, label: '턱시도' },
-  { value: 6, label: '할리퀸/스팟' },
+  { value: 6, label: '할리퀸' },
   { value: 7, label: '브린들' },
   { value: 8, label: '새들' },
   { value: 9, label: '세이블' },
   { value: 10, label: '멀' },
 ];
 export const categoryClothOpt = [
-  { value: 0, label: '모름' },
-  { value: 1, label: '옷입음' },
-  { value: 2, label: '안입음' },
-];
-
-export const categoryClothColorOpt = [
-  { value: 0, label: '모름' },
-  { value: 1, label: '빨강' },
-  { value: 2, label: '파랑' },
+  { value: 0, label: '옷입음' },
+  { value: 1, label: '안입음' },
 ];
