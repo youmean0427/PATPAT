@@ -653,7 +653,6 @@ public class ProtectServiceImpl implements ProtectService{
             for(ShelterProtectedDog dog : list){
                 shelterProtectedDogRepository.save(dog);
                 /** 비동기로 가야하나... ?? **/
-                notificationService.notifyAddProtectDogEvent(dog.getSpDogId());
             }
             //만약 10번에 등록된 강아지다 ~ 8개 등록되어있는 상황이면 18번까지있음
             long startIdx = list.get(0).getSpDogId();
@@ -706,6 +705,9 @@ public class ProtectServiceImpl implements ProtectService{
                 }
             }
             workbook.close();
+            for(ShelterProtectedDog dog : list){
+                notificationService.notifyAddProtectDogEvent(dog.getSpDogId());
+            }
             responseMessage.setMessage("SUCCESS");
 
             return responseMessage;
