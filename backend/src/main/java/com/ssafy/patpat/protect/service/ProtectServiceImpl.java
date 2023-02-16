@@ -202,11 +202,11 @@ public class ProtectServiceImpl implements ProtectService{
 
             if(requestProtectDto.getStateCode() ==null){
                 if(requestProtectDto.getCode() == 0){
-                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate","spDogId").ascending());
                     shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(),filterList,pageRequest);
                 }
                 else if(requestProtectDto.getCode() == 1){
-                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate","spDogId").descending());
                     shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCodeNotIn(requestProtectDto.getShelterId(),filterList,pageRequest);
                 }
                 else {
@@ -215,11 +215,11 @@ public class ProtectServiceImpl implements ProtectService{
             }
             else{
                 if(requestProtectDto.getCode() == 0){
-                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").ascending());
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate","spDogId").ascending());
                     shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCode(requestProtectDto.getShelterId(), ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
                 }
                 else if(requestProtectDto.getCode() == 1){
-                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate").descending());
+                    pageRequest = PageRequest.of(requestProtectDto.getOffSet(),requestProtectDto.getLimit(), Sort.by("registDate","spDogId").descending());
                     shelterProtectedDogList = shelterProtectedDogRepository.findByShelterShelterIdAndStateCode(requestProtectDto.getShelterId(), ProtectState.of(requestProtectDto.getStateCode()), pageRequest);
                 }
                 else {
