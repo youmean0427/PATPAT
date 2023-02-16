@@ -92,11 +92,11 @@ public class NotificationServiceImpl implements NotificationService{
                 /** 반견 내에 있는 실종견이 등록견과 닮아있다면 **/
                 if(reportService.isResemble(m,shelterProtectedDog)){
                     Long userId = m.getUser().getUserId();
-                    UserDto userDto = userService.getUserWithAuthorities();
+                    Optional<User> user = userRepository.findById(userId);
                     sseEmitters.forEach(
                             (key, emitter) -> {
-                                if(key.contains(userDto.getEmail())){
-                                    LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                                if(key.contains(user.get().getEmail())){
+                                    LOGGER.info("구독중인유저 {}",user.get().getNickname());
                                     try{
                                         emitter.send(SseEmitter.event().name("addProtect").data(msgCode, MediaType.APPLICATION_JSON));
                                     }catch (Exception e){
@@ -146,11 +146,11 @@ public class NotificationServiceImpl implements NotificationService{
             for(Shelter s : shelterList){
                 Long userId = s.getOwner().getUser().getUserId();
 
-                UserDto userDto = userService.getUserWithAuthorities();
+                Optional<User> user = userRepository.findById(userId);
                 sseEmitters.forEach(
                         (key, emitter) -> {
-                            if(key.contains(userDto.getEmail())){
-                                LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                            if(key.contains(user.get().getEmail())){
+                                LOGGER.info("구독중인유저 {}",user.get().getNickname());
                                 try{
                                     emitter.send(SseEmitter.event().name("addMissing").data(msgCode,MediaType.APPLICATION_JSON));
                                 }catch (Exception e){
@@ -192,11 +192,11 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = userRepository.findById(userId);
         sseEmitters.forEach(
                 (key, emitter) -> {
-                    if(key.contains(userDto.getEmail())){
-                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                    if(key.contains(user.get().getEmail())){
+                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
                         try{
                             emitter.send(SseEmitter.event().name("addConsulting").data(msgCode,MediaType.APPLICATION_JSON));
                         }catch (Exception e){
@@ -234,11 +234,11 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = userRepository.findById(userId);
         sseEmitters.forEach(
                 (key, emitter) -> {
-                    if(key.contains(userDto.getEmail())){
-                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                    if(key.contains(user.get().getEmail())){
+                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
                         try{
                             emitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
                         }catch (Exception e){
@@ -282,11 +282,11 @@ public class NotificationServiceImpl implements NotificationService{
         System.out.println(consulting.getUser().getUserId()+"밖");
         LOGGER.info("오나? 상담 인증 {}",consulting.getUser().getUserId());
 
-        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = userRepository.findById(userId);
         sseEmitters.forEach(
                 (key, emitter) -> {
-                    if(key.contains(userDto.getEmail())){
-                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                    if(key.contains(user.get().getEmail())){
+                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
                         try{
                             emitter.send(SseEmitter.event().name("accessConsulting").data(msgCode,MediaType.APPLICATION_JSON));
                         }catch (Exception e){
@@ -325,11 +325,11 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = userRepository.findById(userId);
         sseEmitters.forEach(
                 (key, emitter) -> {
-                    if(key.contains(userDto.getEmail())){
-                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                    if(key.contains(user.get().getEmail())){
+                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
                         try{
                             emitter.send(SseEmitter.event().name("denyConsulting").data(msgCode,MediaType.APPLICATION_JSON));
                         }catch (Exception e){
@@ -364,11 +364,11 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = userRepository.findById(userId);
         sseEmitters.forEach(
                 (key, emitter) -> {
-                    if(key.contains(userDto.getEmail())){
-                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                    if(key.contains(user.get().getEmail())){
+                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
                         try{
                             emitter.send(SseEmitter.event().name("accessVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
                         }catch (Exception e){
@@ -404,11 +404,11 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = userRepository.findById(userId);
         sseEmitters.forEach(
                 (key, emitter) -> {
-                    if(key.contains(userDto.getEmail())){
-                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                    if(key.contains(user.get().getEmail())){
+                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
                         try{
                             emitter.send(SseEmitter.event().name("denyVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
                         }catch (Exception e){
@@ -444,11 +444,11 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        UserDto userDto = userService.getUserWithAuthorities();
+        Optional<User> user = userRepository.findById(userId);
         sseEmitters.forEach(
                 (key, emitter) -> {
-                    if(key.contains(userDto.getEmail())){
-                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                    if(key.contains(user.get().getEmail())){
+                        LOGGER.info("구독중인유저 {}",user.get().getNickname());
                         try{
                             emitter.send(SseEmitter.event().name("createRoom").data(msgCode,MediaType.APPLICATION_JSON));
                         }catch (Exception e){

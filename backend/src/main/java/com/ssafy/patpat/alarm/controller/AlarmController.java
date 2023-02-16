@@ -12,6 +12,8 @@ import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.protect.service.ProtectService;
 import com.ssafy.patpat.report.service.ReportService;
 import com.ssafy.patpat.user.dto.UserDto;
+import com.ssafy.patpat.user.entity.User;
+import com.ssafy.patpat.user.repository.UserRepository;
 import com.ssafy.patpat.user.service.UserService;
 import com.ssafy.patpat.volunteer.service.VolunteerService;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
@@ -42,6 +45,8 @@ public class AlarmController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     NotificationService notificationService;
 
@@ -97,8 +102,8 @@ public class AlarmController {
         response.setHeader("Transfer-Encoding","chunked");
 
         SseEmitter sseEmitter = new SseEmitter(60*1000L);
-        UserDto userDto = userService.getUserWithAuthorities();
-        String id = userDto.getEmail() + "_" + System.currentTimeMillis();
+        Optional<User> user = userRepository.findById(userId);
+        String id = user.get().getEmail() + "_" + System.currentTimeMillis();
         sseEmitters.put(id, sseEmitter);
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter {}",id);
