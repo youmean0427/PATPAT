@@ -7,7 +7,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select';
 import Test from '../../../assets/images/volunteer.png';
 import { getBreedsList } from 'apis/api/shelter';
-import { changeBreedList } from 'utils/changeSelectTemplate';
+import { changeBreedList, changeReportBreedList } from 'utils/changeSelectTemplate';
 import './ckeditor.scss';
 
 import { MapMarker, Map, Circle } from 'react-kakao-maps-sdk';
@@ -181,11 +181,10 @@ export default function ReportCreateContent() {
   });
 
   // GET (견종 리스트)
-  const { isLoading, data } = useQuery({
+  const { isLoading, data: breedData } = useQuery({
     queryKey: ['getBreedsList'],
     queryFn: () => getBreedsList(),
   });
-  const breedData = data;
   if (isLoading) return;
 
   // Select Data
@@ -485,7 +484,7 @@ export default function ReportCreateContent() {
                   options={changeBreedList(breedData)}
                   ref={breedInput}
                   onChange={setBreedId}
-                  placeholder="견종"
+                  placeholder="전체 보기"
                 />
                 {breedAlertOpen === 0 ? null : (
                   <div>

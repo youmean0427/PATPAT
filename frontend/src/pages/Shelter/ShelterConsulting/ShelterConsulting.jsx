@@ -29,9 +29,7 @@ export default function ShelterConsulting() {
           승인
         </span>
       </div>
-      <div className={styles.list}>
-        <ConsultingList stateCode={click} shelterId={myShelterId} />
-      </div>
+      <ConsultingList stateCode={click} shelterId={myShelterId} />
     </ShelterContainer>
   );
 }
