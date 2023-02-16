@@ -10,12 +10,24 @@ import { insertFavProtect, deleteFavProtect } from 'apis/api/user';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineHome } from 'react-icons/ai';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function DetailContent({ data }) {
   const [modal, setModal] = useState(false);
   const [modalNum, setModalNum] = useState();
   const [userId, setUserId] = useState();
   const [favorite, setFavorite] = useState(data.isFavorite);
+  const queryClient = useQueryClient();
+  const { mutate: insertMutate } = useMutation(['insertFav'], id => insertFavProtect(id), {
+    onSuccess: data => {
+      queryClient.invalidateQueries(['getProtectDetail']);
+    },
+  });
+  const { mutate: deleteMutate } = useMutation(['deleteFav'], id => deleteFavProtect(id), {
+    onSuccess: data => {
+      queryClient.invalidateQueries(['getProtectDetail']);
+    },
+  });
   const navigate = useNavigate();
 
   const openModal = idx => {
@@ -29,11 +41,11 @@ export default function DetailContent({ data }) {
 
   const handleFavBtn = () => {
     if (favorite) {
-      deleteFavProtect(data.protectId);
+      deleteMutate(data.protectId);
 
       toast('꾹 해제 완료!', { type: 'success' });
     } else {
-      insertFavProtect(data.protectId);
+      insertMutate(data.protectId);
       toast('꾹 등록 완료!', { type: 'success' });
     }
 
