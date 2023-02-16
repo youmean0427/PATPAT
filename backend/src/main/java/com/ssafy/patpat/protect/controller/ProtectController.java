@@ -55,9 +55,9 @@ public class ProtectController {
      * 보호동물 리스트(보호소별)
      * @return
      */
-    @GetMapping("/shelters/admin")
+    @GetMapping("/shelters/admin/{shelterId}")
     @ApiOperation(value = "보호동물 관리 리스트", notes = "{shelterId 필수")
-    public ResponseEntity<Object> selectProtectListByShelter(@RequestParam("shelterId")Long shelterId){
+    public ResponseEntity<Object> selectProtectListByShelter(@PathVariable Long shelterId){
         //서비스 호출 코드
         List<ProtectDto> protectDtoList = service.selectProtectListByShelterAdmin(shelterId);
         return ResponseEntity.status(HttpStatus.OK)
