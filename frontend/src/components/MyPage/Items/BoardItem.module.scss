@@ -1,3 +1,5 @@
+@import 'assets/styles/variable.scss';
+
 .table-item td {
   font-size: 1.4rem;
   white-space: nowrap;
@@ -13,7 +15,7 @@
   cursor: pointer;
 }
 .title:hover {
-  background-color: #bcaaa46b;
+  border-bottom: 2px solid $main-color;
 }
 .type,
 .author,
