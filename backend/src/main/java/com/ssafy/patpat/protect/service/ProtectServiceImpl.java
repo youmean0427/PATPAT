@@ -410,7 +410,10 @@ public class ProtectServiceImpl implements ProtectService{
                 );
             }
             /** 유사도 비교시 사용할 백엔드에서만 사용하는 컬러코드 저장 **/
-            Color color = colorService.getColorCode(protectDto.getCategoryColor());
+            Color color = null;
+            if(protectDto.getCategoryColor() != null){
+                color = colorService.getColorCode(protectDto.getCategoryColor());
+            }
 
             ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
                     .age(protectDto.getAge())
@@ -583,7 +586,12 @@ public class ProtectServiceImpl implements ProtectService{
                         sb.append(strList.get(i));
                     }
 //                    int code = .getCode();
-                    shelterProtectedDog.setCategoryColor(Color.valueOf(sb.toString()));
+                    if(sb.length()>0){
+                        shelterProtectedDog.setCategoryColor(Color.valueOf(sb.toString()));
+                    }
+                    else{
+                        shelterProtectedDog.setCategoryColor(null);
+                    }
                     list.add(shelterProtectedDog);
                 }
             }
