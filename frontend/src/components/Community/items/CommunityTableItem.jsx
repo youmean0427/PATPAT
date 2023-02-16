@@ -1,5 +1,5 @@
-// import { useQuery } from '@tanstack/react-query';
-// import { getBoardList } from 'apis/api/board';
+import { useQuery } from '@tanstack/react-query';
+import { getBoardList } from 'apis/api/board';
 import React, { useState, useEffect } from 'react';
 import styles from './CommunityTableItem.module.scss';
 import Table from 'components/Common/Table';
@@ -31,36 +31,19 @@ export default function CommunityTableItem({ typeCode, item }) {
     setPage(page);
   };
 
-  // const { data, isLoading } = useQuery({
-  //   queryKey: ['communityTable', isChange, page],
-  //   queryFn: () => {
-  //     return getBoardList(typeCode, LIMIT, page - 1);
-  //   },
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ['communityTable', isChange, page],
+    queryFn: () => {
+      return getBoardList(typeCode, LIMIT, page - 1);
+    },
+  });
 
-  // const [searchTerm, setSearchTerm] = useState('');
-  // const [filteredData, setFilteredData] = useState();
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setFilteredData(data.list);
-  //   }
-  // }, [data]);
-
-  // if (isLoading) return;
-
-  // const handleSearch = event => {
-  //   setSearchTerm(event.target.value);
-  // };
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   setFilteredData(data.list.filter(row => row.title.toLowerCase().includes(searchTerm.toLowerCase())));
-  // };
+  if (isLoading) return;
 
   return (
     <div>
       <Table>
-        {item.list.map(item => (
+        {data.list.map(item => (
           <tr key={item.boardId} className={styles['table-item']}>
             <td className={styles.type}>[{item.type}]</td>
             <td
@@ -83,14 +66,10 @@ export default function CommunityTableItem({ typeCode, item }) {
           </tr>
         ))}
       </Table>
-      {/* <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Search by title" value={searchTerm} onChange={handleSearch} />
-        <button type="submit">Search</button>
-      </form> */}
       <Pagination
         activePage={page}
         itemsCountPerPage={LIMIT}
-        totalItemsCount={item.totalCount}
+        totalItemsCount={data.totalCount}
         pageRangeDisplayed={5}
         prevPageText={'‹'}
         nextPageText={'›'}
