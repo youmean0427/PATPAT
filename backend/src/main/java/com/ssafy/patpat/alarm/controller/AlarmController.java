@@ -112,21 +112,24 @@ public class AlarmController {
             Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
                     .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
                     .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
-            sseEmitters.remove(removeList);
+            removeList.entrySet().stream()
+                    .map( r -> sseEmitters.remove(r));
         });
         sseEmitter.onTimeout(() -> {
             LOGGER.info("onTimeout sseEmitter {}",id);
             Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
                     .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
                     .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
-            sseEmitters.remove(removeList);
+            removeList.entrySet().stream()
+                    .map( r -> sseEmitters.remove(r));
         });
         sseEmitter.onError((e) -> {
             LOGGER.info("Error seeEmitter {}", id);
             Map<String, SseEmitter> removeList = sseEmitters.entrySet().stream()
                     .filter(entry -> entry.getKey().startsWith(user.get().getEmail()))
                     .collect(Collectors.toMap(Map.Entry::getKey,  Map.Entry::getValue));
-            sseEmitters.remove(removeList);
+            removeList.entrySet().stream()
+                    .map( r -> sseEmitters.remove(r));
         });
 
         try {
