@@ -14,7 +14,7 @@ export default function Home() {
       <Section accent="가족" basic="을 기다리고 있어요">
         <AbandonedDogList />
         <div className={styles['link-box']}>
-          <Link to="/abandoneds" className={styles.more}>
+          <Link to="/products" className={styles.more}>
             더 보기
           </Link>
         </div>
@@ -43,7 +43,7 @@ export default function Home() {
       <Section accent="가족" basic="을 찾은 아이들">
         <ReviewList />
         <div className={styles['link-box']}>
-          <Link to="/reviews" className={styles.more}>
+          <Link to="/community/adoption" className={styles.more}>
             더 보기
           </Link>
         </div>
