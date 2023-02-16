@@ -102,8 +102,7 @@ public class AlarmController {
         });
         sseEmitter.onTimeout(() -> {
             LOGGER.info("onTimeout sseEmitter");
-            SseEmitter sse = sseEmitters.get(userId);
-            sse.complete();
+            sseEmitter.complete();
         });
         sseEmitter.onError((e) -> {
             LOGGER.info("Error seeEmitter");
