@@ -137,7 +137,8 @@ public class VolunteerService {
         for (VolunteerNotice vn:
                 volunteerNoticeList) {
             List<VolunteerSchedule> volunteerSchedules = vn.getVolunteerSchedules();
-            volunteerSchedules = volunteerSchedules.stream().sorted(Comparator.comparing(VolunteerSchedule::getStartTime)).collect(Collectors.toList());
+            volunteerSchedules = volunteerSchedules.stream().sorted(Comparator.comparing(VolunteerSchedule::getStartTime))
+                    .filter(v -> v.getReservationStateCode().equals(Reservation.대기중)).collect(Collectors.toList());
             for (VolunteerSchedule vs:
                  volunteerSchedules) {
                 list.add(new ScheduleDto(vs));
