@@ -30,7 +30,7 @@ export default function ScheduleItem({ item, open, index, noticeId, volunteerDat
 
   // useQuery :: 봉사 상세
   const { data, isLoading } = useQuery({
-    queryKey: ['getVolNoticePerMonth', item],
+    queryKey: ['getVolReservationOfUserDetail', item],
     queryFn: () => getVolReservationOfUserDetail(item),
   });
 

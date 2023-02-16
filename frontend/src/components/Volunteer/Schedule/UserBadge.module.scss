@@ -16,13 +16,13 @@
   }
 
   &.zero {
-    background-color: $state-con-zero;
+    background-color: $active-color;
   }
   &.one {
-    background-color: $state-con-one;
+    background-color: $update-btn-color;
   }
   &.two {
-    background-color: $state-con-two;
+    background-color: $delete-btn-color;
   }
   &.three {
     background-color: $state-con-three;

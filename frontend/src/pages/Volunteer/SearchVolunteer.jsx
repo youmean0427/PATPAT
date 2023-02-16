@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getVolNoticeList } from 'apis/api/volunteer';
+import { getVolNoticeList, getVolNoticeListByLatLng } from 'apis/api/volunteer';
 import React, { useState, useEffect } from 'react';
 import { Map, MapMarker, Circle } from 'react-kakao-maps-sdk';
 import styles from './SearchVolunteer.module.scss';
@@ -20,7 +20,7 @@ export default function SearchVolunteer() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['getVolNoticePerMonth', state],
-    queryFn: () => getVolNoticeList(0, 0, 0, state.center.lat.toString(), state.center.lng.toString()),
+    queryFn: () => getVolNoticeListByLatLng(state.center.lat.toString(), state.center.lng.toString()),
   });
 
   useEffect(() => {
