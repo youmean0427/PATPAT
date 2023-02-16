@@ -21,5 +21,6 @@ public interface ProtectService {
 
     ResponseListDto selectProtectListByShelter(RequestProtectDto requestProtectDto);
 
+    List<ProtectDto> selectProtectListByShelterAdmin(Long shelterId);
     ResponseMessage insertBatchesProtect(ShelterDto shelterDto, MultipartFile uploadFile) throws IOException;
 }
