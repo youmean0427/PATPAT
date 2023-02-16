@@ -115,7 +115,7 @@ export default function ManageVolNoticeModal({
 function EnrollSchedule({ noticeId, setSIdx }) {
   const [startTime, setStartTime] = useState('10:00');
   const [endTime, setEndTime] = useState('11:00');
-  const [totalCapacity, setTotalCapacity] = useState(1);
+  const [totalCapacity, setTotalCapacity] = useState(0);
   const [guideLine, setGuideLine] = useState(
     '<p>봉사 공고 가이드 템플릿 예시 입니다.</p><p>&nbsp;</p><p>시작 시간 : 00 : 00&nbsp;</p><p>종료 시간 : 00 : 00&nbsp;</p><p>&nbsp;</p><h3>해야할 일&nbsp;</h3><p>봉사 진행 순서를 적어주시면 됩니다.</p><p>&nbsp;</p><h3>주의 할 점&nbsp;</h3><p>봉사 진행하면서 주의할 점을 적어주시면 됩니다.</p><p>&nbsp;</p>'
   );
@@ -168,7 +168,7 @@ function EnrollSchedule({ noticeId, setSIdx }) {
             className={styles.total}
             type="number"
             onChange={e => setTotalCapacity(e.target.value)}
-            value={totalCapacity || 0}
+            value={totalCapacity}
           />
         </div>
       </div>
@@ -250,7 +250,7 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
       setStartTime('09:00');
       setEndTime('10:00');
       setCapacity(0);
-      setTotalCapacity(1);
+      setTotalCapacity(0);
       setGuideLine(
         '<p>봉사 공고 가이드 템플릿 예시 입니다.</p><p>&nbsp;</p><p>시작 시간 : 00 : 00&nbsp;</p><p>종료 시간 : 00 : 00&nbsp;</p><p>&nbsp;</p><h3>해야할 일&nbsp;</h3><p>봉사 진행 순서를 적어주시면 됩니다.</p><p>&nbsp;</p><h3>주의 할 점&nbsp;</h3><p>봉사 진행하면서 주의할 점을 적어주시면 됩니다.</p><p>&nbsp;</p>'
       );
@@ -315,7 +315,7 @@ function ScheduleInfo({ schedules, index, isAddBtn, noticeId, setSIdx }) {
             className={styles.total}
             type="number"
             onChange={e => setTotalCapacity(e.target.value)}
-            value={totalCapacity || 0}
+            value={totalCapacity}
           />
         </div>
       </div>
