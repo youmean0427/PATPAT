@@ -7,6 +7,7 @@ import styles from './Alarm.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function Alarm() {
   let subscribeUrl = process.env.REACT_APP_API_URL + '/alarm/sub';
@@ -73,7 +74,16 @@ export default function Alarm() {
   useEffect(() => {
     if (token) {
       let userId = JSON.parse(localStorage.getItem('user')).userId;
-      let eventSource = new EventSource(`${subscribeUrl}/${userId}`);
+      let eventSource = new EventSourcePolyfill(`${subscribeUrl}/${userId}`, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Access-Control-Allow-Origin': '*',
+          AccessToken: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+        },
+        heartbeatTimeout: 60000,
+        withCredentials: true,
+      });
       eventSource.addEventListener('connect', function (event) {
         setMessage(event.data);
       });
@@ -139,6 +149,19 @@ export default function Alarm() {
       eventSource.addEventListener('error', function (event) {
         eventSource.close();
       });
+      eventSource.onerror = function () {
+        eventSource.close();
+        eventSource = new EventSourcePolyfill(`${subscribeUrl}/${userId}`, {
+          headers: {
+            'Content-Type': 'text/event-stream',
+            'Access-Control-Allow-Origin': '*',
+            AccessToken: `Bearer ${token}`,
+            'Cache-Control': 'no-cache',
+          },
+          heartbeatTimeout: 60000,
+          withCredentials: true,
+        });
+      };
     }
   }, []);
 

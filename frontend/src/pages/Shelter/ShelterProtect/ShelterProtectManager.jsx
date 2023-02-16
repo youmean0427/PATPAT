@@ -8,12 +8,17 @@ export default function ShelterProtectManager({ shelterId }) {
   if (isLoading) return;
   return (
     <ShelterContainer title="동물 관리">
-      <div>
-        <div className={styles['protect-list']}>
+      <div className={styles.container}>
+        <ul className={styles['protect-list']}>
           {data.map(item => {
-            <span>{item.protectId}</span>;
+            return (
+              <li key={item.protectId} className={styles.protectItem}>
+                {item.protectName}
+              </li>
+            );
           })}
-        </div>
+        </ul>
+        <div className={styles.manageForm}></div>
       </div>
     </ShelterContainer>
   );

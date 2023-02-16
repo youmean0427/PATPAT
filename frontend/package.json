@@ -19,6 +19,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.4",
+    "event-source-polyfill": "^1.0.31",
     "html-react-parser": "^3.0.8",
     "jquery": "^3.6.3",
     "moment": "^2.29.4",
