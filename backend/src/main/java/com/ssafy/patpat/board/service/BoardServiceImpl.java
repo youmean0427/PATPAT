@@ -113,7 +113,7 @@ public class BoardServiceImpl implements BoardService{
         //보드 하나 골라서
         for(Board board : entityList.toList()){
             //0번 상태인 경우 썸네일을 넣는다.
-            LOGGER.info("board좀 보자 {}", board);
+
             FileDto thumbnail = null;
             if(requestBoardDto.getTypeCode() == 0){
 //                List<PostImage> postImageList = postImageRepository.findByBoardId(board.getBoardId());
