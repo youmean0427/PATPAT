@@ -16,6 +16,15 @@ export const getVolNoticeList = async (keyword, limit, offset, latitude, longitu
   return data;
 };
 
+export const getVolNoticeListByLatLng = async (latitude, longitude) => {
+  const { data } = await defaultInstance.get(`/notices?latitude=${latitude}&longitude=${longitude}`);
+  return data;
+};
+
+export const getNoticeOfShelter = async shelterId => {
+  const { data } = await defaultInstance.get(`/notices/detail/${shelterId}`);
+};
+
 export const getVolNoticeInfoPerDay = async (noticeId, limit, offSet) => {
   const { data } = await authInstance.get(`/volunteers/schedules?noticeId=${noticeId}&limit=${limit}&offSet=${offSet}`);
   return data;

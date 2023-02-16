@@ -41,6 +41,7 @@ export default function Result() {
       <div className={styles['desc-box']}>
         <p dangerouslySetInnerHTML={{ __html: description }}></p>
         <div className={styles['btn-box']}>
+          <span>아래 링크를 click</span>
           <button
             onClick={() => {
               window.scrollTo(0, 0);
