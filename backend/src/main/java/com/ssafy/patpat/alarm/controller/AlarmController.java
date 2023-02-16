@@ -102,7 +102,7 @@ public class AlarmController {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Transfer-Encoding","chunked");
 
-        SseEmitter sseEmitter = new SseEmitter(1000L * 60L * 5L);
+        SseEmitter sseEmitter = new SseEmitter(1000L * 45L);
         Optional<User> user = userRepository.findById(userId);
         String id = user.get().getEmail() + "_" + System.currentTimeMillis();
         sseEmitters.put(id, sseEmitter);
