@@ -94,7 +94,7 @@ public class AlarmController {
         response.setHeader("Connection", "keep-alive");
         response.setHeader("Cache-Control", "no-cache");
 
-        SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+        SseEmitter sseEmitter = new SseEmitter(-1L);
         sseEmitter.onCompletion(() -> sseEmitters.remove(userId));
         sseEmitter.onTimeout(() -> sseEmitters.remove(userId));
         sseEmitter.onError((e) -> sseEmitters.remove(userId));
