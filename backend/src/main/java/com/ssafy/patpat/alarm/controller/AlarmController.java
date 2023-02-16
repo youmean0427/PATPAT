@@ -101,11 +101,11 @@ public class AlarmController {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Transfer-Encoding","chunked");
 
-        SseEmitter sseEmitter = new SseEmitter(60*1000L);
+        SseEmitter sseEmitter = new SseEmitter(10 * 1000L);
         Optional<User> user = userRepository.findById(userId);
         String id = user.get().getEmail() + "_" + System.currentTimeMillis();
         sseEmitters.put(id, sseEmitter);
-        LOGGER.info("id는 이것 {}", id);
+        LOGGER.info("id는 이것 {}", sseEmitters.get(id));
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter {}",id);
             sseEmitters.remove(id);
