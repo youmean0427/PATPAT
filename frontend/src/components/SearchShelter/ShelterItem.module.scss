@@ -1,3 +1,5 @@
+@import 'assets/styles/variable.scss';
+
 .container {
   width: 49%;
   display: flex;
@@ -16,5 +18,11 @@
 .thumbnail {
   & > img {
     width: 10rem;
+  }
+}
+
+@include breakpoint(sm) {
+  .container {
+    width: 100%;
   }
 }

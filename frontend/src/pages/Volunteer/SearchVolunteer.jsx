@@ -62,6 +62,7 @@ export default function SearchVolunteer() {
 
   return (
     <div>
+      <div className={styles.title}>봉사 신청 하기</div>
       <Map
         className={styles.map}
         center={state.center}
@@ -79,10 +80,10 @@ export default function SearchVolunteer() {
           center={state.center}
           radius={30000}
           strokeWeight={1}
-          strokeColor={'#ffd80b'}
+          strokeColor="#ffd80b"
           strokeOpacity={0.1}
-          strokeStyle={'solid'}
-          fillColor={'#ffd80b'}
+          strokeStyle="solid"
+          fillColor="#ffd80b"
           fillOpacity={0.2}
         />
         {!state.isLoading && (

@@ -1,7 +1,7 @@
 import { Modal, Box } from '@mui/material';
 import React from 'react';
 import ModalPortal from './ModalPortal';
-
+import './ModalFrame.scss';
 const ModalFrame = ({ children, isOpen, handleClickModalClose, width, height }) => {
   const style = {
     position: 'absolute',

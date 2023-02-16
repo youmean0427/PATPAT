@@ -20,4 +20,7 @@
 
 .rbc-calendar {
   height: 700px !important;
+  @include breakpoint(sm) {
+    height: 370px !important;
+  }
 }

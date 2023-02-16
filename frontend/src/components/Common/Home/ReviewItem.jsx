@@ -9,7 +9,7 @@ export default function ReviewItem({ item }) {
   return (
     <>
       <Card>
-        <div onClick={handleClickModalOpen}>
+        <div className={styles.wrapper} onClick={handleClickModalOpen}>
           <img src={thumbnail.filePath} alt="thumbnail" />
           <div className={styles['desc-wrap']}>
             <div className={styles.title}>{title}</div>
