@@ -91,7 +91,7 @@ public class AlarmController {
 
     @GetMapping(value = "/sub", consumes = MediaType.ALL_VALUE)
 //    @PreAuthorize("hasAnyRole('USER')")
-    public SseEmitter subscribe(@RequestParam Long userId, HttpServletResponse response) {
+    public SseEmitter subscribe(@PathVariable Long userId, HttpServletResponse response) {
         LOGGER.info("오나? {}",userId);
 //        Long userId = notificationService.getUserId();
 
