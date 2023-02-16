@@ -105,7 +105,7 @@ public class AlarmController {
         Optional<User> user = userRepository.findById(userId);
         String id = user.get().getEmail() + "_" + System.currentTimeMillis();
         sseEmitters.put(id, sseEmitter);
-        LOGGER.info("id는 이것 {}", id);
+        LOGGER.info("id는 이것 {}", sseEmitters.keySet());
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter {}",id);
             sseEmitters.remove(id);
@@ -120,7 +120,7 @@ public class AlarmController {
         });
 
         try {
-            LOGGER.info("여긴 와주라 제발 {}", id);
+
             sseEmitter.send(SseEmitter.event().name("connect").data("Start Connection"));
         } catch (Exception e) {
             e.printStackTrace();
