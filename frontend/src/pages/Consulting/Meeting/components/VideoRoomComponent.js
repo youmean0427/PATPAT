@@ -115,7 +115,6 @@ class VideoRoomComponent extends Component {
         const token = await this.getToken();
         this.connect(token);
       } catch (error) {
-        console.error('There was an error getting the token:', error.code, error.message);
         if (this.props.error) {
           this.props.error({
             error: error.error,
@@ -413,9 +412,7 @@ class VideoRoomComponent extends Component {
           });
         }
       }
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) {}
   }
 
   screenShare() {

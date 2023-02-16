@@ -41,6 +41,7 @@ export default function MissingDogList({ genderCode, breedCode }) {
             >
               <MdArrowBackIosNew />
             </button>
+            <span>{page}</span>
             <button
               onClick={handleClickNext}
               className={

@@ -12,7 +12,6 @@ export default function NoticeDeleteAlertModal({
 }) {
   const { mutate } = useMutation(['deleteVolNotice'], () => deleteVolNotice(noticeId), {
     onSuccess: res => {
-      console.log(res);
       handleClickModalClose();
       handleClickModalClose2();
       setClick(prev => !prev);

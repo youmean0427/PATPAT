@@ -1,11 +1,10 @@
 import ShelterContainer from 'containers/ShelterContainer';
 import React from 'react';
-
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
 import styles from './ShelterProtectUser.module.scss';
 import AbandonedDogItem from 'components/Common/Home/AbandonedDogItem';
 
-export default function ShelterProtectUser({ handleClickNext, handleClickPrev, data, page, shelterId, myShelterId }) {
+export default function ShelterProtectUser({ handleClickNext, handleClickPrev, data, page }) {
   return (
     <ShelterContainer title="보호 동물">
       <span>현재 {data.totalCount}개의 보호동물이 등록 되어있습니다.</span>

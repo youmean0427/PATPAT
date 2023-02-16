@@ -27,7 +27,7 @@ export default function Information() {
         <NoData>등록된 정보 공유 게시물이 없습니다.</NoData>
       ) : (
         <div className={styles.list}>
-          <CommunityTableItem key={data.boardId} typeCode={1} item={data} />;
+          <CommunityTableItem key={data.boardId} typeCode={1} item={data} />
         </div>
       )}
     </ShelterContainer>

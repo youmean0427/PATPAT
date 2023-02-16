@@ -11,12 +11,23 @@
   font-weight: 700;
   color: $main-accent-color;
   margin-bottom: 2rem;
+  &-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   &::after {
     margin-top: 2rem;
     display: block;
     content: '';
     width: 100%;
     border: 0.5px solid $gray-color;
+  }
+}
+.btn {
+  transition: all 0.4s;
+  &:hover {
+    transform: scale(1.1);
   }
 }
 
