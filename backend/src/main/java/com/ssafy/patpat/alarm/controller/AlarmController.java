@@ -93,11 +93,11 @@ public class AlarmController {
         response.addHeader("Content-Type", "text/event-stream");
         response.setHeader("Connection", "keep-alive");
         response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Transfer-Encoding","chunked");
 
         SseEmitter sseEmitter = new SseEmitter(-1L);
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter");
-
             sseEmitters.remove(userId);
         });
         sseEmitter.onTimeout(() -> {
