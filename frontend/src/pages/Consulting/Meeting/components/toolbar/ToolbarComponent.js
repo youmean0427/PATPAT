@@ -66,7 +66,7 @@ export default class ToolbarComponent extends Component {
 
   leaveSession() {
     swal.fire('상담룸에서 나가시겠습니까?', '', 'info').then(e => {
-      if (e.isConfirmed()) {
+      if (e) {
         this.props.leaveSession();
         if (this.props.isShelter) {
           window.location.href = `/shelter/${String(store.getState().shelter.value.resShelterId)}/consulting`;
