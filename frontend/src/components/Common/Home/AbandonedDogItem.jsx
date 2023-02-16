@@ -11,6 +11,7 @@ export default function AbandonedDogItem({ item }) {
       <div onClick={() => navigate(`/protects/${protectId}`)}>
         <img src={thumbnail} alt={name} />
         <div className={styles.description}>
+          <div>{protectId}</div>
           <div className={styles.name}>{protectName}</div>
           <div className={styles.kind}>{breedName}</div>
           <div className={styles.gender}>
