@@ -73,7 +73,7 @@ export default function Alarm() {
   useEffect(() => {
     if (token) {
       let userId = JSON.parse(localStorage.getItem('user')).userId;
-      let eventSource = new EventSource(`subscribeUrl/${userId}`);
+      let eventSource = new EventSource(`${subscribeUrl}/${userId}`);
       eventSource.addEventListener('connect', function (event) {
         setMessage(event.data);
       });
