@@ -109,7 +109,12 @@ public class VolunteerService {
 
         List<VolunteerNoticeDto> list =
                 volunteerNotices.stream()
-                .map(VolunteerNoticeDto::new)
+                .map(vn -> {
+                    VolunteerNoticeDto volunteerNoticeDto = new VolunteerNoticeDto(vn);
+                    List<Long> shelters = vn.getVolunteerSchedules().stream().map( v -> v.getScheduleId()).collect(Collectors.toList());
+                    volunteerNoticeDto.setScheduleId(shelters);
+                    return volunteerNoticeDto;
+                })
                 .collect(Collectors.toList());
         return list;
     }
