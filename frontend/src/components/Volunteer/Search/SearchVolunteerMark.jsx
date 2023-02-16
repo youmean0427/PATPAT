@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getVolNoticePerMonth } from 'apis/api/volunteer';
+import { getVolNoticeDetail } from 'apis/api/volunteer';
 
 import styles from './SearchVolunteerMark.module.scss';
 import React from 'react';
@@ -35,8 +35,8 @@ export default function SearchVolunteerMark({
 
   // useQuery
   const { data, isLoading } = useQuery({
-    queryKey: ['getVolNoticePerMonth', shelterId],
-    queryFn: () => getVolNoticePerMonth(shelterId, todayYear.toString(), todayMonth),
+    queryKey: ['getVolNoticeDetail', shelterId],
+    queryFn: () => getVolNoticeDetail(shelterId),
   });
 
   if (isLoading) return;

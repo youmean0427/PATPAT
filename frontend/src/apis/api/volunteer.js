@@ -17,12 +17,13 @@ export const getVolNoticeList = async (keyword, limit, offset, latitude, longitu
 };
 
 export const getVolNoticeListByLatLng = async (latitude, longitude) => {
-  const { data } = await defaultInstance.get(`/notices?latitude=${latitude}&longitude=${longitude}`);
+  const { data } = await defaultInstance.get(`/volunteers/notices?latitude=${latitude}&longitude=${longitude}`);
   return data;
 };
 
 export const getNoticeOfShelter = async shelterId => {
-  const { data } = await defaultInstance.get(`/notices/detail/${shelterId}`);
+  const { data } = await defaultInstance.get(`/volunteers/notices/detail/${shelterId}`);
+  return data;
 };
 
 export const getVolNoticeInfoPerDay = async (noticeId, limit, offSet) => {
@@ -36,7 +37,7 @@ export const getVolNoticeInfoPerDay = async (noticeId, limit, offSet) => {
  * @returns
  */
 export const getVolNoticeDetail = async noticeId => {
-  const { data } = await defaultInstance.get(`/volunteers/notices/detail/${noticeId}`);
+  const { data } = await defaultInstance.get(`/volunteers/notices/details/${noticeId}`);
   return data;
 };
 
