@@ -21,17 +21,12 @@ export default function CommunityUpdate() {
   const navigate = useNavigate();
   const [title, setTitle] = useState(data.title);
   const [content, setContent] = useState(data.content);
-  const images = [];
-  data.fileUrlList.forEach(element => {
-    images.push(element.filePath);
-  });
   // Picture
-  const [preFile, setPreFile] = useState(images);
-  const prevFile = images;
-  const [fileList, setFileList] = useState(images);
+  const [preFile, setPreFile] = useState(data.fileUrlList);
+  const [fileList, setFileList] = useState(data.fileUrlList);
   const [file2, setFile2] = useState(0);
   const [file3, setFile3] = useState(0);
-
+  const [deleteFileList, setDeleteFileList] = useState([]);
   const [titleAlertOpen, setTitleAlertOpen] = useState(0);
   const [fileListAlertOpen, setFileListAlertOpen] = useState(0);
   const [contentAlertOpen, setContentAlertOpen] = useState(0);
@@ -59,15 +54,6 @@ export default function CommunityUpdate() {
     }
   }, [content]);
 
-  const convertURLtoFile = async url => {
-    const response = await fetch(url);
-    const data = await response.blob();
-    const ext = url.split('.').pop(); // url 구조에 맞게 수정할 것
-    const filename = url.split('/').pop(); // url 구조에 맞게 수정할 것
-    const metadata = { type: `image/${ext}` };
-    return new File([data], filename, metadata);
-  };
-
   // Picture - 이전이미지 수정 안됨
   const handleAddImages = e => {
     const imageFileList = [...fileList];
@@ -81,15 +67,15 @@ export default function CommunityUpdate() {
 
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
+      imageUrlLists.push({ filePath: currentImageUrl });
     }
-
     setPreFile(imageUrlLists);
     setFileList(imageFileList);
   };
 
   // X버튼 클릭 시 이미지 삭제
-  const handleDeleteImage = id => {
+  const handleDeleteImage = (id, fileId) => {
+    if (fileId !== undefined) deleteFileList.push(fileId);
     setPreFile(preFile.filter((_, index) => index !== id));
     setFileList(fileList.filter((_, index) => index !== id));
   };
@@ -133,6 +119,7 @@ export default function CommunityUpdate() {
   formData.append('content', content);
   formData.append('staeCode', 0);
   formData.append('typeCode', stateCode);
+  formData.append('deleteFileList', deleteFileList);
 
   for (let i = 0; i < fileList.length; i++) {
     formData.append('uploadFile', fileList[i]);
@@ -173,17 +160,17 @@ export default function CommunityUpdate() {
                   ) : (
                     <div>
                       {file2 === 1 ? (
-                        <img className={styles.thumbnail} src={preFile[1]} alt="" />
+                        <img className={styles.thumbnail} src={preFile[1].filePath} alt="" />
                       ) : file3 === 1 ? (
-                        <img className={styles.thumbnail} src={preFile[2]} alt="" />
+                        <img className={styles.thumbnail} src={preFile[2].filePath} alt="" />
                       ) : (
                         <div>
                           <div className={styles['deleteButton-box']}>
-                            <button className={styles.deleteButton} onClick={() => handleDeleteImage(0)}>
+                            <button className={styles.deleteButton} onClick={() => handleDeleteImage(0, preFile[0].id)}>
                               <CgCloseO className={styles.deleteButtonColor} />
                             </button>
                           </div>
-                          <img className={styles.thumbnail} src={preFile[0]} alt="" />
+                          <img className={styles.thumbnail} src={preFile[0].filePath} alt="" />
                         </div>
                       )}
                     </div>
@@ -194,13 +181,13 @@ export default function CommunityUpdate() {
                       <img className={styles.subPictureNon} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
-                        <button className={styles.deleteButton} onClick={() => handleDeleteImage(1)}>
+                        <button className={styles.deleteButton} onClick={() => handleDeleteImage(1, preFile[1].id)}>
                           <CgCloseO />
                         </button>
 
                         <img
                           className={styles.subPicture}
-                          src={preFile[1]}
+                          src={preFile[1].filePath}
                           alt={1}
                           onMouseEnter={() => {
                             setFile2(1);
@@ -221,13 +208,13 @@ export default function CommunityUpdate() {
                       <img className={styles.subPictureNon} src={Test} alt="" />
                     ) : (
                       <div className={styles['deleteButton-box']}>
-                        <button className={styles.deleteButton} onClick={() => handleDeleteImage(2)}>
+                        <button className={styles.deleteButton} onClick={() => handleDeleteImage(2, preFile[2].id)}>
                           <CgCloseO />
                         </button>
                         <div className={styles['subPicture-cont']}>
                           <img
                             className={styles.subPicture}
-                            src={preFile[2]}
+                            src={preFile[2].filePath}
                             alt={2}
                             onMouseEnter={() => {
                               setFile3(1);

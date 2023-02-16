@@ -71,7 +71,7 @@ export default function BoardDetail({ boardId, close, change, typeCode }) {
         ></Carousel>
       </div>
       <div className={styles.content} dangerouslySetInnerHTML={{ __html: data.content }}></div>
-      <Comment boardId={data.boardId} />
+      {/* <Comment boardId={data.boardId} /> */}
 
       {data.userId === userId ? (
         <div className={styles.buttons}>
