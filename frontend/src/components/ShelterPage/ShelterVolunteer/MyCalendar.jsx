@@ -35,6 +35,7 @@ export default function MyCalendar() {
   moment.locale('ko-KR');
   const localizer = momentLocalizer(moment);
   const handleClickSlot = ({ start }) => {
+    console.log(start);
     setSelectDate(start);
     handleClickModalOpen();
   };
@@ -59,6 +60,7 @@ export default function MyCalendar() {
         style={{ height: 500 }}
         components={{ toolbar: Toolbar }}
         selectable
+        defaultView="month"
         onSelectSlot={handleClickSlot}
         onSelectEvent={handleClickSelect}
         onNavigate={handleClickNavigate}
