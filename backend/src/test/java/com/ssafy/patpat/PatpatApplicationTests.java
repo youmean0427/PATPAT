@@ -61,28 +61,6 @@ class PatpatApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Long num = 179L;
-		Long plus = 316L;
-		Random random = new Random();
-		for(int j=0; j<50; j++){
-			for(int i=0; i<16; i++){
-				int shelterId = random.nextInt(179)+316;
-				ShelterProtectedDog shelterProtectedDog = ShelterProtectedDog.builder()
-						.age(1)
-						.breed(breedRepository.findByBreedId(Long.valueOf(i)))
-						.gender(Gender.수컷)
-						.neutered(Neutered.X)
-						.registDate(LocalDateTime.now().toLocalDate())
-						.findingDate(LocalDate.now())
-						.weight(2.0)
-						.categoryTail(Tail.단발꼬리)
-						.categoryPattern(Pattern.새들)
-						.categoryEar(Ear.모름)
-						.shelter(shelterRepository.findByShelterId(Long.valueOf(shelterId)))
-						.build();
-				shelterProtectedDogRepository.save(shelterProtectedDog);
-				}
-			}
 		}
 
 	@Test
