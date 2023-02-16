@@ -10,10 +10,6 @@ import { Provider } from 'react-redux';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Loading from 'components/Common/Loading';
 
-if (process.env.NODE_ENV === 'development') {
-  // worker.start();
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

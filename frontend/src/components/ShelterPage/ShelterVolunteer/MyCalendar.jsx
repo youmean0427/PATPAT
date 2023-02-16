@@ -35,7 +35,6 @@ export default function MyCalendar() {
   moment.locale('ko-KR');
   const localizer = momentLocalizer(moment);
   const handleClickSlot = ({ start }) => {
-    console.log(start);
     setSelectDate(start);
     handleClickModalOpen();
   };

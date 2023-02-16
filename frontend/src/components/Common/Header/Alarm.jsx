@@ -158,7 +158,6 @@ export default function Alarm() {
         });
 
         // eventSource.addEventListener('error', function (event) {
-        //   console.log('너뭐잇니');
         //   eventSource.close();
         // });
       };
@@ -225,7 +224,6 @@ export default function Alarm() {
       });
 
       eventSource.addEventListener('error', function (event) {
-        console.log('님은뭐임?');
         eventSource.close();
       });
     }

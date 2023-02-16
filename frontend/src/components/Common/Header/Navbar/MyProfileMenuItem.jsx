@@ -18,14 +18,12 @@ export default function MyProfileMenuItem({ handleClickModalOpen }) {
     onSuccess: data => {
       setMyShelterId(data.shelterId);
     },
-    onError: e => {
-      console.error(e);
-    },
+    onError: e => {},
   });
   if (isLoading) return;
 
   const shelterUser = [
-    { title: '마이페이지', path: 'mypage' },
+    { title: '마이페이지', path: 'mypage/missing' },
     { title: '나의 보호소', path: `shelter/${data.shelterId}/intro` },
     { title: '로그아웃', path: '/' },
   ];

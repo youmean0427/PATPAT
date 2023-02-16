@@ -53,7 +53,6 @@ export default function Comment() {
   const onReplyDelete = replyId => {
     DeleteReply(replyId).then(res => {
       refetch();
-      // console.log('refatch 왜 이렇게 되노');
     });
   };
 

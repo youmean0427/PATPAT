@@ -6,7 +6,7 @@ import { checkMyShelter } from 'utils/checkMyShelter';
 import { useRecoilValue } from 'recoil';
 import { myShelterIdState } from 'recoil/atoms/user';
 import ShelterProtectUser from './ShelterProtectUser';
-import ShelterProtectManager from './ShelterProtectManager';
+
 export default function ShelterProtect() {
   const {
     state: { shelterId },
@@ -25,9 +25,7 @@ export default function ShelterProtect() {
     setPage(prev => prev + 1);
   };
   if (isLoading) return;
-  return checkMyShelter(shelterId, myShelterId) ? (
-    <ShelterProtectManager shelterId={shelterId} />
-  ) : (
+  return (
     <ShelterProtectUser
       handleClickNext={handleClickNext}
       handleClickPrev={handleClickPrev}

@@ -19,7 +19,6 @@ const dList = [
 ];
 
 export const getRegionList = list => {
-  console.log(list);
   return list.map((item, index) => {
     let colorStyle = '';
     if (item.count === 0) {
