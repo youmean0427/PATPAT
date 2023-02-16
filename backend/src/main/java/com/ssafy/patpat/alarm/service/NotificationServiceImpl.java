@@ -16,8 +16,10 @@ import com.ssafy.patpat.report.repository.MissingDogRepository;
 import com.ssafy.patpat.report.service.ReportService;
 import com.ssafy.patpat.shelter.entity.Shelter;
 import com.ssafy.patpat.shelter.repository.ShelterRepository;
+import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.entity.User;
 import com.ssafy.patpat.user.repository.UserRepository;
+import com.ssafy.patpat.user.service.UserService;
 import com.ssafy.patpat.volunteer.entity.VolunteerNotice;
 import com.ssafy.patpat.volunteer.entity.VolunteerReservation;
 import com.ssafy.patpat.volunteer.repository.VolunteerNoticeRepository;
@@ -61,6 +63,8 @@ public class NotificationServiceImpl implements NotificationService{
     AlarmRepository alarmRepository;
     @Autowired
     ReportService reportService;
+    @Autowired
+    UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
     @Override
     @Transactional
@@ -88,17 +92,31 @@ public class NotificationServiceImpl implements NotificationService{
                 /** 반견 내에 있는 실종견이 등록견과 닮아있다면 **/
                 if(reportService.isResemble(m,shelterProtectedDog)){
                     Long userId = m.getUser().getUserId();
+                    UserDto userDto = userService.getUserWithAuthorities();
+                    sseEmitters.forEach(
+                            (key, emitter) -> {
+                                if(key.contains(userDto.getEmail())){
+                                    LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                                    try{
+                                        emitter.send(SseEmitter.event().name("addProtect").data(msgCode, MediaType.APPLICATION_JSON));
+                                    }catch (Exception e){
+                                        sseEmitters.remove(key);
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                    );
                     /** 실종견 주인이 현재 구독중이라면 **/
-                    if(sseEmitters.containsKey(userId)){
-                        LOGGER.info("구독중인유저 {}",m.getUser().getUserId());
-                        SseEmitter sseEmitter = sseEmitters.get(userId);
-                        try{
-                            sseEmitter.send(SseEmitter.event().name("addProtect").data(msgCode, MediaType.APPLICATION_JSON));
-                        }catch (Exception e){
-                            sseEmitters.remove(userId);
-                            e.printStackTrace();
-                        }
-                    }
+//                    if(sseEmitters.containsKey(userId)){
+//                        LOGGER.info("구독중인유저 {}",m.getUser().getUserId());
+//                        SseEmitter sseEmitter = sseEmitters.get(userId);
+//                        try{
+//                            sseEmitter.send(SseEmitter.event().name("addProtect").data(msgCode, MediaType.APPLICATION_JSON));
+//                        }catch (Exception e){
+//                            sseEmitters.remove(userId);
+//                            e.printStackTrace();
+//                        }
+//                    }
                 }
             }
         }
@@ -128,15 +146,30 @@ public class NotificationServiceImpl implements NotificationService{
             for(Shelter s : shelterList){
                 Long userId = s.getOwner().getUser().getUserId();
 
-                if(sseEmitters.containsKey(userId)){
-                    SseEmitter sseEmitter = sseEmitters.get(userId);
-                    try{
-                        sseEmitter.send(SseEmitter.event().name("addMissing").data(msgCode,MediaType.APPLICATION_JSON));
-                    }catch (Exception e){
-                        sseEmitters.remove(userId);
-                        e.printStackTrace();
-                    }
-                }
+                UserDto userDto = userService.getUserWithAuthorities();
+                sseEmitters.forEach(
+                        (key, emitter) -> {
+                            if(key.contains(userDto.getEmail())){
+                                LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                                try{
+                                    emitter.send(SseEmitter.event().name("addMissing").data(msgCode,MediaType.APPLICATION_JSON));
+                                }catch (Exception e){
+                                    sseEmitters.remove(key);
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                );
+
+//                if(sseEmitters.containsKey(userId)){
+//                    SseEmitter sseEmitter = sseEmitters.get(userId);
+//                    try{
+//                        sseEmitter.send(SseEmitter.event().name("addMissing").data(msgCode,MediaType.APPLICATION_JSON));
+//                    }catch (Exception e){
+//                        sseEmitters.remove(userId);
+//                        e.printStackTrace();
+//                    }
+//                }
             }
         }
     }
@@ -159,15 +192,30 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(userId);
-            try{
-                sseEmitter.send(SseEmitter.event().name("addConsulting").data(msgCode,MediaType.APPLICATION_JSON));
-            }catch (Exception e){
-                sseEmitters.remove(userId);
-                e.printStackTrace();
-            }
-        }
+        UserDto userDto = userService.getUserWithAuthorities();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    if(key.contains(userDto.getEmail())){
+                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                        try{
+                            emitter.send(SseEmitter.event().name("addConsulting").data(msgCode,MediaType.APPLICATION_JSON));
+                        }catch (Exception e){
+                            sseEmitters.remove(key);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+
+//        if(sseEmitters.containsKey(userId)){
+//            SseEmitter sseEmitter = sseEmitters.get(userId);
+//            try{
+//                sseEmitter.send(SseEmitter.event().name("addConsulting").data(msgCode,MediaType.APPLICATION_JSON));
+//            }catch (Exception e){
+//                sseEmitters.remove(userId);
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -186,15 +234,30 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(userId);
-            try{
-                sseEmitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
-            }catch (Exception e){
-                sseEmitters.remove(userId);
-                e.printStackTrace();
-            }
-        }
+        UserDto userDto = userService.getUserWithAuthorities();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    if(key.contains(userDto.getEmail())){
+                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                        try{
+                            emitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+                        }catch (Exception e){
+                            sseEmitters.remove(key);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+
+//        if(sseEmitters.containsKey(userId)){
+//            SseEmitter sseEmitter = sseEmitters.get(userId);
+//            try{
+//                sseEmitter.send(SseEmitter.event().name("addVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+//            }catch (Exception e){
+//                sseEmitters.remove(userId);
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -219,17 +282,32 @@ public class NotificationServiceImpl implements NotificationService{
         System.out.println(consulting.getUser().getUserId()+"밖");
         LOGGER.info("오나? 상담 인증 {}",consulting.getUser().getUserId());
 
-        if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(consulting.getUser().getUserId());
-            try{
-                System.out.println(consulting.getUser().getUserId()+"안");
-                LOGGER.info("오나? 상담 인증 알람 직전 라인 {}",userId);
-                sseEmitter.send(SseEmitter.event().name("accessConsulting").data(msgCode,MediaType.APPLICATION_JSON));
-            }catch (Exception e){
-                sseEmitters.remove(userId);
-                e.printStackTrace();
-            }
-        }
+        UserDto userDto = userService.getUserWithAuthorities();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    if(key.contains(userDto.getEmail())){
+                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                        try{
+                            emitter.send(SseEmitter.event().name("accessConsulting").data(msgCode,MediaType.APPLICATION_JSON));
+                        }catch (Exception e){
+                            sseEmitters.remove(key);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+
+//        if(sseEmitters.containsKey(userId)){
+//            SseEmitter sseEmitter = sseEmitters.get(consulting.getUser().getUserId());
+//            try{
+//                System.out.println(consulting.getUser().getUserId()+"안");
+//                LOGGER.info("오나? 상담 인증 알람 직전 라인 {}",userId);
+//                sseEmitter.send(SseEmitter.event().name("accessConsulting").data(msgCode,MediaType.APPLICATION_JSON));
+//            }catch (Exception e){
+//                sseEmitters.remove(userId);
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -247,15 +325,29 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(userId);
-            try{
-                sseEmitter.send(SseEmitter.event().name("denyConsulting").data(msgCode,MediaType.APPLICATION_JSON));
-            }catch (Exception e){
-                sseEmitters.remove(userId);
-                e.printStackTrace();
-            }
-        }
+        UserDto userDto = userService.getUserWithAuthorities();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    if(key.contains(userDto.getEmail())){
+                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                        try{
+                            emitter.send(SseEmitter.event().name("denyConsulting").data(msgCode,MediaType.APPLICATION_JSON));
+                        }catch (Exception e){
+                            sseEmitters.remove(key);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+//        if(sseEmitters.containsKey(userId)){
+//            SseEmitter sseEmitter = sseEmitters.get(userId);
+//            try{
+//                sseEmitter.send(SseEmitter.event().name("denyConsulting").data(msgCode,MediaType.APPLICATION_JSON));
+//            }catch (Exception e){
+//                sseEmitters.remove(userId);
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -272,15 +364,29 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(userId);
-            try{
-                sseEmitter.send(SseEmitter.event().name("accessVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
-            }catch (Exception e){
-                sseEmitters.remove(userId);
-                e.printStackTrace();
-            }
-        }
+        UserDto userDto = userService.getUserWithAuthorities();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    if(key.contains(userDto.getEmail())){
+                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                        try{
+                            emitter.send(SseEmitter.event().name("accessVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+                        }catch (Exception e){
+                            sseEmitters.remove(key);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+//        if(sseEmitters.containsKey(userId)){
+//            SseEmitter sseEmitter = sseEmitters.get(userId);
+//            try{
+//                sseEmitter.send(SseEmitter.event().name("accessVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+//            }catch (Exception e){
+//                sseEmitters.remove(userId);
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -298,15 +404,29 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(userId);
-            try{
-                sseEmitter.send(SseEmitter.event().name("denyVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
-            }catch (Exception e){
-                sseEmitters.remove(userId);
-                e.printStackTrace();
-            }
-        }
+        UserDto userDto = userService.getUserWithAuthorities();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    if(key.contains(userDto.getEmail())){
+                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                        try{
+                            emitter.send(SseEmitter.event().name("denyVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+                        }catch (Exception e){
+                            sseEmitters.remove(key);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+//        if(sseEmitters.containsKey(userId)){
+//            SseEmitter sseEmitter = sseEmitters.get(userId);
+//            try{
+//                sseEmitter.send(SseEmitter.event().name("denyVolunteer").data(msgCode,MediaType.APPLICATION_JSON));
+//            }catch (Exception e){
+//                sseEmitters.remove(userId);
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -324,15 +444,29 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
         alarmRepository.save(alarm);
 
-        if(sseEmitters.containsKey(userId)){
-            SseEmitter sseEmitter = sseEmitters.get(userId);
-            try{
-                sseEmitter.send(SseEmitter.event().name("createRoom").data(msgCode,MediaType.APPLICATION_JSON));
-            }catch (Exception e){
-                sseEmitters.remove(userId);
-                e.printStackTrace();
-            }
-        }
+        UserDto userDto = userService.getUserWithAuthorities();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    if(key.contains(userDto.getEmail())){
+                        LOGGER.info("구독중인유저 {}",userDto.getUsername());
+                        try{
+                            emitter.send(SseEmitter.event().name("createRoom").data(msgCode,MediaType.APPLICATION_JSON));
+                        }catch (Exception e){
+                            sseEmitters.remove(key);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+//        if(sseEmitters.containsKey(userId)){
+//            SseEmitter sseEmitter = sseEmitters.get(userId);
+//            try{
+//                sseEmitter.send(SseEmitter.event().name("createRoom").data(msgCode,MediaType.APPLICATION_JSON));
+//            }catch (Exception e){
+//                sseEmitters.remove(userId);
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 

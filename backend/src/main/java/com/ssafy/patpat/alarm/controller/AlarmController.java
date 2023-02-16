@@ -11,6 +11,7 @@ import com.ssafy.patpat.common.dto.ResponseListDto;
 import com.ssafy.patpat.common.dto.ResponseMessage;
 import com.ssafy.patpat.protect.service.ProtectService;
 import com.ssafy.patpat.report.service.ReportService;
+import com.ssafy.patpat.user.dto.UserDto;
 import com.ssafy.patpat.user.service.UserService;
 import com.ssafy.patpat.volunteer.service.VolunteerService;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/api/alarm")
 public class AlarmController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlarmController.class);
-    public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
+    public static Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
     @Autowired
     UserService userService;
 
@@ -96,19 +97,22 @@ public class AlarmController {
         response.setHeader("Transfer-Encoding","chunked");
 
         SseEmitter sseEmitter = new SseEmitter(60*1000L);
+        UserDto userDto = userService.getUserWithAuthorities();
+        String id = userDto.getEmail() + "_" + System.currentTimeMillis();
+        sseEmitters.put(id, sseEmitter);
         sseEmitter.onCompletion(() -> {
-            LOGGER.info("onCompletion sseEmitter");
-            sseEmitters.remove(userId);
+            LOGGER.info("onCompletion sseEmitter {}",id);
+            sseEmitters.remove(id);
         });
         sseEmitter.onTimeout(() -> {
-            LOGGER.info("onTimeout sseEmitter");
+            LOGGER.info("onTimeout sseEmitter {}",id);
             sseEmitter.complete();
         });
         sseEmitter.onError((e) -> {
-            LOGGER.info("Error seeEmitter");
-            sseEmitters.remove(userId);
+            LOGGER.info("Error seeEmitter {}", id);
+            sseEmitters.remove(id);
         });
-        sseEmitters.put(userId, sseEmitter);
+
         try {
             sseEmitter.send(SseEmitter.event().name("connect").data("Start Connection"));
         } catch (Exception e) {
