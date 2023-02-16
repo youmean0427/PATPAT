@@ -65,7 +65,16 @@ export default class ToolbarComponent extends Component {
   }
 
   leaveSession() {
-    swal.fire('상담룸에서 나가시겠습니까?', '', 'info').then(() => this.props.leaveSession());
+    swal.fire('상담룸에서 나가시겠습니까?', '', 'info').then(e => {
+      if (e.isConfirmed()) {
+        this.props.leaveSession();
+        if (this.props.isShelter) {
+          window.location.href = `/shelter/${String(store.getState().shelter.value.resShelterId)}/consulting`;
+        } else {
+          window.location.href = '/mypage/consulting';
+        }
+      }
+    });
   }
   camStatusChanged() {
     this.props.camStatusChanged();
@@ -127,15 +136,7 @@ export default class ToolbarComponent extends Component {
               onClick={(this.camStatusChanged, this.leaveSession)}
               id="navLeaveButton"
             >
-              {isShelter ? (
-                <Link to={`/shelter/${String(store.getState().shelter.value.resShelterId)}/consulting`}>
-                  <PowerSettingsNew />
-                </Link>
-              ) : (
-                <Link to="/mypage/consulting">
-                  <PowerSettingsNew />
-                </Link>
-              )}
+              <PowerSettingsNew />
             </IconButton>
             <IconButton sx={{ color: '#f39c12' }} onClick={this.toggleChat} id="navChatButton">
               {this.props.showNotification && <div id="point" className="" />}

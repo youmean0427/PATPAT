@@ -8,18 +8,17 @@ import { getBreedsList } from 'apis/api/shelter';
 import { useQuery } from '@tanstack/react-query';
 import Select from 'react-select';
 
-import { changeBreedList } from 'utils/changeSelectTemplate';
+import { changeBreedList, changeReportBreedList } from 'utils/changeSelectTemplate';
 
 export default function Report() {
-  const { isLoading, data } = useQuery({ queryKey: ['getBreedsList'], queryFn: () => getBreedsList() });
+  const { isLoading, data: breedList } = useQuery({ queryKey: ['getBreedsList'], queryFn: () => getBreedsList() });
 
-  const breedList = data;
   const [selected, setSelected] = useState('실종');
   const handleClick = value => {
     setSelected(value);
   };
 
-  const breed = [{ value: 0, label: '견종' }];
+  const breed = [{ value: 0, label: '전체 보기' }];
   const gender = [
     { value: 0, label: '성별' },
     { value: 1, label: '수컷' },
@@ -58,7 +57,7 @@ export default function Report() {
         <div>
           <span>
             <Select
-              options={changeBreedList(breedList)}
+              options={changeReportBreedList(breedList)}
               className={styles['select-breed']}
               onChange={setSelectedBreed}
               defaultValue={breed[0]}
