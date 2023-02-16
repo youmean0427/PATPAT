@@ -14,6 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class PersonalProtectedDog {
     private Double weight;
     private Gender gender;
     private Neutered neutered;
-    private LocalDate registDate;
+    private LocalDateTime registDate;
     private String feature;
     private ProtectState stateCode;
     private Ear categoryEar;

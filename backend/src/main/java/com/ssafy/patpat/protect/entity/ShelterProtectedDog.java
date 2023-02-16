@@ -14,6 +14,7 @@ import org.hibernate.annotations.DynamicInsert;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ShelterProtectedDog {
     private Double weight;//
     private Gender gender;//
     private Neutered neutered;//
-    private LocalDate registDate;//
+    private LocalDateTime registDate;//
     private String feature;//
     private Ear categoryEar;//
     private Tail categoryTail;//

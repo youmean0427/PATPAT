@@ -42,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -670,7 +671,7 @@ public class ReportServiceImpl implements ReportService{
                         .user(user.get())
                         .feature(reportDto.getContent())
                         .images(images)
-                        .registDate(LocalDate.now())
+                        .registDate(LocalDateTime.now())
                         .build();
 
                 missingDogRepository.save(missingDog);
@@ -697,7 +698,7 @@ public class ReportServiceImpl implements ReportService{
                         .weight(reportDto.getKg())
                         .user(user.get())
                         .feature(reportDto.getContent())
-                        .registDate(LocalDate.now())
+                        .registDate(LocalDateTime.now())
                         .images(images)
                         .build();
 
