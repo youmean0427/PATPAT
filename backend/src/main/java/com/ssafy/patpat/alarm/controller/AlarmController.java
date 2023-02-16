@@ -105,7 +105,7 @@ public class AlarmController {
         Optional<User> user = userRepository.findById(userId);
         String id = user.get().getEmail() + "_" + System.currentTimeMillis();
         sseEmitters.put(id, sseEmitter);
-        LOGGER.info("id는 이것 {}", sseEmitters.get(id));
+        LOGGER.info("id는 이것 {}", user.get().getEmail());
         sseEmitter.onCompletion(() -> {
             LOGGER.info("onCompletion sseEmitter {}",id);
             sseEmitters.remove(id);
