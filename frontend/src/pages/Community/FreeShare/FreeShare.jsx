@@ -27,7 +27,7 @@ export default function FreeShare() {
         <NoData>등록된 무료 나눔 게시물이 없습니다.</NoData>
       ) : (
         <div className={styles.list}>
-          <CommunityTableItem key={data.boardId} typeCode={2} item={data} />;
+          <CommunityTableItem key={data.boardId} typeCode={2} item={data} />
         </div>
       )}
     </ShelterContainer>

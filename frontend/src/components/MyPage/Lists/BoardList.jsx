@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { getBoardListByMe } from 'apis/api/board';
 import React from 'react';
-import BoardItem from '../Items/BoardItem';
 import NoData from 'components/Common/NoData';
-
+import CommunityTableItem from 'components/Community/items/CommunityTableItem';
 export default function ConsultingList({ typeCode }) {
   const { data, isLoading } = useQuery({
     queryKey: ['getMyConsultations', typeCode],
@@ -13,6 +12,7 @@ export default function ConsultingList({ typeCode }) {
   });
 
   if (isLoading) return;
+
   return (
     <div>
       {data.totalCount === 0 ? (
@@ -23,8 +23,12 @@ export default function ConsultingList({ typeCode }) {
         ) : (
           <NoData>등록된 무료나눔 게시물이 없습니다.</NoData>
         )
+      ) : typeCode === 0 ? (
+        <CommunityTableItem key={data.boardId} typeCode={0} item={data} />
+      ) : typeCode === 1 ? (
+        <CommunityTableItem key={data.boardId} typeCode={1} item={data} />
       ) : (
-        <BoardItem typeCode={typeCode} count={data.totalCount} />
+        <CommunityTableItem key={data.boardId} typeCode={2} item={data} />
       )}
     </div>
   );
