@@ -91,6 +91,14 @@
 
 @include breakpoint(sm) {
   .notify {
+    position: absolute;
+    bottom: 1.4rem;
+    left: 30%;
     display: none;
+    z-index: 6;
+  }
+  .messages {
+    right: -11rem;
+    top: 40px;
   }
 }

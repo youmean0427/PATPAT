@@ -19,6 +19,10 @@
     color: $main-accent-color;
   }
 }
+.mobile {
+  width: 100%;
+  display: none;
+}
 
 @include breakpoint(sm) {
   .menu {
@@ -27,15 +31,21 @@
     flex-direction: column;
     transition: all 0.8s;
     position: absolute;
-    top: -44rem;
+    top: -48rem;
     left: 0;
     z-index: -1;
     &.active {
-      transform: translateY(51.2rem);
+      transform: translateY(55.2rem);
+      &.logout {
+        transform: translateY(55rem);
+      }
     }
   }
 
   .mobile-menu {
+    display: block;
+  }
+  .mobile {
     display: block;
   }
 }

@@ -48,39 +48,36 @@ export default function ShelterIntro() {
         </div>
       </main>
       {checkMyShelter(shelterId, myShelterId) && (
-        <>
-          <div>보호소 위치</div>
-          <div className={styles.map}>
-            <Map // 지도를 표시할 Container
-              center={
-                // 지도의 중심좌표
-                { lat: data.latitude, lng: data.longitude }
-              }
-              style={{
-                width: '100%',
-                height: '100%',
+        <div className={styles.map}>
+          <Map // 지도를 표시할 Container
+            center={
+              // 지도의 중심좌표
+              { lat: data.latitude, lng: data.longitude }
+            }
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+            level={4} // 지도의 확대 레벨
+          >
+            <MapMarker
+              position={{ lat: data.latitude, lng: data.longitude }}
+              image={{
+                src: 'https://i.ibb.co/z42FXX4/002-2.png', // 마커이미지의 주소입니다
+                size: {
+                  width: 64,
+                  height: 64,
+                }, // 마커이미지의 크기입니다
+                options: {
+                  offset: {
+                    x: 27,
+                    y: 69,
+                  }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                },
               }}
-              level={4} // 지도의 확대 레벨
-            >
-              <MapMarker
-                position={{ lat: data.latitude, lng: data.longitude }}
-                image={{
-                  src: 'https://i.ibb.co/z42FXX4/002-2.png', // 마커이미지의 주소입니다
-                  size: {
-                    width: 64,
-                    height: 64,
-                  }, // 마커이미지의 크기입니다
-                  options: {
-                    offset: {
-                      x: 27,
-                      y: 69,
-                    }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-                  },
-                }}
-              />
-            </Map>
-          </div>
-        </>
+            />
+          </Map>
+        </div>
       )}
 
       {isOpen && (

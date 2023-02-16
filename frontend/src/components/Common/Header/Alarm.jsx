@@ -149,7 +149,7 @@ export default function Alarm() {
       eventSource.addEventListener('error', function (event) {
         eventSource.close();
       });
-      eventSource.onerror = function () {
+      eventSource.onerror = () => {
         eventSource.close();
         eventSource = new EventSourcePolyfill(`${subscribeUrl}/${userId}`, {
           headers: {

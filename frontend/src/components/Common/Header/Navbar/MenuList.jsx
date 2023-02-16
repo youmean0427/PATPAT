@@ -42,8 +42,6 @@ export default function MenuList({ handleClickModalOpen }) {
     { title: 'PETBTI', path: 'mbti' },
   ];
 
-  const shelter = [{ title: '보호소 찾기', path: 'shelter/search' }];
-
   return (
     <>
       <div onClick={handleClickMobileMenu} className={styles['mobile-menu']}>
@@ -53,15 +51,36 @@ export default function MenuList({ handleClickModalOpen }) {
           <FaDog className={styles['fa-dog']} color="#a1887f" size="3rem" />
         )}
       </div>
-      <ul className={isOpen ? `${styles.menu} ${styles.active}` : styles.menu}>
-        <MenuItem move="intro" value="소개" dropdown={intro} />
-        <MenuItem move="shelter/search" value="보호소" dropdown={shelter} />
-        <MenuItem move="report" value="실종 신고" />
-        <MenuItem move="volunteer" value="봉사" />
-        <MenuItem move="community/adoption" value="커뮤니티" />
+      <ul
+        className={
+          !isOpen
+            ? styles.menu
+            : isLogin
+            ? `${styles.menu} ${styles.active}`
+            : `${styles.menu} ${styles.active} ${styles.logout}`
+        }
+      >
+        <MenuItem full={false} move="intro" value="소개" dropdown={intro} />
+        <MenuItem full={false} move="shelter/search" value="보호소 찾기" />
+        <MenuItem full={false} move="report" value="실종 신고" />
+        <MenuItem full={false} move="volunteer" value="봉사" />
+        <MenuItem full={false} move="community/adoption" value="커뮤니티" />
+        <div className={styles.mobile}>
+          <MenuItem move="mypage/missing" value="마이페이지" />
+          {isHaveShelter(myShelterId) ? (
+            <MenuItem full={false} move={`shelter/${myShelterId}/intro`} value="나의 보호소" />
+          ) : (
+            <MenuItem full={false} move="" value="보호소 등록" handleClickModalOpen={handleClickModalOpen} />
+          )}
+          {isLogin ? (
+            <MenuItem full={false} move="/" value="로그아웃" />
+          ) : (
+            <MenuItem full={false} move="login" value="로그인" />
+          )}
+        </div>
 
         {!isLogin ? (
-          <MenuItem move="login" value="로그인" />
+          <MenuItem full={true} move="login" value="로그인" />
         ) : (
           <>
             <Alarm />

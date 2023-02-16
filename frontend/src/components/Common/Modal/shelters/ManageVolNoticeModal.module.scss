@@ -119,6 +119,10 @@
       font-size: 2rem;
     }
   }
+  @include breakpoint(sm) {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
 }
 .total {
   height: 100%;
@@ -197,6 +201,12 @@
       margin-left: 0.5rem;
       border-radius: 0.4rem;
       color: $white-color;
+    }
+    @include breakpoint(sm) {
+      & > div {
+        font-size: 1.2rem;
+        gap: 0.2rem;
+      }
     }
   }
 }

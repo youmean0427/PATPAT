@@ -28,3 +28,11 @@
 .land.click {
   fill: $map-three-color;
 }
+
+@include breakpoint(md) {
+  .map-wrapper {
+    & > svg {
+      width: 100vw;
+    }
+  }
+}

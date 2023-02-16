@@ -73,7 +73,7 @@
     width: 8rem;
   }
   .nav-link {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
   .sublink {
     font-size: 1.2rem;
@@ -102,6 +102,9 @@
     }
   }
   .submenu {
+    display: none;
+  }
+  .full {
     display: none;
   }
 }

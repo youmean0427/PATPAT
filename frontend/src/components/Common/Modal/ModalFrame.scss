@@ -1,0 +1,10 @@
+@import 'assets/styles/variable.scss';
+
+.MuiBox-root {
+  @include breakpoint(md) {
+    width: 600px !important;
+  }
+  @include breakpoint(sm) {
+    width: 400px !important;
+  }
+}
