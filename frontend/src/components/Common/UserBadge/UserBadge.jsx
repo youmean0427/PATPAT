@@ -28,7 +28,7 @@ export default function ConsultingBadge({ state, stateCode, items }) {
   };
 
   const handleConsulting = () => {
-    dispatch(setUser({ resIsShelter: false, resShelterId: items.shelterId, resUserName: items.shelterName }));
+    dispatch(setUser({ resIsShelter: false, resShelterId: items.shelterId, resUserName: items.userName }));
     const newitems = {
       address: items.address,
       consultingDate: items.consultingDate,
