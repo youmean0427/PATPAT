@@ -809,8 +809,12 @@ public class ReportServiceImpl implements ReportService{
             count++;
         }
         /** 색깔 여부 **/
-        if(missingDog.getCategoryColor().equals(s.getCategoryColor())){
-            count++;
+        if(missingDog.getCategoryColor()!=null && s.getCategoryColor() != null){
+            if(missingDog.getCategoryColor().equals(s.getCategoryColor())){
+                count++;
+            }
+        }else{
+            total--;
         }
         /** 귀 여부 **/
         if(missingDog.getCategoryEar().getCode()!=0 && s.getCategoryEar().getCode()!=0){
@@ -830,7 +834,7 @@ public class ReportServiceImpl implements ReportService{
         }
         /** 꼬리 여부 **/
         if(missingDog.getCategoryTail().getCode()!=0 && s.getCategoryTail().getCode()!=0){
-            if(missingDog.getCategoryPattern().equals(s.getCategoryPattern())){
+            if(missingDog.getCategoryTail().equals(s.getCategoryTail())){
                 count++;
             }
         }else{
