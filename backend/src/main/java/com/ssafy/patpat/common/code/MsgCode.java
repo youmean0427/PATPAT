@@ -6,7 +6,7 @@ public enum MsgCode {
     MSG_NEW_MISSING("근처에 새로운 실종견이 등록되었습니다.",0), //missingId
     MSG_NEW_CONSULTING("새로운 상담이 신청되었습니다.",1), //shelterId
     MSG_NEW_VOLUNTEER("새로운 봉사가 신청되었습니다.",2), //shelterId
-    MSG_NEW_RESEMBLE_DOG("비슷한 강아지가 등록되었습니다.",3),
+    MSG_NEW_RESEMBLE_DOG("비슷한 강아지가 등록되었습니다.",3), // spDogId
     MSG_ACCESS_CONSULTING("상담 신청이 승인되었습니다.", 4),
     MSG_DENY_CONSULTING("상담 신청이 거부되었습니다.",5),
     MSG_ACCESS_VOLUNTEER("봉사 신청이 승인되었습니다.",6),

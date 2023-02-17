@@ -46,9 +46,9 @@ public class AlarmService {
                     AlarmDto alarmDto = new AlarmDto(alarm);
                     if(alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setShelterId(alarm.getShelterId());
                     if(alarm.getMsgCode().getCode() == 0) alarmDto.setMissingId(alarm.getMissingId());
+                    if(alarm.getMsgCode().getCode() == 3) alarmDto.setShelterId(alarm.getSpDogId());
                     return alarmDto;
                 }).collect(Collectors.toList());
-
 
         AlarmListDto alarmListDto = new AlarmListDto();
         alarmListDto.setList(alarmDtoList);
@@ -77,7 +77,7 @@ public class AlarmService {
         AlarmDto alarmDto = new AlarmDto();
         if(alarm.getMsgCode().getCode() == 1 || alarm.getMsgCode().getCode() == 2) alarmDto.setShelterId(alarm.getShelterId());
         if(alarm.getMsgCode().getCode() == 0) alarmDto.setMissingId(alarm.getMissingId());
-
+        if(alarm.getMsgCode().getCode() == 3) alarmDto.setShelterId(alarm.getSpDogId());
         return alarmDto;
     }
 

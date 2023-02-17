@@ -16,6 +16,7 @@ public class AlarmDto {
     private Integer msgCode;
     private Long missingId;
     private Long shelterId;
+    private Long spDogId;
 
     public AlarmDto(Alarm alarm){
         this.alarmId = alarm.getAlarmId();
