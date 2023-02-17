@@ -51,7 +51,6 @@ public class KakaoService {
         body.add("redirect_uri", redirectUri);
         body.add("code", code);
 
-        System.out.println("내가봣을땐 여긴데");
         // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
         RestTemplate rt = new RestTemplate();

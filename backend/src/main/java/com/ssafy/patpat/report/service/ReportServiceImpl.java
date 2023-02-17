@@ -743,6 +743,20 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     @Transactional
+    public Boolean deleteById(Long missingId) {
+        Optional<MissingDog> m = missingDogRepository.findById(missingId);
+        List<Image> images = m.get().getImages();
+        for (Image i:
+             images) {
+            fileService.deleteFile(i);
+        }
+        images.removeAll(images);
+        missingDogRepository.deleteById(missingId);
+        return true;
+    }
+
+    @Override
+    @Transactional
     public ResponseListDto selectRecommendList(Long missingId,RequestReportDto requestReportDto) {
         ResponseListDto responseListDto = new ResponseListDto();
         List<ProtectDto> protectDtoList = new ArrayList<>();

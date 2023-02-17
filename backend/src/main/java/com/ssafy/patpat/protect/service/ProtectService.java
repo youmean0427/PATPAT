@@ -23,4 +23,8 @@ public interface ProtectService {
 
     List<ProtectDto> selectProtectListByShelterAdmin(Long shelterId);
     ResponseMessage insertBatchesProtect(ShelterDto shelterDto, MultipartFile uploadFile) throws IOException;
+
+    List<String> deleteDogImage();
+
+    Boolean deleteDog(Long spDogId);
 }

@@ -23,6 +23,7 @@ public interface ReportService {
     ResponseMessage updateReport(ReportDto reportDto, List<MultipartFile> uploadFile) throws Exception;
     ResponseMessage insertReport(ReportDto reportDto, List<MultipartFile> uploadFile);
     Boolean deleteAll();
+    Boolean deleteById(Long missingId);
     ResponseListDto selectRecommendList(Long missingId, RequestReportDto requestReportDto);
 //    void insertRecommend(User user, MissingDog missingDog);
     boolean isResemble(MissingDog missingDog, ShelterProtectedDog s);
