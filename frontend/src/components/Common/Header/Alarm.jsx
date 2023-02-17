@@ -37,6 +37,7 @@ export default function Alarm() {
         break;
       }
       case 3: {
+        console.log(item);
         // 유사견
         navigate('/mypage/missing');
         break;
@@ -168,20 +169,20 @@ export default function Alarm() {
       // 보호소
       // 신규 실종견 등록
       eventSource.addEventListener('addMissing', function (event) {
-        // toast('근처에 신규 실종견이 등록되었습니다.', { type: 'info' });
+        toast('근처에 신규 실종견이 등록되었습니다.', { type: 'info' });
         setCount(prev => prev + 1);
         setMessage(event.data);
       });
       // 신규 상담 신청
       eventSource.addEventListener('addConsulting', function (event) {
         setCount(prev => prev + 1);
-        // toast('새로운 상담이 신청되었습니다.', { type: 'info' });
+        toast('새로운 상담이 신청되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
       // 신규 봉사 신청
       eventSource.addEventListener('addVolunteer', function (event) {
         setCount(prev => prev + -1);
-        // toast('새로운 봉사가 신청되었습니다.', { type: 'info' });
+        toast('새로운 봉사가 신청되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
 
@@ -189,37 +190,37 @@ export default function Alarm() {
       // 유사견 등록
       eventSource.addEventListener('addProtect', function (event) {
         setCount(prev => prev - 1);
-        // toast('실종된 강아지와 유사한 강아지가 주변 보호소에 등록되었습니다.', { type: 'info' });
+        toast('실종된 강아지와 유사한 강아지가 주변 보호소에 등록되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
       // 상담 승인
       eventSource.addEventListener('accessConsulting', function (event) {
         setCount(prev => prev + 1);
-        // toast('상담이 승인되었습니다.', { type: 'info' });
+        toast('상담이 승인되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
       // 상담 거부
       eventSource.addEventListener('denyConsulting', function (event) {
         setCount(prev => prev - 1);
-        // toast('상담이 거부되었습니다.', { type: 'info' });
+        toast('상담이 거부되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
       // 봉사 신청 승인
       eventSource.addEventListener('accessVolunteer', function (event) {
         setCount(prev => prev + 1);
-        // toast('봉사 신청이 승인되었습니다.', { type: 'info' });
+        toast('봉사 신청이 승인되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
       // 봉사 신청 거부
       eventSource.addEventListener('denyVolunteer', function (event) {
         setCount(prev => prev - 1);
-        // toast('봉사 신청이 거부되었습니다.', { type: 'info' });
+        toast('봉사 신청이 거부되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
       // 상담방 생성
       eventSource.addEventListener('createRoom', function (event) {
         setCount(prev => prev + 1);
-        // toast('상담방이 생성되었습니다.', { type: 'info' });
+        toast('상담방이 생성되었습니다.', { type: 'info' });
         setMessage(event.data);
       });
 

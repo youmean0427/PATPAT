@@ -41,9 +41,9 @@ export const getProtectDetail = async (protectId, isLogin) => {
  * @param {int} offset
  * @returns
  */
-export const getProtectListOfShelter = async (shelterId, code, limit, offset) => {
+export const getProtectListOfShelter = async (shelterId, code, breedId, limit, offset) => {
   const { data } = await defaultInstance.get(
-    `/protects/shelters?shelterId=${shelterId}&code=${code}&limit=${limit}&offSet=${offset}`
+    `/protects/shelters?shelterId=${shelterId}&code=${code}&breedId=${breedId}&limit=${limit}&offSet=${offset}`
   );
   return data;
 };

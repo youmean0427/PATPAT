@@ -83,7 +83,13 @@ const router = createBrowserRouter([
         element: <Shelter />,
         children: [
           { path: 'intro', element: <ShelterIntro /> },
-          { path: 'protect', element: <ShelterProtect /> },
+          {
+            path: 'protect',
+            element: <ShelterProtect />,
+            loader: async () => {
+              return getBreedsList();
+            },
+          },
           {
             path: 'protect/enroll',
             element: <ShelterProtectEnroll />,
