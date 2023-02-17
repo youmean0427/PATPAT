@@ -743,6 +743,7 @@ public class ProtectServiceImpl implements ProtectService{
              images) {
             fileService.deleteFile(i);
         }
+        //dmdd
         shelterProtectedDogRepository.delete(dog.get());
         return true;
     }
