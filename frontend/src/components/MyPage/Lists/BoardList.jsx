@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { getBoardListByMe } from 'apis/api/board';
 import React from 'react';
 import NoData from 'components/Common/NoData';
-import CommunityTableItem from 'components/Community/items/CommunityTableItem';
+import CommunityTableItem from 'components/MyPage/Items/CommunityTableItem';
 export default function ConsultingList({ typeCode }) {
   const { data, isLoading } = useQuery({
-    queryKey: ['getMyConsultations', typeCode],
+    queryKey: ['getBoardListByMe', typeCode],
     queryFn: () => {
       return getBoardListByMe(10, 0, typeCode);
     },
