@@ -32,9 +32,9 @@ export default function CommunityTableItem({ typeCode, item }) {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getBoardListByMe', typeCode],
+    queryKey: ['getBoardListByMe', typeCode, page],
     queryFn: () => {
-      return getBoardListByMe(10, 0, typeCode);
+      return getBoardListByMe(10, page - 1, typeCode);
     },
   });
   if (isLoading) return;
