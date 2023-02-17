@@ -37,9 +37,8 @@ export default function Alarm() {
         break;
       }
       case 3: {
-        console.log(item);
         // 유사견
-        navigate('/mypage/missing');
+        navigate(`protects/${item.spDogId}`);
         break;
       }
       case 4: {

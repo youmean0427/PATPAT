@@ -19,7 +19,9 @@
   }
 }
 .total {
+  display: block;
   font-size: 1.6rem;
+  margin-bottom: 1rem;
 }
 .list {
   display: grid;
@@ -33,6 +35,7 @@
   align-items: center;
   font-size: 2.4rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   & > span {
     color: $main-color;
     line-height: 1rem;

@@ -19,7 +19,15 @@ export default function ShelterProtectUser({ handleClickNext, handleClickPrev, d
 
   return (
     <ShelterContainer title="보호 동물">
-      <span className={styles.total}>현재 {data.totalCount}개의 보호동물이 등록 되어있습니다.</span>
+      <span className={styles.total}>
+        {breed.breedId === 0 ? (
+          <>우리 보호소에는 총 {data.totalCount}마리가 있습니다</>
+        ) : (
+          <>
+            우리 보호소에는 {breed.name} {data.totalCount}마리가 있습니다
+          </>
+        )}
+      </span>
       <Select
         onChange={handleChangeOnBreedList}
         className="basic-single"
