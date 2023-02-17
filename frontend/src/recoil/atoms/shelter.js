@@ -39,3 +39,8 @@ export const volNoticeListPerMonthState = atom({
   key: 'recoilVolNoticeListPerMonth',
   default: [],
 });
+
+export const selectShelterBreedState = atom({
+  key: 'recoilShelterBreedState',
+  default: { breedId: 0, name: '전체 보기' },
+});

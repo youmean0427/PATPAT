@@ -3,11 +3,30 @@ import React from 'react';
 import { MdArrowForwardIos, MdArrowBackIosNew } from 'react-icons/md';
 import styles from './ShelterProtectUser.module.scss';
 import AbandonedDogItem from 'components/Common/Home/AbandonedDogItem';
+import Select from 'react-select';
+import { changeReportBreedList } from 'utils/changeSelectTemplate';
+import { useCallback } from 'react';
+import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { selectShelterBreedState } from 'recoil/atoms/shelter';
 
-export default function ShelterProtectUser({ handleClickNext, handleClickPrev, data, page }) {
+export default function ShelterProtectUser({ handleClickNext, handleClickPrev, data, page, setPage, breedData }) {
+  const [breed, setBreed] = useRecoilState(selectShelterBreedState);
+  const handleChangeOnBreedList = useCallback(selected => {
+    setBreed({ breedId: selected.value, name: selected.label });
+    setPage(1);
+  });
+
   return (
     <ShelterContainer title="보호 동물">
-      <span>현재 {data.totalCount}개의 보호동물이 등록 되어있습니다.</span>
+      <span className={styles.total}>현재 {data.totalCount}개의 보호동물이 등록 되어있습니다.</span>
+      <Select
+        onChange={handleChangeOnBreedList}
+        className="basic-single"
+        options={changeReportBreedList(breedData)}
+        placeholder="선택해주세요"
+        value={breed.breedId ? { value: breed.breedId, label: breed.name } : null}
+      />
       <div className={styles.pagination}>
         <button
           onClick={handleClickPrev}

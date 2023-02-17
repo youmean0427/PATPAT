@@ -1,21 +1,25 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLoaderData, useLocation } from 'react-router-dom';
 import { getProtectListOfShelter } from 'apis/api/protect';
 import { checkMyShelter } from 'utils/checkMyShelter';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { myShelterIdState } from 'recoil/atoms/user';
 import ShelterProtectUser from './ShelterProtectUser';
+import { selectShelterBreedState } from 'recoil/atoms/shelter';
 
 export default function ShelterProtect() {
+  const breedData = useLoaderData();
+  const breed = useRecoilValue(selectShelterBreedState);
   const {
     state: { shelterId },
   } = useLocation();
+  console.log(breed);
   const [page, setPage] = useState(1);
   const LIMIT = 8;
   const myShelterId = useRecoilValue(myShelterIdState);
-  const { data, isLoading } = useQuery(['protectListOfShelter', shelterId, page], () => {
-    return getProtectListOfShelter(shelterId, 0, LIMIT, page - 1);
+  const { data, isLoading } = useQuery(['protectListOfShelter', breed.breedId, shelterId, page], () => {
+    return getProtectListOfShelter(shelterId, 0, breed.breedId, LIMIT, page - 1);
   });
   const handleClickPrev = () => {
     setPage(prev => prev - 1);
@@ -31,8 +35,10 @@ export default function ShelterProtect() {
       handleClickPrev={handleClickPrev}
       data={data}
       page={page}
+      setPage={setPage}
       shelterId={shelterId}
       myShelterId={myShelterId}
+      breedData={breedData}
     />
   );
 }

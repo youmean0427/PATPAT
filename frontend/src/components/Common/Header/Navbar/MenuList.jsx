@@ -38,7 +38,6 @@ export default function MenuList({ handleClickModalOpen }) {
   const intro = [
     { title: 'PATPAT은', path: 'intro' },
     { title: '미션 & 비전', path: 'vision' },
-    { title: '통계', path: 'statistics' },
     { title: 'PETBTI', path: 'mbti' },
   ];
 
