@@ -14,7 +14,6 @@ export default function ShelterProtect() {
   const {
     state: { shelterId },
   } = useLocation();
-  console.log(breed);
   const [page, setPage] = useState(1);
   const LIMIT = 8;
   const myShelterId = useRecoilValue(myShelterIdState);
