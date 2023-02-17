@@ -10,4 +10,6 @@ public interface ImageRepository extends JpaRepository<Image,Long>  {
     Image findByImageId(Long imageId);
     List<Image> findByImageIdIn(List<Long> list);
     void deleteByImageIdIn(List<Long> list);
+
+    List<Image> findByFilePathLike(String filePath);
 }

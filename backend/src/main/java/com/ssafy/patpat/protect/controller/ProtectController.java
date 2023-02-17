@@ -133,4 +133,11 @@ public class ProtectController {
 
     }
 
+    @GetMapping("/delete/image")
+    public ResponseEntity<Object> deleteImage(){
+        List<String> files = service.deleteDogImage();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(files);
+    }
+
 }

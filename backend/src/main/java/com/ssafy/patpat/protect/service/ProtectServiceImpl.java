@@ -48,6 +48,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -719,7 +720,15 @@ public class ProtectServiceImpl implements ProtectService{
         }
     }
 
-        @Override
+    @Override
+    @Transactional
+    public List<String> deleteDogImage() {
+        List<Image> images = imageRepository.findByFilePathLike("upload/protect/%");
+        List<String> names = images.stream().map(i->i.getFilePath()).collect(Collectors.toList());
+        return names;
+    }
+
+    @Override
     @Transactional
     public ResponseMessage updateProtect(Long protectId, List<MultipartFile> uploadFile,ProtectDto protectDto) {
         ResponseMessage responseMessage = new ResponseMessage();
