@@ -153,4 +153,14 @@ public class ReportController {
                 .body(new ResponseMessage("HAPPY"));
     }
 
+    @DeleteMapping("/one")
+    @ApiOperation(value = "행복 버튼", notes = "모든 report 데이터를 날린다.")
+    public ResponseEntity<Object> deleteById(@RequestParam("missingId")Long missingId){
+        //서비스 호출 코드
+//        System.out.println(requestReportDto);
+        service.deleteById(missingId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("HAPPY"));
+    }
+
 }

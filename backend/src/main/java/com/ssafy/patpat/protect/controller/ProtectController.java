@@ -140,4 +140,11 @@ public class ProtectController {
                 .body(files);
     }
 
+    @GetMapping("/delete/image/{spDogId}")
+    public ResponseEntity<Object> deleteDog(@PathVariable Long spDogId){
+        service.deleteDog(spDogId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("HAPPY"));
+    }
+
 }

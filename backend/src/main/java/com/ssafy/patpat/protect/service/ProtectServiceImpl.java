@@ -724,8 +724,27 @@ public class ProtectServiceImpl implements ProtectService{
     @Transactional
     public List<String> deleteDogImage() {
         List<Image> images = imageRepository.findByFilePathLike("upload/protect/%");
+        String DATA_DIR = "static/upload/protect/";
+        File file = new File(DATA_DIR);
+//        List<File> files = Arrays.stream(file.listFiles()).filter(
+//                f -> f.getPath()
+//        );
         List<String> names = images.stream().map(i->i.getFilePath()).collect(Collectors.toList());
+
         return names;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteDog(Long spDogId) {
+        Optional<ShelterProtectedDog> dog = shelterProtectedDogRepository.findById(spDogId);
+        List<Image> images = dog.get().getImages();
+        for (Image i:
+             images) {
+            fileService.deleteFile(i);
+        }
+        shelterProtectedDogRepository.delete(dog.get());
+        return true;
     }
 
     @Override

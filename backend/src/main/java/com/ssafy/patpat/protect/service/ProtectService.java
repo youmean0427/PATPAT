@@ -25,4 +25,6 @@ public interface ProtectService {
     ResponseMessage insertBatchesProtect(ShelterDto shelterDto, MultipartFile uploadFile) throws IOException;
 
     List<String> deleteDogImage();
+
+    Boolean deleteDog(Long spDogId);
 }
