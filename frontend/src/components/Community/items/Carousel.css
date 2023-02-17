@@ -1,0 +1,19 @@
+.box {
+  width: 300px;
+  margin: auto;
+}
+.thumbnail {
+  height: 80px;
+  width: 80px;
+  border-radius: 10px;
+  opacity: 0.6;
+}
+.active-thumbnail {
+  opacity: 1;
+  border: none;
+}
+.prev:hover,
+.next:hover {
+  transform: translateY(-3px);
+  background-color: rgba(0, 0, 0, 0);
+}

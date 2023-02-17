@@ -1,0 +1,61 @@
+@import 'assets/styles/variable.scss';
+
+.input-box {
+  margin-top: 3rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  color: $white-color;
+  & > label {
+    font-size: 2rem;
+    background-color: $main-color;
+    padding: 1rem 2rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      background-color: $main-accent-color;
+    }
+  }
+  & > button {
+    font-size: 2rem;
+    background-color: $main-color;
+    padding: 1rem 2rem;
+    border-radius: 0.4rem;
+    transition: all 0.3s;
+    &:hover {
+      background-color: $main-accent-color;
+    }
+  }
+}
+.input {
+  display: none;
+}
+.excelform {
+  text-decoration: underline;
+  font-size: 1.4rem;
+}
+.input-path {
+  font-size: 2rem;
+  flex: 1;
+  padding: 1rem 2rem;
+  border: 1px solid $main-color;
+  border-radius: 0.4rem;
+  color: $black-color;
+}
+
+@include breakpoint(sm) {
+  .input-box {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    & > button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .input-path {
+    width: 100%;
+  }
+}

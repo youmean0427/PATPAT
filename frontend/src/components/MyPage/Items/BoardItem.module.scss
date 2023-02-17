@@ -1,0 +1,26 @@
+@import 'assets/styles/variable.scss';
+
+.table-item td {
+  font-size: 1.4rem;
+  white-space: nowrap;
+}
+.type {
+  font-weight: bolder;
+}
+.title {
+  float: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 30vw;
+  cursor: pointer;
+}
+.title:hover {
+  border-bottom: 2px solid $main-color;
+}
+.type,
+.author,
+.count,
+.date {
+  text-align: center;
+  width: 10%;
+}

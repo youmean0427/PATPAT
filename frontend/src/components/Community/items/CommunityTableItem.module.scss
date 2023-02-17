@@ -1,0 +1,24 @@
+.table-item td {
+  font-size: 1.4rem;
+  white-space: nowrap;
+}
+.type {
+  font-weight: bolder;
+}
+.title {
+  float: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 30vw;
+  cursor: pointer;
+}
+.title:hover {
+  background-color: #bcaaa46b;
+}
+.type,
+.author,
+.count,
+.date {
+  text-align: center;
+  width: 10%;
+}

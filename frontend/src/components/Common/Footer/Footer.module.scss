@@ -1,0 +1,23 @@
+@import 'assets/styles/variable.scss';
+.footer {
+  width: 100%;
+  height: $footer-height;
+  background-color: $light-gray-color;
+  display: none;
+}
+
+.wrapper {
+  display: flex;
+  & > a {
+    color: $main-accent-color;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+}
+
+@include breakpoint(sm) {
+  .footer {
+    display: flex;
+    align-items: center;
+  }
+}

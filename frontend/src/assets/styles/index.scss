@@ -1,0 +1,59 @@
+@import './variable.scss';
+@import 'assets/styles/font.scss';
+@import '~react-image-gallery/styles/scss/image-gallery.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  font-weight: 500;
+  font-family: $noto-font;
+}
+
+body {
+  font-family: $noto-font;
+  font-weight: 500;
+  color: $black-color;
+}
+
+a {
+  text-decoration: none;
+  color: $black-color;
+}
+
+button {
+  // reset to default
+  font-family: inherit;
+  outline: none;
+  border: none;
+  background: none;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: inherit;
+  font-size: inherit;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+img {
+  border: 0 none;
+  font-size: 0;
+  line-height: 0;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}

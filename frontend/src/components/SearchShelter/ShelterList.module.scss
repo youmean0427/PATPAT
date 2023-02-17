@@ -1,0 +1,23 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+
+  &.blur {
+    filter: blur(0.6rem);
+  }
+}
+
+.loadingContainer {
+  width: 100%;
+  flex: 1;
+}
+
+@include breakpoint(sm) {
+  .container {
+    flex-direction: column;
+  }
+}

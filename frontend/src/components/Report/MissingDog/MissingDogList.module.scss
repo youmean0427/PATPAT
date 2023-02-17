@@ -1,0 +1,101 @@
+@import 'assets/styles/variable.scss';
+@import 'assets/styles/font.scss';
+.container {
+  // margin-top: 5rem;
+  // display: flex;
+  justify-content: center;
+  margin: 10px;
+  &-search {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+
+    &-inner {
+      display: flex;
+
+      & > span {
+        margin: 10px;
+        > select {
+          width: auto;
+          font-size: 20px;
+          font-family: $spoqa-font;
+        }
+      }
+    }
+  }
+
+  &-newButton {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5rem;
+}
+
+.newButton {
+  color: $main-color;
+  & > svg {
+    width: 24px;
+  }
+}
+
+// Select
+.select {
+  &-breed {
+    width: 200px;
+    font-size: 15px;
+    font-family: $seoul-font;
+  }
+  &-gender {
+    font-size: 15px;
+    font-family: $seoul-font;
+  }
+}
+
+@include breakpoint(md) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include breakpoint(sm) {
+  .list {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  & > .button {
+    color: $main-accent-color;
+  }
+  & > .button.disabled {
+    color: $gray-color;
+  }
+  & > span {
+    color: $main-color;
+  }
+}
+
+.non {
+  height: 323px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    font-size: 20px;
+  }
+}
+
+.navBar {
+  display: flex;
+  justify-content: flex-end;
+}

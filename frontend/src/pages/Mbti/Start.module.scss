@@ -1,0 +1,46 @@
+@import 'assets/styles/variable.scss';
+
+.logo {
+  width: 20rem;
+  padding-bottom: 5rem;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.desc {
+  width: 30rem;
+  font-weight: 500;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 1.5;
+  & > span {
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: $main-accent-color;
+  }
+}
+
+.start-btn {
+  color: $mbti-bg-color;
+  background-color: $mbti-btn-color;
+  font-size: 3rem;
+  border-radius: 4rem;
+  padding: 2rem 5.5rem;
+  margin: 3rem 0;
+  transition-duration: 500ms;
+}
+
+.total-desc {
+  font-size: 1.8rem;
+  text-align: center;
+  & > span {
+    color: $main-accent-color;
+    font-weight: 700;
+    font-size: 3rem;
+  }
+}

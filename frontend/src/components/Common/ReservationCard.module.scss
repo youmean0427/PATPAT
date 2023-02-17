@@ -1,0 +1,32 @@
+@import 'assets/styles/variable.scss';
+
+.card {
+  display: inline-block;
+  background-color: $lighter-blue-color;
+}
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+  .card {
+    width: 45%;
+    height: 250px;
+    margin: 5px 10px 5px 10px;
+  }
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+  .card {
+    width: 45%;
+    height: 150px;
+    margin: 5px;
+  }
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .card {
+    width: 80%;
+    height: 100px;
+    margin: 5px;
+  }
+}

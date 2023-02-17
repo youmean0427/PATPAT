@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styles from './Header.module.scss';
-import logo from 'assets/images/logo.png';
-import Navbar from './Navbar';
-export default function Header() {
+import Navbar from './Navbar/Navbar';
+export default function Header({ handleClickModalOpen }) {
+  const handleScroll = useCallback(() => {
+    const header = document.querySelector(`.${styles.header}`);
+    if (window.scrollY === 0) {
+      header.classList.remove(styles.scroll);
+    } else {
+      header.classList.add(styles.scroll);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <header className={styles.header}>
-      <div className={styles.top}>
-        <div className={styles['auth-menus']}>
-          <div className={styles['auth-menu-item']}>로그인</div>
+      <nav className={styles.nav}>
+        <div className={styles.container}>
+          <div className={styles['container-inner']}>
+            <Navbar handleClickModalOpen={handleClickModalOpen} />
+          </div>
         </div>
-      </div>
-      <div className={styles.bottom}>
-        <img className={styles.logo} src={logo} alt="logo" />
-        <Navbar />
-      </div>
+      </nav>
     </header>
   );
 }

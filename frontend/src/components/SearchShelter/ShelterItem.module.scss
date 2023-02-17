@@ -1,0 +1,28 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  width: 49%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.6rem;
+  align-items: center;
+  padding: 1rem;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  transition: all 0.4s;
+  margin-bottom: 2%;
+  cursor: pointer;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+  }
+}
+.thumbnail {
+  & > img {
+    width: 10rem;
+  }
+}
+
+@include breakpoint(sm) {
+  .container {
+    width: 100%;
+  }
+}

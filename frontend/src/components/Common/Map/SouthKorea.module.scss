@@ -1,0 +1,75 @@
+@import 'assets/styles/variable.scss';
+
+.map-wrapper {
+}
+
+.info {
+  display: none;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: $white-color;
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 0.5rem;
+}
+
+.land {
+  stroke: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.land.zero {
+  fill: $map-zero-color;
+}
+
+.land.one {
+  fill: $map-one-color;
+  &:hover {
+    fill: $map-hover-color;
+  }
+}
+
+.land.two {
+  fill: $map-two-color;
+  &:hover {
+    fill: $map-hover-color;
+  }
+}
+
+.land.three {
+  fill: $map-three-color;
+  &:hover {
+    fill: $map-hover-color;
+  }
+}
+
+.land.four {
+  fill: $map-four-color;
+  &:hover {
+    fill: $map-hover-color;
+  }
+}
+
+.land.five {
+  fill: $map-five-color;
+  &:hover {
+    fill: $map-hover-color;
+  }
+}
+
+.land.six {
+  fill: $map-six-color;
+  &:hover {
+    fill: $map-hover-color;
+  }
+}
+.sido {
+  font-size: 1.2rem;
+  font-family: $sunflower-font;
+  font-weight: 700;
+  user-select: none;
+}

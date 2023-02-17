@@ -1,0 +1,44 @@
+@import 'assets/styles/variable.scss';
+
+.container {
+  margin: 4rem 0;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: $main-accent-color;
+  margin-bottom: 2rem;
+  &-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &::after {
+    margin-top: 2rem;
+    display: block;
+    content: '';
+    width: 100%;
+    border: 0.5px solid $gray-color;
+  }
+}
+.btn {
+  transition: all 0.4s;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@include breakpoint(md) {
+  .container {
+    margin: 3rem 0;
+  }
+}
+
+@include breakpoint(sm) {
+  .container {
+    margin: 2rem 0;
+  }
+}

@@ -1,0 +1,24 @@
+@import 'assets/styles/variable.scss';
+
+.slider {
+  width: 600px;
+  height: 600px;
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@include breakpoint(md) {
+  .slider {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@include breakpoint(sm) {
+  .slider {
+    width: 100%;
+    height: 300px;
+  }
+}

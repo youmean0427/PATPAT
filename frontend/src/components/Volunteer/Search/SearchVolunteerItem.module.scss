@@ -1,0 +1,91 @@
+@import 'assets/styles/variable.scss';
+.mainContainer {
+  &:hover {
+  }
+}
+.container {
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+
+  &-dateState {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & > div {
+    margin: 5px;
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+.volunteerDate {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.stateCode {
+  &0 {
+    // 대기
+    font-size: 12px;
+    background-color: orange;
+    border-radius: 5px;
+    padding: 5px;
+    color: $white-color;
+  }
+  &1 {
+    // 승인
+    font-size: 12px;
+    background-color: $green-color;
+    border-radius: 5px;
+    padding: 5px;
+    color: $white-color;
+  }
+  &2 {
+    // 거절
+    font-size: 12px;
+    background-color: $red-color;
+    border-radius: 5px;
+    padding: 5px;
+    color: $white-color;
+  }
+  &3 {
+    // 불참
+    font-size: 12px;
+    background-color: $red-color;
+    border-radius: 5px;
+    padding: 5px;
+    color: $white-color;
+  }
+}
+
+.title {
+  font-size: 15px;
+}
+
+.Modal {
+  position: relative;
+  z-index: 10;
+}
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .title {
+    font-size: 1.4rem;
+  }
+  .container-dateState {
+    margin: 5px 0 5px 0;
+  }
+}

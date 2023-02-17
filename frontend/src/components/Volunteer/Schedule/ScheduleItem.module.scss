@@ -1,0 +1,133 @@
+@import 'assets/styles/variable.scss';
+
+.time {
+  & > span {
+    margin: 0 5px 0 0;
+  }
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  width: 50px;
+  font-size: 15px;
+  margin-right: 5px;
+  font-family: $noto-font;
+  text-align: center;
+}
+
+.peopleButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  align-items: center;
+  & > div {
+    width: 100px;
+
+    & > input {
+      width: 100%;
+      font-size: 15px;
+      height: 35px;
+      border: 1px solid gray;
+      border-radius: 4px;
+      padding-left: 5px;
+    }
+  }
+
+  .button {
+    border-radius: 4px;
+    width: 100px;
+    padding: 5px;
+    color: $white-color;
+    background-color: $main-color;
+
+    &:hover {
+      background-color: $main-accent-color;
+      opacity: 90%;
+    }
+  }
+  & > div {
+    font-size: 17px;
+    padding: 5px;
+    & > button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+.containerTime {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px 0 10px 0;
+  & > div {
+    display: flex;
+    justify-content: center;
+
+    & > span {
+      margin: 0 10px 0 0;
+    }
+    & > div {
+      font-weight: 700;
+      color: $main-accent-color;
+    }
+  }
+}
+
+.guideLine {
+  height: 225px;
+  margin: 10px 0 10px 0;
+  max-height: 450px;
+  overflow: auto;
+}
+
+.people {
+  margin-right: 10px;
+}
+
+/* desktop 규격 */
+@media screen and (min-width: 1024px) {
+}
+
+/* tablet 규격 */
+@media screen and (max-width: 1023px) {
+}
+
+/* mobile 규격 */
+@media screen and (max-width: 540px) {
+  .containerTime {
+    flex-direction: column;
+  }
+}
+
+.state {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0 10px 0;
+}
+
+.full {
+  color: $red-color;
+  width: 100px;
+  padding: 5px;
+  border: 1px solid $red-color;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+}
+
+.message {
+  color: $red-color;
+}
+
+.capacity {
+  width: 45.58px;
+  display: flex;
+  justify-content: center;
+  & > span {
+    margin: 0 1px 0 1px;
+  }
+}

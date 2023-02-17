@@ -1,0 +1,66 @@
+@import 'assets/styles/variable.scss';
+
+.header {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+
+  margin-top: 5rem;
+  padding: 0 2rem;
+  & > .thumbnail {
+    & > img {
+      width: 20rem;
+      height: 20rem;
+    }
+  }
+  & > .title-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.8rem;
+    & > .title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: $main-accent-color;
+    }
+    & > .sub-title {
+      font-size: 1.6rem;
+      color: $main-color;
+      & > span {
+        color: $main-accent-color;
+      }
+    }
+  }
+}
+
+@include breakpoint(md) {
+}
+
+@include breakpoint(sm) {
+  .header {
+    margin-top: 1rem;
+    padding: 0 1rem;
+    gap: 1rem;
+    & > .thumbnail {
+      & > img {
+        width: 12rem;
+        height: 12rem;
+      }
+    }
+    & > .title-box {
+      & > .title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $main-accent-color;
+      }
+      & > .sub-title {
+        font-size: 1.2rem;
+        color: $main-color;
+        & > span {
+          color: $main-accent-color;
+        }
+      }
+    }
+  }
+}
