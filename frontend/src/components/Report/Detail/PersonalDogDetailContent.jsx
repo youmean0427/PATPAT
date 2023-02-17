@@ -148,7 +148,7 @@ export default function PersonalDogDetailContent({ item, state }) {
             </div>
             <div>
               <div>몸무게</div>
-              {data.kg === 0 ? <span>모름</span> : <span>{data.age}살</span>}
+              {data.kg === 0 ? <span>모름</span> : <span>{data.kg}kg</span>}
             </div>
             <div>
               <div>중성화</div>
