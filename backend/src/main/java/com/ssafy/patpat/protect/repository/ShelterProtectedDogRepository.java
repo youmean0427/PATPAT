@@ -18,7 +18,7 @@ import java.util.List;
 public interface ShelterProtectedDogRepository extends JpaRepository<ShelterProtectedDog, Long> {
     Page<ShelterProtectedDog> findByShelterShelterIdAndStateCodeNotIn(Long shelterId, List<ProtectState> stateCode, PageRequest pageRequest);
     Page<ShelterProtectedDog> findByStateCodeNotIn(List<ProtectState> stateCode, PageRequest pageRequest);
-    Page<ShelterProtectedDog> findByShelterShelterIdAndStateCode(Long shelterId,ProtectState stateCode, PageRequest pageRequest);
+    Page<ShelterProtectedDog> findByShelterShelterIdAndBreedBreedId(Long shelterId,Long breedId, PageRequest pageRequest);
     Page<ShelterProtectedDog> findByStateCode(ProtectState stateCode, PageRequest pageRequest);
     ShelterProtectedDog findBySpDogId(Long spDogId);
 

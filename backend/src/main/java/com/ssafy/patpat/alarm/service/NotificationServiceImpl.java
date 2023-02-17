@@ -77,15 +77,6 @@ public class NotificationServiceImpl implements NotificationService{
 
         List<MissingDog> missingDogList = missingDogRepository.selectBydistance(lat,log,lat);
         MsgCode msgCode = MsgCode.MSG_NEW_RESEMBLE_DOG;
-        for(MissingDog m : missingDogList){
-            Alarm alarm = Alarm.builder()
-                    .checkRead(false)
-                    .msgCode(msgCode)
-                    .user(m.getUser())
-                    .registDate(LocalDateTime.now())
-                    .build();
-            alarmRepository.save(alarm);
-        }
 
         /** 반경 내에 실종된 동물이 있다면 **/
         if(missingDogList.size() > 0){
@@ -93,6 +84,15 @@ public class NotificationServiceImpl implements NotificationService{
                 LOGGER.info("오나? 보호소 입장임 {}",m.getUser().getUserId());
                 /** 반견 내에 있는 실종견이 등록견과 닮아있다면 **/
                 if(reportService.isResemble(m,shelterProtectedDog)){
+                    Alarm alarm = Alarm.builder()
+                            .checkRead(false)
+                            .msgCode(msgCode)
+                            .user(m.getUser())
+                            .spDogId(spDogId)
+                            .registDate(LocalDateTime.now())
+                            .build();
+                    alarmRepository.save(alarm);
+
                     Long userId = m.getUser().getUserId();
                     Optional<User> user = userRepository.findById(userId);
                     sseEmitters.forEach(

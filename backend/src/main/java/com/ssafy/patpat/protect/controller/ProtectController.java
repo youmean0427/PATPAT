@@ -45,7 +45,7 @@ public class ProtectController {
      */
     @GetMapping("/shelters")
     //@PreAuthorize("hasAnyRole('USER')")
-    @ApiOperation(value = "보호동물 리스트", notes = "{shelterId 필수, code==0 안락사, code==1 최신순, stateCode 넣으면 상태별}")
+    @ApiOperation(value = "보호동물 리스트", notes = "{shelterId 필수, code==0 안락사, code==1 최신순, breedId 넣으면 상태별}")
     public ResponseEntity<Object> selectProtectListByShelter(RequestProtectDto requestProtectDto){
         //서비스 호출 코드
         ResponseListDto protectDtoList = service.selectProtectListByShelter(requestProtectDto);

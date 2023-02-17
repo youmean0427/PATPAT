@@ -28,6 +28,8 @@ public class Alarm {
 
     private Long shelterId;
 
+    private Long spDogId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

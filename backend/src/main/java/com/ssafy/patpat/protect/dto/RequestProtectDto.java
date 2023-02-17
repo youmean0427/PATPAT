@@ -14,5 +14,7 @@ public class RequestProtectDto {
     private Integer code;
     private Integer offSet;
     private Integer limit;
+    private Long breedId;
+
     private Integer stateCode;
 }
